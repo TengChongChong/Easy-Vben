@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>easy-frame</contextName>
+    <!-- 日志文件存放目录 -->
+    <property name="log.path" value="logs" />
+    <!-- 日志文件名称 -->
+    <property name="log.name" value="easy-frame" />
+
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--输出到文件-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/${log.name}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 单个日志文件不超过2MB -->
+            <maxFileSize>2MB</maxFileSize>
+            <!-- 最多保留30天 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+    </root>
+
+    <!-- 开发环境 -->
+    <springProfile name="dev">
+        <logger name="com.frame.easy" level="debug" additivity="false">
+            <appender-ref ref="console"/>
+        </logger>
+    </springProfile>
+
+    <!-- 生产环境 -->
+    <springProfile name="prod">
+        <!-- 控制台+文件,级别为info -->
+        <root level="info" />
+    </springProfile>
+
+</configuration>
