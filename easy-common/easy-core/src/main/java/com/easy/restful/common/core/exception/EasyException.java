@@ -1,7 +1,7 @@
 package com.easy.restful.common.core.exception;
 
 
-import com.easy.restful.common.core.constant.status.ResultCode;
+import com.easy.restful.common.core.common.status.ResultCode;
 
 /**
  * 自定义Exception

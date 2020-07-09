@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2019-01-15
  */
 @Configuration
-@MapperScan("com.frame.easy.modular.*.dao")
+@MapperScan("com.easy.restful.**.dao")
 public class MybatisPlusConfig {
     /**
      * 分页插件

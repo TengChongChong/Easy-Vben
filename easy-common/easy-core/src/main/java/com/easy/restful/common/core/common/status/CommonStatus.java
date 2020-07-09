@@ -1,4 +1,4 @@
-package com.easy.restful.common.core.constant.status;
+package com.easy.restful.common.core.common.status;
 
 /**
  * 通用状态

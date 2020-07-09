@@ -1,6 +1,6 @@
 package com.easy.restful.common.core.util;
 
-import com.easy.restful.common.core.constant.status.ResultCode;
+import com.easy.restful.common.core.common.status.ResultCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
