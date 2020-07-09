@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sys.dao.SysPermissionsMapper">
+    <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysPermissions">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="p_id" jdbcType="BIGINT" property="pId"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="p_code" jdbcType="VARCHAR" property="pCode"/>
+        <result column="p_codes" jdbcType="VARCHAR" property="pCodes"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
+        <result column="levels" jdbcType="INTEGER" property="levels"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="is_open" jdbcType="INTEGER" property="isOpen"/>
+        <result column="is_external_links" jdbcType="INTEGER" property="isExternalLinks"/>
+        <result column="tips" jdbcType="VARCHAR" property="tips"/>
+        <result column="color" jdbcType="VARCHAR" property="color"/>
+        <result column="create_user" jdbcType="BIGINT" property="createUser"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="edit_user" jdbcType="BIGINT" property="editUser"/>
+        <result column="edit_date" jdbcType="TIMESTAMP" property="editDate"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+    </resultMap>
+
+</mapper>

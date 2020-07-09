@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sys.dao.SysRolePermissionsMapper">
+    <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysRolePermissions">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="permissions_id" jdbcType="BIGINT" property="permissionsId"/>
+    </resultMap>
+    <select id="selectAll" resultType="com.easy.restful.sys.model.SysRolePermissions">
+        select sr.code as role_code, sp.url, sp.http_methods
+        from sys_role_permissions srp
+                 left join sys_permissions sp on sp.id = srp.permissions_id
+                 left join sys_role sr on srp.role_id = sr.id
+        where sp.status = #{status}
+        order by sr.code, sp.url, sp.http_methods
+    </select>
+
+
+</mapper>

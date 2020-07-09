@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sys.dao.SysUserRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysUserRole">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+    </resultMap>
+    <select id="selectUserRoleCodesByUserId" resultType="java.lang.String">
+        select sr.code from sys_user_role sur
+            left join sys_role sr on sr.id = sur.role_id
+        where sur.user_id = #{userId} and sr.status = #{status}
+    </select>
+
+</mapper>
