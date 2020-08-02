@@ -1,6 +1,5 @@
 package com.easy.restful.common.security.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
@@ -13,6 +12,11 @@ import javax.servlet.*;
 import java.io.IOException;
 
 
+/**
+ *
+ * @author tengchong
+ * @date 2020/6/12
+ */
 @Component
 public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor implements Filter {
 
@@ -28,7 +32,6 @@ public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor imp
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
         FilterInvocation fi = new FilterInvocation(servletRequest, servletResponse, filterChain);
         invoke(fi);
     }

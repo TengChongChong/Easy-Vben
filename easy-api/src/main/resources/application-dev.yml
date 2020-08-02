@@ -1,6 +1,16 @@
 server:
     # 端口号
     port: 80
+jwt:
+    # token 加密密钥泄露后务必更改
+    secret: nje7ESnAM5upEWV5DEWXBGnIntXyZvOY
+    access-token:
+        # AccessToken 有效期（s）30 分钟
+        expiration-time: 1800
+    refresh-token:
+        # RefreshToken 有效期（s）1 天
+        expiration-time: 86400
+
 spring:
     redis:
         # Redis数据库索引（默认为0）

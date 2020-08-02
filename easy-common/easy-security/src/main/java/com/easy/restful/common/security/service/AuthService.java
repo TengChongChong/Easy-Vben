@@ -1,5 +1,8 @@
 package com.easy.restful.common.security.service;
 
+import com.easy.restful.common.security.model.Token;
+import com.easy.restful.sys.model.SysUser;
+
 /**
  * 登录
  *
@@ -14,5 +17,20 @@ public interface AuthService {
      * @param password 密码
      * @return
      */
-    String login(String username, String password);
+    Token login(String username, String password);
+
+    /**
+     * 获取用户信息
+     *
+     * @return SysUser
+     */
+    SysUser getUserInfo();
+
+    /**
+     * 使用refreshToken刷新accessToken
+     *
+     * @param refreshToken 刷新 Token
+     * @return Token
+     */
+    Token refreshToken(String refreshToken);
 }

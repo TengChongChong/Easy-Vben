@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.easy.restful.sys.common.status.DeptStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,13 +13,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 机构
+ * 部门
  *
  * @author tengchong
  * @date 2018/9/4
  */
-@TableName("sys_department")
-public class SysDepartment extends Model<SysDepartment> {
+@TableName("sys_dept")
+public class SysDept extends Model<SysDept> {
 
     @TableId(value="id")
     private String id;
@@ -31,7 +32,7 @@ public class SysDepartment extends Model<SysDepartment> {
      */
     private String pIds;
     /**
-     * 机构类型编码
+     * 部门类型编码
      */
     @NotBlank(message = "机构类型不能为空")
     private String typeCode;
@@ -89,6 +90,15 @@ public class SysDepartment extends Model<SysDepartment> {
     @Override
     protected Serializable pkVal() {
         return this.id;
+    }
+
+    /**
+     * 机构是否可用
+     *
+     * @return true/false
+     */
+    public boolean isEnabled() {
+        return this.status != null && DeptStatus.ENABLE.getCode() == this.status;
     }
 
     public String getId() {

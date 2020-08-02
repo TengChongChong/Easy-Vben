@@ -1,6 +1,5 @@
 package com.easy.restful.common.security.config;
 
-
 import com.easy.restful.sys.model.SysRolePermissions;
 import com.easy.restful.sys.service.SysRolePermissionsService;
 import org.springframework.beans.factory.annotation.Autowired;

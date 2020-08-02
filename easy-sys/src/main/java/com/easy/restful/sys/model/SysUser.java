@@ -81,7 +81,7 @@ public class SysUser {
      */
     private Integer version;
     /**
-     * 账号来源
+     * 用户来源
      */
     private String source;
     /**
@@ -111,7 +111,7 @@ public class SysUser {
      * 所属部门
      */
     @TableField(exist = false)
-    private SysDepartment department;
+    private SysDept dept;
 
     /**
      * 角色集合
@@ -297,12 +297,12 @@ public class SysUser {
         this.editDate = editDate;
     }
 
-    public SysDepartment getDepartment() {
-        return department;
+    public SysDept getDept() {
+        return dept;
     }
 
-    public void setDepartment(SysDepartment department) {
-        this.department = department;
+    public void setDept(SysDept dept) {
+        this.dept = dept;
     }
 
     public List<String> getRoles() {

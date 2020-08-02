@@ -1,6 +1,7 @@
 package com.easy.restful.common.security.model;
 
 import cn.hutool.core.lang.Validator;
+import com.easy.restful.sys.common.status.UserStatus;
 import com.easy.restful.sys.model.SysUser;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -52,13 +53,22 @@ public class SecurityUser implements UserDetails, CredentialsContainer {
     }
 
     /**
+     * 获取用户
+     *
+     * @return 用户
+     */
+    public SysUser getSysUser() {
+        return sysUser;
+    }
+
+    /**
      * 用户是否可用
      *
      * @return true/false
      */
     @Override
     public boolean isEnabled() {
-        return true;
+        return sysUser.getStatus() != null && UserStatus.ENABLE.getCode() == sysUser.getStatus();
     }
 
     /**

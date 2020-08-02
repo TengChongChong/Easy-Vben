@@ -17,8 +17,8 @@ public enum GlobalException implements EasyServiceException {
     USERNAME_NOT_FOUND(ResultCode.UNAUTHORIZED.getCode(), "用户名或密码错误"),
     // 会话信息已过期
     SESSION_INVALID(ResultCode.UNAUTHORIZED.getCode(), "会话信息已过期"),
-    // 账号在其他地方登录
-    SESSION_LOGIN_ELSEWHERE(ResultCode.UNAUTHORIZED.getCode(), "账号在其他地方登录，你被迫退出"),
+    // 用户在其他地方登录
+    SESSION_LOGIN_ELSEWHERE(ResultCode.UNAUTHORIZED.getCode(), "用户在其他地方登录，你被迫退出"),
     // 被管理员强制踢出
     SESSION_FORCE_LOGOUT(ResultCode.UNAUTHORIZED.getCode(), "被管理员强制退出"),
     // 你无权限访问此资源

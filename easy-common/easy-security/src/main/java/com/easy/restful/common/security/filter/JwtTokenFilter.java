@@ -1,12 +1,14 @@
 package com.easy.restful.common.security.filter;
 
-import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
+import com.easy.restful.common.core.util.Tips;
+import com.easy.restful.common.security.constant.JwtConst;
+import com.easy.restful.common.security.exception.EasyTokenException;
 import com.easy.restful.common.security.model.SecurityUser;
 import com.easy.restful.common.security.util.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,32 +27,30 @@ import java.io.IOException;
  */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
 
-    /**
-     * 存放Token的Header Key
-     */
-    public static final String HEADER_STRING = "Authorization";
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String token = request.getHeader(HEADER_STRING);
-        if (null != token) {
-            // 从token中获取用户名
-            String username = jwtTokenUtils.getUsernameFromToken(token);
-            if (Validator.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
-                SecurityUser securityUser = (SecurityUser) this.userDetailsService.loadUserByUsername(username);
-                if (jwtTokenUtils.validateToken(token, securityUser)) {
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            securityUser, null, securityUser.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(
-                            request));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+        String token = request.getHeader(JwtConst.HEADER_STRING);
+        if (StrUtil.isNotBlank(token)) {
+            try {
+                // 过期会抛出ExpiredJwtException，所以这里不做判断
+                jwtTokenUtils.isTokenExpired(token);
+            } catch (EasyTokenException e) {
+                Tips.response(response, e.getCode(), e.getMessage());
+                return;
+            }
+
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                // 解析token放到SecurityContextHolder中
+                SecurityUser securityUser = jwtTokenUtils.convert(token);
+
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        securityUser, null, securityUser.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
         chain.doFilter(request, response);

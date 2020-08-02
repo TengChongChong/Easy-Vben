@@ -1,6 +1,5 @@
 package com.easy.restful.common.security.config;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDecisionManager;
@@ -14,7 +13,10 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 /**
- * 决策器
+ * 决策器，判断当前用户是否有权限访问请求的资源
+ *
+ * @author tengchong
+ * @date 2020/6/12
  */
 @Component
 public class MyAccessDecisionManager implements AccessDecisionManager {
@@ -24,15 +26,13 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
     /**
      * 通过传递的参数来决定用户是否有访问对应受保护对象的权限
      *
-     * @param authentication 包含了当前的用户信息，包括拥有的权限。这里的权限来源就是前面登录时UserDetailsService中设置的authorities。
-     * @param object  就是FilterInvocation对象，可以得到request等web资源
+     * @param authentication   包含了当前的用户信息，包括拥有的权限。这里的权限来源就是前面登录时UserDetailsService中设置的authorities。
+     * @param object           就是FilterInvocation对象，可以得到request等web资源
      * @param configAttributes configAttributes是本次访问需要的权限
      */
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
-        if (null == configAttributes || 0 >= configAttributes.size()) {
-            return;
-        } else {
+        if (configAttributes != null && configAttributes.size() > 0) {
             String needRole;
             for (ConfigAttribute configAttribute : configAttributes) {
                 needRole = configAttribute.getAttribute();
@@ -42,9 +42,9 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
                     }
                 }
             }
-            throw new AccessDeniedException("当前访问没有权限");
+            // 拒绝访问
+            throw new AccessDeniedException("access denied");
         }
-
     }
 
     /**
