@@ -1,24 +1,25 @@
 package com.easy.restful.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.easy.restful.sys.model.SysPermissions;
 import com.easy.restful.sys.model.SysRolePermissions;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+
 /**
  * 角色权限
- *
  * @author tengchong
- * @date 2018/12/3
  */
 public interface SysRolePermissionsMapper extends BaseMapper<SysRolePermissions> {
-
     /**
-     * 查询所有角色权限
+     * 根据角色id获取权限集合
      *
-     * @param status 状态
-     * @return List<SysRolePermissions>
+     * @param roleId 角色id
+     * @param  status 状态
+     * @return List<SysPermissions> 权限集合
      */
-    List<SysRolePermissions> selectAll(@Param("status") int status);
+    List<SysPermissions> selectPermissionsByRoleId(@Param("roleId") String roleId, @Param("status") String status);
+
 }

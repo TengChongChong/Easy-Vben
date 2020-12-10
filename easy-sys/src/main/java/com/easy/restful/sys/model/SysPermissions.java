@@ -17,8 +17,11 @@ import java.util.Date;
  * @author tengchong
  * @date 2018/9/4
  */
+
 @TableName("sys_permissions")
 public class SysPermissions extends Model<SysPermissions> {
+
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id")
     private String id;
@@ -42,37 +45,33 @@ public class SysPermissions extends Model<SysPermissions> {
     /**
      * 权限地址
      */
-    private String url;
+    private String path;
     /**
-     * http method
+     * views 页面地址
      */
-    private String httpMethod;
+    private String component;
     /**
      * 排序值
      */
     private Integer orderNo;
     /**
-     * 级别
-     */
-    private Integer levels;
-    /**
      * 类型
      */
     @NotNull(message = "类型不能为空")
-    private Integer type;
+    private String type;
+    /**
+     * 隐藏路由
+     */
+    private String hide;
     /**
      * 状态
      */
     @NotNull(message = "状态不能为空")
-    private Integer status;
+    private String status;
     /**
-     * 是否默认打开
+     * 打开方式
      */
-    private Integer isOpen;
-    /**
-     * 是否外部链接
-     */
-    private Integer isExternalLinks;
+    private String target;
     /**
      * 备注
      */
@@ -81,10 +80,6 @@ public class SysPermissions extends Model<SysPermissions> {
      * 乐观锁保留字段
      */
     private Integer version;
-    /**
-     * 字体颜色
-     */
-    private String color;
     @TableField(fill = FieldFill.INSERT)
     private String createUser;
     @TableField(fill = FieldFill.INSERT)
@@ -94,7 +89,7 @@ public class SysPermissions extends Model<SysPermissions> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
 
-    // ==== 非数据库中字段
+    //
     /**
      * 父菜单名称
      */
@@ -164,22 +159,6 @@ public class SysPermissions extends Model<SysPermissions> {
         this.icon = icon;
     }
 
-    public String getHttpMethod() {
-        return httpMethod;
-    }
-
-    public void setHttpMethod(String httpMethod) {
-        this.httpMethod = httpMethod;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public Integer getOrderNo() {
         return orderNo;
     }
@@ -188,36 +167,20 @@ public class SysPermissions extends Model<SysPermissions> {
         this.orderNo = orderNo;
     }
 
-    public Integer getLevels() {
-        return levels;
-    }
-
-    public void setLevels(Integer levels) {
-        this.levels = levels;
-    }
-
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Integer getIsOpen() {
-        return isOpen;
-    }
-
-    public void setIsOpen(Integer isOpen) {
-        this.isOpen = isOpen;
     }
 
     public String getTips() {
@@ -234,14 +197,6 @@ public class SysPermissions extends Model<SysPermissions> {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public String getCreateUser() {
@@ -284,12 +239,35 @@ public class SysPermissions extends Model<SysPermissions> {
         this.pName = pName;
     }
 
-    public Integer getIsExternalLinks() {
-        return isExternalLinks;
+    public String getTarget() {
+        return target;
     }
 
-    public void setIsExternalLinks(Integer isExternalLinks) {
-        this.isExternalLinks = isExternalLinks;
+    public void setTarget(String target) {
+        this.target = target;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
+    }
+
+    public String getHide() {
+        return hide;
+    }
+
+    public void setHide(String hide) {
+        this.hide = hide;
+    }
 }

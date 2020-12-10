@@ -21,7 +21,7 @@ public class EasyException extends RuntimeException {
 
     public EasyException(String message) {
         // 默认为error级别错误
-        this.code = ResultCode.INTERNAL_SERVER_ERROR.getCode();
+        this.code = ResultCode.INTERNAL_SERVER.getCode();
         this.message = message;
     }
 

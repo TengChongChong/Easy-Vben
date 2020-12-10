@@ -1,20 +1,29 @@
 package com.easy.restful.sys.service;
 
-import com.easy.restful.sys.model.SysRolePermissions;
-
 import java.util.List;
 
 /**
- * 角色权限
+ * 角色权限管理
  *
  * @author tengchong
- * @date 2020/7/9
+ * @date 2018/11/27
  */
 public interface SysRolePermissionsService {
     /**
-     * 查询所有角色权限
+     * 保存角色权限
      *
-     * @return List<SysRolePermissions>
+     * @param roleId      角色id
+     * @param permissions 权限ids
+     * @return boolean
      */
-    List<SysRolePermissions> selectAll();
+    boolean saveRolePermissions(String roleId, List<String> permissions);
+
+    /**
+     * 删除角色中的权限
+     *
+     * @param permissions 权限ids 1,2,3,4
+     * @return
+     */
+    boolean removeRolePermissions(String permissions);
+
 }

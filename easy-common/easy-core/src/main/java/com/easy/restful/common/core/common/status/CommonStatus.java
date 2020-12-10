@@ -9,19 +9,19 @@ package com.easy.restful.common.core.common.status;
 
 public enum CommonStatus {
     // 启用
-    ENABLE(1, "启用"),
+    ENABLE("1", "启用"),
     // 禁用
-    DISABLE(2, "禁用");
+    DISABLE("2", "禁用");
 
-    int code;
+    String code;
     String message;
 
-    CommonStatus(int code, String message) {
+    CommonStatus(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 

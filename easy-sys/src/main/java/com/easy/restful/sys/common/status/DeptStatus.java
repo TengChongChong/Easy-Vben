@@ -1,7 +1,7 @@
 package com.easy.restful.sys.common.status;
 
 /**
- * 机构状态
+ * 部门状态
  *
  * @author tengchong
  * @date 2018/9/4
@@ -9,19 +9,19 @@ package com.easy.restful.sys.common.status;
 
 public enum DeptStatus {
     // 启用
-    ENABLE(1, "启用"),
+    ENABLE("1", "启用"),
     // 禁用
-    DISABLE(2, "禁用");
+    DISABLE("2", "禁用");
 
-    int code;
+    String code;
     String message;
 
-    DeptStatus(int code, String message) {
+    DeptStatus(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 

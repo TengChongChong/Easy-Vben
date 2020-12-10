@@ -9,19 +9,19 @@ package com.easy.restful.sys.common.status;
 
 public enum RoleStatus {
     // 启用
-    ENABLE(1, "启用"),
+    ENABLE("1", "启用"),
     // 禁用
-    DISABLE(2, "禁用");
+    DISABLE("2", "禁用");
 
-    int code;
+    String code;
     String message;
 
-    RoleStatus(int code, String message) {
+    RoleStatus(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 

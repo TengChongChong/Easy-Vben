@@ -51,7 +51,7 @@ public class CommonConst {
     /**
      * 默认文件夹图标
      */
-    public static String DEFAULT_FOLDER_ICON = "la la-folder-open-o";
+    public static String DEFAULT_FOLDER_ICON = "appstore";
 
     /**
      * 静态资源后缀,用于优化性能

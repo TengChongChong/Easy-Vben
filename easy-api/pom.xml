@@ -19,21 +19,11 @@
 
         <dependency>
             <groupId>com.easy.restful</groupId>
-            <artifactId>easy-auth</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.easy.restful</groupId>
             <artifactId>easy-sys</artifactId>
         </dependency>
 
 
-        <!-- str:common -->
-        <dependency>
-            <groupId>com.easy.restful</groupId>
-            <artifactId>easy-mybatis</artifactId>
-        </dependency>
-        <!-- end:common -->
+
 
     </dependencies>
 

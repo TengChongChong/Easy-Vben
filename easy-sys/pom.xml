@@ -16,10 +16,36 @@
     <description>系统相关功能</description>
 
     <dependencies>
+        <!-- str:common -->
         <dependency>
             <groupId>com.easy.restful</groupId>
             <artifactId>easy-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.easy.restful</groupId>
+            <artifactId>easy-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.easy.restful</groupId>
+            <artifactId>easy-redis</artifactId>
+        </dependency>
+        <!-- end:common -->
+        <!--shiro-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- shiro ehcache -->
     </dependencies>
     <build>
         <resources>

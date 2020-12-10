@@ -5,19 +5,16 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <id column="p_id" jdbcType="BIGINT" property="pId"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
-        <result column="p_code" jdbcType="VARCHAR" property="pCode"/>
-        <result column="p_codes" jdbcType="VARCHAR" property="pCodes"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="icon" jdbcType="VARCHAR" property="icon"/>
-        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="component" jdbcType="VARCHAR" property="component"/>
         <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
-        <result column="levels" jdbcType="INTEGER" property="levels"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="is_open" jdbcType="INTEGER" property="isOpen"/>
-        <result column="is_external_links" jdbcType="INTEGER" property="isExternalLinks"/>
+        <result column="hide" jdbcType="VARCHAR" property="hide"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="target" jdbcType="INTEGER" property="target"/>
         <result column="tips" jdbcType="VARCHAR" property="tips"/>
-        <result column="color" jdbcType="VARCHAR" property="color"/>
         <result column="create_user" jdbcType="BIGINT" property="createUser"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="edit_user" jdbcType="BIGINT" property="editUser"/>
@@ -25,4 +22,41 @@
         <result column="version" jdbcType="INTEGER" property="version"/>
     </resultMap>
 
+    <select id="selectByPId" resultType="com.easy.restful.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title, t.icon, t.hide,
+          (case when (select count(1) from sys_permissions where p_id = t.id) > 0 then 'false' else 'true' end ) as isLeaf
+        from sys_permissions t
+        where t.p_id = #{pId}
+        order by t.order_no
+    </select>
+    <select id="selectInfo" resultType="com.easy.restful.sys.model.SysPermissions">
+        select t.id,t.code,t.name,t.icon,t.path,t.hide,t.target,t.component,t.component,t.type,t.status,t.tips,t.p_id,p.name as pName
+          from sys_permissions t
+          left join sys_permissions p on p.id = t.p_id
+        where t.id= #{id}
+    </select>
+    <select id="selectOrderInfo" resultType="com.easy.restful.sys.model.SysPermissions">
+        select t.id,t.name,t.order_no
+        from sys_permissions t
+        where t.p_id = #{pId} order by t.order_no
+        <if test="str != null and length != null">
+            limit #{str},#{length}
+        </if>
+    </select>
+    <select id="selectByTitle" resultType="com.easy.restful.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.icon, t.hide,t.name as title
+        from sys_permissions t
+        where t.name like #{title} order by t.p_id,t.order_no
+    </select>
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(order_no), 0)
+        from sys_permissions t
+        where t.p_id = #{pId}
+    </select>
+    <select id="selectAll" resultType="com.easy.restful.common.core.common.tree.Tree">
+        select t.id,t.icon, t.hide,t.name as title,t.p_id
+        from sys_permissions t
+        where t.status = #{status}
+        order by t.order_no
+    </select>
 </mapper>

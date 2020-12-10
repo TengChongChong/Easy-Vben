@@ -1,14 +1,17 @@
 package com.easy.restful.sys.model;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,10 +19,12 @@ import java.util.List;
  * 用户
  *
  * @author tengchong
- * @date 2020/7/8
+ * @date 2018/9/4
  */
 @TableName("sys_user")
-public class SysUser {
+public class SysUser extends Model<SysUser> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id")
     private String id;
@@ -66,7 +71,7 @@ public class SysUser {
      * 状态(1.正常 2.冻结 0.已删除)
      */
     @NotNull(message = "状态不能为空")
-    private Integer status;
+    private String status;
     /**
      * 最后登录时间
      */
@@ -81,7 +86,7 @@ public class SysUser {
      */
     private Integer version;
     /**
-     * 用户来源
+     * 账号来源
      */
     private String source;
     /**
@@ -106,18 +111,27 @@ public class SysUser {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
 
-    // ==== 非数据库中字段
+    //
     /**
      * 所属部门
      */
     @TableField(exist = false)
     private SysDept dept;
-
+    /**
+     * 用户拥有的角色
+     */
+    @TableField(exist = false)
+    private String roles;
     /**
      * 角色集合
      */
     @TableField(exist = false)
-    private List<String> roles;
+    private List<String> roleList;
+    /**
+     * 权限集合
+     */
+    @TableField(exist = false)
+    private List<String> permissionList;
     /**
      * 菜单集合
      */
@@ -144,6 +158,23 @@ public class SysUser {
      */
     @TableField(exist = false)
     private int age;
+    /**
+     * 部门名称
+     */
+    @TableField(exist = false)
+    private String deptName;
+
+    public SysUser(String username) {
+        this.username = username;
+    }
+
+    public SysUser() {
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
 
     public String getId() {
         return id;
@@ -167,14 +198,6 @@ public class SysUser {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
     }
 
     public String getSalt() {
@@ -225,12 +248,28 @@ public class SysUser {
         this.birthday = birthday;
     }
 
-    public Integer getStatus() {
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Date getLastLogin() {
@@ -273,14 +312,6 @@ public class SysUser {
         this.createUser = createUser;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
     public String getEditUser() {
         return editUser;
     }
@@ -297,20 +328,28 @@ public class SysUser {
         this.editDate = editDate;
     }
 
-    public SysDept getDept() {
-        return dept;
-    }
-
-    public void setDept(SysDept dept) {
-        this.dept = dept;
-    }
-
-    public List<String> getRoles() {
+    public String getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public List<String> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<String> roleList) {
+        this.roleList = roleList;
+    }
+
+    public List<String> getPermissionList() {
+        return permissionList;
+    }
+
+    public void setPermissionList(List<String> permissionList) {
+        this.permissionList = permissionList;
     }
 
     public List<SysPermissions> getMenus() {
@@ -353,6 +392,18 @@ public class SysUser {
         this.avatarXs = avatarXs;
     }
 
+    public SysDept getDept() {
+        return dept;
+    }
+
+    public void setDept(SysDept dept) {
+        this.dept = dept;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public boolean isMailIsVerifies() {
         return mailIsVerifies;
     }
@@ -362,11 +413,22 @@ public class SysUser {
     }
 
     public int getAge() {
-        return age;
+        if (this.birthday != null) {
+            return DateUtil.age(this.birthday, new Date());
+        }
+        return 0;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public String getDeptName() {
+        return deptName;
     }
 
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    @Override
+    public String toString() {
+        return id;
+    }
 }

@@ -1,5 +1,6 @@
 package com.easy.restful.easyapi.config.web;
 
+import com.easy.restful.common.core.util.Response;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -34,9 +35,11 @@ public class EasyErrorController extends BasicErrorController {
         HttpStatus status = getStatus(request);
         // 响应数据
         Map<String, Object> map = getErrorAttributes(request, ErrorAttributeOptions.defaults());
-        map.put("code", "300" + map.get("status"));
-        map.remove("status");
+        map.put("success", false);
+        map.put("errorCode", "00" + map.get("status"));
+        map.put("showType", Response.NOTIFICATION_ERROR);
         map.put("timestamp", System.currentTimeMillis());
+        map.remove("status");
         return new ResponseEntity(map, status);
     }
 
@@ -47,7 +50,7 @@ public class EasyErrorController extends BasicErrorController {
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = getStatus(request);
         response.setStatus(status.value());
-        Map<String, Object> model = getErrorAttributes(request, true);
+        Map<String, Object> model =  getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE));
         ModelAndView modelAndView = new ModelAndView("/global/" + status.value());
         modelAndView.addAllObjects(model);
         // 当前模式是否为开发模式

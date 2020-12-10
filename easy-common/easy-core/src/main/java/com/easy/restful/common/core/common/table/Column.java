@@ -42,7 +42,7 @@ public class Column {
         this.title = title;
     }
 
-    public String getDictType() {
+    public String selectDictType() {
         if (StrUtil.isNotBlank(dictType)) {
             return dictType;
         } else {

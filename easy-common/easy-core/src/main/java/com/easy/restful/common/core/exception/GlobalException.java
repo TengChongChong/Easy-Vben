@@ -26,9 +26,13 @@ public enum GlobalException implements EasyServiceException {
     // 你访问的资源不存在
     HTTP_NOT_FOUND(ResultCode.NOT_FOUND.getCode(), "你访问的资源不存在"),
     // 要删除的信息包含子节点
-    EXIST_CHILD("200000", "要删除的信息包含子节点，请移除子节点后重试"),
+    EXIST_CHILD(ResultCode.INTERNAL_SERVER.getCode(), "要删除的信息包含子节点，请移除子节点后重试"),
     // 无效的日期格式
-    INVALID_DATE_FORMAT("200400", "无效的日期格式");
+    INVALID_DATE_FORMAT(ResultCode.BAD_REQUEST.getCode(), "无效的日期格式"),
+    // 获取数据失败
+    FAILED_TO_GET_DATA(ResultCode.INTERNAL_SERVER.getCode(), "获取数据失败，请重试"),
+    // 未知错误
+    UNKNOWN_ERROR(ResultCode.INTERNAL_SERVER.getCode(), "未知错误，请联系管理员");
     /**
      * 错误代码
      */

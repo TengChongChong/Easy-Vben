@@ -1,0 +1,44 @@
+package com.easy.restful.sys.service;
+
+import com.easy.restful.common.core.common.pagination.Page;
+import com.easy.restful.sys.model.SysLog;
+
+/**
+ * 日志
+ *
+ * @author TengChong
+ * @date 2019-06-27
+ */
+public interface SysLogService {
+    /**
+     * 列表
+     *
+     * @param object 查询条件
+     * @param page   分页
+     * @return Page<SysLog>
+     */
+    Page<SysLog> select(SysLog object, Page<SysLog> page);
+
+    /**
+     * 详情
+     *
+     * @param id id
+     * @return 详细信息
+     */
+    SysLog get(String id);
+
+    /**
+     * 保存
+     *
+     * @param object 表单内容
+     * @return 保存后信息
+     */
+    SysLog saveData(SysLog object);
+
+    /**
+     * 清理异常日志表里的数据
+     *
+     * @return true/false
+     */
+    boolean clean();
+}

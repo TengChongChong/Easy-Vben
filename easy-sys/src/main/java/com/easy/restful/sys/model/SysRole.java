@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 角色
@@ -20,6 +21,8 @@ import java.util.Date;
 
 @TableName("sys_role")
 public class SysRole extends Model<SysRole> {
+
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id")
     private String id;
@@ -48,7 +51,7 @@ public class SysRole extends Model<SysRole> {
      * 状态(1.启用 0.禁用)
      */
     @NotNull(message = "状态不能为空")
-    private Integer status;
+    private String status;
     /**
      * 乐观锁保留字段
      */
@@ -66,7 +69,8 @@ public class SysRole extends Model<SysRole> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
 
-    // ==== 非数据库中字段
+
+    //
     /**
      * 父角色名称
      */
@@ -76,7 +80,7 @@ public class SysRole extends Model<SysRole> {
     /**
      * 权限ids
      */
-    private String permissions;
+    private List<String> permissions;
 
     public SysRole() {
     }
@@ -140,11 +144,11 @@ public class SysRole extends Model<SysRole> {
         this.code = code;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -204,16 +208,34 @@ public class SysRole extends Model<SysRole> {
         this.tips = tips;
     }
 
-    public String getPermissions() {
+    public List<String> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(String permissions) {
+    public void setPermissions(List<String> permissions) {
         this.permissions = permissions;
     }
 
     @Override
     protected Serializable pkVal() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "SysRole{" +
+                "id=" + id +
+                ", orderNo=" + orderNo +
+                ", pId=" + pId +
+                ", name='" + name + '\'' +
+                ", deptId=" + deptId +
+                ", code='" + code + '\'' +
+                ", status='" + status + '\'' +
+                ", version=" + version +
+                ", createDate=" + createDate +
+                ", createUser=" + createUser +
+                ", editUser=" + editUser +
+                ", editDate=" + editDate +
+                '}';
     }
 }

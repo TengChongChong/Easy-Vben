@@ -28,16 +28,12 @@ public class SysDept extends Model<SysDept> {
      */
     private String pId;
     /**
-     * 父级ids
-     */
-    private String pIds;
-    /**
      * 部门类型编码
      */
-    @NotBlank(message = "机构类型不能为空")
+    @NotBlank(message = "部门类型不能为空")
     private String typeCode;
     /**
-     * 机构代码
+     * 部门代码
      */
     private String code;
     /**
@@ -53,7 +49,7 @@ public class SysDept extends Model<SysDept> {
      * 状态
      */
     @NotNull(message = "状态不能为空")
-    private Integer status;
+    private String status;
     /**
      * 备注
      */
@@ -77,12 +73,12 @@ public class SysDept extends Model<SysDept> {
 
     // ==== 非数据库中字段
     /**
-     * 机构类型名称
+     * 部门类型名称
      */
     @TableField(exist=false)
     private String typeName;
     /**
-     * 上级机构名称
+     * 上级部门名称
      */
     @TableField(exist=false)
     private String pName;
@@ -93,12 +89,12 @@ public class SysDept extends Model<SysDept> {
     }
 
     /**
-     * 机构是否可用
+     * 部门是否可用
      *
      * @return true/false
      */
     public boolean isEnabled() {
-        return this.status != null && DeptStatus.ENABLE.getCode() == this.status;
+        return DeptStatus.ENABLE.getCode().equals(this.status);
     }
 
     public String getId() {
@@ -115,14 +111,6 @@ public class SysDept extends Model<SysDept> {
 
     public void setpId(String pId) {
         this.pId = pId;
-    }
-
-    public String getpIds() {
-        return pIds;
-    }
-
-    public void setpIds(String pIds) {
-        this.pIds = pIds;
     }
 
     public String getName() {
@@ -221,11 +209,11 @@ public class SysDept extends Model<SysDept> {
         this.typeName = typeName;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

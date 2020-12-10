@@ -74,6 +74,9 @@ public class JacksonConfig {
         return new Converter<String, Date>() {
             @Override
             public Date convert(String date) {
+                if (StrUtil.isBlank(date)) {
+                    return null;
+                }
                 try {
                     return DateUtil.parse(date).toJdkDate();
                 } catch (DateException e) {

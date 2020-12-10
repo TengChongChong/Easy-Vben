@@ -1,6 +1,7 @@
 package com.easy.restful.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.easy.restful.sys.model.SysPermissions;
 import com.easy.restful.sys.model.SysUserRole;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,18 +9,35 @@ import java.util.List;
 
 /**
  * 用户角色
- *
  * @author tengchong
- * @date 2018/12/3
  */
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
-
     /**
-     * 根据用户ID查询角色标识
+     * 根据用户id获取权限集合
      *
      * @param userId 用户id
-     * @param status 角色状态
-     * @return 角色标识
+     * @param  status 状态
+     * @return List<String> 权限集合
      */
-    List<String> selectUserRoleCodesByUserId(@Param("userId") String userId, @Param("status") int status);
+    List<String> selectPermissionsByUserId(@Param("userId") String userId, @Param("status") String status);
+
+    /**
+     * 根据用户id获取菜单集合
+     *
+     * @param userId 用户id
+     * @param  status 状态
+     * @param type 类型
+     * @return List<String> 权限集合
+     */
+    List<SysPermissions> selectMenusByUserId(@Param("userId") String userId, @Param("status") String status, @Param("type") String type);
+
+    /**
+     * 根据角色id获取角色集合
+     *
+     * @param userId 用户id
+     * @param  status 状态
+     * @return List<String> 角色集合
+     */
+    List<String> selectRoleByUserId(@Param("userId") String userId, @Param("status") String status);
+
 }

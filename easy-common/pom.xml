@@ -18,7 +18,8 @@
     <modules>
         <module>easy-core</module>
         <module>easy-mybatis</module>
-        <module>easy-security</module>
+        <module>easy-redis</module>
+
     </modules>
 
 </project>

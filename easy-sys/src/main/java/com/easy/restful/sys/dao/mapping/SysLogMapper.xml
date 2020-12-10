@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sys.dao.SysLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysLog">
+        <result column="id" property="id" />
+        <result column="modular" property="modular" />
+        <result column="method" property="method" />
+        <result column="ip" property="ip" />
+        <result column="url" property="url" />
+        <result column="uri" property="uri" />
+        <result column="clazz" property="clazz" />
+        <result column="method_name" property="methodName" />
+        <result column="params" property="params" />
+        <result column="time_consuming" property="timeConsuming" />
+        <result column="operation_user" property="operationUser" />
+        <result column="operation_date" property="operationDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <select id="select" resultType="com.easy.restful.sys.model.SysLog">
+        select t.id, t.modular, t.method, t.ip, t.url, t.uri, t.clazz, t.method_name,
+               u.nickname as operation_user, t.operation_date
+        from sys_log t
+        left join sys_user u on u.id = t.operation_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="getById" resultType="com.easy.restful.sys.model.SysLog">
+        select t.id, t.modular, t.method, t.ip, t.url, t.uri, t.clazz, t.method_name,
+               u.nickname as operation_user, t.operation_date,t.params
+        from sys_log t
+        left join sys_user u on u.id = t.operation_user
+        where t.id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sys.dao.SysExceptionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysException">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="trigger_time" property="triggerTime"/>
+        <result column="type" property="type"/>
+        <result column="trace" property="trace"/>
+        <result column="message" property="message"/>
+        <result column="url" property="url"/>
+        <result column="code" property="code"/>
+    </resultMap>
+
+    <select id="select" resultType="com.easy.restful.sys.model.SysException">
+        select t.id, t.user_id, t.trigger_time, t.type, t.message, t.url, t.code,u.nickname
+        from sys_exception t
+        left join sys_user u on u.id = t.user_id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="getById" resultType="com.easy.restful.sys.model.SysException">
+        select t.id, t.user_id, t.trigger_time, t.type, t.message, t.trace, t.url, t.code,u.nickname
+        from sys_exception t
+        left join sys_user u on u.id = t.user_id
+        where t.id = #{id}
+    </select>
+
+</mapper>

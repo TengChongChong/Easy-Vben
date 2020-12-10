@@ -1,3 +1,18 @@
+project:
+    # 项目访问url,如不使用邮件功能可不配置
+    url: http://127.0.0.1:80
+    login:
+        remember:
+            # 是否开启记住我功能,安全性要求比较高的系统请改为false
+            enabled: true
+            # 记住我过期时间 默认30天 单位: 秒
+            invalidate-time: 2592000
+            # 开启记住我功能,敏感操作仍要客户登录 比如 支付/删除/审核
+            security: true
+    # 文件上传路径(不要写以~开头的路径会导致无法访问)
+    file-upload-path: /Users/tengchong/development/easy-restful
+    # 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 30分钟
+    session-validation-interval: 1800
 server:
     # 端口号
     port: 80
@@ -10,7 +25,6 @@ jwt:
     refresh-token:
         # RefreshToken 有效期（s）1 天
         expiration-time: 86400
-
 spring:
     redis:
         # Redis数据库索引（默认为0）
@@ -36,7 +50,6 @@ spring:
         # 默认的数据过期时间 30 分钟 单位: 秒
         expire: 1800
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://localhost:3306/easy-restful?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
         username: root
         password: tengchong

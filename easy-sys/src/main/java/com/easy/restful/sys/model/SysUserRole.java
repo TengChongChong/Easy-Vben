@@ -1,6 +1,5 @@
 package com.easy.restful.sys.model;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -17,6 +16,8 @@ import java.io.Serializable;
 @TableName("sys_user_role")
 public class SysUserRole extends Model<SysUserRole> {
 
+    private static final long serialVersionUID = 1L;
+
     @TableId(value = "id")
     private String id;
     /**
@@ -27,13 +28,6 @@ public class SysUserRole extends Model<SysUserRole> {
      * 角色id
      */
     private String roleId;
-
-    // ==== 非数据库中字段
-    /**
-     * 角色标识
-     */
-    @TableField(exist = false)
-    private String roleCode;
 
     public String getId() {
         return id;
@@ -59,17 +53,17 @@ public class SysUserRole extends Model<SysUserRole> {
         this.roleId = roleId;
     }
 
-    public String getRoleCode() {
-        return roleCode;
-    }
-
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.id;
     }
 
+    @Override
+    public String toString() {
+        return "SysUserRole{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", roleId=" + roleId +
+                '}';
+    }
 }

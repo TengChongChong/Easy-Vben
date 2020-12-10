@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sys.dao.SysMessageDetailsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysMessageDetails">
+        <id column="id" property="id" />
+        <result column="message_id" property="messageId" />
+        <result column="receiver_user" property="receiverUser" />
+        <result column="read_date" property="readDate" />
+        <result column="status" property="status" />
+        <result column="star" property="star" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, message_id, receiver_user, read_date, status
+    </sql>
+    <select id="selectReceiverUser" resultType="com.easy.restful.sys.model.SysUser">
+        select u.id, u.username
+        from sys_message_details d
+            left join sys_user u on u.id = d.receiver_user
+        where d.message_id = #{messageId}
+    </select>
+
+</mapper>

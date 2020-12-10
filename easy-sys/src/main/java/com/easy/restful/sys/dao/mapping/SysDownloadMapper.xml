@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sys.dao.SysDownloadMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysDownload">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="path" property="path" />
+        <result column="effective_type" property="effectiveType" />
+        <result column="expire" property="expire" />
+        <result column="type" property="type" />
+        <result column="length" property="length" />
+        <result column="auth" property="auth" />
+        <result column="code" property="code" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+    </resultMap>
+
+    <select id="select" resultType="com.easy.restful.sys.model.SysDownload">
+        select id, name, path, effective_type, expire, type, length, auth, code, status, version, create_user, create_date
+        from sys_download t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+</mapper>

@@ -22,11 +22,52 @@
         <result column="edit_user" jdbcType="BIGINT" property="editUser"/>
         <result column="edit_date" jdbcType="TIMESTAMP" property="editDate"/>
     </resultMap>
-    <select id="getUserByAccount" resultType="com.easy.restful.sys.model.SysUser">
-        select u.id, u.nickname, u.username, u.password, u.sex, u.email, u.phone, u.birthday,
-               u.dept_id, u.status, u.last_login, u.avatar, u.source
-        from sys_user u
-        where u.username = #{account} or u.phone = #{account} or u.email = #{account}
+    <update id="updateUserStatus">
+        update sys_user set status = #{status}
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </update>
+    <update id="updateUserLastLoginDate">
+        update sys_user
+        set last_login = #{lastLogin}
+        where id = #{id}
+    </update>
+    <update id="resetPassword">
+        update sys_user set password = #{password}, salt = #{salt}
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </update>
+    <select id="select" resultMap="BaseResultMap">
+        select * from sys_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
-
+    <select id="selectUser" resultType="com.easy.restful.sys.model.SysUser">
+        select distinct su.id, su.nickname, su.username, sd.name as depart_name from sys_user su
+        left join sys_dept sd on sd.id = su.dept_id
+        left join sys_user_role sur on sur.user_id = su.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="selectInfo" resultType="com.easy.restful.sys.model.SysUser">
+        select t.id,t.username,t.nickname,t.sex,t.email,t.phone,t.birthday,t.dept_id,t.status,t.avatar,t.source
+        from sys_user t where t.id = #{id}
+    </select>
+    <select id="selectRoles" resultType="java.lang.String">
+        select role_id from sys_user_role ur where ur.user_id = #{id}
+    </select>
+    <select id="search" resultType="com.easy.restful.sys.model.SysUser">
+        select u.id, u.username, u.nickname, u.email, u.phone, d.name as departName
+        from sys_user u
+            left join sys_dept d on d.id = u.dept_id
+        where u.status = #{status}
+          and (u.username like #{keyword} or nickname like #{keyword} or d.name like #{keyword})
+    </select>
+    <select id="selectPasswordAndSalt" resultType="com.easy.restful.sys.model.SysUser">
+        select u.password, u.salt from sys_user u where u.id = #{id}
+    </select>
 </mapper>

@@ -1,7 +1,15 @@
+project:
+    # 版本号
+    version: 0.1.0
 spring:
     profiles:
         # dev - 开发模式 / prod - 生产模式
         active: dev
+    resources:
+        # 静态资源映射
+        static-locations: ["file:${project.file-upload-path}/", "classpath:/static/"]
+    mvc:
+        static-path-pattern: /static/**
     datasource:
         druid:
             # druid连接池监控

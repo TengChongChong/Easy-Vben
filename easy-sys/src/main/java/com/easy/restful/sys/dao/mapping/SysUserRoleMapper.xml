@@ -7,10 +7,26 @@
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="role_id" jdbcType="BIGINT" property="roleId"/>
     </resultMap>
-    <select id="selectUserRoleCodesByUserId" resultType="java.lang.String">
-        select sr.code from sys_user_role sur
-            left join sys_role sr on sr.id = sur.role_id
-        where sur.user_id = #{userId} and sr.status = #{status}
+
+    <select id="selectPermissionsByUserId" resultType="java.lang.String">
+        select p.code from sys_permissions p
+          left join sys_role_permissions rp on rp.permissions_id = p.id
+          left join sys_user_role ur on ur.role_id = rp.role_id
+        where ur.user_id = #{userId} and p.status = #{status} and p.code != ''
+    </select>
+
+    <select id="selectRoleByUserId" resultType="java.lang.String">
+        select r.code from sys_role r
+          left join sys_user_role ur on ur.role_id = r.id
+        where ur.user_id = #{userId} and r.status = #{status} and r.code != ''
+    </select>
+    <select id="selectMenusByUserId" resultType="com.easy.restful.sys.model.SysPermissions">
+        select p.path,p.target,p.target,p.hide,p.component,p.name,p.id,p.icon,p.p_id,p.order_no from sys_permissions p
+          left join sys_role_permissions rp on rp.permissions_id = p.id
+          left join sys_user_role ur on ur.role_id = rp.role_id
+        where ur.user_id = #{userId} and p.status = #{status} and p.type = #{type}
+        group by p.path,p.component,p.name,p.id,p.icon,p.p_id,p.order_no
+        order by p.order_no
     </select>
 
 </mapper>

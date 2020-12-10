@@ -8,19 +8,19 @@ package com.easy.restful.sys.common.status;
  **/
 public enum PermissionsStatus {
     // 启用
-    ENABLE(1, "启用"),
+    ENABLE("1", "启用"),
     // 禁用
-    DISABLE(2, "禁用");
+    DISABLE("2", "禁用");
 
-    int code;
+    String code;
     String message;
 
-    PermissionsStatus(int code, String message) {
+    PermissionsStatus(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 

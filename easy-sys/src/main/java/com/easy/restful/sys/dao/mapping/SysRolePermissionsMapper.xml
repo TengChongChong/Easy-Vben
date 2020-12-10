@@ -6,13 +6,10 @@
         <result column="role_id" jdbcType="BIGINT" property="roleId"/>
         <result column="permissions_id" jdbcType="BIGINT" property="permissionsId"/>
     </resultMap>
-    <select id="selectAll" resultType="com.easy.restful.sys.model.SysRolePermissions">
-        select sr.code as role_code, sp.url, sp.http_methods
-        from sys_role_permissions srp
-                 left join sys_permissions sp on sp.id = srp.permissions_id
-                 left join sys_role sr on srp.role_id = sr.id
-        where sp.status = #{status}
-        order by sr.code, sp.url, sp.http_methods
+    <select id="selectPermissionsByRoleId" resultType="com.easy.restful.sys.model.SysPermissions">
+        select * from sys_permissions p
+        left join sys_role_permissions rp on rp.permissions_id = p.id
+        where p.status = #{status} and rp.role_id = #{roleId}
     </select>
 
 
