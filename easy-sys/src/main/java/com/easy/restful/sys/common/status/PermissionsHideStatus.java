@@ -1,7 +1,7 @@
 package com.easy.restful.sys.common.status;
 
 /**
- * 权限是否显示
+ * 权限是否隐藏
  *
  * @author tengchong
  * @date 2018/9/4

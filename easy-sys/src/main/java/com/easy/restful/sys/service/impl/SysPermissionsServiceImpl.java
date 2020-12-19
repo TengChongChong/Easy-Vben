@@ -88,7 +88,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
             sysPermissions.setpId(pId);
             sysPermissions.setStatus(PermissionsStatus.ENABLE.getCode());
             sysPermissions.setHide(PermissionsHideStatus.ENABLE.getCode());
-            sysPermissions.setType(PermissionsType.ENABLE.getCode());
+            sysPermissions.setType(PermissionsType.MENU.getCode());
             if (TreeUtil.BASE_ID.equals(pId)) {
                 sysPermissions.setpName(SysConfigUtil.getProjectName());
             } else {
@@ -183,6 +183,8 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
                     sysPermissions.setName(permission.getName());
                     sysPermissions.setStatus(permission.getStatus());
                     sysPermissions.setPath(permission.getPath());
+                    sysPermissions.setComponent(permission.getComponent());
+                    sysPermissions.setHide(permission.getHide());
                     sysPermissions.setpId(parentPermission.getId());
                     if (Validator.isNotEmpty(permission.getCode())) {
                         try {
@@ -306,7 +308,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
         if (StrUtil.isNotBlank(name)) {
             QueryWrapper<SysPermissions> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("name", name);
-            queryWrapper.eq("type", PermissionsType.ENABLE.getCode());
+            queryWrapper.eq("type", PermissionsType.MENU.getCode());
             int count = getBaseMapper().selectCount(queryWrapper);
             return count > 0;
         } else {

@@ -8,9 +8,9 @@ package com.easy.restful.sys.common.type;
  **/
 public enum PermissionsType {
     // 菜单
-    ENABLE("1", "菜单"),
+    MENU("1", "菜单"),
     // 权限
-    DISABLE("2", "权限");
+    PERMISSIONS("2", "权限");
 
     String code;
     String message;

@@ -88,7 +88,7 @@ public class SysDeptController extends BaseController {
      */
     @PostMapping
     @RequiresPermissions("sys:dept:save")
-    public Response save(@Valid SysDept object) {
+    public Response save(@RequestBody @Valid SysDept object) {
         return Response.success(service.saveData(object));
     }
 

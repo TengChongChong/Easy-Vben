@@ -108,7 +108,7 @@ public class SysMessageController extends BaseController {
      */
     @PostMapping
     @RequiresPermissions("sys:message:save")
-    public Response save(@Valid SysMessage object) {
+    public Response save(@RequestBody @Valid SysMessage object) {
         return Response.success(service.saveData(object));
     }
 

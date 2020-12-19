@@ -6,8 +6,11 @@ import com.easy.restful.sys.model.SysUserSetting;
 import com.easy.restful.sys.service.SysUserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * 用户偏好设置
@@ -31,8 +34,7 @@ public class SysUserSettingController extends BaseController {
 
      */
     @PostMapping
-
-    public Response save(SysUserSetting object){
+    public Response save(@RequestBody @Valid SysUserSetting object){
         return Response.success(service.saveData(object));
     }
 }

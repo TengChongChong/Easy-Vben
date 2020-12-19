@@ -68,7 +68,7 @@ public class SysConfigController extends BaseController {
      */
     @PostMapping
     @RequiresPermissions("sys:config:save")
-    public Response save(@Valid SysConfig object) {
+    public Response save(@RequestBody @Valid SysConfig object) {
         return Response.success(service.saveData(object));
     }
 

@@ -30,9 +30,9 @@ public interface SysUserPersonalCenterService {
      * 保存当前用户信息
      *
      * @param sysUser 用户信息
-     * @return true/false
+     * @return 保存后信息
      */
-    boolean saveUserInfo(SysUser sysUser);
+    SysUser saveUserInfo(SysUser sysUser);
 
     /**
      * 申请绑定密保邮箱

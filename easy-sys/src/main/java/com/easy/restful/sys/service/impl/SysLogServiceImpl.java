@@ -61,7 +61,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
             }
         }
         // 设置默认排序
-        page.setDefaultDesc("operationDate");
+        page.setDefaultDesc("operation_date");
         page.setRecords(getBaseMapper().select(page, queryWrapper));
         return page;
     }

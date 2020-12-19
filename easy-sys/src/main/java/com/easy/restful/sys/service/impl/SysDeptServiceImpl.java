@@ -97,6 +97,15 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
+    public String getName(String id) {
+        QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        queryWrapper.select("name");
+        SysDept dept = getBaseMapper().selectOne(queryWrapper);
+        return dept != null ? dept.getName() : "";
+    }
+
+    @Override
     public SysDept add(String pId, String deptType) {
         if (Validator.isNotEmpty(pId) || Validator.isNotEmpty(deptType)) {
             SysDept object = new SysDept();

@@ -114,7 +114,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     }
 
     @Override
-    public boolean saveUserInfo(SysUser sysUser) {
+    public SysUser saveUserInfo(SysUser sysUser) {
         if (sysUser != null) {
             SysUser currentUser = ShiroUtil.getCurrentUser();
             sysUser.setId(currentUser.getId());
@@ -122,11 +122,10 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
             // 保存成功后更新redis中的用户信息
             currentUser.setNickname(sysUser.getNickname());
             currentUser.setSex(sysUser.getSex());
-            currentUser.setEmail(sysUser.getEmail());
-            currentUser.setPhone(sysUser.getPhone());
             currentUser.setBirthday(sysUser.getBirthday());
+            currentUser.setAvatar(sysUser.getAvatar());
             ShiroUtil.setCurrentUser(currentUser);
-            return true;
+            return currentUser;
         } else {
             throw new EasyException(GlobalException.FAILED_TO_GET_DATA);
         }

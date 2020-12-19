@@ -20,7 +20,7 @@ public class SysDeptTypeRoleController {
     private SysDeptTypeRoleService service;
 
     /**
-     * 根据部门类型
+     * 根据部门id获取部门角色
      *
      * @param deptId 部门id
      */

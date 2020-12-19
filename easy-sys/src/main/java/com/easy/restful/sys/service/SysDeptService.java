@@ -50,6 +50,14 @@ public interface SysDeptService {
     SysDept get(String id);
 
     /**
+     * 查询部门名称
+     *
+     * @param id id
+     * @return name
+     */
+    String getName(String id);
+
+    /**
      * 新增
      *
      * @param pId      上级id

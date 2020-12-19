@@ -3,17 +3,17 @@
 <mapper namespace="com.easy.restful.sys.dao.SysDeptTypeMapper">
 
     <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysDeptType">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="p_id" jdbcType="BIGINT" property="pId"/>
-        <result column="code" jdbcType="VARCHAR" property="code"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="tips" jdbcType="VARCHAR" property="tips"/>
-        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="create_user" jdbcType="BIGINT" property="createUser"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-        <result column="edit_user" jdbcType="BIGINT" property="editUser"/>
-        <result column="edit_date" jdbcType="TIMESTAMP" property="editDate"/>
+        <id column="id" property="id"/>
+        <result column="p_id" property="pId"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="tips" property="tips"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="status" property="status"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_date" property="createDate"/>
+        <result column="edit_user" property="editUser"/>
+        <result column="edit_date" property="editDate"/>
     </resultMap>
 
     <select id="selectByPId" resultType="com.easy.restful.common.core.common.tree.Tree">

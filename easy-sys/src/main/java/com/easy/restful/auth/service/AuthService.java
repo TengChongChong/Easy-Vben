@@ -1,5 +1,6 @@
 package com.easy.restful.auth.service;
 
+import com.easy.restful.sys.model.LoginVO;
 import org.apache.shiro.subject.Subject;
 
 /**
@@ -17,5 +18,5 @@ public interface AuthService {
      * @param password   密码
      * @param rememberMe 记住我
      */
-    Subject login(String username, String password, String rememberMe);
+    Subject login(LoginVO loginVO);
 }

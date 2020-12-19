@@ -256,7 +256,9 @@ public class ShiroServiceImpl implements ShiroService {
         // 设置权限
         sysUser.setPermissionList(permissions);
         // 设置角色
-        sysUser.setRoleList(sysUserRoleService.selectRoleByUserId(sysUser.getId()));
+        sysUser.setRoles(sysUserRoleService.selectRoleByUserId(sysUser.getId()));
+        // 设置角色名称
+        sysUser.setRoleNames(sysUserRoleService.selectRoleNameByUserId(sysUser.getId()));
         // 设置菜单
         sysUser.setMenus(sysUserRoleService.selectMenusByUserId(sysUser.getId()));
         return sysUser;

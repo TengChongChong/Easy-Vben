@@ -3,10 +3,10 @@ package com.easy.restful.sys.service.impl;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.restful.common.core.common.tree.Tree;
 import com.easy.restful.common.core.constant.CommonConst;
 import com.easy.restful.sys.dao.SysDeptTypeRoleMapper;
 import com.easy.restful.sys.model.SysDeptTypeRole;
+import com.easy.restful.sys.model.SysRole;
 import com.easy.restful.sys.service.SysDeptTypeRoleService;
 import com.easy.restful.util.ToolUtil;
 import org.springframework.stereotype.Service;
@@ -55,7 +55,7 @@ public class SysDeptTypeRoleServiceImpl extends ServiceImpl<SysDeptTypeRoleMappe
     }
 
     @Override
-    public List<Tree> selectRoleByDept(String deptId) {
+    public List<SysRole> selectRoleByDept(String deptId) {
         ToolUtil.checkParams(deptId);
         return getBaseMapper().selectRoleByDept(deptId);
     }

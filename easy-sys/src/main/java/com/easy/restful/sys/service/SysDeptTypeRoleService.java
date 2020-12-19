@@ -1,6 +1,6 @@
 package com.easy.restful.sys.service;
 
-import com.easy.restful.common.core.common.tree.Tree;
+import com.easy.restful.sys.model.SysRole;
 
 import java.util.List;
 
@@ -42,5 +42,5 @@ public interface SysDeptTypeRoleService {
      * @param deptId 部门类型id
      * @return List<JsTree>
      */
-    List<Tree> selectRoleByDept(String deptId);
+    List<SysRole> selectRoleByDept(String deptId);
 }

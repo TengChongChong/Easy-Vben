@@ -27,7 +27,7 @@ public class SysUserPersonalCenterController extends BaseController {
      * 当前用户
      */
     @GetMapping("current/user")
-    public Response overview() {
+    public Response currentUser() {
         return Response.success(service.getCurrentUser());
     }
 
@@ -37,9 +37,9 @@ public class SysUserPersonalCenterController extends BaseController {
      * @param oldPassword 原密码
      * @param password    新密码
      */
-    @PostMapping("change/password")
-    public Response changePassword(@RequestParam(value = "oldPassword") String oldPassword,
-                                   @RequestParam(value = "password") String password) {
+    @PostMapping("change/password/{oldPassword}/{password}")
+    public Response changePassword(@PathVariable(value = "oldPassword") String oldPassword,
+                                   @PathVariable(value = "password") String password) {
         return Response.success(service.changePassword(oldPassword, password));
     }
 
@@ -48,8 +48,8 @@ public class SysUserPersonalCenterController extends BaseController {
      *
      * @param path 文件路径
      */
-    @PostMapping("user/avatar")
-    public Response saveUserAvatar(@RequestParam("path") String path) {
+    @PostMapping("user/avatar/{path}")
+    public Response saveUserAvatar(@PathVariable("path") String path) {
         return Response.success(service.saveUserAvatar(path));
     }
 
@@ -59,7 +59,7 @@ public class SysUserPersonalCenterController extends BaseController {
      * @param sysUser 用户信息
      */
     @PostMapping("user/info")
-    public Response saveUserInfo(SysUser sysUser) {
+    public Response saveUserInfo(@RequestBody SysUser sysUser) {
         return Response.success(service.saveUserInfo(sysUser));
     }
 

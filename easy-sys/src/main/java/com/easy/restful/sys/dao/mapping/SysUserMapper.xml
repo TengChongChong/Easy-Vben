@@ -2,25 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.easy.restful.sys.dao.SysUserMapper">
     <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysUser">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="password" jdbcType="VARCHAR" property="password"/>
-        <result column="salt" jdbcType="VARCHAR" property="salt"/>
-        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
-        <result column="sex" jdbcType="INTEGER" property="sex"/>
-        <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="birthday" jdbcType="DATE" property="birthday"/>
-        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="last_login" jdbcType="TIMESTAMP" property="lastLogin"/>
-        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
-        <result column="version" jdbcType="INTEGER" property="version"/>
-        <result column="source" jdbcType="INTEGER" property="source"/>
-        <result column="create_user" jdbcType="BIGINT" property="createUser"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-        <result column="edit_user" jdbcType="BIGINT" property="editUser"/>
-        <result column="edit_date" jdbcType="TIMESTAMP" property="editDate"/>
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="nickname" property="nickname"/>
+        <result column="sex" property="sex"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="birthday" property="birthday"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="status" property="status"/>
+        <result column="last_login" property="lastLogin"/>
+        <result column="avatar" property="avatar"/>
+        <result column="version" property="version"/>
+        <result column="source" property="source"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_date" property="createDate"/>
+        <result column="edit_user" property="editUser"/>
+        <result column="edit_date" property="editDate"/>
     </resultMap>
     <update id="updateUserStatus">
         update sys_user set status = #{status}
@@ -54,8 +54,10 @@
         </where>
     </select>
     <select id="selectInfo" resultType="com.easy.restful.sys.model.SysUser">
-        select t.id,t.username,t.nickname,t.sex,t.email,t.phone,t.birthday,t.dept_id,t.status,t.avatar,t.source
-        from sys_user t where t.id = #{id}
+        select t.id,t.username,t.nickname,t.sex,t.email,t.phone,t.birthday,t.dept_id,t.status,t.avatar,t.source, sd.name as deptName
+        from sys_user t
+        left join sys_dept sd on sd.id = t.dept_id
+        where t.id = #{id}
     </select>
     <select id="selectRoles" resultType="java.lang.String">
         select role_id from sys_user_role ur where ur.user_id = #{id}

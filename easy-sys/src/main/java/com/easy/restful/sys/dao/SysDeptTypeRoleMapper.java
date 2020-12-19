@@ -1,8 +1,8 @@
 package com.easy.restful.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.easy.restful.common.core.common.tree.Tree;
 import com.easy.restful.sys.model.SysDeptTypeRole;
+import com.easy.restful.sys.model.SysRole;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,5 +21,5 @@ public interface SysDeptTypeRoleMapper extends BaseMapper<SysDeptTypeRole> {
      * @param deptId 部门类型id
      * @return
      */
-    List<Tree> selectRoleByDept(@Param("deptId") String deptId);
+    List<SysRole> selectRoleByDept(@Param("deptId") String deptId);
 }

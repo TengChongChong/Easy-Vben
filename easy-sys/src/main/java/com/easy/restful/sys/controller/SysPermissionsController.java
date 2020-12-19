@@ -2,6 +2,7 @@ package com.easy.restful.sys.controller;
 
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.util.Response;
+import com.easy.restful.sys.model.DragVO;
 import com.easy.restful.sys.model.SysPermissions;
 import com.easy.restful.sys.service.SysPermissionsService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -87,7 +88,7 @@ public class SysPermissionsController extends BaseController {
      */
     @PostMapping
     @RequiresPermissions("sys:permissions:save")
-    public Object save(@Valid SysPermissions object) {
+    public Object save(@RequestBody @Valid SysPermissions object) {
         return Response.success(service.saveData(object));
     }
 
@@ -142,20 +143,12 @@ public class SysPermissionsController extends BaseController {
     /**
      * 拖动改变目录或顺序
      *
-     * @param id          拖动的菜单/权限id
-     * @param parent      拖动后的父id
-     * @param oldParent   拖动前的id
-     * @param position    拖动前的下标
-     * @param oldPosition 拖动后的下标
+     * @param dragVO 拖动信息
      */
     @PostMapping("/move")
     @RequiresPermissions("sys:permissions:move")
-    public Object move(@RequestParam(name = "id", required = false) String id,
-                       @RequestParam(name = "parent", required = false) String parent,
-                       @RequestParam(name = "oldParent", required = false) String oldParent,
-                       @RequestParam(name = "position", required = false) Integer position,
-                       @RequestParam(name = "oldPosition", required = false) Integer oldPosition) {
-        return Response.success(service.move(id, parent, oldParent, position, oldPosition));
+    public Response move(@RequestBody DragVO dragVO) {
+        return Response.success(service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition()));
     }
 
 }

@@ -2,21 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.easy.restful.sys.dao.SysDeptMapper">
     <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysDept">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="p_id" jdbcType="BIGINT" property="pId"/>
-        <result column="p_ids" jdbcType="VARCHAR" property="pIds"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="type_code" jdbcType="VARCHAR" property="typeCode"/>
-        <result column="code" jdbcType="VARCHAR" property="code"/>
-        <result column="simple_name" jdbcType="VARCHAR" property="simpleName"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="tips" jdbcType="VARCHAR" property="tips"/>
-        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
-        <result column="version" jdbcType="INTEGER" property="version"/>
-        <result column="create_user" jdbcType="BIGINT" property="createUser"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-        <result column="edit_user" jdbcType="BIGINT" property="editUser"/>
-        <result column="edit_date" jdbcType="TIMESTAMP" property="editDate"/>
+        <id column="id" property="id"/>
+        <result column="p_id" property="pId"/>
+        <result column="name" property="name"/>
+        <result column="type_code" property="typeCode"/>
+        <result column="code" property="code"/>
+        <result column="simple_name" property="simpleName"/>
+        <result column="status" property="status"/>
+        <result column="tips" property="tips"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="version" property="version"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_date" property="createDate"/>
+        <result column="edit_user" property="editUser"/>
+        <result column="edit_date" property="editDate"/>
     </resultMap>
     <select id="select" resultMap="BaseResultMap">
         select t.id,t.name,t.simple_name,t.status,t.code,dt.name as type_code,p.name as p_name,t.order_no from sys_dept t

@@ -70,7 +70,7 @@ public class ShiroRealm extends AuthorizingRealm {
         // 赋予权限
          simpleAuthorizationInfo.addStringPermissions(sysUser.getPermissionList());
         // 赋予角色
-         simpleAuthorizationInfo.addRoles(sysUser.getRoleList());
+         simpleAuthorizationInfo.addRoles(sysUser.getRoles());
          ShiroUtil.setCurrentUser(sysUser);
         return simpleAuthorizationInfo;
     }

@@ -5,15 +5,19 @@ import cn.hutool.captcha.LineCaptcha;
 import com.easy.restful.auth.constant.SessionConst;
 import com.easy.restful.auth.service.AuthService;
 import com.easy.restful.common.core.util.Response;
+import com.easy.restful.core.annotation.SysLog;
+import com.easy.restful.sys.model.LoginVO;
 import com.easy.restful.util.ShiroUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 
 /**
@@ -31,14 +35,13 @@ public class AuthController {
     /**
      * 登录
      *
-     * @param username    账号（用户名、手机号、邮箱）
-     * @param password   密码
-     * @param rememberMe 记住我
+     * @param loginVO loginVO
      * @return Response
      */
     @PostMapping("/auth/login")
-    public Response login(String username, String password, String rememberMe) {
-        Subject subject = service.login(username, password, rememberMe);
+    @SysLog(modular = "sys", method = "用户登录")
+    public Response login(@RequestBody @Valid LoginVO loginVO) {
+        Subject subject = service.login(loginVO);
         return Response.success(subject.getSession().getId());
     }
 
@@ -47,6 +50,7 @@ public class AuthController {
      *
      * @return Response
      */
+    @SysLog(modular = "sys", method = "退出登录")
     @PostMapping("/auth/logout")
     public Response logout() {
         SecurityUtils.getSubject().logout();

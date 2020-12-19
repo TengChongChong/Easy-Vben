@@ -64,6 +64,7 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
                 queryWrapper.eq("trigger_time", object.getTriggerTime());
             }
         }
+        page.setDefaultDesc("trigger_time");
         page.setRecords(getBaseMapper().select(page, queryWrapper));
         return page;
     }

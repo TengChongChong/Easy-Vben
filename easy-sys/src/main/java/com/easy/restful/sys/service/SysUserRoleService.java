@@ -18,7 +18,7 @@ public interface SysUserRoleService {
      * @param roles  角色ids 1,2,3,4,5
      * @return boolean
      */
-    boolean saveUserRole(String userId, String roles);
+    boolean saveUserRole(String userId, List<String> roles);
 
     /**
      * 删除用户拥有的角色
@@ -60,4 +60,12 @@ public interface SysUserRoleService {
      * @return 角色集合
      */
     List<String> selectRoleByUserId(String userId);
+
+    /**
+     * 根据角色id获取角色名称集合
+     *
+     * @param userId 用户id
+     * @return 角色集合
+     */
+    List<String> selectRoleNameByUserId(String userId);
 }

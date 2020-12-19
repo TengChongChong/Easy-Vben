@@ -1,7 +1,6 @@
 package com.easy.restful.sys.service.impl;
 
 import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,6 +14,7 @@ import com.easy.restful.common.redis.constant.RedisPrefix;
 import com.easy.restful.common.redis.util.RedisUtil;
 import com.easy.restful.config.shiro.service.ShiroService;
 import com.easy.restful.exception.BusinessException;
+import com.easy.restful.sys.common.constant.SexConst;
 import com.easy.restful.sys.common.constant.SysConst;
 import com.easy.restful.sys.common.status.UserStatus;
 import com.easy.restful.sys.dao.SysUserMapper;
@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -54,29 +55,32 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
+        if (sysUser == null || StrUtil.isBlank(sysUser.getDeptId())) {
+            // 不允许查询所有部门用户数据
+            return null;
+        }
+
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        if (sysUser != null) {
-            if (Validator.isNotEmpty(sysUser.getUsername())) {
-                queryWrapper.like("username", sysUser.getUsername());
-            }
-            if (Validator.isNotEmpty(sysUser.getNickname())) {
-                queryWrapper.like("nickname", sysUser.getNickname());
-            }
-            if (Validator.isNotEmpty(sysUser.getSex())) {
-                queryWrapper.eq("sex", sysUser.getSex());
-            }
-            if (Validator.isNotEmpty(sysUser.getStatus())) {
-                queryWrapper.eq("status", sysUser.getStatus());
-            }
-            if (Validator.isNotEmpty(sysUser.getPhone())) {
-                queryWrapper.like("phone", sysUser.getPhone());
-            }
-            if (Validator.isNotEmpty(sysUser.getSource())) {
-                queryWrapper.eq("source", sysUser.getSource());
-            }
-            if (Validator.isNotEmpty(sysUser.getDeptId())) {
-                queryWrapper.eq("dept_id", sysUser.getDeptId());
-            }
+        if (Validator.isNotEmpty(sysUser.getUsername())) {
+            queryWrapper.like("username", sysUser.getUsername());
+        }
+        if (Validator.isNotEmpty(sysUser.getNickname())) {
+            queryWrapper.like("nickname", sysUser.getNickname());
+        }
+        if (Validator.isNotEmpty(sysUser.getSex())) {
+            queryWrapper.eq("sex", sysUser.getSex());
+        }
+        if (Validator.isNotEmpty(sysUser.getStatus())) {
+            queryWrapper.eq("status", sysUser.getStatus());
+        }
+        if (Validator.isNotEmpty(sysUser.getPhone())) {
+            queryWrapper.like("phone", sysUser.getPhone());
+        }
+        if (Validator.isNotEmpty(sysUser.getSource())) {
+            queryWrapper.eq("source", sysUser.getSource());
+        }
+        if (Validator.isNotEmpty(sysUser.getDeptId())) {
+            queryWrapper.eq("dept_id", sysUser.getDeptId());
         }
         return page(page, queryWrapper);
     }
@@ -95,7 +99,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         ToolUtil.checkParams(id);
         SysUser sysUser = getBaseMapper().selectInfo(id);
         if (sysUser != null) {
-            sysUser.setRoles(ArrayUtil.join(getBaseMapper().selectRoles(id).toArray(), CommonConst.SPLIT));
+            sysUser.setRoles(getBaseMapper().selectRoles(id));
+            if (Validator.isEmpty(sysUser.getRoles())) {
+                sysUser.setRoles(Collections.emptyList());
+            }
         }
         return sysUser;
     }
@@ -105,8 +112,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         ToolUtil.checkParams(deptId);
         SysUser sysUser = new SysUser();
         sysUser.setDeptId(deptId);
-        sysUser.setPassword(SysConst.projectProperties.getDefaultPassword());
         sysUser.setStatus(UserStatus.ENABLE.getCode());
+        sysUser.setSex(SexConst.BOY);
+        sysUser.setDeptName(sysDeptService.getName(deptId));
+        sysUser.setRoles(Collections.emptyList());
         return sysUser;
     }
 
@@ -312,7 +321,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 queryWrapper.eq("su.dept_id", sysUser.getDeptId());
             }
             if (Validator.isNotEmpty(sysUser.getRoles())) {
-                queryWrapper.eq("sur.role_id", sysUser.getRoles());
+                queryWrapper.in("sur.role_id", sysUser.getRoles());
             }
         }
 

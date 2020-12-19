@@ -1,6 +1,5 @@
 package com.easy.restful.config.shiro.cache;
 
-import com.easy.restful.common.redis.config.RedisConfig;
 import com.easy.restful.common.redis.model.RedisProperties;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
@@ -21,13 +20,10 @@ public class RedisCacheManager implements CacheManager {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<String, Cache>();
+    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap();
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-
-    @Autowired
-    private RedisConfig redisConfig;
 
     @Autowired
     private RedisProperties redisProperties;
@@ -38,7 +34,7 @@ public class RedisCacheManager implements CacheManager {
         Cache c = caches.get(name);
 
         if(c == null){
-            c =  new RedisShiroCache<K, V>(name, redisTemplate, redisConfig, redisProperties);
+            c =  new RedisShiroCache<K, V>(name, redisTemplate, redisProperties);
             caches.put(name, c);
         }
 

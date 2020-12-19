@@ -2,6 +2,7 @@ package com.easy.restful.sys.controller;
 
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.util.Response;
+import com.easy.restful.sys.model.DragVO;
 import com.easy.restful.sys.model.SysDeptType;
 import com.easy.restful.sys.service.SysDeptTypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -73,7 +74,7 @@ public class SysDeptTypeController extends BaseController {
      */
     @PostMapping
     @RequiresPermissions("sys:dept:type:save")
-    public Response save(@Valid SysDeptType object) {
+    public Response save(@RequestBody @Valid SysDeptType object) {
         return Response.success(service.saveData(object));
     }
 
@@ -126,26 +127,18 @@ public class SysDeptTypeController extends BaseController {
      * @return true/false
      */
     @GetMapping("check/has/child")
-    public Response checkHasChild(@RequestParam("code") String code){
+    public Response checkHasChild(@RequestParam("code") String code) {
         return Response.success(service.checkHasChild(code));
     }
 
     /**
      * 拖动改变目录或顺序
      *
-     * @param id          拖动的菜单/权限id
-     * @param parent      拖动后的父id
-     * @param oldParent   拖动前的id
-     * @param position    拖动前的下标
-     * @param oldPosition 拖动后的下标
+     * @param dragVO 拖动信息
      */
     @PostMapping("/move")
     @RequiresPermissions("sys:dept:type:move")
-    public Response move(@RequestParam(name = "id", required = false) String id,
-                       @RequestParam(name = "parent", required = false) String parent,
-                       @RequestParam(name = "oldParent", required = false) String oldParent,
-                       @RequestParam(name = "position", required = false) Integer position,
-                       @RequestParam(name = "oldPosition", required = false) Integer oldPosition) {
-        return Response.success(service.move(id, parent, oldParent, position, oldPosition));
+    public Response move(@RequestBody DragVO dragVO) {
+        return Response.success(service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition()));
     }
 }

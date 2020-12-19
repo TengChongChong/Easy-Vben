@@ -10,9 +10,9 @@ public class SexConst {
     /**
      * 男
      */
-    public static final int BOY = 1;
+    public static final String BOY = "1";
     /**
      * 女
      */
-    public static final int GIRL = 2;
+    public static final String GIRL = "2";
 }

@@ -63,7 +63,7 @@ public class SysDictTypeController extends BaseController {
      */
     @PostMapping
     @RequiresPermissions("sys:dict:type:save")
-    public Response save(@Valid SysDictType object) {
+    public Response save(@RequestBody @Valid SysDictType object) {
         return Response.success(service.saveData(object));
     }
 

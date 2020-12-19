@@ -29,14 +29,14 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public boolean saveUserRole(String userId, String roles) {
+    public boolean saveUserRole(String userId, List<String> roles) {
         ToolUtil.checkParams(userId);
         // 删除原权限
         remove(new QueryWrapper<SysUserRole>().eq("user_id", userId));
         if (Validator.isNotEmpty(roles)) {
             List<SysUserRole> userRoles = new ArrayList<>();
             SysUserRole userRole;
-            for (String roleId : roles.split(CommonConst.SPLIT)) {
+            for (String roleId : roles) {
                 userRole = new SysUserRole();
                 userRole.setRoleId(roleId);
                 userRole.setUserId(userId);
@@ -64,12 +64,16 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     @Override
     public List<SysPermissions> selectMenusByUserId(String userId) {
-        return getBaseMapper().selectMenusByUserId(userId, PermissionsStatus.ENABLE.getCode(), PermissionsType.ENABLE.getCode());
+        return getBaseMapper().selectMenusByUserId(userId, PermissionsStatus.ENABLE.getCode(), PermissionsType.MENU.getCode());
     }
 
 
     @Override
     public List<String> selectRoleByUserId(String userId) {
         return getBaseMapper().selectRoleByUserId(userId, RoleStatus.ENABLE.getCode());
+    }
+    @Override
+    public List<String> selectRoleNameByUserId(String userId) {
+        return getBaseMapper().selectRoleNameByUserId(userId, RoleStatus.ENABLE.getCode());
     }
 }

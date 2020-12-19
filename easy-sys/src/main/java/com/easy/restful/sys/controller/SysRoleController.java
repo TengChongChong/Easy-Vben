@@ -2,6 +2,7 @@ package com.easy.restful.sys.controller;
 
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.util.Response;
+import com.easy.restful.sys.model.DragVO;
 import com.easy.restful.sys.model.SysRole;
 import com.easy.restful.sys.service.SysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -94,7 +95,7 @@ public class SysRoleController extends BaseController {
      */
     @PostMapping
     @RequiresPermissions("sys:role:save")
-    public Response save(@Valid SysRole object) {
+    public Response save(@RequestBody @Valid SysRole object) {
         logger.debug("/auth/sys/role/save/data");
         return Response.success(service.saveData(object));
     }
@@ -120,24 +121,15 @@ public class SysRoleController extends BaseController {
         return Response.success(service.selectByTitle(title));
     }
 
-
     /**
-     * 拖动菜单/权限改变目录或顺序
+     * 拖动改变目录或顺序
      *
-     * @param id          拖动的菜单/权限id
-     * @param parent      拖动后的父id
-     * @param oldParent   拖动前的id
-     * @param position    拖动前的下标
-     * @param oldPosition 拖动后的下标
+     * @param dragVO 拖动信息
      */
-    @PostMapping("move")
+    @PostMapping("/move")
     @RequiresPermissions("sys:role:move")
-    public Response move(@RequestParam(name = "id", required = false) String id,
-                         @RequestParam(name = "parent", required = false) String parent,
-                         @RequestParam(name = "oldParent", required = false) String oldParent,
-                         @RequestParam(name = "position", required = false) Integer position,
-                         @RequestParam(name = "oldPosition", required = false) Integer oldPosition) {
-        return Response.success(service.move(id, parent, oldParent, position, oldPosition));
+    public Response move(@RequestBody DragVO dragVO) {
+        return Response.success(service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition()));
     }
 
     /**

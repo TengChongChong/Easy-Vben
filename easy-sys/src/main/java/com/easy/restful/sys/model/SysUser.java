@@ -53,7 +53,7 @@ public class SysUser extends Model<SysUser> implements Serializable {
     /**
      * 性别
      */
-    private Integer sex;
+    private String sex;
     /**
      * 邮箱
      */
@@ -118,15 +118,15 @@ public class SysUser extends Model<SysUser> implements Serializable {
     @TableField(exist = false)
     private SysDept dept;
     /**
-     * 用户拥有的角色
-     */
-    @TableField(exist = false)
-    private String roles;
-    /**
      * 角色集合
      */
     @TableField(exist = false)
-    private List<String> roleList;
+    private List<String> roles;
+    /**
+     * 角色名称集合
+     */
+    @TableField(exist = false)
+    private List<String> roleNames;
     /**
      * 权限集合
      */
@@ -216,11 +216,11 @@ public class SysUser extends Model<SysUser> implements Serializable {
         this.nickname = nickname;
     }
 
-    public Integer getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
@@ -328,20 +328,12 @@ public class SysUser extends Model<SysUser> implements Serializable {
         this.editDate = editDate;
     }
 
-    public String getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(String roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
-    }
-
-    public List<String> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<String> roleList) {
-        this.roleList = roleList;
     }
 
     public List<String> getPermissionList() {
@@ -400,10 +392,6 @@ public class SysUser extends Model<SysUser> implements Serializable {
         this.dept = dept;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public boolean isMailIsVerifies() {
         return mailIsVerifies;
     }
@@ -427,8 +415,11 @@ public class SysUser extends Model<SysUser> implements Serializable {
         this.deptName = deptName;
     }
 
-    @Override
-    public String toString() {
-        return id;
+    public List<String> getRoleNames() {
+        return roleNames;
+    }
+
+    public void setRoleNames(List<String> roleNames) {
+        this.roleNames = roleNames;
     }
 }

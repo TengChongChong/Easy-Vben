@@ -1,10 +1,11 @@
 package com.easy.restful.config.shiro.cache;
 
-import com.easy.restful.common.redis.config.RedisConfig;
 import com.easy.restful.common.redis.constant.RedisPrefix;
 import com.easy.restful.common.redis.model.RedisProperties;
+import com.easy.restful.sys.model.SysUser;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,9 +33,9 @@ public class RedisShiroCache<K, V> implements Cache<K, V> {
     private RedisTemplate<K, V> redisTemplate;
 
     @SuppressWarnings("rawtypes")
-    public RedisShiroCache(String name, RedisTemplate client, RedisConfig redisConfig, RedisProperties redisProperties) {
+    public RedisShiroCache(String name, RedisTemplate redisTemplate, RedisProperties redisProperties) {
         this.cacheKey = RedisPrefix.SHIRO_AUTHORIZATION;
-        this.redisTemplate = client;
+        this.redisTemplate = redisTemplate;
         this.redisProperties = redisProperties;
     }
 
@@ -110,6 +111,9 @@ public class RedisShiroCache<K, V> implements Cache<K, V> {
     }
 
     private K getCacheKey(Object k) {
+        if (k instanceof SimplePrincipalCollection) {
+            return (K) (this.cacheKey + ((SysUser) ((SimplePrincipalCollection) k).getPrimaryPrincipal()).getId());
+        }
         return (K) (this.cacheKey + k);
     }
 }

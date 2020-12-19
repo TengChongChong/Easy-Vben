@@ -3,15 +3,15 @@
 <mapper namespace="com.easy.restful.sys.dao.SysDictTypeMapper">
 
     <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysDictType">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="type" jdbcType="VARCHAR" property="type"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <resultMap id="select" type="com.easy.restful.common.core.common.select.Select">
-        <result column="value" jdbcType="VARCHAR" property="value"/>
-        <result column="text" jdbcType="VARCHAR" property="text"/>
+        <result column="value" property="value"/>
+        <result column="text" property="text"/>
     </resultMap>
 
     <select id="selectType" resultType="com.easy.restful.common.core.common.select.Select">

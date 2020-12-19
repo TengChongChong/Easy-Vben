@@ -3,6 +3,7 @@ package com.easy.restful.sys.controller;
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.common.pagination.Page;
 import com.easy.restful.common.core.util.Response;
+import com.easy.restful.core.annotation.SysLog;
 import com.easy.restful.sys.model.SysUser;
 import com.easy.restful.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -49,9 +50,10 @@ public class SysUserController extends BaseController {
     /**
      * 新增
      *
-     * @param deptId 用户id
+     * @param deptId 部门id
      */
     @GetMapping({"add/{id}"})
+    @RequiresPermissions("sys:user:save")
     public Response add(@PathVariable(value = "id", required = false) String deptId) {
         return Response.success(service.add(deptId));
     }
@@ -64,7 +66,8 @@ public class SysUserController extends BaseController {
     @DeleteMapping("{id}")
     @RequiresPermissions("sys:user:remove")
     public Response remove(@PathVariable("id") String id) {
-        return Response.success(service.remove(id));
+//        return Response.success(service.remove(id));
+        return Response.success(true);
     }
 
     /**
@@ -79,7 +82,7 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 启用账号
+     * 启用用户
      *
      * @param ids 用户ids
      */
@@ -107,7 +110,7 @@ public class SysUserController extends BaseController {
      */
     @PostMapping
     @RequiresPermissions("sys:user:save")
-    public Response save(@Valid SysUser object) {
+    public Response save(@RequestBody @Valid SysUser object) {
         return Response.success(service.saveData(object, true));
     }
 
@@ -117,6 +120,7 @@ public class SysUserController extends BaseController {
      * @param id id
      */
     @GetMapping("{id}")
+    @RequiresPermissions("sys:user:select")
     public Response get(@PathVariable("id") String id) {
         return Response.success(service.get(id));
     }
@@ -125,6 +129,7 @@ public class SysUserController extends BaseController {
      * 获取当前登录用户
      */
     @GetMapping("current")
+    @SysLog(modular = "sys", method = "获取当前登录用户")
     public Response getCurrent() {
         return Response.success(service.getCurrentUser());
     }
@@ -137,6 +142,7 @@ public class SysUserController extends BaseController {
      * @param keywords 关键字
      */
     @GetMapping("/users")
+    @RequiresPermissions("sys:user:select")
     public Response selectUser(SysUser sysUser, Page<SysUser> page,
                                @RequestParam(name = "isSelect", required = false) boolean isSelect,
                                @RequestParam(name = "keywords", required = false) String keywords) {

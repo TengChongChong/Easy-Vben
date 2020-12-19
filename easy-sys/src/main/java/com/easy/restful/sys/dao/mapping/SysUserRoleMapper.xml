@@ -3,9 +3,9 @@
 <mapper namespace="com.easy.restful.sys.dao.SysUserRoleMapper">
 
     <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysUserRole">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="role_id" property="roleId"/>
     </resultMap>
 
     <select id="selectPermissionsByUserId" resultType="java.lang.String">
@@ -18,6 +18,11 @@
     <select id="selectRoleByUserId" resultType="java.lang.String">
         select r.code from sys_role r
           left join sys_user_role ur on ur.role_id = r.id
+        where ur.user_id = #{userId} and r.status = #{status} and r.code != ''
+    </select>
+    <select id="selectRoleNameByUserId" resultType="java.lang.String">
+        select r.name from sys_role r
+           left join sys_user_role ur on ur.role_id = r.id
         where ur.user_id = #{userId} and r.status = #{status} and r.code != ''
     </select>
     <select id="selectMenusByUserId" resultType="com.easy.restful.sys.model.SysPermissions">
