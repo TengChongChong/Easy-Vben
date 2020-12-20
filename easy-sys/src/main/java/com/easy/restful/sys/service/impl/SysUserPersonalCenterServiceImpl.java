@@ -74,40 +74,36 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     public String saveUserAvatar(String path) {
         if (StrUtil.isNotBlank(path)) {
             File file = new File(path);
-            if (file.exists()) {
-                SysUser sysUser = ShiroUtil.getCurrentUser();
-                // 以前设置了头像
-                String oldAvatar = null;
-                if (StrUtil.isNotBlank(sysUser.getAvatar())) {
-                    oldAvatar = sysUser.getAvatar();
-                }
-                // 将新头像移动到正式目录
-                path = FileUtil.moveToFormal(path);
-                // 更新数据库
-                String url = FileUtil.getUrl(path);
-                boolean isSuccess = sysUserService.updateAvatar(url);
-                if (isSuccess) {
-                    if (StrUtil.isNotBlank(oldAvatar)) {
-                        // 删除原头像以及缩略图
-                        ImageUtil.delThumbnail(new File(FileUtil.getPath(oldAvatar)));
-                        FileUtil.del(oldAvatar);
-                    }
-                    // 生成缩略图
-                    ImageUtil.generateThumbnail(new File(path));
-                    // 更新redis中用户信息
-                    sysUser.setAvatar(url);
-                    sysUser.setAvatarLg(ImageUtil.getThumbnailUrlByUrl(url, ImageUtil.IMAGE_SIZE_LG));
-                    sysUser.setAvatarMd(ImageUtil.getThumbnailUrlByUrl(url, ImageUtil.IMAGE_SIZE_MD));
-                    sysUser.setAvatarSm(ImageUtil.getThumbnailUrlByUrl(url, ImageUtil.IMAGE_SIZE_SM));
-                    sysUser.setAvatarXs(ImageUtil.getThumbnailUrlByUrl(url, ImageUtil.IMAGE_SIZE_XS));
-                    ShiroUtil.setCurrentUser(sysUser);
-                    return url;
-                } else {
-                    // 更新失败了,把移动到正式目录的图片删掉
-                    cn.hutool.core.io.FileUtil.del(new File(path));
-                }
-            } else {
+            if (!file.exists()) {
                 throw new EasyException("头像文件不存在");
+            }
+            SysUser sysUser = ShiroUtil.getCurrentUser();
+            // 以前设置了头像
+            String oldAvatar = null;
+            if (StrUtil.isNotBlank(sysUser.getAvatar())) {
+                oldAvatar = sysUser.getAvatar();
+            }
+            // 将新头像移动到正式目录
+            path = FileUtil.moveToFormal(path);
+            // 更新数据库
+            String url = FileUtil.getUrl(path);
+            boolean isSuccess = sysUserService.updateAvatar(url);
+            if (isSuccess) {
+                if (StrUtil.isNotBlank(oldAvatar)) {
+                    // 删除原头像以及缩略图
+                    ImageUtil.delThumbnail(new File(FileUtil.getPath(oldAvatar)));
+                    FileUtil.del(oldAvatar);
+                }
+                // 生成缩略图
+                ImageUtil.generateThumbnail(new File(path));
+                // 更新redis中用户信息
+                sysUser.setAvatar(url);
+                sysUser = FileUtil.initAvatar(sysUser);
+                ShiroUtil.setCurrentUser(sysUser);
+                return url;
+            } else {
+                // 更新失败了,把移动到正式目录的图片删掉
+                cn.hutool.core.io.FileUtil.del(new File(path));
             }
         }
         throw new EasyException("获取头像路径失败");
@@ -123,8 +119,10 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
             currentUser.setNickname(sysUser.getNickname());
             currentUser.setSex(sysUser.getSex());
             currentUser.setBirthday(sysUser.getBirthday());
-            currentUser.setAvatar(sysUser.getAvatar());
             ShiroUtil.setCurrentUser(currentUser);
+            if (StrUtil.isNotBlank(sysUser.getAvatar())) {
+                saveUserAvatar(FileUtil.getPath(sysUser.getAvatar()));
+            }
             return currentUser;
         } else {
             throw new EasyException(GlobalException.FAILED_TO_GET_DATA);

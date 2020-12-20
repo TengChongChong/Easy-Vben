@@ -1,8 +1,10 @@
 package com.easy.restful.util.file;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.sys.common.constant.SysConst;
+import com.easy.restful.sys.model.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -157,5 +159,22 @@ public class FileUtil {
      */
     public static boolean delByPath(String path) {
         return cn.hutool.core.io.FileUtil.del(path);
+    }
+
+    /**
+     * 设置头像缩略图
+     *
+     * @param sysUser sysUser
+     * @return sysUser
+     */
+    public static SysUser initAvatar(SysUser sysUser){
+        if (StrUtil.isNotBlank(sysUser.getAvatar())) {
+            sysUser.setAvatarLg(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_LG));
+            sysUser.setAvatarMd(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_MD));
+            sysUser.setAvatarSm(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_SM));
+            sysUser.setAvatarXs(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_XS));
+            sysUser.setAvatar(SysConst.projectProperties.getProjectUrl() + sysUser.getAvatar());
+        }
+        return sysUser;
     }
 }

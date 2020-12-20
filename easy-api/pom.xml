@@ -15,16 +15,14 @@
     <description>Easy Api</description>
 
     <dependencies>
-
-
         <dependency>
             <groupId>com.easy.restful</groupId>
             <artifactId>easy-sys</artifactId>
         </dependency>
-
-
-
-
+        <dependency>
+            <groupId>com.easy.restful</groupId>
+            <artifactId>easy-file</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

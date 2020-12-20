@@ -1,6 +1,5 @@
 package com.easy.restful.config.shiro.check;
 
-import cn.hutool.core.util.StrUtil;
 import com.easy.restful.auth.constant.SessionConst;
 import com.easy.restful.common.redis.constant.RedisPrefix;
 import com.easy.restful.common.redis.util.RedisUtil;
@@ -8,7 +7,7 @@ import com.easy.restful.config.shiro.service.ShiroService;
 import com.easy.restful.sys.common.constant.SysConst;
 import com.easy.restful.sys.model.SysUser;
 import com.easy.restful.util.ShiroUtil;
-import com.easy.restful.util.file.ImageUtil;
+import com.easy.restful.util.file.FileUtil;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
@@ -40,15 +39,7 @@ public class RetryLimitCredentialsMatcher extends SimpleCredentialsMatcher {
             shiroService.kickOutSession(sysUser);
         }
         // 用户信息放在session里
-        // 设置头像缩略图
-        if (StrUtil.isNotBlank(sysUser.getAvatar())) {
-            sysUser.setAvatarLg(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_LG));
-            sysUser.setAvatarMd(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_MD));
-            sysUser.setAvatarSm(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_SM));
-            sysUser.setAvatarXs(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_XS));
-            sysUser.setAvatar(SysConst.projectProperties.getProjectUrl() + sysUser.getAvatar());
-        }
-        ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, sysUser);
+        ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, FileUtil.initAvatar(sysUser));
         return true;
     }
 }
