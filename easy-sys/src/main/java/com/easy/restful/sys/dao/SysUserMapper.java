@@ -80,12 +80,17 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 重置密码
      *
-     * @param password     密码
-     * @param salt         盐
-     * @param queryWrapper 条件
+     * @param password         密码
+     * @param salt             盐
+     * @param passwordStrength 密码强度
+     * @param queryWrapper     条件
      * @return int
      */
-    int resetPassword(@Param("password") String password, @Param("salt") String salt, @Param("ew") QueryWrapper<SysUser> queryWrapper);
+    int resetPassword(
+            @Param("password") String password,
+            @Param("salt") String salt,
+            @Param("passwordStrength") String passwordStrength,
+            @Param("ew") QueryWrapper<SysUser> queryWrapper);
 
     /**
      * 更新最后登录时间

@@ -1,5 +1,6 @@
 package com.easy.restful.sys.controller;
 
+import cn.hutool.json.JSONObject;
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.util.Response;
 import com.easy.restful.sys.model.SysUser;
@@ -34,23 +35,21 @@ public class SysUserPersonalCenterController extends BaseController {
     /**
      * 密码修改
      *
-     * @param oldPassword 原密码
-     * @param password    新密码
+     * @param json {oldPassword: '', password: '', passwordStrength: ''}
      */
-    @PostMapping("change/password/{oldPassword}/{password}")
-    public Response changePassword(@PathVariable(value = "oldPassword") String oldPassword,
-                                   @PathVariable(value = "password") String password) {
-        return Response.success(service.changePassword(oldPassword, password));
+    @PostMapping("change/password")
+    public Response changePassword(@RequestBody JSONObject json) {
+        return Response.success(service.changePassword(json));
     }
 
     /**
      * 保存用户头像
      *
-     * @param path 文件路径
+     * @param json {path: ''}
      */
-    @PostMapping("user/avatar/{path}")
-    public Response saveUserAvatar(@PathVariable("path") String path) {
-        return Response.success(service.saveUserAvatar(path));
+    @PostMapping("user/avatar")
+    public Response saveUserAvatar(@RequestBody JSONObject json) {
+        return Response.success(service.saveUserAvatar(json.getStr("path")));
     }
 
     /**
@@ -66,11 +65,21 @@ public class SysUserPersonalCenterController extends BaseController {
     /**
      * 申请绑定密保邮箱
      *
-     * @param mail 邮箱地址
+     * @param json {email: ''}
      */
-    @PostMapping("mail")
-    public Response applicationBindingMail(String mail) {
-        return Response.success(service.applicationBindingMail(mail));
+    @PostMapping("email")
+    public Response applicationBindingEmail(@RequestBody JSONObject json) {
+        return Response.success(service.applicationBindingEmail(json.getStr("email")));
+    }
+
+    /**
+     * 绑定密保手机
+     *
+     * @param json {phone: *, captcha: *}
+     */
+    @PostMapping("phone")
+    public Response bindingPhone(@RequestBody JSONObject json) {
+        return Response.success(service.bindingPhone(json.getStr("phone"), json.getStr("captcha")));
     }
 
     /**
@@ -82,6 +91,4 @@ public class SysUserPersonalCenterController extends BaseController {
     public Response saveUserSetting(SysUserSetting sysUserSetting) {
         return Response.success(service.saveUserSetting(sysUserSetting));
     }
-
-
 }

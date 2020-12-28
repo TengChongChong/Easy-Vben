@@ -43,10 +43,14 @@ public class SysUser extends Model<SysUser> implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     /**
+     * 密码强度
+     */
+    private String passwordStrength;
+    /**
      * md5密码盐
      */
     private String salt;
-    /**
+    /**change/password/
      * 昵称
      */
     private String nickname;
@@ -198,6 +202,14 @@ public class SysUser extends Model<SysUser> implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordStrength() {
+        return passwordStrength;
+    }
+
+    public void setPasswordStrength(String passwordStrength) {
+        this.passwordStrength = passwordStrength;
     }
 
     public String getSalt() {

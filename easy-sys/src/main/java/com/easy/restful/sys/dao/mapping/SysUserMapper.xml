@@ -5,6 +5,7 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="password_strength" property="passwordStrength"/>
         <result column="salt" property="salt"/>
         <result column="nickname" property="nickname"/>
         <result column="sex" property="sex"/>
@@ -34,7 +35,7 @@
         where id = #{id}
     </update>
     <update id="resetPassword">
-        update sys_user set password = #{password}, salt = #{salt}
+        update sys_user set password = #{password}, salt = #{salt}, password_strength = #{passwordStrength}
         <where>
             ${ew.sqlSegment}
         </where>
@@ -54,7 +55,7 @@
         </where>
     </select>
     <select id="selectInfo" resultType="com.easy.restful.sys.model.SysUser">
-        select t.id,t.username,t.nickname,t.sex,t.email,t.phone,t.birthday,t.dept_id,t.status,t.avatar,t.source, sd.name as deptName
+        select t.id,t.username,t.nickname,t.sex,t.email,t.phone,t.birthday,t.dept_id,t.status,t.avatar,t.source, sd.name as deptName, t.password_strength
         from sys_user t
         left join sys_dept sd on sd.id = t.dept_id
         where t.id = #{id}

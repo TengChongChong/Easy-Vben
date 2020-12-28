@@ -51,6 +51,17 @@ public class SysConfigController extends BaseController {
     }
 
     /**
+     * 根据key获取配置
+     *
+     * @param key key
+     */
+    @GetMapping("key/{key}")
+    @RequiresPermissions("sys:config:select")
+    public Response getByKey(@PathVariable("key") String key) {
+        return Response.success(service.getByKey(key));
+    }
+
+    /**
      * 删除
      *
      * @param ids 数据ids

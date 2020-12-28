@@ -99,6 +99,7 @@ public class JacksonConfig {
 
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         //LocalDateTime系列序列化和反序列化模块，继承自jsr310，我们在这里修改了日期格式
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)));

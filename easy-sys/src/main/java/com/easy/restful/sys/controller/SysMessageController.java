@@ -1,5 +1,6 @@
 package com.easy.restful.sys.controller;
 
+import cn.hutool.json.JSONObject;
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.common.pagination.Page;
 import com.easy.restful.common.core.util.Response;
@@ -72,7 +73,6 @@ public class SysMessageController extends BaseController {
      * @param messageId 收信id
      */
     @GetMapping("info/{id}/{messageId}")
-    @RequiresPermissions("sys:message:select")
     public Response info(@PathVariable("id") String id,
                          @PathVariable("messageId") String messageId) {
         // 标记已读
@@ -114,11 +114,12 @@ public class SysMessageController extends BaseController {
 
     /**
      * 发送
+     * @param json {ids: ''}
      */
-    @PostMapping("send/{ids}")
+    @PostMapping("send")
     @RequiresPermissions("sys:message:save")
-    public Response send(@PathVariable("ids") String ids) {
-        return Response.success(service.send(ids));
+    public Response send(@RequestBody JSONObject json) {
+        return Response.success(service.send(json.getStr("ids")));
     }
 
     /**

@@ -39,6 +39,11 @@ public class RedisPrefix {
     public static final String RESET_PASSWORD_VERIFICATION_CODE = "reset:password:verification:code:";
 
     /**
+     * 绑定手机号短信验证码
+     */
+    public static final String BINDING_PHONE_VERIFICATION_CODE = "binding:phone:verification:code";
+
+    /**
      * 插件js/css资源是否存在
      */
     public static final String PLUGIN_CHECK = "plugin:check:";

@@ -77,4 +77,11 @@ public class SysConfigConst {
      */
     public static final String DOWNLOAD_EFFECTIVE_EXPIRE = "downloadEffectiveExpire";
 
+    /**
+     * 短信验证码有效期 单位：秒
+     */
+    public static final String MESSAGE_EXPIRE = "messageExpire";
+
+
+
 }

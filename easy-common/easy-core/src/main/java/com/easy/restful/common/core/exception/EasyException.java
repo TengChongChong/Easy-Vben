@@ -13,11 +13,16 @@ public class EasyException extends RuntimeException {
     /**
      * 响应码
      */
-    private String code;
+    private String code = ResultCode.INTERNAL_SERVER.getCode();
     /**
      * 错误信息
      */
     private String message;
+
+    /**
+     * 错误显示方式：0 静默 ； 1 notification.info; 2 notification.warning; 3 notification.error; 9 page
+     */
+    private Integer showType = 3;
 
     public EasyException(String message) {
         // 默认为error级别错误
@@ -28,6 +33,17 @@ public class EasyException extends RuntimeException {
     public EasyException(String code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public EasyException(Integer showType, String message) {
+        this.message = message;
+        this.showType = showType;
+    }
+
+    public EasyException(String code, Integer showType, String message) {
+        this.code = code;
+        this.message = message;
+        this.showType = showType;
     }
 
     public EasyException(EasyServiceException easyServiceException) {
@@ -50,5 +66,13 @@ public class EasyException extends RuntimeException {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Integer getShowType() {
+        return showType;
+    }
+
+    public void setShowType(Integer showType) {
+        this.showType = showType;
     }
 }

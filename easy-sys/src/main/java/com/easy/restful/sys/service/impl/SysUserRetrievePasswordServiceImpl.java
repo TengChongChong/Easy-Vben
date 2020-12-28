@@ -8,13 +8,14 @@ import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.common.redis.constant.RedisPrefix;
 import com.easy.restful.common.redis.util.RedisUtil;
 import com.easy.restful.core.mail.MailTemplate;
-import com.easy.restful.sys.common.constant.SysConst;
 import com.easy.restful.sys.service.SysMailVerifiesService;
 import com.easy.restful.sys.service.SysUserRetrievePasswordService;
 import com.easy.restful.sys.service.SysUserService;
-import com.easy.restful.util.SysConfigUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 找回密码
@@ -32,24 +33,20 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
     private SysMailVerifiesService sysMailVerifiesService;
 
     @Override
-    public boolean sendMail(String username, String mail) {
+    public boolean sendEmail(String username, String email) {
         if (StrUtil.isNotBlank(username)) {
             String userMail = sysUserService.getSysUserMailByUserName(username);
-            if (StrUtil.isNotBlank(userMail) && userMail.equals(mail)) {
+            if (StrUtil.isNotBlank(userMail) && userMail.equals(email)) {
                 String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
                 // 验证码
                 String code = RandomUtil.randomString(6);
                 // 放到redis中,用于修改密码时验证
                 RedisUtil.set(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username, code);
-                String content = "<b>尊敬的" + hideUsername + "你好：</b>\n" +
-                        "<br><br>\n" +
-                        "感谢你使用\n" +
-                        "<a href=\"" + SysConst.projectProperties.getProjectUrl() + "\" target=\"_blank\" rel=\"noopener\">\n" +
-                        "    " + SysConfigUtil.getProjectName() + "\n" +
-                        "</a>\n" +
-                        "<br><br>\n" +
-                        "我们已经收到了你的重置密码申请，你的验证码为 <font style=\"color: #dc3545;\">" + code + "</font>，有效期30分钟。\n";
-                MailUtil.sendHtml(mail, "账号" + hideUsername + "密码重置", MailTemplate.sendResetPasswordMail(content));
+                Map<String,Object> params = new HashMap<>();
+                params.put("code", code);
+                params.put("username", hideUsername);
+                MailUtil.sendHtml(email, "账号" + hideUsername + "密码重置", MailTemplate.getContent("/mail/rest-password.html", params));
+
                 return true;
             }
             throw new EasyException("用户名与邮箱不匹配");
@@ -78,7 +75,7 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
     public boolean resetPassword(String username, String code, String password) {
         if (StrUtil.isNotBlank(username) && StrUtil.isNotBlank(code)) {
             if (verifiesCode(username, code)) {
-                boolean isSuccess = sysUserService.resetPassword(username, password);
+                boolean isSuccess = sysUserService.resetPassword(username, password, null);
                 if (isSuccess) {
                     sysMailVerifiesService.remove(code);
                     return true;

@@ -73,6 +73,18 @@
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+        <!-- mail 邮件 -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax.mail.version}</version>
+        </dependency>
+        <!-- poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
         <!-- mybatis plus extension -->
         <dependency>
             <groupId>com.baomidou</groupId>

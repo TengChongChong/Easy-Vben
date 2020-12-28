@@ -1,15 +1,17 @@
 package com.easy.restful.sys.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cn.hutool.json.JSONObject;
 import com.easy.restful.auth.constant.SessionConst;
 import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.common.core.exception.GlobalException;
+import com.easy.restful.common.redis.constant.RedisPrefix;
+import com.easy.restful.common.redis.util.RedisUtil;
 import com.easy.restful.core.mail.MailTemplate;
 import com.easy.restful.sys.common.constant.MailConst;
-import com.easy.restful.sys.common.constant.SysConst;
-import com.easy.restful.sys.dao.SysUserMapper;
+import com.easy.restful.sys.common.constant.SysConfigConst;
 import com.easy.restful.sys.model.SysMailVerifies;
 import com.easy.restful.sys.model.SysUser;
 import com.easy.restful.sys.model.SysUserSetting;
@@ -26,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 个人中心
@@ -40,9 +44,6 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     private SysUserService sysUserService;
 
     @Autowired
-    private SysUserMapper sysUserMapper;
-
-    @Autowired
     private SysMailVerifiesService sysMailVerifiesService;
 
 
@@ -50,11 +51,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     public SysUser getCurrentUser() {
         SysUser sysUser = ShiroUtil.getCurrentUser();
         if (sysUser != null) {
-            // 由于密保邮箱&手机可能会发生变动,这里重新从数据库查询
-            QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-            queryWrapper.select("email", "phone");
-            queryWrapper.eq("id", sysUser.getId());
-            SysUser queryResult = sysUserMapper.selectOne(queryWrapper);
+            SysUser queryResult = sysUserService.selectEmailAndPhone(sysUser.getId());
             if (queryResult != null) {
                 sysUser.setPhone(queryResult.getPhone());
                 sysUser.setEmail(queryResult.getEmail());
@@ -130,23 +127,17 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     }
 
     @Override
-    public boolean applicationBindingMail(String mail) {
-        if (StrUtil.isNotBlank(mail)) {
+    public boolean applicationBindingEmail(String email) {
+        if (StrUtil.isNotBlank(email)) {
             SysUser currentUser = ShiroUtil.getCurrentUser();
-            SysMailVerifies sysMailVerifies = sysMailVerifiesService.saveData(String.valueOf(currentUser.getId()), mail, MailConst.MAIL_BINDING_MAIL);
+            SysMailVerifies sysMailVerifies = sysMailVerifiesService.saveData(String.valueOf(currentUser.getId()), email, MailConst.MAIL_BINDING_MAIL);
             if (sysMailVerifies != null) {
-                String url = SysConst.projectProperties.getProjectUrl() + "/sys/mail/verifies/" + sysMailVerifies.getCode();
+                String url = "/sys/mail-verifies/bind-mail/" + sysMailVerifies.getCode();
                 String hideUsername = StrUtil.hide(currentUser.getUsername(), 1, currentUser.getUsername().length() - 1);
-                String content = "<b>尊敬的" + hideUsername + "你好：</b>\n" +
-                        "<br><br>\n" +
-                        "感谢你使用\n" +
-                        "<a href=\"" + SysConst.projectProperties.getProjectUrl() + "\" target=\"_blank\" rel=\"noopener\">\n" +
-                        "    " + SysConfigUtil.getProjectName() + "\n" +
-                        "</a>\n" +
-                        "<br><br>\n" +
-                        "我们已经收到了你的密保邮箱申请，请于24小时内点击下方链接进行邮箱验证\n" +
-                        "<a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\">\n" + url + "</a>\n";
-                MailUtil.sendHtml(mail, "账号" + hideUsername + "密保邮箱验证", MailTemplate.applicationBindingMail(content));
+                Map<String, Object> params = new HashMap<>();
+                params.put("url", url);
+                params.put("username", hideUsername);
+                MailUtil.sendHtml(email, "账号" + hideUsername + "密保邮箱验证", MailTemplate.getContent("/mail/verify-mail.html", params));
                 return true;
             }
         } else {
@@ -161,13 +152,21 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     }
 
     @Override
-    public boolean changePassword(String oldPassword, String password) {
+    public boolean changePassword(JSONObject json) {
+        String oldPassword = json.getStr("oldPassword"),
+                password = json.getStr("password"),
+                passwordStrength = json.getStr("passwordStrength");
+
         if (StrUtil.isBlank(oldPassword)) {
             throw new EasyException("请输入当前密码");
         }
         if (StrUtil.isBlank(password)) {
             throw new EasyException("请输入新密码");
         }
+        if (StrUtil.isBlank(passwordStrength)) {
+            passwordStrength = Convert.toStr((SysConfigUtil.get(SysConfigConst.PASSWORD_SECURITY_LEVEL)));
+        }
+
         SysUser sysUser = ShiroUtil.getCurrentUser();
         if (sysUser == null) {
             throw new EasyException("请登录后重试");
@@ -176,12 +175,26 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         // 检查当前密码是否正确
         SysUser passwordAndSlat = sysUserService.selectPasswordAndSalt(sysUser.getId());
         if (!PasswordUtil.encryptedPasswords(oldPassword, passwordAndSlat.getSalt()).equals(passwordAndSlat.getPassword())) {
-            throw new EasyException("密码输入错误");
+            throw new EasyException("原密码输入错误");
         }
         // 修改密码
-        boolean isSuccess = sysUserService.resetPassword(sysUser.getUsername(), password);
+        boolean isSuccess = sysUserService.resetPassword(sysUser.getUsername(), password, passwordStrength);
         sysUser.setPassword(PasswordUtil.encryptedPasswords(password, passwordAndSlat.getSalt()));
         ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, sysUser);
         return isSuccess;
+    }
+
+    @Override
+    public boolean bindingPhone(String phone, String captcha) {
+        SysUser currentUser = ShiroUtil.getCurrentUser();
+        String redisCode = (String) RedisUtil.get(RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId());
+        if (StrUtil.isBlank(redisCode)) {
+            throw new EasyException("验证码已过期，请重新获取");
+        }
+        if (!redisCode.equals(captcha)) {
+            throw new EasyException("验证码错误，请重新输入");
+        }
+        RedisUtil.del(RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId());
+        return sysUserService.setPhone(currentUser.getId(), phone);
     }
 }

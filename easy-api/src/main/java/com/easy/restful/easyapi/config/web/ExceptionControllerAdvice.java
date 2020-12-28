@@ -49,7 +49,7 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Response easyException(HttpServletRequest request, EasyException e) {
         logger.debug("业务异常", e);
-        return Response.failError(e.getCode(), e.getMessage());
+        return Response.failError(null, e.getCode(), e.getMessage(), e.getShowType());
     }
 
     /**
@@ -128,7 +128,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Object handleException(HttpServletRequest request, RuntimeException e) {
-        logger.debug("未知异常", e);
+//        logger.debug("未知异常", e);
         // 将异常记录到表中
         saveLog(HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getRequestURI(), e);
         return Response.failError(e.getMessage());

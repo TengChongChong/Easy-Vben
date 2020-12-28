@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.common.core.exception.EasyException;
+import com.easy.restful.common.core.util.Response;
 import com.easy.restful.sys.common.constant.MailConst;
 import com.easy.restful.sys.dao.SysMailVerifiesMapper;
 import com.easy.restful.sys.model.SysMailVerifies;
@@ -32,47 +33,47 @@ public class SysMailVerifiesServiceImpl extends ServiceImpl<SysMailVerifiesMappe
 
     @Override
     public boolean verifies(String code) {
-        if (StrUtil.isNotBlank(code)) {
-            QueryWrapper<SysMailVerifies> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("code", code);
-            SysMailVerifies sysMailVerifies = getOne(queryWrapper);
-            if (sysMailVerifies != null) {
-                if (sysMailVerifies.getExpired().getTime() > System.currentTimeMillis()) {
-                    // 校验码未过期
-                    SysUser sysUser = sysUserService.get(sysMailVerifies.getUserId());
-                    if (sysUser != null) {
-                        // 更新用户表中的邮箱
-                        if (sysUserService.setUserMail(sysUser.getId(), sysMailVerifies.getMail())) {
-                            remove(queryWrapper);
-                        } else {
-                            throw new EasyException("更新用户信息失败，请重试");
-                        }
-                        return true;
-                    } else {
-                        remove(queryWrapper);
-                        throw new EasyException("获取用户信息失败，请重新发送验证邮件");
-                    }
-                } else {
-                    // 删除过期校验信息
-                    remove(queryWrapper);
-                    throw new EasyException("校验码已过期，请重新发送验证邮件");
-                }
-            }
+        // 此方法异常信息使用静默提示
+        if (StrUtil.isBlank(code)) {
+            throw new EasyException(Response.SILENT, "校验码无效或已过期，请重新发送验证邮件");
         }
-        throw new EasyException("校验码无效或已过期，请重新发送验证邮件");
+        QueryWrapper<SysMailVerifies> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("code", code);
+        SysMailVerifies sysMailVerifies = getOne(queryWrapper);
+        if (sysMailVerifies == null) {
+            throw new EasyException(Response.SILENT, "校验码无效或已过期，请重新发送验证邮件");
+        }
+        if (sysMailVerifies.getExpired().getTime() < System.currentTimeMillis()) {
+            // 删除过期校验信息
+            remove(queryWrapper);
+            throw new EasyException(Response.SILENT, "校验码已过期，请重新发送验证邮件");
+        }
+        // 校验码未过期
+        SysUser sysUser = sysUserService.get(sysMailVerifies.getUserId());
+        if (sysUser == null) {
+            remove(queryWrapper);
+            throw new EasyException(Response.SILENT, "获取用户信息失败，请重新发送验证邮件");
+        }
+        // 更新用户表中的邮箱
+        if (sysUserService.setUserMail(sysUser.getId(), sysMailVerifies.getMail())) {
+            remove(queryWrapper);
+        } else {
+            throw new EasyException(Response.SILENT, "更新用户信息失败，请重试");
+        }
+        return true;
     }
 
     @Override
     public boolean verifiesData(String code, String userId) {
-        if(StrUtil.isNotBlank(code)){
+        if (StrUtil.isNotBlank(code)) {
             QueryWrapper<SysMailVerifies> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("code", code);
-            if(StrUtil.isNotBlank(userId)){
+            if (StrUtil.isNotBlank(userId)) {
                 queryWrapper.eq("user_id", userId);
                 SysMailVerifies sysMailVerifies = getOne(queryWrapper);
-                if(sysMailVerifies != null){
+                if (sysMailVerifies != null) {
                     return System.currentTimeMillis() < sysMailVerifies.getExpired().getTime();
-                }else{
+                } else {
                     throw new EasyException("校验码失效，请重新申请");
                 }
             }

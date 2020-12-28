@@ -63,4 +63,6 @@ public class CommonConst {
      * 字节长度
      */
     public static final int BYTE1024 = 1024;
+
+    public static final String RESPONSE_RESULT_ANN = "RESPONSE_RESULT_ANN";
 }

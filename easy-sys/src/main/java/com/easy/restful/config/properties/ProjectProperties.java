@@ -30,6 +30,13 @@ public class ProjectProperties {
 
     @Value("${project.url}")
     private String projectUrl;
+
+    /**
+     * 前端访问url
+     */
+    @Value("${project.front-end-url}")
+    private String projectFrontEndUrl;
+
     /**
      * 是否开启记住我功能
      */
@@ -162,8 +169,7 @@ public class ProjectProperties {
     }
 
     public String getDefaultPassword() {
-//        return Convert.toStr(SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD), defaultPassword);
-        return "123";
+        return Convert.toStr(SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD), defaultPassword);
     }
     public String getCacheType() {
         return cacheType;
@@ -211,5 +217,13 @@ public class ProjectProperties {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getProjectFrontEndUrl() {
+        return projectFrontEndUrl;
+    }
+
+    public void setProjectFrontEndUrl(String projectFrontEndUrl) {
+        this.projectFrontEndUrl = projectFrontEndUrl;
     }
 }

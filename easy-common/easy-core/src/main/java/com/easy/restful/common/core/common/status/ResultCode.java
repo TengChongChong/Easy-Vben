@@ -1,8 +1,7 @@
 package com.easy.restful.common.core.common.status;
 
 /**
- * 响应码，由6位数字构成abbccc
- * a   错误级别 0-成功、1-信息、2-警告、3-错误
+ * 响应码，由5位数字构成bbccc
  * bb  服务模块代码，请从01开始使用00为公共模块
  * ccc 具体错误代码
  *

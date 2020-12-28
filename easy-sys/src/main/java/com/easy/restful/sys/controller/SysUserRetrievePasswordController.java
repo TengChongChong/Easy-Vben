@@ -1,5 +1,6 @@
 package com.easy.restful.sys.controller;
 
+import cn.hutool.json.JSONObject;
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.util.Response;
 import com.easy.restful.sys.service.SysUserRetrievePasswordService;
@@ -26,12 +27,11 @@ public class SysUserRetrievePasswordController extends BaseController {
     /**
      * 发送重置密码邮件
      *
-     * @param username 用户名
-     * @param mail     邮箱
+     * @param json {username: '', email: ''}
      */
-    @PostMapping("send/mail")
-    public Response sendMail(String username, String mail) {
-        return Response.success(service.sendMail(username, mail));
+    @PostMapping("email")
+    public Response sendEmail(@RequestBody JSONObject json) {
+        return Response.success(service.sendEmail(json.getStr("username"), json.getStr("email")));
     }
 
     /**

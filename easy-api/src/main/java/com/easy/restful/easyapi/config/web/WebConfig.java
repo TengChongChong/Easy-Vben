@@ -1,17 +1,23 @@
 package com.easy.restful.easyapi.config.web;
 
+import com.easy.restful.core.interceptor.ResponseResultInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * 全局跨域处理
+ * web config
  *
  * @author tengchong
  * @date 2019-03-16
  */
 @Configuration
-public class GlobalCorsConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
+    @Autowired
+    private ResponseResultInterceptor responseResultInterceptor;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         //设置允许跨域的路径
@@ -24,5 +30,11 @@ public class GlobalCorsConfig implements WebMvcConfigurer {
                 .allowedMethods("*")
                 //跨域允许时间
                 .maxAge(3600);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 添加拦截器，配置拦截地址
+        registry.addInterceptor(responseResultInterceptor).addPathPatterns("/**");
     }
 }

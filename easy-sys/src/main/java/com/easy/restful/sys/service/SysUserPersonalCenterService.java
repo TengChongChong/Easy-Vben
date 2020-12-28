@@ -1,5 +1,6 @@
 package com.easy.restful.sys.service;
 
+import cn.hutool.json.JSONObject;
 import com.easy.restful.sys.model.SysUser;
 import com.easy.restful.sys.model.SysUserSetting;
 
@@ -37,10 +38,19 @@ public interface SysUserPersonalCenterService {
     /**
      * 申请绑定密保邮箱
      *
-     * @param mail 邮箱地址
+     * @param email 邮箱地址
      * @return true/false
      */
-    boolean applicationBindingMail(String mail);
+    boolean applicationBindingEmail(String email);
+
+    /**
+     * 申请绑定密保邮箱
+     *
+     * @param phone 手机号
+     * @param captcha  验证码
+     * @return true/false
+     */
+    boolean bindingPhone(String phone, String captcha);
 
     /**
      * 保存偏好设置
@@ -53,9 +63,8 @@ public interface SysUserPersonalCenterService {
     /**
      * 修改当前用户密码
      *
-     * @param oldPassword 当前密码
-     * @param password    新密码
+     * @param json {oldPassword: '', password: '', passwordStrength: ''}
      * @return true/false
      */
-    boolean changePassword(String oldPassword, String password);
+    boolean changePassword(JSONObject json);
 }

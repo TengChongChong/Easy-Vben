@@ -11,10 +11,10 @@ public interface SysUserRetrievePasswordService {
      * 发送重置密码邮件
      *
      * @param username 用户名
-     * @param mail     邮箱
+     * @param email     邮箱
      * @return true/false
      */
-    boolean sendMail(String username, String mail);
+    boolean sendEmail(String username, String email);
 
     /**
      * 验证验证码

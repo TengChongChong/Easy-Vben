@@ -4,16 +4,16 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import com.easy.restful.auth.constant.SessionConst;
 import com.easy.restful.auth.service.AuthService;
-import com.easy.restful.common.core.util.Response;
+import com.easy.restful.core.annotation.ResponseResult;
 import com.easy.restful.core.annotation.SysLog;
 import com.easy.restful.sys.model.LoginVO;
 import com.easy.restful.util.ShiroUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,13 +36,13 @@ public class AuthController {
      * 登录
      *
      * @param loginVO loginVO
-     * @return Response
+     * @return token
      */
-    @PostMapping("/auth/login")
+    @PostMapping(value = "/auth/login")
     @SysLog(modular = "sys", method = "用户登录")
-    public Response login(@RequestBody @Valid LoginVO loginVO) {
+    public String login(@RequestBody @Valid LoginVO loginVO) {
         Subject subject = service.login(loginVO);
-        return Response.success(subject.getSession().getId());
+        return subject.getSession().getId().toString();
     }
 
     /**
@@ -51,13 +51,13 @@ public class AuthController {
      * @return Response
      */
     @SysLog(modular = "sys", method = "退出登录")
-    @PostMapping("/auth/logout")
-    public Response logout() {
+    @PostMapping("/logout")
+    @ResponseResult
+    public void logout(String aaa) {
         SecurityUtils.getSubject().logout();
-        return Response.success();
     }
 
-    @RequestMapping("/get/verification/code")
+    @GetMapping("/get/verification/code")
     public void getVerificationCode(HttpServletResponse response) throws IOException {
         // 定义图形验证码的长、宽、验证码字符数、干扰元素个数
         LineCaptcha captcha = CaptchaUtil.createLineCaptcha(100, 30, 4, 8);

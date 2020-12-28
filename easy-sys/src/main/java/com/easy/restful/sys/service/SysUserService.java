@@ -72,11 +72,12 @@ public interface SysUserService {
     /**
      * 重置密码
      *
-     * @param username 用户名
-     * @param password 新密码
+     * @param username         用户名
+     * @param password         新密码
+     * @param passwordStrength 密码强度
      * @return true/false
      */
-    boolean resetPassword(String username, String password);
+    boolean resetPassword(String username, String password, String passwordStrength);
 
     /**
      * 禁用用户
@@ -175,5 +176,22 @@ public interface SysUserService {
      * @return SysUser
      */
     SysUser selectPasswordAndSalt(String id);
+
+    /**
+     * 查询邮箱和手机号
+     *
+     * @param id 用户id
+     * @return SysUser
+     */
+    SysUser selectEmailAndPhone(String id);
+
+    /**
+     * 更新手机号
+     *
+     * @param id 用户id
+     * @param phone 手机号
+     * @return true/false
+     */
+    boolean setPhone(String id, String phone);
 
 }

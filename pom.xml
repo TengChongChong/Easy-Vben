@@ -30,17 +30,19 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
-        <hutool.version>5.3.5</hutool.version>
-        <mybatis-plus.version>3.3.2</mybatis-plus.version>
-        <druid.version>1.1.23</druid.version>
-        <mysql-connector-java.version>8.0.11</mysql-connector-java.version>
-        <fastjson.version>1.2.69</fastjson.version>
+        <hutool.version>5.5.4</hutool.version>
+        <javax.mail.version>1.4.7</javax.mail.version>
+        <poi.version>4.1.2</poi.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <druid.version>1.2.4</druid.version>
+        <mysql-connector-java.version>8.0.22</mysql-connector-java.version>
+        <fastjson.version>1.2.75</fastjson.version>
         <swagger.fox.version>2.9.2</swagger.fox.version>
         <swagger.core.version>1.5.24</swagger.core.version>
         <jjwt.version>0.9.1</jjwt.version>
         <knife4j.version>2.0.4</knife4j.version>
-        <shiro.version>1.4.0</shiro.version>
-        <beetl.version>3.0.11.RELEASE</beetl.version>
+        <shiro.version>1.7.0</shiro.version>
+        <beetl.version>3.3.0.RELEASE</beetl.version>
     </properties>
 
     <dependencyManagement>

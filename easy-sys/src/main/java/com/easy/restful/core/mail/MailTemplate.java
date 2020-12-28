@@ -10,7 +10,6 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,33 +21,14 @@ import java.util.Map;
 public class MailTemplate {
 
     /**
-     * 申请密保邮箱
+     * 获取模板内容
      *
-     * @param content 内容
-     * @return html
+     * @param templatePath 模板路径
+     * @param params 参数
+     * @return 模板内容
      */
-    public static String applicationBindingMail(String content) {
-        return getMailContent(content, "如果你未申请密保邮箱");
-    }
-
-    /**
-     * 发送重置密码验证码
-     *
-     * @param content 内容
-     * @return html
-     */
-    public static String sendResetPasswordMail(String content) {
-        return getMailContent(content, "如果你未申请重置密码");
-    }
-
-    /**
-     * 发送重置密码验证码
-     *
-     * @param content 内容
-     * @return html
-     */
-    private static String getMailContent(String content, String tips) {
-        ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("mail/");
+    public static String getContent(String templatePath, Map<String,Object> params) {
+        ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();
         Configuration cfg;
         try {
             cfg = Configuration.defaultConfiguration();
@@ -56,14 +36,24 @@ public class MailTemplate {
             throw new EasyException("获取defaultConfiguration失败[" + e.getMessage() + "]");
         }
         GroupTemplate groupTemplate = new GroupTemplate(resourceLoader, cfg);
-        Template template = groupTemplate.getTemplate("default.html");
-        // 设置共享变量
-        Map<String,Object> shared = new HashMap<>(4);
-        shared.put("content", content);
-        shared.put("tips", tips);
-        shared.put("projectName", SysConfigUtil.getProjectName());
-        shared.put("projectUrl", SysConst.projectProperties.getProjectUrl());
-        groupTemplate.setSharedVars(shared);
+        Template template = groupTemplate.getTemplate(templatePath);
+        params.put("projectName", SysConfigUtil.getProjectName());
+        params.put("projectUrl", SysConst.projectProperties.getProjectUrl());
+        params.put("projectFrontEndUrl", SysConst.projectProperties.getProjectFrontEndUrl());
+        groupTemplate.setSharedVars(params);
         return template.render();
+    }
+
+    public static void main(String[] args) {
+        ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();
+        Configuration cfg;
+        try {
+            cfg = Configuration.defaultConfiguration();
+        } catch (IOException e) {
+            throw new EasyException("获取defaultConfiguration失败[" + e.getMessage() + "]");
+        }
+        GroupTemplate groupTemplate = new GroupTemplate(resourceLoader, cfg);
+        Template template = groupTemplate.getTemplate("/mail/verify-mail.html");
+        System.out.println(template.render());
     }
 }

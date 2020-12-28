@@ -8,6 +8,7 @@ import cn.hutool.json.JSONObject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 
 /**
  * 封装响应数据
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author tengchong
  * @date 2020/08/24
  */
-public class Response {
+public class Response implements Serializable {
     /**
      * 静默
      */
@@ -208,6 +209,19 @@ public class Response {
     }
 
     /**
+     * 失败提示 - Notification 通知提醒框 - error
+     *
+     * @param data         响应数据
+     * @param errorCode    错误码
+     * @param errorMessage 错误信息
+     * @param showType     错误显示方式
+     * @return Response
+     */
+    public static Response failError(Object data, String errorCode, String errorMessage, Integer showType) {
+        return fail(data, errorCode, errorMessage, showType);
+    }
+
+    /**
      * 失败提示 - Error Page
      *
      * @param errorMessage 错误信息
@@ -247,7 +261,7 @@ public class Response {
      * @param data         响应数据
      * @param errorCode    错误码
      * @param errorMessage 错误信息
-     * @param showType     错误显示方式：0 静默 ； 1 message.warn; 2 message.error; 4 notification; 9 page
+     * @param showType     错误显示方式
      * @return Response
      */
     public static Response fail(Object data, String errorCode, String errorMessage, Integer showType) {
@@ -337,6 +351,7 @@ public class Response {
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
+
     @Override
     public String toString() {
         return new JSONObject(this).toString();

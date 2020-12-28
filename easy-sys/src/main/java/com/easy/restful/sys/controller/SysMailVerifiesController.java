@@ -1,11 +1,12 @@
 package com.easy.restful.sys.controller;
 
+import cn.hutool.json.JSONObject;
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.util.Response;
 import com.easy.restful.sys.service.SysMailVerifiesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -26,10 +27,10 @@ public class SysMailVerifiesController extends BaseController {
     /**
      * 验证
      *
-     * @param code 校验码
+     * @param json {code: ''}
      */
-    @GetMapping("/sys/mail/verifies/{code}")
-    public Response verifies(@PathVariable String code) {
-        return Response.success(service.verifies(code));
+    @PostMapping("/sys/mail/verifies")
+    public Response verifies(@RequestBody JSONObject json) {
+        return Response.success(service.verifies(json.getStr("code")));
     }
 }

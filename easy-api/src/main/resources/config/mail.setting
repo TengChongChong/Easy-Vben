@@ -1,0 +1,1 @@
+# 邮件服务器的SMTP地址，可选，默认为smtp.<发件人邮箱后缀>#host = smtp.yeah.nethost = smtp.sina.com# 邮件服务器的SMTP端口，可选，默认25# 注: 出于安全考虑，阿里云默认封禁TCP 25端口出方向的访问流量。如必须使用请参考https://help.aliyun.com/knowledge_detail/56130.html解封# port = 25port = 587# 发件人（必须正确，否则发送失败）#from = EasyFrame<tengchongchong@yeah.net>from =  EasyFrame<easyframe@sina.com># 密码（注意，某些邮箱需要为SMTP服务单独设置密码，详情查看相关帮助）pass = easyframe123

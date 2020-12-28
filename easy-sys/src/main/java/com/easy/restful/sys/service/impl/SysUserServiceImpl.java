@@ -1,5 +1,6 @@
 package com.easy.restful.sys.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -15,6 +16,7 @@ import com.easy.restful.common.redis.util.RedisUtil;
 import com.easy.restful.config.shiro.service.ShiroService;
 import com.easy.restful.exception.BusinessException;
 import com.easy.restful.sys.common.constant.SexConst;
+import com.easy.restful.sys.common.constant.SysConfigConst;
 import com.easy.restful.sys.common.constant.SysConst;
 import com.easy.restful.sys.common.status.UserStatus;
 import com.easy.restful.sys.dao.SysUserMapper;
@@ -24,6 +26,7 @@ import com.easy.restful.sys.service.SysUserRoleService;
 import com.easy.restful.sys.service.SysUserService;
 import com.easy.restful.util.PasswordUtil;
 import com.easy.restful.util.ShiroUtil;
+import com.easy.restful.util.SysConfigUtil;
 import com.easy.restful.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -178,11 +181,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         String salt = RandomUtil.randomString(10);
         String password = PasswordUtil.generatingPasswords(SysConst.projectProperties.getDefaultPassword(), salt);
         queryWrapper.in("id", ids.split(CommonConst.SPLIT));
-        return getBaseMapper().resetPassword(password, salt, queryWrapper) > 0;
+        return getBaseMapper().resetPassword(password, salt, Convert.toStr((SysConfigUtil.get(SysConfigConst.PASSWORD_SECURITY_LEVEL))), queryWrapper) > 0;
     }
 
     @Override
-    public boolean resetPassword(String username, String password) {
+    public boolean resetPassword(String username, String password, String passwordStrength) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         // 生成随机的盐
         String salt = RandomUtil.randomString(10);
@@ -191,8 +194,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         } else {
             password = PasswordUtil.encryptedPasswords(password, salt);
         }
+        if(StrUtil.isBlank(passwordStrength)){
+            // 如果密码强度为空，使用系统要求的强度
+            passwordStrength = Convert.toStr((SysConfigUtil.get(SysConfigConst.PASSWORD_SECURITY_LEVEL)));
+        }
         queryWrapper.eq("username", username);
-        return getBaseMapper().resetPassword(password, salt, queryWrapper) > 0;
+        return getBaseMapper().resetPassword(password, salt, passwordStrength, queryWrapper) > 0;
     }
 
     @Override
@@ -257,6 +264,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUser = shiroService.queryUserPermissions(sysUser);
             ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, sysUser);
         }
+        // 由于密保邮箱&手机可能会发生变动,这里重新从数据库查询
+        SysUser queryResult = selectEmailAndPhone(sysUser.getId());
+        if (queryResult != null) {
+            sysUser.setPhone(queryResult.getPhone());
+            sysUser.setEmail(queryResult.getEmail());
+        }
         return sysUser;
     }
 
@@ -279,7 +292,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public boolean setUserMail(String userId, String mail) {
-        // 解绑该邮箱以前绑定的账号
+        // 解绑该邮箱以前绑定的账号，防止一个邮箱绑定多个账号
         UpdateWrapper<SysUser> untyingMail = new UpdateWrapper<>();
         untyingMail.eq("email", mail);
         untyingMail.set("email", null);
@@ -345,5 +358,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser selectPasswordAndSalt(String id) {
         return getBaseMapper().selectPasswordAndSalt(id);
+    }
+
+    @Override
+    public SysUser selectEmailAndPhone(String id) {
+        // 由于密保邮箱&手机可能会发生变动,这里重新从数据库查询
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("email", "phone");
+        queryWrapper.eq("id", id);
+        return getOne(queryWrapper);
+    }
+
+    @Override
+    public boolean setPhone(String id, String phone) {
+        UpdateWrapper<SysUser> setPhone = new UpdateWrapper<>();
+        setPhone.eq("id", id);
+        setPhone.set("phone", phone);
+        return update(setPhone);
     }
 }
