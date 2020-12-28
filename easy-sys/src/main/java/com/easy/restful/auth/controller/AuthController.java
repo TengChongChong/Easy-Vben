@@ -27,6 +27,7 @@ import java.io.IOException;
  * @date 2020/9/26
  */
 @RestController
+@ResponseResult
 public class AuthController {
 
     @Autowired
@@ -52,8 +53,7 @@ public class AuthController {
      */
     @SysLog(modular = "sys", method = "退出登录")
     @PostMapping("/logout")
-    @ResponseResult
-    public void logout(String aaa) {
+    public void logout() {
         SecurityUtils.getSubject().logout();
     }
 

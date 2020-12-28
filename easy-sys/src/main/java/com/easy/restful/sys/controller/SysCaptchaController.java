@@ -1,6 +1,6 @@
 package com.easy.restful.sys.controller;
 
-import com.easy.restful.common.core.util.Response;
+import com.easy.restful.core.annotation.ResponseResult;
 import com.easy.restful.sys.service.SysCaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,20 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/12/23
  */
 @RestController
+@ResponseResult
 public class SysCaptchaController {
 
     @Autowired
     private SysCaptchaService service;
 
     /**
-     * 申请绑定密保邮箱
+     * 绑定手机短信验证码
      *
      * @param phone 手机号
-     * @return true/false
+     * @return 验证码
      */
     @GetMapping("/auth/sys/binding/phone/captcha")
-    public Response bindingPhone(String phone){
+    public String bindingPhone(String phone){
         // 注：此处仅为演示，实际场景勿返回验证码
-        return Response.success(service.bindingPhone(phone));
+        return service.bindingPhone(phone);
     }
 }

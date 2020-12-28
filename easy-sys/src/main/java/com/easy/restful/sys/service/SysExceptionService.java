@@ -29,7 +29,7 @@ public interface SysExceptionService {
      * 删除
      *
      * @param ids 数据ids
-     * @return 是否成功
+     * @return true/false
      */
     boolean remove(String ids);
     /**

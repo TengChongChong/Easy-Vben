@@ -41,6 +41,10 @@ public class ResponseResultHandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+        if (body instanceof Response) {
+            // 如果已包装，直接返回
+            return body;
+        }
         // 如果方法返回为String类型对象，会使用StringHttpMessageConverter，这时候就会报错：类型转换异常
         if (selectedConverterType == StringHttpMessageConverter.class) {
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);

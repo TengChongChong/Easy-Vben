@@ -32,7 +32,7 @@ public interface SysMessageService {
      * 详情
      *
      * @param id id
-     * @return 详细信息
+     * @return SysMessage
      */
     SysMessage get(String id);
 
@@ -40,14 +40,14 @@ public interface SysMessageService {
      * 详情
      *
      * @param id id
-     * @return 详细信息
+     * @return SysMessage
      */
     SysMessage getBySysMessageId(String id);
 
     /**
      * 新增
      *
-     * @return 默认值
+     * @return SysMessage
      */
     SysMessage add();
 
@@ -55,7 +55,7 @@ public interface SysMessageService {
      * 删除
      *
      * @param ids 数据ids
-     * @return 是否成功
+     * @return true/false
      */
     boolean remove(String ids);
 

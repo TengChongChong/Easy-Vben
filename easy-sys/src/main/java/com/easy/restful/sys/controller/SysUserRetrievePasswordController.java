@@ -2,7 +2,7 @@ package com.easy.restful.sys.controller;
 
 import cn.hutool.json.JSONObject;
 import com.easy.restful.common.core.base.BaseController;
-import com.easy.restful.common.core.util.Response;
+import com.easy.restful.core.annotation.ResponseResult;
 import com.easy.restful.sys.service.SysUserRetrievePasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2019-03-28
  */
 @RestController
+@ResponseResult
 @RequestMapping("/sys/user/retrieve/password")
 public class SysUserRetrievePasswordController extends BaseController {
 
@@ -28,10 +29,11 @@ public class SysUserRetrievePasswordController extends BaseController {
      * 发送重置密码邮件
      *
      * @param json {username: '', email: ''}
+     * @return true/false
      */
     @PostMapping("email")
-    public Response sendEmail(@RequestBody JSONObject json) {
-        return Response.success(service.sendEmail(json.getStr("username"), json.getStr("email")));
+    public boolean sendEmail(@RequestBody JSONObject json) {
+        return service.sendEmail(json.getStr("username"), json.getStr("email"));
     }
 
     /**
@@ -39,10 +41,11 @@ public class SysUserRetrievePasswordController extends BaseController {
      *
      * @param username 用户名
      * @param code     校验码
+     * @return true/false
      */
     @GetMapping("verifies/{username}/{code}")
-    public Response verifiesCode(@PathVariable("username") String username, @PathVariable("code") String code) {
-        return Response.success(service.verifiesCode(username, code));
+    public boolean verifiesCode(@PathVariable("username") String username, @PathVariable("code") String code) {
+        return service.verifiesCode(username, code);
     }
 
     /**
@@ -51,10 +54,11 @@ public class SysUserRetrievePasswordController extends BaseController {
      * @param username 用户名
      * @param code     校验码
      * @param password 密码
+     * @return true/false
      */
     @PostMapping("reset/password/{username}/{code}")
-    public Response resetPassword(@PathVariable("username") String username, @PathVariable("code") String code,
-                                  @RequestParam("password") String password) {
-        return Response.success(service.resetPassword(username, code, password));
+    public boolean resetPassword(@PathVariable("username") String username, @PathVariable("code") String code,
+                                 @RequestParam("password") String password) {
+        return service.resetPassword(username, code, password);
     }
 }

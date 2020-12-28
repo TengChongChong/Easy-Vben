@@ -2,7 +2,7 @@ package com.easy.restful.sys.controller;
 
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.common.pagination.Page;
-import com.easy.restful.common.core.util.Response;
+import com.easy.restful.core.annotation.ResponseResult;
 import com.easy.restful.sys.model.SysException;
 import com.easy.restful.sys.service.SysExceptionService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2019-04-08
  */
 @RestController
+@ResponseResult
 @RequestMapping("/auth/sys/exception")
 public class SysExceptionController extends BaseController {
 
@@ -29,42 +30,35 @@ public class SysExceptionController extends BaseController {
      * 列表
      *
      * @param object 查询条件
+     * @return Page<SysException>
      */
     @GetMapping
     @RequiresPermissions("sys:exception:select")
-    public Response select(SysException object, Page<SysException> page){
-        return Response.success(service.select(object, page));
+    public Page<SysException> select(SysException object, Page<SysException> page) {
+        return service.select(object, page);
     }
 
     /**
      * 详情
      *
      * @param id id
+     * @return SysException
      */
     @GetMapping("{id}")
     @RequiresPermissions("sys:exception:select")
-    public Response get(@PathVariable("id") String id) {
-        return Response.success(service.get(id));
+    public SysException get(@PathVariable("id") String id) {
+        return service.get(id);
     }
 
     /**
      * 删除
      *
      * @param ids 数据ids
+     * @return true/false
      */
     @DeleteMapping("{ids}")
     @RequiresPermissions("sys:exception:remove")
-    public Response remove(@PathVariable("ids") String ids) {
-        return Response.success(service.remove(ids));
-    }
-    /**
-     * 保存
-     *
-     * @param object 表单内容
-     */
-    @PostMapping
-    @RequiresPermissions("sys:exception:save")
-    public Response save(SysException object){
-        return Response.success(service.saveData(object));
+    public boolean remove(@PathVariable("ids") String ids) {
+        return service.remove(ids);
     }
 }

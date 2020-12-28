@@ -23,7 +23,7 @@ public interface SysLogService {
      * 详情
      *
      * @param id id
-     * @return 详细信息
+     * @return SysLog
      */
     SysLog get(String id);
 
@@ -31,7 +31,7 @@ public interface SysLogService {
      * 保存
      *
      * @param object 表单内容
-     * @return 保存后信息
+     * @return SysLog
      */
     SysLog saveData(SysLog object);
 

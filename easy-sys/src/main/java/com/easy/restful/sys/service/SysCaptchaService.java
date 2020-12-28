@@ -8,10 +8,10 @@ package com.easy.restful.sys.service;
  */
 public interface SysCaptchaService {
     /**
-     * 申请绑定密保邮箱
+     * 绑定手机短信验证码
      *
      * @param phone 手机号
-     * @return true/false
+     * @return 验证码
      */
     String bindingPhone(String phone);
 }
