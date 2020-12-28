@@ -60,7 +60,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
             if (Validator.isNotEmpty(sysDict.getCode())) {
                 queryWrapper.like("t.code", sysDict.getCode());
             }
-            throw new EasyException("123");
         }
         page.setDefaultAsc("t.dict_type, t.order_no");
         page.setRecords(getBaseMapper().select(page, queryWrapper));
