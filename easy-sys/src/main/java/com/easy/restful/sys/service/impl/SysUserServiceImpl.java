@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.auth.constant.SessionConst;
 import com.easy.restful.common.core.common.pagination.Page;
+import com.easy.restful.common.core.common.status.CommonStatus;
 import com.easy.restful.common.core.constant.CommonConst;
 import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.common.redis.constant.RedisPrefix;
@@ -18,6 +19,7 @@ import com.easy.restful.exception.BusinessException;
 import com.easy.restful.sys.common.constant.SexConst;
 import com.easy.restful.sys.common.constant.SysConfigConst;
 import com.easy.restful.sys.common.constant.SysConst;
+import com.easy.restful.sys.common.status.DeptStatus;
 import com.easy.restful.sys.common.status.UserStatus;
 import com.easy.restful.sys.dao.SysUserMapper;
 import com.easy.restful.sys.model.SysUser;
@@ -93,8 +95,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (StrUtil.isBlank(keyword)) {
             throw new EasyException("请输入关键字");
         }
-        page.setRecords(getBaseMapper().search(page, UserStatus.ENABLE.getCode(), "%" + keyword + "%"));
+        page.setRecords(getBaseMapper().search(page, "%" + keyword + "%", UserStatus.ENABLE.getCode(), DeptStatus.ENABLE.getCode(), CommonStatus.ENABLE.getCode()));
         return page;
+    }
+
+    @Override
+    public List<SysUser> selectUsersByIds(String ids) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("u.id", ids.split(CommonConst.SPLIT));
+        queryWrapper.eq("u.status", UserStatus.ENABLE.getCode());
+        queryWrapper.eq("sd.status", DeptStatus.ENABLE.getCode());
+        queryWrapper.eq("sdt.status", CommonStatus.ENABLE.getCode());
+        return getBaseMapper().selectUsersByIds(queryWrapper);
     }
 
     @Override
@@ -194,7 +206,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         } else {
             password = PasswordUtil.encryptedPasswords(password, salt);
         }
-        if(StrUtil.isBlank(passwordStrength)){
+        if (StrUtil.isBlank(passwordStrength)) {
             // 如果密码强度为空，使用系统要求的强度
             passwordStrength = Convert.toStr((SysConfigUtil.get(SysConfigConst.PASSWORD_SECURITY_LEVEL)));
         }

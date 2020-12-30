@@ -38,12 +38,21 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * 根据关键字搜索用户
      *
      * @param page    分页
-     * @param status  状态
      * @param keyword 关键字
+     * @param status  状态
+     * @param deptStatus  部门状态
+     * @param deptTypeStatus  部门类型状态
      * @return List<SysUser>
      */
-    List<SysUser> search(Page<SysUser> page, @Param("status") String status, @Param("keyword") String keyword);
+    List<SysUser> search(Page<SysUser> page,
+                         @Param("keyword") String keyword,
+                         @Param("status") String status,
+                         @Param("deptStatus") String deptStatus,
+                         @Param("deptTypeStatus") String deptTypeStatus
 
+    );
+
+    List<SysUser> selectUsersByIds(@Param("ew") QueryWrapper<SysUser> queryWrapper);
     /**
      * 获取详情信息
      *

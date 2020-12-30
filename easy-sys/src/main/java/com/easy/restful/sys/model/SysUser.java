@@ -69,7 +69,6 @@ public class SysUser extends Model<SysUser> implements Serializable {
     /**
      * 生日
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
     /**
      * 状态(1.正常 2.冻结 0.已删除)
@@ -79,7 +78,6 @@ public class SysUser extends Model<SysUser> implements Serializable {
     /**
      * 最后登录时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date lastLogin;
     /**
      * 头像
@@ -101,7 +99,6 @@ public class SysUser extends Model<SysUser> implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     @TableField(fill = FieldFill.INSERT)
     private Date createDate;
     /**

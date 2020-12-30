@@ -1,7 +1,5 @@
 package com.easy.restful.sys.service;
 
-import com.easy.restful.sys.model.SysUser;
-
 import java.util.List;
 
 /**
@@ -15,9 +13,9 @@ public interface SysMessageDetailsService {
      * 根据消息id查询收信人列表
      *
      * @param messageId 消息id
-     * @return List<SysUser>
+     * @return List<String>
      */
-    List<SysUser> selectReceiverUser(String messageId);
+    List<String> selectReceiverUser(String messageId);
 
     /**
      * 根据消息id删除
@@ -48,10 +46,10 @@ public interface SysMessageDetailsService {
      * 保存
      *
      * @param messageId 消息id
-     * @param receiver  收信人
+     * @param receivers  收信人
      * @return true/false
      */
-    boolean saveData(String messageId, String receiver);
+    boolean saveData(String messageId, List<String> receivers);
 
     /**
      * 设置消息标星/取消标星

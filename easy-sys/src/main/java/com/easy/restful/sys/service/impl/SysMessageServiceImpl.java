@@ -76,6 +76,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
             // 默认查询收信
             queryWrapper.ne("d.status", MessageConst.RECEIVE_STATUS_DELETED);
         }
+        page.setDefaultDesc("m.send_date");
         page.setRecords(getBaseMapper().selectReceive(page, queryWrapper));
         return page;
     }
@@ -83,9 +84,8 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     private QueryWrapper<SysMessage> commonQuery(SysMessage object) {
         QueryWrapper<SysMessage> queryWrapper = new QueryWrapper<>();
         if (object != null) {
-            // 标题
-            if (Validator.isNotEmpty(object.getTitle())) {
-                queryWrapper.like("m.title", object.getTitle());
+            if (StrUtil.isNotBlank(object.getTitle())) {
+                queryWrapper.and(i -> i.like("m.title", object.getTitle()).or().like("m.content", object.getTitle()));
             }
             // 类型
             if (Validator.isNotEmpty(object.getType())) {
@@ -97,24 +97,17 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
 
     @Override
     public SysMessage get(String id) {
-        return getById(id);
-    }
-
-    /**
-     * 详情
-     *
-     * @param id id
-     * @return 详细信息
-     */
-    @Override
-    public SysMessage getBySysMessageId(String id) {
-        ToolUtil.checkParams(id);
         SysMessage sysMessage = getById(id);
-        if(sysMessage != null){
+        if (sysMessage != null) {
             // 查询收信人信息
-            sysMessage.setReceiverUserList(sysMessageDetailsService.selectReceiverUser(id));
+            sysMessage.setReceivers(sysMessageDetailsService.selectReceiverUser(id));
         }
         return sysMessage;
+    }
+
+    @Override
+    public SysMessage info(String id) {
+        return getBaseMapper().selectInfoById(id);
     }
 
     /**
@@ -159,8 +152,11 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     public SysMessage saveData(SysMessage object) {
         ToolUtil.checkParams(object);
         boolean isAdd = StrUtil.isBlank(object.getId());
-        if (MessageConst.STATUS_HAS_BEEN_SENT == object.getStatus()) {
+        if (MessageConst.STATUS_HAS_BEEN_SENT.equals(object.getStatus())) {
             object.setSendDate(new Date());
+        }
+        if (StrUtil.isBlank(object.getType())) {
+            object.setType(MessageConst.TYPE_NOTICE);
         }
         boolean isSuccess = saveOrUpdate(object);
         if (isSuccess) {
@@ -169,7 +165,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
                 sysMessageDetailsService.remove(String.valueOf(object.getId()));
             }
             // 保存收信人
-            sysMessageDetailsService.saveData(object.getId(), object.getReceiver());
+            sysMessageDetailsService.saveData(object.getId(), object.getReceivers());
         }
         return object;
     }

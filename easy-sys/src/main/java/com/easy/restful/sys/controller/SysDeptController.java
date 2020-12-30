@@ -34,9 +34,9 @@ public class SysDeptController extends BaseController {
      * @param pId pId
      * @return List<Tree>
      */
-    @GetMapping("pId")
+    @GetMapping("pId/{pId}")
     @RequiresPermissions("sys:dept:select")
-    public List<Tree> selectByPId(@RequestParam(name = "pId", required = false) String pId) {
+    public List<Tree> selectByPId(@PathVariable("pId") String pId) {
         return service.selectByPId(pId);
     }
 
@@ -48,7 +48,7 @@ public class SysDeptController extends BaseController {
      */
     @GetMapping("title")
     @RequiresPermissions("sys:dept:select")
-    public List<Tree> selectByTitle(@RequestParam(name = "title", required = false) String title) {
+    public List<Tree> selectByTitle(@RequestParam("title") String title) {
         return service.selectByTitle(title);
     }
 

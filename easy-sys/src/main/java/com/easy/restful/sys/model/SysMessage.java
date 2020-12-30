@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -68,7 +69,6 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
     /**
      * 类型
      */
-    @NotBlank(message = "类型不能为空")
     private String type;
 
     /**
@@ -125,16 +125,9 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
     /**
      * 收信人
      */
-    @NotBlank(message = "收信人不能为空")
+    @NotEmpty(message = "收信人不能为空")
     @TableField(exist = false)
-    private String receiver;
-
-    /**
-     * 收信人列表
-     * 用于修改的时候显示收信人信息
-     */
-    @TableField(exist = false)
-    private List<SysUser> receiverUserList;
+    private List<String> receivers;
 
     /**
      * 收信->id
@@ -293,12 +286,12 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
         this.avatar = avatar;
     }
 
-    public String getReceiver() {
-        return receiver;
+    public List<String> getReceivers() {
+        return receivers;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
+    public void setReceivers(List<String> receivers) {
+        this.receivers = receivers;
     }
 
     public String getMessageId() {
@@ -317,11 +310,4 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
         this.readDate = readDate;
     }
 
-    public List<SysUser> getReceiverUserList() {
-        return receiverUserList;
-    }
-
-    public void setReceiverUserList(List<SysUser> receiverUserList) {
-        this.receiverUserList = receiverUserList;
-    }
 }

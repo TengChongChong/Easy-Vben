@@ -42,7 +42,7 @@ public interface SysMessageService {
      * @param id id
      * @return SysMessage
      */
-    SysMessage getBySysMessageId(String id);
+    SysMessage info(String id);
 
     /**
      * 新增

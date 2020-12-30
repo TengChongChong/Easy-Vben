@@ -70,7 +70,7 @@ public class SysPermissionsController extends BaseController {
      * @param status 状态
      * @return true/false
      */
-    @PostMapping("set/{id}/status/{status}")
+    @PostMapping("{id}/status/{status}")
     @RequiresPermissions("sys:permissions:status")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
@@ -118,9 +118,9 @@ public class SysPermissionsController extends BaseController {
      * @param pId 父权限id
      * @return List<JsTree>
      */
-    @GetMapping("pId")
+    @GetMapping("pId/{pId}")
     @RequiresPermissions("sys:permissions:select")
-    public List<Tree> selectByPId(@RequestParam(name = "pId", required = false) String pId) {
+    public List<Tree> selectByPId(@PathVariable("pId") String pId) {
         return service.selectByPId(pId);
     }
 
@@ -143,7 +143,7 @@ public class SysPermissionsController extends BaseController {
      */
     @GetMapping("title")
     @RequiresPermissions("sys:permissions:select")
-    public List<Tree> selectByTitle(@RequestParam(name = "title", required = false) String title) {
+    public List<Tree> selectByTitle(@RequestParam("title") String title) {
         return service.selectByTitle(title);
     }
 
@@ -154,7 +154,7 @@ public class SysPermissionsController extends BaseController {
      * @param dragVO 拖动信息
      * @return true/false
      */
-    @PostMapping("/move")
+    @PostMapping("move")
     @RequiresPermissions("sys:permissions:move")
     public boolean move(@RequestBody DragVO dragVO) {
         return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.restful.common.core.exception.EasyException;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
@@ -84,7 +85,11 @@ public class JacksonConfig {
         try {
             return DateUtil.parse(date).toJdkDate();
         } catch (DateException e) {
-            throw new EasyException("无效的日期格式[" + date + "]");
+            try {
+                return new Date(Long.parseLong(date));
+            } catch (EasyException exception) {
+                throw new EasyException("无效的日期格式[" + date + "]");
+            }
         }
     }
 
@@ -108,6 +113,14 @@ public class JacksonConfig {
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)));
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN)));
         javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN)));
+
+        //Date序列化和反序列化
+        javaTimeModule.addSerializer(Date.class, new JsonSerializer<Date>() {
+            @Override
+            public void serialize(Date date, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+                jsonGenerator.writeNumber(date.getTime());
+            }
+        });
 
         javaTimeModule.addDeserializer(Date.class, new JsonDeserializer<Date>() {
             @Override

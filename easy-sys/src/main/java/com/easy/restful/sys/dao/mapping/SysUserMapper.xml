@@ -64,13 +64,25 @@
         select role_id from sys_user_role ur where ur.user_id = #{id}
     </select>
     <select id="search" resultType="com.easy.restful.sys.model.SysUser">
-        select u.id, u.username, u.nickname, u.email, u.phone, d.name as departName
+        select u.id, u.username, u.nickname, u.email, u.phone, sd.name as deptName, u.avatar
         from sys_user u
-            left join sys_dept d on d.id = u.dept_id
+            left join sys_dept sd on sd.id = u.dept_id
+            left join sys_dept_type sdt on sdt.code = sd.type_code
         where u.status = #{status}
-          and (u.username like #{keyword} or nickname like #{keyword} or d.name like #{keyword})
+          and sd.status = #{deptStatus}
+          and sdt.status = #{deptTypeStatus}
+          and (u.username like #{keyword} or nickname like #{keyword} or sd.name like #{keyword})
     </select>
     <select id="selectPasswordAndSalt" resultType="com.easy.restful.sys.model.SysUser">
         select u.password, u.salt from sys_user u where u.id = #{id}
+    </select>
+    <select id="selectUsersByIds" resultType="com.easy.restful.sys.model.SysUser">
+        select u.id, u.username, u.nickname, u.email, u.phone, sd.name as deptName, u.avatar
+        from sys_user u
+             left join sys_dept sd on sd.id = u.dept_id
+             left join sys_dept_type sdt on sdt.code = sd.type_code
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
 </mapper>

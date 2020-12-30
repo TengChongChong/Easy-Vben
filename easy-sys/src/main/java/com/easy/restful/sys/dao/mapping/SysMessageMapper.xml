@@ -47,4 +47,11 @@
             ${ew.sqlSegment}
         </where>
     </select>
+    <select id="selectInfoById" resultType="com.easy.restful.sys.model.SysMessage">
+        select m.id, m.title, m.content, m.type, m.create_date, m.send_date,
+        m.important, u.nickname, u.avatar
+        from sys_message m
+        left join sys_user u on u.id = m.create_user
+        where m.id = #{id}
+    </select>
 </mapper>

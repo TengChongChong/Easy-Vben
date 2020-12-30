@@ -3,6 +3,8 @@ package com.easy.restful.sys.service;
 import com.easy.restful.common.core.common.pagination.Page;
 import com.easy.restful.sys.model.SysUser;
 
+import java.util.List;
+
 /**
  * 用户管理
  *
@@ -27,6 +29,14 @@ public interface SysUserService {
      * @return Page<SysUser>
      */
     Page<SysUser> search(String keyword, Page<SysUser> page);
+
+    /**
+     * 获取指定用户信息
+     *
+     * @param ids ids
+     * @return List<SysUser>
+     */
+    List<SysUser> selectUsersByIds(String ids);
 
     /**
      * 详情

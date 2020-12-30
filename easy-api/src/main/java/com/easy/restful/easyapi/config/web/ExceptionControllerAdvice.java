@@ -95,7 +95,7 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Response parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
-        return Response.failError("参数体不能为空");
+        return Response.failError(ResultCode.BAD_REQUEST.getCode(), "参数体为空或参数类型错误[" + e.getMessage() + "]");
     }
 
     /**
@@ -118,7 +118,7 @@ public class ExceptionControllerAdvice {
                 return Response.failError(fieldError.getDefaultMessage());
             }
         }
-        return Response.failError("参数效验异常处理器");
+        return Response.failError(ResultCode.BAD_REQUEST.getCode(), "参数效验异常[" + e.getMessage() + "]");
     }
 
 

@@ -68,7 +68,7 @@ public class SysDeptTypeController extends BaseController {
      * @param ids 部门类型ids
      * @return true/false
      */
-    @PostMapping("set/{id}/status/{status}")
+    @PostMapping("{id}/status/{status}")
     @RequiresPermissions("sys:dept:type:status")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
@@ -149,7 +149,7 @@ public class SysDeptTypeController extends BaseController {
      * @param dragVO 拖动信息
      * @return true/false
      */
-    @PostMapping("/move")
+    @PostMapping("move")
     @RequiresPermissions("sys:dept:type:move")
     public boolean move(@RequestBody DragVO dragVO) {
         return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());

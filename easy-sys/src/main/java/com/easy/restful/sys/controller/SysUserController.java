@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 用户管理
@@ -44,10 +45,22 @@ public class SysUserController extends BaseController {
      * @param keyword 关键字
      * @return Page<SysUser>
      */
-    @GetMapping("search")
+    @GetMapping("keyword")
     @RequiresPermissions("sys:user:search")
-    public Page<SysUser> search(String keyword, Page<SysUser> page) {
+    public Page<SysUser> search(@RequestParam("keyword") String keyword, Page<SysUser> page) {
         return service.search(keyword, page);
+    }
+
+    /**
+     * 获取指定用户信息
+     *
+     * @param ids ids
+     * @return List<SysUser>
+     */
+    @GetMapping("users/{ids}")
+    @RequiresPermissions("sys:user:search")
+    public List<SysUser> selectUsersByIds(@PathVariable("ids") String ids) {
+        return service.selectUsersByIds(ids);
     }
 
     /**

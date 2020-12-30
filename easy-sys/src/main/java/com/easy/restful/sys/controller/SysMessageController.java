@@ -1,5 +1,6 @@
 package com.easy.restful.sys.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.easy.restful.common.core.base.BaseController;
 import com.easy.restful.common.core.common.pagination.Page;
@@ -9,7 +10,6 @@ import com.easy.restful.sys.service.SysMessageDetailsService;
 import com.easy.restful.sys.service.SysMessageService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -77,13 +77,15 @@ public class SysMessageController extends BaseController {
      * @param messageId 收信id
      * @return SysMessage
      */
-    @GetMapping("info/{id}/{messageId}")
-    public SysMessage info(@PathVariable("id") String id,
-                           @PathVariable("messageId") String messageId) {
-        // 标记已读
-        sysMessageDetailsService.setRead(messageId);
+    @GetMapping("info")
+    public SysMessage info(@RequestParam(value = "id", required = false) String id,
+                           @RequestParam(value = "messageId", required = true) String messageId) {
+        if(StrUtil.isNotBlank(id)){
+            // 标记已读
+            sysMessageDetailsService.setRead(id);
+        }
         // 获取消息详情
-        return service.getBySysMessageId(id);
+        return service.info(messageId);
     }
 
     /**
@@ -93,7 +95,7 @@ public class SysMessageController extends BaseController {
      */
     @GetMapping("add")
     @RequiresPermissions("sys:message:add")
-    public SysMessage add(Model model) {
+    public SysMessage add() {
         return service.add();
     }
 

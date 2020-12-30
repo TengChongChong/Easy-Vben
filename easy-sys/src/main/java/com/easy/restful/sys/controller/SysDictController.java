@@ -45,9 +45,9 @@ public class SysDictController extends BaseController {
      * @param dictType 字典类型
      * @return List<Select>
      */
-    @GetMapping("dict-type")
+    @GetMapping("dict-type/{dictType}")
     @RequiresPermissions("sys:dict:select")
-    public List<Select> selectByDictType(@RequestParam("dictType") String dictType) {
+    public List<Select> selectByDictType(@PathVariable("dictType") String dictType) {
         return service.selectByDictType(dictType);
     }
 
@@ -70,7 +70,7 @@ public class SysDictController extends BaseController {
      * @param ids 字典ids
      * @return true/false
      */
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("{ids}")
     @RequiresPermissions("sys:dict:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
@@ -94,7 +94,7 @@ public class SysDictController extends BaseController {
      * @param id 字典id
      * @return SysDict
      */
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public SysDict get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -104,7 +104,7 @@ public class SysDictController extends BaseController {
      *
      * @return true/false
      */
-    @PostMapping("/generate/dict/data")
+    @PostMapping("generate/dict/data")
     @RequiresPermissions("sys:dict:generate")
     public boolean generateDictData() {
         return service.generateDictData();

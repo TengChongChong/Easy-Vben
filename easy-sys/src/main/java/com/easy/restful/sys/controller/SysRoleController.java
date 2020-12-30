@@ -33,9 +33,9 @@ public class SysRoleController extends BaseController {
      * @param pId 父角色id
      * @return List<Tree>
      */
-    @GetMapping("pId")
+    @GetMapping("pId/{pId}")
     @RequiresPermissions("sys:role:select")
-    public List<Tree> selectByPId(@RequestParam(name = "pId", required = false) String pId) {
+    public List<Tree> selectByPId(@PathVariable("pId") String pId) {
         return service.selectByPId(pId);
     }
 
@@ -67,7 +67,7 @@ public class SysRoleController extends BaseController {
      * @param id 角色id
      * @return true/false
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @RequiresPermissions("sys:role:remove")
     public boolean remove(@PathVariable("id") String id) {
         return service.remove(id);
@@ -79,7 +79,7 @@ public class SysRoleController extends BaseController {
      * @param ids 角色ids
      * @return true/false
      */
-    @DeleteMapping("/batch/{id}")
+    @DeleteMapping("batch/{id}")
     @RequiresPermissions("sys:role:remove")
     public boolean batchRemove(@PathVariable("id") String ids) {
         return service.batchRemove(ids);
@@ -92,7 +92,7 @@ public class SysRoleController extends BaseController {
      * @param status 状态
      * @return true/false
      */
-    @PostMapping("/set/{id}/status/{status}")
+    @PostMapping("{id}/status/{status}")
     @RequiresPermissions("sys:role:status")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
@@ -107,7 +107,6 @@ public class SysRoleController extends BaseController {
     @PostMapping
     @RequiresPermissions("sys:role:save")
     public SysRole save(@RequestBody @Valid SysRole object) {
-        logger.debug("/auth/sys/role/save/data");
         return service.saveData(object);
     }
 
@@ -130,7 +129,7 @@ public class SysRoleController extends BaseController {
      */
     @GetMapping("title")
     @RequiresPermissions("sys:role:select")
-    public List<Tree> selectByTitle(@RequestParam(name = "title", required = false) String title) {
+    public List<Tree> selectByTitle(@RequestParam("title") String title) {
         return service.selectByTitle(title);
     }
 
@@ -140,7 +139,7 @@ public class SysRoleController extends BaseController {
      * @param dragVO 拖动信息
      * @return true/false
      */
-    @PostMapping("/move")
+    @PostMapping("move")
     @RequiresPermissions("sys:role:move")
     public boolean move(@RequestBody DragVO dragVO) {
         return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());

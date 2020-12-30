@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.restful.common.core.constant.CommonConst;
 import com.easy.restful.sys.common.constant.MessageConst;
 import com.easy.restful.sys.dao.SysMessageDetailsMapper;
 import com.easy.restful.sys.model.SysMessageDetails;
@@ -29,7 +28,7 @@ import java.util.List;
 @Service
 public class SysMessageDetailsServiceImpl extends ServiceImpl<SysMessageDetailsMapper, SysMessageDetails> implements SysMessageDetailsService {
     @Override
-    public List<SysUser> selectReceiverUser(String messageId) {
+    public List<String> selectReceiverUser(String messageId) {
         return getBaseMapper().selectReceiverUser(messageId);
     }
 
@@ -82,9 +81,8 @@ public class SysMessageDetailsServiceImpl extends ServiceImpl<SysMessageDetailsM
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public boolean saveData(String messageId, String receiver) {
+    public boolean saveData(String messageId, List<String> receivers) {
         List<SysMessageDetails> detailsList = new ArrayList<>();
-        String[] receivers = receiver.split(CommonConst.SPLIT);
         for (String receiverUser : receivers) {
             SysMessageDetails details = new SysMessageDetails();
             details.setMessageId(messageId);

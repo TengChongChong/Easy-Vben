@@ -41,4 +41,12 @@ public interface SysMessageMapper extends BaseMapper<SysMessage> {
      */
     int selectUnreadCount(@Param("ew") QueryWrapper<SysMessage> queryWrapper);
 
+    /**
+     * 查询消息详情
+     *
+     * @param id id
+     * @return SysMessage
+     */
+    SysMessage selectInfoById(@Param("id") String id);
+
 }

@@ -13,14 +13,8 @@
     </resultMap>
 
     <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, message_id, receiver_user, read_date, status
-    </sql>
-    <select id="selectReceiverUser" resultType="com.easy.restful.sys.model.SysUser">
-        select u.id, u.username
-        from sys_message_details d
-            left join sys_user u on u.id = d.receiver_user
-        where d.message_id = #{messageId}
+    <select id="selectReceiverUser" resultType="java.lang.String">
+        select d.receiver_user from sys_message_details d where d.message_id = #{messageId}
     </select>
 
 </mapper>

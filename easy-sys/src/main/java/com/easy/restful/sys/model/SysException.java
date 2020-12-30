@@ -30,7 +30,6 @@ public class SysException extends Model<SysException> implements Serializable {
     /**
      * 触发时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date triggerTime;
 
     /**
