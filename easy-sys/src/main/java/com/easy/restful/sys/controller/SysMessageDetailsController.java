@@ -68,4 +68,14 @@ public class SysMessageDetailsController extends BaseController {
         return service.setRead(ids);
     }
 
+    /**
+     * 设置消息已读
+     *
+     * @return true/false
+     */
+    @PostMapping( "read")
+    public boolean setRead() {
+        return service.setRead(null);
+    }
+
 }
