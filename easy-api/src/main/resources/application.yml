@@ -1,6 +1,6 @@
 project:
     # 版本号
-    version: 0.1.0
+    version: 0.4.0
 spring:
     profiles:
         # dev - 开发模式 / prod - 生产模式

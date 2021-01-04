@@ -9,6 +9,7 @@ import com.easy.restful.common.core.common.tree.TreeUtil;
 import com.easy.restful.common.core.constant.CommonConst;
 import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.common.core.exception.GlobalException;
+import com.easy.restful.sys.common.constant.OpeningModeConst;
 import com.easy.restful.sys.common.status.PermissionsHideStatus;
 import com.easy.restful.sys.common.status.PermissionsStatus;
 import com.easy.restful.sys.common.type.PermissionsType;
@@ -89,6 +90,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
             sysPermissions.setStatus(PermissionsStatus.ENABLE.getCode());
             sysPermissions.setHide(PermissionsHideStatus.ENABLE.getCode());
             sysPermissions.setType(PermissionsType.MENU.getCode());
+            sysPermissions.setTarget(OpeningModeConst.DEFAULT);
             if (TreeUtil.BASE_ID.equals(pId)) {
                 sysPermissions.setpName(SysConfigUtil.getProjectName());
             } else {

@@ -46,7 +46,6 @@ public class SysUserController extends BaseController {
      * @return Page<SysUser>
      */
     @GetMapping("keyword")
-    @RequiresPermissions("sys:user:search")
     public Page<SysUser> search(@RequestParam("keyword") String keyword, Page<SysUser> page) {
         return service.search(keyword, page);
     }
@@ -58,7 +57,7 @@ public class SysUserController extends BaseController {
      * @return List<SysUser>
      */
     @GetMapping("users/{ids}")
-    @RequiresPermissions("sys:user:search")
+    @RequiresPermissions("sys:user:select")
     public List<SysUser> selectUsersByIds(@PathVariable("ids") String ids) {
         return service.selectUsersByIds(ids);
     }

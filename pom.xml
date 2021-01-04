@@ -34,7 +34,7 @@
         <javax.mail.version>1.4.7</javax.mail.version>
         <poi.version>4.1.2</poi.version>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
-        <druid.version>1.2.4</druid.version>
+        <druid.version>1.1.10</druid.version>
         <mysql-connector-java.version>8.0.22</mysql-connector-java.version>
         <fastjson.version>1.2.75</fastjson.version>
         <swagger.fox.version>2.9.2</swagger.fox.version>
