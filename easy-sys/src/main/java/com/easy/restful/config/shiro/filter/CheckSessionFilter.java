@@ -47,10 +47,7 @@ public class CheckSessionFilter extends AccessControlFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) {
-        if (((HttpServletRequest) servletRequest).getMethod().toUpperCase().equals(REQUET_TYPE)) {
-            return true;
-        }
-        return false;
+        return ((HttpServletRequest) servletRequest).getMethod().equalsIgnoreCase(REQUET_TYPE);
     }
 
     /**
@@ -88,7 +85,7 @@ public class CheckSessionFilter extends AccessControlFilter {
             }
             return true;
         }
-        responseJson(subject, servletResponse, "会话信息已过期");
+        responseJson(subject, servletResponse, "会话已过期，请重新登录");
         return false;
     }
 
