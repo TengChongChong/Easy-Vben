@@ -45,7 +45,7 @@ public class ShiroConfig {
      * cookie加密的密钥
      * 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
      */
-    public static final String REMEMBER_ME_SECRET_KEY = "1QWLxg+NYmxraMoxAXu/Iw==";
+    public static final String REMEMBER_ME_SECRET_KEY = "XPgE3lrQuxfE3tBEnU/7iQ==";
 
     /**
      * 记住我过期时间 默认30天 单位: 秒
@@ -214,7 +214,7 @@ public class ShiroConfig {
     /**
      * 凭证匹配器
      *
-     * @return
+     * @return true/false
      */
     @Bean
     public RetryLimitCredentialsMatcher credentialsMatcher() {
