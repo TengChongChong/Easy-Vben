@@ -94,7 +94,7 @@ public class SysMessageController extends BaseController {
      * @return SysMessage
      */
     @GetMapping("add")
-    @RequiresPermissions("sys:message:add")
+    @RequiresPermissions("sys:message:save")
     public SysMessage add() {
         return service.add();
     }
