@@ -37,7 +37,7 @@ import java.util.List;
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SysExceptionService sysExceptionService;
@@ -79,10 +79,10 @@ public class ExceptionControllerAdvice {
         if (e.getCause() != null && e.getCause() instanceof EasyException) {
             logger.error("登录异常:" + e.getCause().getMessage());
             EasyException easyException = (EasyException) e.getCause();
-            return Response.failError(easyException.getCode(), easyException.getMessage());
+            return Response.failError(null, easyException.getCode(), easyException.getMessage(), easyException.getShowType());
         } else {
             logger.error("登录异常:" + e.getMessage());
-            return Response.failError(e.getMessage());
+            return Response.failError(e.getMessage(), Response.SILENT);
         }
     }
 
