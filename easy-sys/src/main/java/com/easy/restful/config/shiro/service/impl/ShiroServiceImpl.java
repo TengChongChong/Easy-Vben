@@ -6,6 +6,7 @@ import com.easy.restful.auth.constant.SessionConst;
 import com.easy.restful.common.core.common.status.CommonStatus;
 import com.easy.restful.common.core.common.status.ResultCode;
 import com.easy.restful.common.core.exception.EasyException;
+import com.easy.restful.common.core.util.Response;
 import com.easy.restful.common.core.util.WebUtils;
 import com.easy.restful.common.redis.constant.RedisPrefix;
 import com.easy.restful.common.redis.util.RedisUtil;
@@ -70,7 +71,7 @@ public class ShiroServiceImpl implements ShiroService {
         String isLockKey = RedisPrefix.ACCOUNT + "is_lock_" + username;
         // 检查是否已被锁定
         if (checkIsLock(username)) {
-            throw new EasyException(ResultCode.UNAUTHORIZED.getCode(), "帐号[" + username + "]已被锁定，请" + RedisUtil.getExpire(isLockKey) / 60 + "分钟后重试");
+            throw new EasyException(Response.SILENT, ResultCode.UNAUTHORIZED.getCode(), "帐号[" + username + "]已被锁定，请" + RedisUtil.getExpire(isLockKey) / 60 + "分钟后重试");
         }
         // 累加尝试次数
         int loginCount = getTrialFrequency(username, true);
@@ -99,7 +100,7 @@ public class ShiroServiceImpl implements ShiroService {
         String isLockKey = RedisPrefix.ACCOUNT + "is_lock_" + username;
         RedisUtil.set(isLockKey, "lock", SysConst.projectProperties.getLoginLockLength());
         RedisUtil.setExpire(loginCountKey, SysConst.projectProperties.getLoginLockLength());
-        throw new EasyException(ResultCode.UNAUTHORIZED.getCode(), "由于密码输入错误次数过多，帐号[" + username + "]已被锁定" + SysConst.projectProperties.getLoginLockLength() / 60 + "分钟");
+        throw new EasyException(Response.SILENT, ResultCode.UNAUTHORIZED.getCode(), "由于密码输入错误次数过多，帐号[" + username + "]已被锁定" + SysConst.projectProperties.getLoginLockLength() / 60 + "分钟");
     }
 
     /**
@@ -160,20 +161,20 @@ public class ShiroServiceImpl implements ShiroService {
             String code = (String) ShiroUtil.getAttribute(SessionConst.VERIFICATION_CODE);
             if (StrUtil.isBlank(code)) {
                 // 如果验证码为空，说明验证码过期了，需要刷新验证码
-                throw new EasyException("303014", "验证码已过期，请重新输入");
+                throw new EasyException(Response.SILENT, "03014", "验证码已过期，请重新输入");
             }
             HttpServletRequest request = WebUtils.getRequest();
             if (request != null) {
                 String receivedCode = request.getParameter("code");
                 if (StrUtil.isNotBlank(receivedCode)) {
-                    if (!receivedCode.toLowerCase().equals(code.toLowerCase())) {
-                        throw new EasyException("303012", "验证码错误，请重新输入");
+                    if (!receivedCode.equalsIgnoreCase(code)) {
+                        throw new EasyException(Response.SILENT, "03012", "验证码错误，请重新输入");
                     }
                 } else {
-                    throw new EasyException("203013", "请输入验证码");
+                    throw new EasyException(Response.SILENT, "03013", "请输入验证码");
                 }
             } else {
-                throw new EasyException("获取请求失败");
+                throw new EasyException(Response.SILENT, "获取请求失败");
             }
         }
         return true;
@@ -201,7 +202,7 @@ public class ShiroServiceImpl implements ShiroService {
                 // 用户不存在或密码错误
                 if (sysUser == null || !PasswordUtil.encryptedPasswords(password, sysUser.getSalt()).equals(sysUser.getPassword())) {
                     if (retryCount > 0) {
-                        throw new EasyException(ResultCode.UNAUTHORIZED.getCode(), "用户名或密码错误，你还剩" + retryCount + "次重试的机会");
+                        throw new EasyException(Response.SILENT, ResultCode.UNAUTHORIZED.getCode(), "用户名或密码错误，你还剩" + retryCount + "次重试的机会");
                     } else {
                         lockUser(username);
                     }
@@ -211,30 +212,30 @@ public class ShiroServiceImpl implements ShiroService {
                 // 账号被禁用
                 if (UserStatus.DISABLE.getCode().equals(sysUser.getStatus())) {
                     logger.debug("账号[" + username + "]被禁用");
-                    throw new EasyException(BusinessException.USER_DISABLED);
+                    throw new EasyException(Response.SILENT, BusinessException.USER_DISABLED);
                 }
                 // 查询用户部门信息并验证
                 sysUser.setDept(departmentMapper.selectById(sysUser.getDeptId()));
                 // 部门被删除
                 if (sysUser.getDept() == null) {
                     logger.debug("账号[" + username + "]所在部门[" + sysUser.getDeptName() + "]被删除");
-                    throw new EasyException(BusinessException.DEPT_NON_EXISTENT);
+                    throw new EasyException(Response.SILENT, BusinessException.DEPT_NON_EXISTENT);
                 }
                 // 部门被禁用
                 if (CommonStatus.DISABLE.getCode().equals(sysUser.getDept().getStatus())) {
                     logger.debug("账号[" + username + "]所在部门[" + sysUser.getDeptName() + "]被禁用");
-                    throw new EasyException(BusinessException.DEPT_DISABLED);
+                    throw new EasyException(Response.SILENT, BusinessException.DEPT_DISABLED);
                 }
                 // 检查部门类型是否被禁用
                 if (StrUtil.isBlank(sysUser.getDept().getTypeCode())) {
-                    throw new EasyException("部门[" + sysUser.getDept().getName() + "]未设置类型，请联系管理员");
+                    throw new EasyException(Response.SILENT, "部门[" + sysUser.getDept().getName() + "]未设置类型，请联系管理员");
                 }
                 sysDeptTypeService.checkDeptTypeIsDisabled(sysUser.getDept().getTypeCode());
 
                 return sysUser;
             }
         }
-        throw new EasyException("未知错误，请联系管理员");
+        throw new EasyException(Response.SILENT, "未知错误，请联系管理员");
     }
 
     @Override
