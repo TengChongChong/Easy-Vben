@@ -15,17 +15,16 @@
     <description>文件相关功能</description>
 
     <dependencies>
-        <!-- str:common -->
         <dependency>
             <groupId>com.easy.restful</groupId>
             <artifactId>easy-sys</artifactId>
         </dependency>
-        <!-- end:common -->
     </dependencies>
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
             </resource>
             <resource>
                 <directory>src/main/webapp</directory>
