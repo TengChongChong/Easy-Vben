@@ -40,7 +40,7 @@ public class EasyException extends RuntimeException {
         this.showType = showType;
     }
 
-    public EasyException(String code, Integer showType, String message) {
+    public EasyException(Integer showType, String code, String message) {
         this.code = code;
         this.message = message;
         this.showType = showType;
@@ -49,6 +49,11 @@ public class EasyException extends RuntimeException {
     public EasyException(EasyServiceException easyServiceException) {
         this.code = easyServiceException.getCode();
         this.message = easyServiceException.getMessage();
+    }
+    public EasyException(Integer showType, EasyServiceException easyServiceException) {
+        this.code = easyServiceException.getCode();
+        this.message = easyServiceException.getMessage();
+        this.showType = showType;
     }
 
     public String getCode() {

@@ -188,6 +188,17 @@ public class Response implements Serializable {
     /**
      * 失败提示 - Notification 通知提醒框 - error
      *
+     * @param errorMessage 错误信息
+     * @param showType     错误显示方式
+     * @return Response
+     */
+    public static Response failError(String errorMessage, Integer showType) {
+        return fail(null, ERROR_CODE, errorMessage, showType);
+    }
+
+    /**
+     * 失败提示 - Notification 通知提醒框 - error
+     *
      * @param errorCode    错误码
      * @param errorMessage 错误信息
      * @return Response
@@ -282,6 +293,7 @@ public class Response implements Serializable {
      * @param message  消息
      */
     public static void response(HttpServletResponse response, String code, String message) {
+        WebUtils.setCors(response);
         ServletUtil.write(
                 response,
                 Response.failError(code, message).toString(),
