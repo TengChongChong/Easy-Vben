@@ -128,7 +128,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Object handleException(HttpServletRequest request, RuntimeException e) {
-//        logger.debug("未知异常", e);
+        logger.debug("未知异常", e);
         // 将异常记录到表中
         saveLog(HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getRequestURI(), e);
         return Response.failError(e.getMessage());
