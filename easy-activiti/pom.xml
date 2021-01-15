@@ -71,9 +71,6 @@
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <directory>src/main/webapp</directory>
-            </resource>
-            <resource>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>

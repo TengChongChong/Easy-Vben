@@ -27,6 +27,10 @@
             <groupId>com.easy.restful</groupId>
             <artifactId>easy-activiti</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.easy.restful</groupId>
+            <artifactId>easy-sample</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
