@@ -10,6 +10,12 @@ spring:
         static-locations: ["file:${project.file-upload-path}/", "classpath:/static/"]
     mvc:
         static-path-pattern: /static/**
+    servlet:
+        multipart:
+            # 上传文件总的最大值
+            max-request-size: 1000MB
+            # 单个文件的最大值
+            max-file-size: 100MB
     datasource:
         druid:
             # druid连接池监控
