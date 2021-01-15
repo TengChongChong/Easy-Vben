@@ -23,6 +23,10 @@
             <groupId>com.easy.restful</groupId>
             <artifactId>easy-file</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.easy.restful</groupId>
+            <artifactId>easy-activiti</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

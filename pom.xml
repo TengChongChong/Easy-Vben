@@ -23,6 +23,7 @@
         <module>easy-common</module>
         <module>easy-sys</module>
         <module>easy-file</module>
+        <module>easy-activiti</module>
     </modules>
 
     <properties>
@@ -70,6 +71,11 @@
             <dependency>
                 <groupId>com.easy.restful</groupId>
                 <artifactId>easy-file</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.easy.restful</groupId>
+                <artifactId>easy-activiti</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

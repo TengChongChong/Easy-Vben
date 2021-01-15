@@ -1,0 +1,65 @@
+<form class="e-form e-form--label-align-right" novalidate="novalidate" data-e-cache-sn="5">
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <div class="form-group e-form-group row">
+                <label class="col-4 col-form-label">流程：</label>
+                <div class="col-8">
+                    <span class="form-control form-control-static">
+                        ${processDefinitionName} <span class="badge badge-brand badge--inline badge--pill">v ${processVersion}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="form-group e-form-group row">
+                <label class="col-4 col-form-label">发起时间：</label>
+                <div class="col-8">
+                    <span class="form-control form-control-static">${createTime}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12">
+            <div class="form-group e-form-group row">
+                <label class="col-4 col-form-label">流水号：</label>
+                <div class="col-8">
+                    <span class="form-control form-control-static">${processInstanceId}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="form-group e-form-group row">
+                <label class="col-4 col-form-label">业务：</label>
+                <div class="col-8">
+                    <span class="form-control form-control-static">
+                        <a href="#" class="e-link e-font-brand" onclick="EApp.openPage('${processInstanceId}', basePath + '${businessDetailsUrl}')">${businessTitle}</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="form-group e-form-group row">
+                <label class="col-4 col-form-label">撤销时间：</label>
+                <div class="col-8">
+                    <span class="form-control form-control-static">${deleteDate}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="form-group e-form-group row">
+                <label class="col-4 col-form-label">撤销人：</label>
+                <div class="col-8">
+                    <span class="form-control form-control-static">${deleteUser}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group e-form-group row">
+                <label class="col-2 col-form-label">撤销原由：</label>
+                <div class="col-8">
+                    <span class="form-control form-control-static">${deleteReason}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
