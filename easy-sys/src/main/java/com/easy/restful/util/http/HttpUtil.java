@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -54,7 +55,7 @@ public class HttpUtil {
         if (isMSIE) {
             fileName = URLEncoder.encode(fileName, "UTF-8");
         } else {
-            fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+            fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
         }
 
         HttpHeaders headers = new HttpHeaders();

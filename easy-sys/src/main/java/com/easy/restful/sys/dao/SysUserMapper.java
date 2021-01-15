@@ -52,6 +52,12 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     );
 
+    /**
+     * 根据查询条件查询用户信息
+     *
+     * @param queryWrapper 查询条件
+     * @return List<SysUser>
+     */
     List<SysUser> selectUsersByIds(@Param("ew") QueryWrapper<SysUser> queryWrapper);
     /**
      * 获取详情信息

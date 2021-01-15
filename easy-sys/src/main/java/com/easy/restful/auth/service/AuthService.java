@@ -14,9 +14,8 @@ public interface AuthService {
     /**
      * 登录
      *
-     * @param username    账号（用户名、手机号、邮箱）
-     * @param password   密码
-     * @param rememberMe 记住我
+     * @param loginVO 登录信息
+     * @return Subject
      */
     Subject login(LoginVO loginVO);
 }

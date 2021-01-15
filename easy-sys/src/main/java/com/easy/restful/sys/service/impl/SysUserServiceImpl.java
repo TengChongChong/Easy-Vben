@@ -87,6 +87,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (Validator.isNotEmpty(sysUser.getDeptId())) {
             queryWrapper.eq("dept_id", sysUser.getDeptId());
         }
+        page.setDefaultDesc("create_date");
         return page(page, queryWrapper);
     }
 

@@ -42,7 +42,7 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
                 String code = RandomUtil.randomString(6);
                 // 放到redis中,用于修改密码时验证
                 RedisUtil.set(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username, code);
-                Map<String,Object> params = new HashMap<>();
+                Map<String,Object> params = new HashMap<>(2);
                 params.put("code", code);
                 params.put("username", hideUsername);
                 MailUtil.sendHtml(email, "账号" + hideUsername + "密码重置", MailTemplate.getContent("/mail/rest-password.html", params));

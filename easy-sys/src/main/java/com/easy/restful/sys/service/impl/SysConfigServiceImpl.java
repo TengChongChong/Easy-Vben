@@ -5,9 +5,11 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.common.core.common.pagination.Page;
+import com.easy.restful.common.core.constant.CommonConst;
 import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.common.redis.constant.RedisPrefix;
 import com.easy.restful.common.redis.util.RedisUtil;
+import com.easy.restful.sys.common.constant.DataTypeConst;
 import com.easy.restful.sys.dao.SysConfigMapper;
 import com.easy.restful.sys.model.SysConfig;
 import com.easy.restful.sys.service.SysConfigService;
@@ -51,7 +53,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
                 queryWrapper.eq("type", object.getType());
             }
         }
-        page.setDefaultAsc("sys_key");
+        page.setDefaultDesc("create_date");
         return page(page, queryWrapper);
     }
 
@@ -70,7 +72,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     @Override
     public boolean remove(String ids) {
         boolean isSuccess = removeByIds(Arrays.asList(ids.split(",")));
-        if(isSuccess){
+        if (isSuccess) {
             refreshCache();
         }
         return isSuccess;
@@ -86,6 +88,28 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     @Override
     public SysConfig saveData(SysConfig object) {
         QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
+        // 验证数据有效性
+        switch (object.getType()) {
+            case DataTypeConst.INTEGER:
+                try {
+                    Integer.parseInt(object.getValue());
+                } catch (NumberFormatException e) {
+                    throw new EasyException("请输入有效的数字");
+                }
+                break;
+            case DataTypeConst.BOOLEAN:
+                if (!CommonConst.TRUE.equals(object.getValue()) && !CommonConst.FALSE.equals(object.getValue())) {
+                    throw new EasyException("请输入有效的boolean值");
+                }
+                break;
+            default:
+                break;
+        }
+        // 验证长度
+        if(object.getValue().length() > 150){
+            throw new EasyException("value长度超过限制，最多150个字符");
+        }
+
         queryWrapper.eq("sys_key", object.getSysKey());
         if (object.getId() != null) {
             queryWrapper.ne("id", object.getId());

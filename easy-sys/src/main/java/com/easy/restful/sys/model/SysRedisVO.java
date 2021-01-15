@@ -16,7 +16,7 @@ public class SysRedisVO {
      * 有效期
      * 单位: 秒
      */
-    private long expire;
+    private Long expire;
 
     /**
      * 值
@@ -31,11 +31,11 @@ public class SysRedisVO {
         this.key = key;
     }
 
-    public long getExpire() {
+    public Long getExpire() {
         return expire;
     }
 
-    public void setExpire(long expire) {
+    public void setExpire(Long expire) {
         this.expire = expire;
     }
 
@@ -45,5 +45,14 @@ public class SysRedisVO {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "SysRedisVO{" +
+                "key='" + key + '\'' +
+                ", expire=" + expire +
+                ", value=" + value +
+                '}';
     }
 }

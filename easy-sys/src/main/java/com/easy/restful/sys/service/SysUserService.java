@@ -173,6 +173,7 @@ public interface SysUserService {
      * 查询用户列表 Activiti
      *
      * @param sysUser  查询条件
+     * @param page     分页
      * @param isSelect 是否为查找
      * @param keywords 关键字
      * @return Page
@@ -198,7 +199,7 @@ public interface SysUserService {
     /**
      * 更新手机号
      *
-     * @param id 用户id
+     * @param id    用户id
      * @param phone 手机号
      * @return true/false
      */

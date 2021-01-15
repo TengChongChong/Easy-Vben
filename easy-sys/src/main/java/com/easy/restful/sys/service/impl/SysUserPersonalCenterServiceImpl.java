@@ -134,7 +134,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
             if (sysMailVerifies != null) {
                 String url = "/sys/mail-verifies/bind-mail/" + sysMailVerifies.getCode();
                 String hideUsername = StrUtil.hide(currentUser.getUsername(), 1, currentUser.getUsername().length() - 1);
-                Map<String, Object> params = new HashMap<>();
+                Map<String, Object> params = new HashMap<>(2);
                 params.put("url", url);
                 params.put("username", hideUsername);
                 MailUtil.sendHtml(email, "账号" + hideUsername + "密保邮箱验证", MailTemplate.getContent("/mail/verify-mail.html", params));
