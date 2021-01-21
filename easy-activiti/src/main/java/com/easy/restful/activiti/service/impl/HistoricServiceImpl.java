@@ -20,12 +20,9 @@ import java.util.List;
 public class HistoricServiceImpl extends ServiceImpl<HistoricMapper, Historic> implements HistoricService {
 
     @Override
-    public List<Historic> select(Historic object) {
+    public List<Historic> select(String processInstanceId) {
         QueryWrapper<Historic> queryWrapper = new QueryWrapper<>();
-        if(object == null){
-            return null;
-        }
-        queryWrapper.eq("aha.proc_inst_id_", object.getProcessInstanceId());
+        queryWrapper.eq("aha.proc_inst_id_", processInstanceId);
         queryWrapper.orderByAsc("aha.start_time_");
 
         List<Historic> historicList = getBaseMapper().select(queryWrapper);

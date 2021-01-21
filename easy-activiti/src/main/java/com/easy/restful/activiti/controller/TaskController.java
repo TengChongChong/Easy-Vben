@@ -8,8 +8,6 @@ import com.easy.restful.core.annotation.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 待办任务
  *
@@ -29,9 +27,9 @@ public class TaskController {
      *
      * @param status 任务状态
      * @param task 查询条件
-     * @return 数据
+     * @return Page<Task>
      */
-    @GetMapping("{status}")
+    @GetMapping("status/{status}")
     public Page<Task> select(@PathVariable("status") String status, Task task, Page<Task> page) {
         task.setStatus(status);
         return service.select(task, page);
@@ -50,12 +48,12 @@ public class TaskController {
     }
 
     /**
-     * 任务处理
+     * 获取任务信息
      *
      * @param taskId 任务Id
      * @return JSONObject
      */
-    @GetMapping("task/form/{taskId}")
+    @GetMapping("{taskId}")
     public JSONObject taskForm(@PathVariable("taskId") String taskId) {
         return service.readTaskForm(taskId);
     }
@@ -64,12 +62,12 @@ public class TaskController {
      * 流转任务
      *
      * @param taskId  任务Id
-     * @param request request
+     * @param params params
      * @return true/false
      */
     @PostMapping("complete/task/{taskId}")
-    public boolean completeTask(@PathVariable("taskId") String taskId, HttpServletRequest request) {
-        service.completeTask(taskId, request);
+    public boolean completeTask(@PathVariable("taskId") String taskId, @RequestBody JSONObject params) {
+        service.completeTask(taskId, params);
         return true;
     }
 
@@ -77,13 +75,13 @@ public class TaskController {
      * 撤销申请
      *
      * @param processInstanceId 流程实例ID
-     * @param deleteReason      撤销原因(可为空)
-     *
+     * @param params     {deleteReason: "xxx"}
+     * @return true/false
      */
     @PostMapping("revoke/{processInstanceId}")
     public boolean revoke(@PathVariable("processInstanceId") String processInstanceId,
-                       @RequestParam(value = "deleteReason", required = false) String deleteReason) {
-        service.revoke(processInstanceId, deleteReason);
+                          @RequestBody JSONObject params) {
+        service.revoke(processInstanceId, params.getStr("deleteReason"));
         return true;
     }
 }

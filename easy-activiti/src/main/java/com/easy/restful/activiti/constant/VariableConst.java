@@ -18,7 +18,7 @@ public class VariableConst {
     /**
      * 业务数据详情url
      */
-    public static final String BUSINESS_DETAILS_URL = "businessDetailsUrl";
+    public static final String BUSINESS_DETAILS_URL = "businessDetailsPath";
     /**
      * 流程发起人id
      */

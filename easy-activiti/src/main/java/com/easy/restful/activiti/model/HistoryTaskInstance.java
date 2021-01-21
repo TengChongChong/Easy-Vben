@@ -110,7 +110,7 @@ public class HistoryTaskInstance {
     /**
      * 业务数据详情url
      */
-    private String businessDetailsUrl;
+    private String businessDetailsPath;
     /**
      * 发起人
      */
@@ -310,12 +310,12 @@ public class HistoryTaskInstance {
         this.businessTitle = businessTitle;
     }
 
-    public String getBusinessDetailsUrl() {
-        return businessDetailsUrl;
+    public String getBusinessDetailsPath() {
+        return businessDetailsPath;
     }
 
-    public void setBusinessDetailsUrl(String businessDetailsUrl) {
-        this.businessDetailsUrl = businessDetailsUrl;
+    public void setBusinessDetailsPath(String businessDetailsPath) {
+        this.businessDetailsPath = businessDetailsPath;
     }
 
     public String getApplyUser() {

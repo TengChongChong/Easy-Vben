@@ -1,65 +1,74 @@
-<form class="e-form e-form--label-align-right" novalidate="novalidate" data-e-cache-sn="5">
-    <div class="row">
-        <div class="col-md-6 col-12">
-            <div class="form-group e-form-group row">
-                <label class="col-4 col-form-label">流程：</label>
-                <div class="col-8">
-                    <span class="form-control form-control-static">
-                        ${processDefinitionName} <span class="badge badge-brand badge--inline badge--pill">v ${processVersion}</span>
-                    </span>
+<div class="ant-row">
+    <div class="ant-col ant-col-sm-24">
+        <div class="ant-row ant-form-item">
+            <div class="ant-col ant-col-6 ant-form-item-label">
+                <label title="流程" class="">流程</label>
+            </div>
+            <div class="ant-col ant-col-18 ant-form-item-control-wrapper">
+                <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"> ${processDefinitionName} </span>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group e-form-group row">
-                <label class="col-4 col-form-label">发起时间：</label>
-                <div class="col-8">
-                    <span class="form-control form-control-static">${createTime}</span>
+        <div class="ant-row ant-form-item">
+            <div class="ant-col ant-col-6 ant-form-item-label">
+                <label title="发起时间" class="">发起时间</label>
+            </div>
+            <div class="ant-col ant-col-18 ant-form-item-control-wrapper">
+                <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"> ${createTime} </span>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-6 col-12">
-            <div class="form-group e-form-group row">
-                <label class="col-4 col-form-label">流水号：</label>
-                <div class="col-8">
-                    <span class="form-control form-control-static">${processInstanceId}</span>
+        <div class="ant-row ant-form-item">
+            <div class="ant-col ant-col-6 ant-form-item-label">
+                <label title="流水号" class="">流水号</label>
+            </div>
+            <div class="ant-col ant-col-18 ant-form-item-control-wrapper">
+                <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"> ${processInstanceId} </span>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group e-form-group row">
-                <label class="col-4 col-form-label">业务：</label>
-                <div class="col-8">
-                    <span class="form-control form-control-static">
-                        <a href="#" class="e-link e-font-brand" onclick="EApp.openPage('${processInstanceId}', basePath + '${businessDetailsUrl}')">${businessTitle}</a>
-                    </span>
+        <div class="ant-row ant-form-item">
+            <div class="ant-col ant-col-6 ant-form-item-label">
+                <label title="业务" class="">业务</label>
+            </div>
+            <div class="ant-col ant-col-18 ant-form-item-control-wrapper">
+                <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"> ${businessTitle} </span>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group e-form-group row">
-                <label class="col-4 col-form-label">撤销时间：</label>
-                <div class="col-8">
-                    <span class="form-control form-control-static">${deleteDate}</span>
+        <div class="ant-row ant-form-item">
+            <div class="ant-col ant-col-6 ant-form-item-label">
+                <label title="撤销时间" class="">撤销时间</label>
+            </div>
+            <div class="ant-col ant-col-18 ant-form-item-control-wrapper">
+                <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"> ${deleteDate} </span>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-12">
-            <div class="form-group e-form-group row">
-                <label class="col-4 col-form-label">撤销人：</label>
-                <div class="col-8">
-                    <span class="form-control form-control-static">${deleteUser}</span>
+        <div class="ant-row ant-form-item">
+            <div class="ant-col ant-col-6 ant-form-item-label">
+                <label title="撤销人" class="">撤销人</label>
+            </div>
+            <div class="ant-col ant-col-18 ant-form-item-control-wrapper">
+                <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"> ${deleteUser} </span>
                 </div>
             </div>
         </div>
-        <div class="col-12">
-            <div class="form-group e-form-group row">
-                <label class="col-2 col-form-label">撤销原由：</label>
-                <div class="col-8">
-                    <span class="form-control form-control-static">${deleteReason}</span>
+        <div class="ant-row ant-form-item">
+            <div class="ant-col ant-col-6 ant-form-item-label">
+                <label title="撤销原由" class="">撤销原由</label>
+            </div>
+            <div class="ant-col ant-col-18 ant-form-item-control-wrapper">
+                <div class="ant-form-item-control">
+                    <span class="ant-form-item-children"> ${deleteReason} </span>
                 </div>
             </div>
         </div>
     </div>
-</form>
+</div>

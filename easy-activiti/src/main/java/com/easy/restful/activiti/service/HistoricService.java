@@ -15,10 +15,10 @@ public interface HistoricService {
     /**
      * 查询
      *
-     * @param object 查询条件
+     * @param processInstanceId 流程实例ID
      * @return List<Historic>
      */
-    List<Historic> select(Historic object);
+    List<Historic> select(String processInstanceId);
 
     /**
      * 根据业务id查询流程实例

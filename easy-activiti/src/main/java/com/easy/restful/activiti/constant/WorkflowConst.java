@@ -32,11 +32,11 @@ public class WorkflowConst {
     /**
      * 流程图颜色 - 走过的节点
      */
-    public static final Color COLOR_NORMAL = new Color(30, 201, 183);
+    public static final Color COLOR_NORMAL = new Color(83, 195, 27);
     /**
      * 流程图颜色 - 当前节点
      */
-    public static final Color COLOR_CURRENT = new Color(252, 57, 122);
+    public static final Color COLOR_CURRENT = new Color(25, 144, 255);
 
     /**
      * 定义生成流程图时的边距（像素）

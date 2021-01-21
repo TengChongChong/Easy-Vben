@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/activiti/process/trace")
+@RequestMapping("/activiti/process/trace")
 public class ProcessTraceController {
 
     @Autowired

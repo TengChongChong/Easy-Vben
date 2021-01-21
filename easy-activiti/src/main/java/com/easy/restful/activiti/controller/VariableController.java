@@ -5,6 +5,7 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +31,8 @@ public class VariableController {
      * @param processInstanceId 流程实例ID
      * @return 数据
      */
-    @GetMapping()
-    public List<HistoricVariableInstance> select(String processInstanceId) {
+    @GetMapping("processInstanceId/{processInstanceId}")
+    public List<HistoricVariableInstance> select(@PathVariable("processInstanceId") String processInstanceId) {
         return service.createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).orderByVariableName().asc().list();
     }
 }

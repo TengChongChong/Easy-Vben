@@ -1,5 +1,6 @@
 package com.easy.restful.activiti.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -11,12 +12,13 @@ import com.easy.restful.activiti.constant.VariableConst;
 import com.easy.restful.activiti.constant.WorkflowConst;
 import com.easy.restful.activiti.constant.status.SuspensionStatus;
 import com.easy.restful.activiti.dao.TaskMapper;
+import com.easy.restful.activiti.model.FormPropertyVO;
 import com.easy.restful.activiti.model.Task;
 import com.easy.restful.activiti.service.ProcessDefinitionService;
 import com.easy.restful.activiti.service.TaskService;
-import com.easy.restful.activiti.util.FormUtil;
 import com.easy.restful.common.core.common.pagination.Page;
 import com.easy.restful.common.core.exception.EasyException;
+import com.easy.restful.core.mail.MailTemplate;
 import com.easy.restful.sys.common.constant.MessageConst;
 import com.easy.restful.sys.model.SysMessage;
 import com.easy.restful.sys.model.SysUser;
@@ -24,26 +26,17 @@ import com.easy.restful.sys.service.SysMessageService;
 import com.easy.restful.sys.service.SysUserService;
 import com.easy.restful.util.ShiroUtil;
 import org.activiti.engine.FormService;
-import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.beetl.core.Configuration;
-import org.beetl.core.GroupTemplate;
-import org.beetl.core.Template;
-import org.beetl.core.resource.ClasspathResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 待办任务
@@ -53,9 +46,6 @@ import java.util.Map;
  */
 @Service
 public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements TaskService {
-
-    @Autowired
-    private RepositoryService repositoryService;
 
     @Autowired
     private org.activiti.engine.TaskService taskService;
@@ -122,28 +112,33 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         if (task == null) {
             throw new EasyException("任务[" + taskId + "]已办理或不存在");
         }
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+        res.set("processInstance", processInstance);
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
-        if (taskFormData.getFormKey() != null) {
-            Object renderedTaskForm = formService.getRenderedTaskForm(taskId);
-            res.set("taskFormData", renderedTaskForm);
-        } else {
-            res.set("taskFormData", taskFormData);
+        if (taskFormData.getFormProperties() != null && taskFormData.getFormProperties().size() > 0) {
+            List<FormPropertyVO> formPropertyVOList = new ArrayList<>();
+            for (FormProperty formProperty : taskFormData.getFormProperties()) {
+                formPropertyVOList.add(new FormPropertyVO(formProperty));
+            }
+            // 有动态表单
+            res.set("hasTaskForm", true);
+            res.set("taskFormData", formPropertyVOList);
         }
-        res.set("hasFormKey", taskFormData.getFormKey() != null);
+
         res.set("task", task);
-        res.set("taskId", taskId);
 
         // 流程发起信息
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(task.getProcessDefinitionId()).singleResult();
-        boolean hasStartFormKey = processDefinition.hasStartFormKey();
-        if (hasStartFormKey) {
-            Object renderedStartForm = formService.getRenderedStartForm(task.getProcessDefinitionId());
-            res.set("startFormData", renderedStartForm);
-        } else {
-            StartFormData startTaskFormData = formService.getStartFormData(task.getProcessDefinitionId());
-            res.set("startFormData", startTaskFormData);
+        StartFormData startTaskFormData = formService.getStartFormData(task.getProcessDefinitionId());
+        // 有动态表单
+        if (startTaskFormData.getFormProperties() != null && startTaskFormData.getFormProperties().size() > 0) {
+            List<FormPropertyVO> formPropertyVOList = new ArrayList<>();
+            for (FormProperty formProperty : startTaskFormData.getFormProperties()) {
+                formPropertyVOList.add(new FormPropertyVO(formProperty));
+            }
+            res.set("hasStartForm", true);
+            res.set("startFormData", formPropertyVOList);
         }
-        res.set("hasStartFormKey", hasStartFormKey);
+
         // 获取流程参数
         Map<String, Object> variables = taskService.getVariables(taskId);
         res.set("variables", variables);
@@ -155,8 +150,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     }
 
     @Override
-    public void completeTask(String taskId, HttpServletRequest request) {
-        TaskFormData taskFormData = formService.getTaskFormData(taskId);
+    public void completeTask(String taskId, JSONObject params) {
         // 流程定义ID
         Task task = getBaseMapper().selectProcessDefinitionId(taskId, SuspensionStatus.ACTIVATION.getCode());
         if (task == null) {
@@ -167,7 +161,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
             processDefinitionService.getProcessDefinition(task.getProcessDefinitionId());
 
             // 获取提交表单数据
-            Map<String, String> formValues = FormUtil.getFormData(taskFormData, request);
+            Map<String, String> formValues = Convert.toMap(String.class, String.class, params) ;
             formService.submitTaskFormData(taskId, formValues);
 
             // 自动签收
@@ -207,22 +201,22 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     private void sendMessage(Task task, String deleteReason) {
         SysUser currentUser = ShiroUtil.getCurrentUser();
         // 设置模板引擎变量
-        Map<String,Object> shared = new HashMap<>(4);
-        shared.put("processDefinitionName", task.getProcessDefinitionName());
-        shared.put("processVersion", task.getProcessVersion());
-        shared.put("createTime", DateUtil.format(task.getCreateTime(), DatePattern.NORM_DATETIME_MINUTE_PATTERN));
-        shared.put("processInstanceId", task.getProcessInstanceId());
-        shared.put("businessDetailsUrl",task.getBusinessDetailsUrl());
-        shared.put("businessTitle", task.getBusinessTitle());
-        shared.put("deleteDate", DateUtil.format(new Date(), DatePattern.NORM_DATETIME_MINUTE_PATTERN));
-        shared.put("deleteUser", currentUser.getNickname());
-        shared.put("deleteReason", deleteReason);
+        Map<String,Object> params = new HashMap<>(4);
+        params.put("processDefinitionName", task.getProcessDefinitionName());
+        params.put("processVersion", task.getProcessVersion());
+        params.put("createTime", DateUtil.format(task.getCreateTime(), DatePattern.NORM_DATETIME_MINUTE_PATTERN));
+        params.put("processInstanceId", task.getProcessInstanceId());
+        params.put("businessDetailsPath",task.getBusinessDetailsPath());
+        params.put("businessTitle", task.getBusinessTitle());
+        params.put("deleteDate", DateUtil.format(new Date(), DatePattern.NORM_DATETIME_MINUTE_PATTERN));
+        params.put("deleteUser", currentUser.getNickname());
+        params.put("deleteReason", deleteReason);
 
         SysMessage sysMessage = new SysMessage();
-        sysMessage.setTitle("[流程撤销]你发起的[" + task.getProcessDefinitionName() + "]" + task.getBusinessTitle() + "被[" + currentUser.getNickname() + "]撤销");
+        sysMessage.setTitle("你发起的[" + task.getProcessDefinitionName() + "]" + task.getBusinessTitle() + "被" + currentUser.getNickname() + "]撤销");
         // 重要
         sysMessage.setImportant(1);
-        sysMessage.setContent(getMessageContent(shared));
+        sysMessage.setContent(MailTemplate.getContent("/message/revocation-notice.html", params));
         // 接收人
         sysMessage.setReceivers(Collections.singletonList(task.getApplyUserId()));
         // 立即发出
@@ -230,26 +224,5 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         // 消息类型 - 通知
         sysMessage.setType(MessageConst.TYPE_NOTICE);
         sysMessageService.saveData(sysMessage);
-    }
-
-    /**
-     * 通过beetl模板引擎生成消息内容
-     *
-     * @param shared 变量
-     * @return 内容
-     */
-    private String getMessageContent(Map<String,Object> shared){
-        ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("message/");
-        Configuration cfg;
-        try {
-            cfg = Configuration.defaultConfiguration();
-        } catch (IOException e) {
-            throw new EasyException("获取defaultConfiguration失败[" + e.getMessage() + "]");
-        }
-        GroupTemplate groupTemplate = new GroupTemplate(resourceLoader, cfg);
-        Template template = groupTemplate.getTemplate("revocation-notice.html");
-        groupTemplate.setSharedVars(shared);
-        String str = template.render();
-        return str;
     }
 }

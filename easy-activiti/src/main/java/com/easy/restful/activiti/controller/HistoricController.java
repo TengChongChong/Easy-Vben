@@ -26,12 +26,12 @@ public class HistoricController {
     /**
      * 查询数据
      *
-     * @param historic 查询条件
+     * @param processInstanceId 流程实例ID
      * @return List<Historic>
      */
-    @GetMapping()
-    public List<Historic> select(Historic historic) {
-        return service.select(historic);
+    @GetMapping("processInstanceId/{processInstanceId}")
+    public List<Historic> select(@PathVariable("processInstanceId") String processInstanceId) {
+        return service.select(processInstanceId);
     }
 
     /**

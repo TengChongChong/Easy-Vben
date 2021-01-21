@@ -6,7 +6,9 @@ import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.activiti.constant.VariableConst;
 import com.easy.restful.activiti.dao.ProcessDefinitionMapper;
+import com.easy.restful.activiti.model.FormPropertyVO;
 import com.easy.restful.activiti.model.Process;
+import com.easy.restful.activiti.model.ProcessDefinitionVO;
 import com.easy.restful.activiti.service.ProcessDefinitionService;
 import com.easy.restful.common.core.constant.CommonConst;
 import com.easy.restful.common.core.exception.EasyException;
@@ -24,11 +26,10 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 启动流程
@@ -80,99 +81,38 @@ public class ProcessDefinitionServiceImpl extends ServiceImpl<ProcessDefinitionM
     }
 
     @Override
-    public String startProcessInstance(String processDefinitionId, String businessKey, String businessTitle, String businessDetailsUrl, HttpServletRequest request) {
-        if (checkBusinessKey(businessKey)) {
-            throw new EasyException("[" + businessTitle + "]已提交过申请，请勿重复提交");
-        }
-        ProcessDefinition processDefinition = getProcessDefinition(processDefinitionId);
-        // 获取提交表单数据
-        Map<String, Object> formValues;
-
-        boolean hasStartFormKey = processDefinition.hasStartFormKey();
-        // 获取表单数据
-        if (hasStartFormKey) {
-            Map<String, String[]> parameterMap = request.getParameterMap();
-            Set<Map.Entry<String, String[]>> entrySet = parameterMap.entrySet();
-            formValues = new HashMap<>(entrySet.size());
-            for (Map.Entry<String, String[]> entry : entrySet) {
-                String key = entry.getKey();
-                formValues.put(key, entry.getValue()[0]);
-            }
-        } else {
-            // 动态表单
-            StartFormData startFormData = formService.getStartFormData(processDefinitionId);
-            formValues = new HashMap<>(startFormData.getFormProperties().size());
-            for (FormProperty formProperty : startFormData.getFormProperties()) {
-                formValues.put(formProperty.getId(), request.getParameter(formProperty.getId()));
-            }
-        }
-        SysUser currentUser = ShiroUtil.getCurrentUser();
-        // 当前用户
-        identityService.setAuthenticatedUserId(currentUser.getId());
-
-        // 设置流程额外的属性
-        formValues.put(VariableConst.BUSINESS_TITLE, businessTitle);
-        formValues.put(VariableConst.BUSINESS_DETAILS_URL, businessDetailsUrl);
-        formValues = setUserInfo(formValues, currentUser);
-        // 提交表单字段并启动一个新的流程实例
-        // submitStartFormData接收的参数为Map<String, String>类型，这里需要转一下
-        ProcessInstance processInstance = formService.submitStartFormData(processDefinitionId, businessKey, toStringMap(formValues));
-        autoClaimTask(processInstance.getId());
-        return processInstance.getId();
-    }
-
-    /**
-     * 将Map<String, Object>转为Map<String, String>
-     *
-     * @param result 需转换map
-     * @return 转换后map
-     */
-    private Map<String, String> toStringMap(Map<String, Object> result) {
-        Map<String, String> formData = new HashMap<>(result.size());
-        for (Map.Entry mapStr : result.entrySet()) {
-            formData.put(mapStr.getKey().toString(), (String) result.get(mapStr.getKey().toString()));
-        }
-        return formData;
-
-    }
-
-    @Override
-    public JSONObject startProcessInstance(String processDefinitionId, String businessKey, String businessTitle,
-                                           String businessDetailsUrl, String extentParams) {
-        if (checkBusinessKey(businessKey)) {
-            throw new EasyException("[" + businessTitle + "]已提交过申请，请勿重复提交");
+    public JSONObject startProcessInstance(ProcessDefinitionVO processDefinitionVO) {
+        if (checkBusinessKey(processDefinitionVO.getBusinessKey())) {
+            throw new EasyException("[" + processDefinitionVO.getBusinessKey() + "]已提交过申请，请勿重复提交");
         }
         SysUser currentUser = ShiroUtil.getCurrentUser();
         JSONObject result = new JSONObject();
-        ProcessDefinition processDefinition = getProcessDefinition(processDefinitionId);
-        boolean hasStartFormKey = processDefinition.hasStartFormKey();
-        if (hasStartFormKey) {
-            // 有外置表单
-            result.set("hasStartForm", true);
-            result.set("url", "/read/start/form/" + processDefinitionId);
-            return result;
+        ProcessDefinition processDefinition = getProcessDefinition(processDefinitionVO.getProcessDefinitionId());
+        if(processDefinitionVO.getHasFormData() == null || !processDefinitionVO.getHasFormData()){
+            StartFormData startFormData = formService.getStartFormData(processDefinitionVO.getProcessDefinitionId());
+            if (startFormData.getFormProperties() != null && startFormData.getFormProperties().size() > 0) {
+                List<FormPropertyVO> formPropertyVOList = new ArrayList<>();
+                for (FormProperty formProperty : startFormData.getFormProperties()) {
+                    formPropertyVOList.add(new FormPropertyVO(formProperty));
+                }
+                // 有动态表单
+                result.set("hasStartForm", true);
+                result.set("startFormData", formPropertyVOList);
+                return result;
+            }
         }
-        StartFormData startFormData = formService.getStartFormData(processDefinitionId);
-        if (startFormData.getFormProperties() != null && startFormData.getFormProperties().size() > 0) {
-            // 有动态表单
-            result.set("hasStartForm", true);
-            result.set("url", "/read/start/form/" + processDefinitionId);
-            return result;
-        }
-        // 没有表单，启动流程
-        result.set("hasStartForm", false);
         // 当前用户
         identityService.setAuthenticatedUserId(currentUser.getId());
         // 流程变量
         Map<String, Object> variables = new HashMap<>();
-        if(StrUtil.isNotBlank(extentParams)){
+        if(processDefinitionVO.getExtentParams() != null){
             // 扩展参数必须是JSON格式
-            variables = new JSONObject(extentParams);
+            variables = processDefinitionVO.getExtentParams();
         }
-        variables.put(VariableConst.BUSINESS_TITLE, businessTitle);
-        variables.put(VariableConst.BUSINESS_DETAILS_URL, businessDetailsUrl);
+        variables.put(VariableConst.BUSINESS_TITLE, processDefinitionVO.getBusinessTitle());
+        variables.put(VariableConst.BUSINESS_DETAILS_URL, processDefinitionVO.getBusinessDetailsPath());
         variables = setUserInfo(variables, currentUser);
-        ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinition.getId(), businessKey, variables);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinition.getId(), processDefinitionVO.getBusinessKey(), variables);
         result.set("processInstanceId", processInstance.getId());
         autoClaimTask(processInstance.getId());
         return result;

@@ -1,9 +1,8 @@
 package com.easy.restful.activiti.service;
 
 import cn.hutool.json.JSONObject;
+import com.easy.restful.activiti.model.ProcessDefinitionVO;
 import org.activiti.engine.repository.ProcessDefinition;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 启动流程
@@ -22,28 +21,12 @@ public interface ProcessDefinitionService {
 
     /**
      * 启动流程
-     *
-     * @param processDefinitionId 流程id
-     * @param businessKey         业务数据ID
-     * @param businessTitle       业务标题
-     * @param businessDetailsUrl  业务数据详情url
-     * @param request             request
-     * @return 实例ID
-     */
-    String startProcessInstance(String processDefinitionId, String businessKey, String businessTitle, String businessDetailsUrl, HttpServletRequest request);
-
-    /**
-     * 启动流程
      * （先验证有无动态表单，如果没有自动提交，如果有返回表单地址）
      *
-     * @param processDefinitionId 流程id
-     * @param businessKey         业务数据ID
-     * @param businessTitle       业务标题
-     * @param businessDetailsUrl  业务数据详情url
-     * @param extentParams        扩展参数(注意此参数必须是JSON格式)
+     * @param processDefinitionVO 流程数据
      * @return 实例ID或动态表单url
      */
-    JSONObject startProcessInstance(String processDefinitionId, String businessKey, String businessTitle, String businessDetailsUrl, String extentParams);
+    JSONObject startProcessInstance(ProcessDefinitionVO processDefinitionVO);
 
     /**
      * 检查任务是否满足自动签收条件

@@ -4,8 +4,6 @@ import cn.hutool.json.JSONObject;
 import com.easy.restful.activiti.model.Task;
 import com.easy.restful.common.core.common.pagination.Page;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 待办任务
  *
@@ -41,9 +39,9 @@ public interface TaskService {
      * 流转任务
      *
      * @param taskId  任务Id
-     * @param request request
+     * @param params params
      */
-    void completeTask(String taskId, HttpServletRequest request);
+    void completeTask(String taskId, JSONObject params);
 
     /**
      * 撤销申请
