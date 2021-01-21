@@ -20,14 +20,14 @@
     <select id="select" resultType="com.easy.restful.sample.model.SampleWorkFlow">
         select id, leave_type, start_date, end_date, reason, create_user, create_date, edit_user, edit_date,
                proc_inst_id_ as process_instance_id,
-               workFlowStatus as workFlowStatus
+               workFlowStatus
         from sample_work_flow t
         left join (
             select business_key_,
                 proc_inst_id_,
-                case when end_time_ is null then concat('[', t.name_, ']', nickname) else '已办结' end as workFlowStatus
+                   if(delete_reason_ is null, IF(end_time_ is null, concat('[', t.name_, ']', if(nickname is null, '未签收', nickname)), '已办结'), '已撤销') as workFlowStatus
             from(
-                select ahp.proc_inst_id_, ahp.business_key_, aht.name_, su.nickname, aht.start_time_, ahp.end_time_, row_number() over (partition by business_key_ order by aht.start_time_ desc) as ranker
+                select ahp.proc_inst_id_, ahp.business_key_, ahp.delete_reason_, aht.name_, su.nickname, aht.start_time_, ahp.end_time_, row_number() over (partition by business_key_ order by aht.start_time_ desc) as ranker
                 from act_hi_procinst ahp
                 left join act_hi_taskinst aht on aht.proc_inst_id_ = ahp.proc_inst_id_
                 left join sys_user su on su.id = aht.assignee_
