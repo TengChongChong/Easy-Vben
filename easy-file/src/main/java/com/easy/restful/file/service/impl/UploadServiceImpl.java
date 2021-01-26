@@ -26,7 +26,7 @@ public class UploadServiceImpl implements UploadService {
             String fileName = file.getOriginalFilename();
             // todo: 检查文件后缀白名单
             if (StrUtil.isNotBlank(fileName)) {
-                String suffix = fileName.substring(fileName.indexOf("."));
+                String suffix = fileName.substring(fileName.lastIndexOf("."));
                 File result = new File();
                 String path = FileUtil.getTemporaryPath() + IdUtil.randomUUID() + suffix;
                 java.io.File dest = new java.io.File(path);
