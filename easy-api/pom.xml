@@ -25,6 +25,10 @@
         </dependency>
         <dependency>
             <groupId>com.easy.restful</groupId>
+            <artifactId>easy-generator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.easy.restful</groupId>
             <artifactId>easy-scheduler</artifactId>
         </dependency>
         <dependency>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sample.dao.SampleGeneralMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.restful.sample.model.SampleGeneral">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="sex" property="sex" />
+        <result column="phone" property="phone" />
+        <result column="address" property="address" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+        <result column="status" property="status" />
+        <result column="age" property="age" />
+    </resultMap>
+
+    <select id="select" resultType="com.easy.restful.sample.model.SampleGeneral">
+        select id, name, sex, phone, address, create_user, create_date, edit_user, edit_date, status, age
+        from sample_general t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getById" resultType="com.easy.restful.sample.model.SampleGeneral">
+        select id, name, sex, phone, address, create_user, create_date, edit_user, edit_date, status, age
+        from sample_general t
+        where t.id = #{id}
+    </select>
+
+</mapper>

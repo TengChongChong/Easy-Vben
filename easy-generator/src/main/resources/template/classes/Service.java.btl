@@ -1,0 +1,61 @@
+package ${config.packagePath}.service;
+
+<% for(import in service.imports!){ %>
+import ${import.name};
+<% } %>
+import ${config.packagePath}.model.${config.modelName};
+
+/**
+ * ${config.businessName}
+ *
+ * @author ${config.author}
+ * @date ${config.date}
+ */
+public interface ${config.modelName}Service {
+    <% if(config.isGeneratorMethodsSelect){ %>
+    /**
+     * 列表
+     * @param object 查询条件
+     * @param page   分页
+     * @return Page<${config.modelName}>
+     */
+    Page<${config.modelName}> select(${config.modelName} object, Page<${config.modelName}> page);
+
+    /**
+     * 详情
+     *
+     * @param id id
+     * @return ${config.modelName}
+     */
+    ${config.modelName} input(String id);
+    <% } %>
+    <% if(config.isGeneratorMethodsAdd){ %>
+
+    /**
+     * 新增
+     *
+     * @return ${config.modelName}
+     */
+    ${config.modelName} add();
+    <% } %>
+    <% if(config.isGeneratorMethodsRemove){ %>
+
+    /**
+     * 删除
+     *
+     * @param ids 数据ids
+     * @return true/false
+     */
+    boolean remove(String ids);
+    <% } %>
+    <% if(config.isGeneratorMethodsSave){ %>
+
+    /**
+     * 保存
+     *
+     * @param object 表单内容
+     * @return ${config.modelName}
+     */
+    ${config.modelName} saveData(${config.modelName} object);
+    <% } %>
+}

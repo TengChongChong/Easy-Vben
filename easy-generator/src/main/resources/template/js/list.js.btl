@@ -1,0 +1,53 @@
+//== ${config.businessName}-列表页
+let ${GeneratorJsUtil.capitalLowercase(config.modelName)}List = function () {
+    /**
+     * 初始化列表
+     */
+    let initTable = function () {
+        let options = {
+            layout: {
+                // 默认的表格高度可以放下2行查询条件，如果查询条件较多，可以通过下方代码设置高度
+                height: function () {
+                    let minHeight = 300;
+                    let height = EUtil.getViewPort().height - 340;
+                    return Math.max(height, minHeight);
+                }
+            },
+            // 列配置
+            columns: [
+                {
+                    field: 'id',
+                    title: '#',
+                    sortable: false, // 禁用此列排序
+                    width: 40,
+                    selector: {class: 'e-checkbox--solid'}
+                },
+                <% for(propertyName in config.listOrder){ %>
+                ${GeneratorJsUtil.generator(propertyName, config.fieldSets, 4)}
+                <% } %>
+                ${GeneratorJsUtil.getActions(config, 4)}
+            ]
+        };
+        ${GeneratorJsUtil.capitalLowercase(config.modelName)}List.dataTable = ETool.initDataTable(options);
+    };
+
+    return {
+        //== 初始化页面
+        init: function () {
+            ETool.setBaseUrl(basePath + '/auth/${config.controllerMapping}/');
+            initTable();
+        }
+    };
+}();
+/**
+ * 当前tab激活时是否需要重新加载数据
+ *
+ * @return {boolean} true/false
+ */
+ETab.needSubmitForm = function () {
+    return true;
+};
+//== 初始化
+${config.jquery}(document).ready(function () {
+    ${GeneratorJsUtil.capitalLowercase(config.modelName)}List.init();
+});

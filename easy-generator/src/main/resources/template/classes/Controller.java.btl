@@ -1,0 +1,102 @@
+package ${config.packagePath}.controller;
+
+<% for(import in controller.imports!){ %>
+import ${import.name};
+<% } %>
+import ${config.packagePath}.model.${config.modelName};
+import ${config.packagePath}.service.${config.modelName}Service;
+
+/**
+ * ${config.businessName}
+ *
+ * @author ${config.author}
+ * @date ${config.date}
+ */
+@RestController
+@ResponseResult
+@RequestMapping("/auth/${config.controllerMapping}")
+public class ${config.modelName}Controller {
+
+    /**
+     * ${config.businessName} service
+     */
+    @Autowired
+    private ${config.modelName}Service service;
+
+    <% if(config.generatorMethodsSelect){ %>
+    /**
+     * 列表
+     *
+     * @param object 查询条件
+     * @return Page<${config.modelName}>
+     */
+    @GetMapping()
+    <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
+    @RequiresPermissions("${config.permissionsCode}:select")
+    <% } %>
+    public Page<${config.modelName}> select(${config.modelName} object, Page<${config.modelName}> page){
+        return service.select(object, page);
+    }
+
+    /**
+     * 详情
+     *
+     * @param id id
+     * @return ${config.modelName}
+     */
+    @GetMapping("{id}")
+    <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
+    @RequiresPermissions("${config.permissionsCode}:select")
+    <% } %>
+    public ${config.modelName} input(@PathVariable("id") String id) {
+        return service.input(id);
+    }
+    <% } %>
+
+    <% if(config.generatorMethodsAdd){ %>
+    /**
+     * 新增
+     *
+     * @return ${config.modelName}
+     */
+    @GetMapping("add")
+    <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
+    @RequiresPermissions("${config.permissionsCode}:add")
+    <% } %>
+    public ${config.modelName} add() {
+        return service.add();
+    }
+    <% } %>
+
+    <% if(config.generatorMethodsRemove){ %>
+    /**
+     * 删除
+     *
+     * @param ids 数据ids
+     * @return true/false
+     */
+    @DeleteMapping("{ids}")
+    <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
+    @RequiresPermissions("${config.permissionsCode}:remove")
+    <% } %>
+    public boolean delete(@PathVariable("ids") String ids) {
+        return service.remove(ids);
+    }
+    <% } %>
+
+    <% if(config.generatorMethodsSave){ %>
+    /**
+     * 保存
+     *
+     * @param object 表单内容
+     * @return ${config.modelName}
+     */
+    @PostMapping()
+    <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
+    @RequiresPermissions("${config.permissionsCode}:save")
+    <% } %>
+    public ${config.modelName} saveData(@Valid @RequestBody ${config.modelName} object){
+        return service.saveData(object);
+    }
+    <% } %>
+}

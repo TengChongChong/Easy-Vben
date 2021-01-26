@@ -1,0 +1,161 @@
+<template>
+  <a-card title="${config.businessName}" :bordered="false">
+    <a-form-model
+      ref="form"
+      :model="model"
+      :rules="rules"
+      :label-col="FORM_LAYOUT.labelCol"
+      :wrapper-col="FORM_LAYOUT.wrapperCol">
+      <a-row class="form-row" :gutter="16">
+        <% for(fieldSet in config.inputItems){ %>
+        <% if(fieldSet.inputGrid == '1') { %>
+        <a-col :sm="24">
+          <a-form-model-item label="${fieldSet.label}" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol" prop="${fieldSet.propertyName}">
+            <% if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'select'){ %>
+            <e-dict-select type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'radio'){ %>
+            <e-dict-radio type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'checkbox'){ %>
+            <e-dict-checkbox type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.elementType == 'select') {%>
+            <a-select v-model="model.${fieldSet.propertyName}"></a-select>
+            <% } else if(fieldSet.elementType == 'password') {%>
+            <a-input type="password" v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.elementType == 'textarea') {%>
+            <a-textarea v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.elementType == 'date') {%>
+            <e-date-picker v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.elementType == 'datetime') {%>
+            <e-date-picker v-model="model.${fieldSet.propertyName}" :date-pattern="DATE_PATTERN.NORM_DATETIME_PATTERN"/>
+            <% } else if(fieldSet.elementType == 'number') {%>
+            <a-input-number v-model="model.${fieldSet.propertyName}"/>
+            <% } else {%>
+            <a-input v-model="model.${fieldSet.propertyName}"/>
+            <% } %>
+          </a-form-model-item>
+        </a-col>
+        <% } else { %>
+        <a-col :lg="12" :sm="24">
+          <a-form-model-item label="${fieldSet.label}" prop="${fieldSet.propertyName}">
+            <% if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'select'){ %>
+            <e-dict-select type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'radio'){ %>
+            <e-dict-radio type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'checkbox'){ %>
+            <e-dict-checkbox type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.elementType == 'select') {%>
+            <a-select v-model="model.${fieldSet.propertyName}"></a-select>
+            <% } else if(fieldSet.elementType == 'password') {%>
+            <a-input type="password" v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.elementType == 'textarea') {%>
+            <a-textarea v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.elementType == 'date') {%>
+            <e-date-picker v-model="model.${fieldSet.propertyName}"/>
+            <% } else if(fieldSet.elementType == 'datetime') {%>
+            <e-date-picker v-model="model.${fieldSet.propertyName}" :date-pattern="DATE_PATTERN.NORM_DATETIME_PATTERN"/>
+            <% }else if(fieldSet.elementType == 'number') {%>
+            <a-input-number v-model="model.${fieldSet.propertyName}"/>
+            <% } else {%>
+            <a-input v-model="model.${fieldSet.propertyName}"/>
+            <% } %>
+          </a-form-model-item>
+        </a-col>
+        <% } %>
+        <% } %>
+
+        <a-col :sm="24">
+          <div class="input-btn-group">
+            <e-btn-save :loading="saveLoading" :click-callback="save"/>
+          </div>
+        </a-col>
+      </a-row>
+    </a-form-model>
+  </a-card>
+</template>
+
+<script>
+<% for(imp in staticConfig.inputImports){ %>
+<% if(GeneratorImportConst.IMPORT_TYPE_SINGLE == imp.importType){ %>
+import ${imp.imps} from '${imp.from}'
+<% } else { %>
+import { ${imp.imps} } from '${imp.from}'
+<% } %>
+<% } %>
+
+export default {
+  name: '${config.modelName}Input',
+  components: {
+    <% for(imp in staticConfig.inputImports){ %>
+    <% if(GeneratorImportConst.TYPE_COMPONENT == imp.type){ %>
+    ${imp.imps}${impLP.last ? "" : ","}
+    <% } %>
+    <% } %>
+  },
+  data () {
+    return {
+      id: this.$route.query.id,
+
+      <% for(imp in staticConfig.inputImports){ %>
+      <% if(GeneratorImportConst.TYPE_VARIABLE == imp.type){ %>
+      <% for(item in imp.imp){ %>
+      ${item}: ${item},
+      <% } %>
+      <% } %>
+      <% } %>
+
+      // 表单
+      saveLoading: false,
+      model: { },
+      rules: {
+        <% for(fieldSet in config.inputItems){ %>
+        <% if(fieldSet.elementType == 'select' || fieldSet.elementType == 'radio' || fieldSet.elementType == 'checkbox'|| fieldSet.elementType == 'date'|| fieldSet.elementType == 'datetime') {%>
+        <% if(fieldSet.required) { %>
+        ${fieldSet.propertyName}: [
+          { required: true, message: '请选择${fieldSet.label}', trigger: 'blur' }
+        ],
+        <% } %>
+        <% } else { %>
+        ${fieldSet.propertyName}: [
+        <% if(fieldSet.required) { %>
+          { required: true, message: '请输入${fieldSet.label}', trigger: 'blur' },
+        <% } %>
+        <% if(fieldSet.elementType == 'text') {%>
+          { max: 16, message: '${fieldSet.label}不能超过16个字符', trigger: 'blur' }
+        <%} else if(fieldSet.elementType == 'password') {%>
+          { max: 20, message: '${fieldSet.label}不能超过20个字符', trigger: 'blur' }
+        <%} else if(fieldSet.elementType == 'textarea') {%>
+          { max: 500, message: '${fieldSet.label}不能超过500个字符', trigger: 'blur' }
+        <% } %>
+        ]${fieldSetLP.last ? "" : ","}
+        <% } %>
+        <% } %>
+      }
+    }
+  },
+  created () {
+    if (isNotBlank(this.id)) {
+      this.edit(this.id)
+    }
+  },
+  methods: {
+    edit (id) {
+      get(id).then((res) => {
+        this.model = res.data
+      })
+    },
+    save () {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.saveLoading = true
+          save(this.model).then((res) => {
+            this.saveLoading = false
+            saveSuccessTip()
+          }).catch(({ response }) => {
+            this.saveLoading = false
+          })
+        }
+      })
+    }
+  }
+}
+</script>

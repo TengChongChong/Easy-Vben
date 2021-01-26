@@ -1,0 +1,114 @@
+package ${config.packagePath}.service.impl;
+
+<% for(import in serviceImpl.imports!){ %>
+import ${import.name};
+<% } %>
+import ${config.packagePath}.model.${config.modelName};
+import ${config.packagePath}.service.${config.modelName}Service;
+import ${config.packagePath}.dao.${config.modelName}Mapper;
+
+/**
+ * ${config.businessName}
+ *
+ * @author ${config.author}
+ * @date ${config.date}
+ */
+@Service
+public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelName}Mapper, ${config.modelName}> implements ${config.modelName}Service {
+
+    <% if(config.isGeneratorMethodsSelect){ %>
+    /**
+     * 列表
+     * @param object 查询条
+     * @param page   分页
+     * @return Page<${config.modelName}>
+     */
+    @Override
+    public Page<${config.modelName}> select(${config.modelName} object, Page<${config.modelName}> page) {
+        QueryWrapper<${config.modelName}> queryWrapper = new QueryWrapper<>();
+        if(object != null){
+            // 查询条件
+            <% if(config.queryItems != null) { %>
+            <% for(fieldSet in config.queryItems){ %>
+            // ${fieldSet.label}
+            if (Validator.isNotEmpty(object.get${strUtil.upperFirst(fieldSet.propertyName)}())) {
+                <% if('gte' == fieldSet.matchingMode) { %>
+                queryWrapper.ge("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                <% } else if('lte' == fieldSet.matchingMode) {%>
+                queryWrapper.le("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                <% } else if('left_like' == fieldSet.matchingMode) {%>
+                queryWrapper.likeLeft("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                <% } else if('right_like' == fieldSet.matchingMode) {%>
+                queryWrapper.likeRight("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                <% } else {%>
+                queryWrapper.${fieldSet.matchingMode}("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                <% } %>
+            }
+            <% } %>
+            <% } %>
+        }
+        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        return page;
+    }
+
+    /**
+     * 详情
+     *
+     * @param id id
+     * @return ${config.modelName}
+     */
+    @Override
+    public ${config.modelName} input(String id) {
+        ToolUtil.checkParams(id);
+        return getBaseMapper().getById(id);
+    }
+    <% } %>
+    <% if(config.isGeneratorMethodsAdd){ %>
+
+    /**
+     * 新增
+     *
+     * @return ${config.modelName}
+     */
+    @Override
+    public ${config.modelName} add() {
+        ${config.modelName} object = new ${config.modelName}();
+        // 设置默认值
+        return object;
+    }
+    <% } %>
+    <% if(config.isGeneratorMethodsRemove){ %>
+
+    /**
+     * 删除
+     *
+     * @param ids 数据ids
+     * @return true/false
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    @Override
+    public boolean remove(String ids) {
+        ToolUtil.checkParams(ids);
+        List<String> idList = Arrays.asList(ids.split(","));
+        return removeByIds(idList);
+    }
+    <% } %>
+    <% if(config.isGeneratorMethodsSave){ %>
+
+    /**
+     * 保存
+     *
+     * @param object 表单内容
+     * @return ${config.modelName}
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    @Override
+    public ${config.modelName} saveData(${config.modelName} object) {
+        ToolUtil.checkParams(object);
+        if (Validator.isNotEmpty(object.getId())) {
+            // 新增,设置默认值
+        }
+        return (${config.modelName}) ToolUtil.checkResult(saveOrUpdate(object), object);
+    }
+    <% } %>
+}

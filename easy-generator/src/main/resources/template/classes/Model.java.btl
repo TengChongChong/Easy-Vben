@@ -1,0 +1,56 @@
+package ${config.packagePath}.model;
+
+<% for(import in tableInfo.importPackages){ %>
+import ${import};
+<% } %>
+<% for(import in model.imports){ %>
+import ${import.name};
+<% } %>
+
+/**
+ * ${config.businessName}
+ *
+ * @author ${config.author}
+ * @date ${config.date}
+ */
+@TableName("${tableInfo.name}")
+public class ${config.modelName} extends Model<${config.modelName}> {
+
+    <% for(field in tableInfo.fields){ %>
+    <% if(field.comment != null && field.comment != "") { %>
+    /**
+     * ${field.comment}
+     */
+    <% }else if(commonComment[field.propertyName] != null){ %>
+    /**
+     * ${commonComment[field.propertyName]}
+     */
+    <% } %>
+    <% if(field.keyFlag) { %>
+    @TableId(value = "${field.name}")
+    <% } %>
+    <% if("editUser" == field.propertyName || "editDate" == field.propertyName){ %>
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    <% } else if ("createUser" == field.propertyName || "createDate" == field.propertyName) { %>
+    @TableField(fill = FieldFill.INSERT)
+    <% } %>
+    ${GeneratorJavaUtil.generatorVerification(field.propertyName, config.fieldSets)}private ${field.propertyType} ${field.propertyName};
+
+    <% } %>
+    //
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
+
+    <% for(field in tableInfo.fields){ %>
+    public ${field.propertyType} get${field.capitalName}() {
+        return ${field.propertyName};
+    }
+
+    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        this.${field.propertyName} = ${field.propertyName};
+    }
+    <% } %>
+}

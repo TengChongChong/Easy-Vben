@@ -1,0 +1,172 @@
+<template>
+  <!-- 如无需展开查询，请移除:advanced.sync="advanced"并添加:no-advanced="true" -->
+  <e-pro-table title="${config.businessName}" :advanced.sync="advanced">
+    <template slot="query">
+      <% for(fieldSet in config.queryItems){ %>
+      <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+        <a-form-model-item label="${fieldSet.label}">
+          <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
+          <e-dict-select type="${fieldSet.dictType}" v-model="queryParam.${fieldSet.propertyName}" @change="$refs.eTable.refresh(true)"/>
+          <% } else if(fieldSet.propertyType == 'Integer') {%>
+          <a-input-number v-model="queryParam.${fieldSet.propertyName}"/>
+          <% } else {%>
+          <a-input v-model="queryParam.${fieldSet.propertyName}"/>
+          <% } %>
+        </a-form-model-item>
+      </a-col>
+      <% } %>
+      <template v-if="advanced">
+        <!-- 点击展开显示的查询条件 -->
+      </template>
+    </template>
+
+    <template slot="button">
+      <% if(config.isGeneratorMethodsAdd){ %>
+      <e-btn-add to="${staticConfig.inputViewPath}"/>
+      <% } %>
+      <% if(config.isGeneratorMethodsRemove){ %>
+      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <% } %>
+    </template>
+
+    <template slot="table">
+      <s-table
+        ref="eTable"
+        :columns="columns"
+        :data="loadData"
+        :alert="true"
+        :rowSelection="rowSelection"
+        showPagination="auto"
+      >
+        <% for(fieldSet in config.tableItems){ %>
+        <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
+        <span slot="${fieldSet.propertyName}" slot-scope="text">
+          <e-dict-tag type="${fieldSet.dictType}" :code="text"/>
+        </span>
+        <% } %>
+        <% } %>
+        <% if(config.isGeneratorMethodsSave || config.isGeneratorMethodsRemove){ %>
+        <span slot="action" slot-scope="text, record">
+          <template>
+            <% if(config.isGeneratorMethodsSave){ %>
+            <e-btn-edit :to="`${staticConfig.inputViewPath}`"${config.isGeneratorMethodsRemove ? "" : " :divider=\"false\""} :tab-name="record.key" :id="record.id"/>
+            <% } %>
+            <% if(config.isGeneratorMethodsRemove){ %>
+            <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+            <% } %>
+          </template>
+        </span>
+        <% } %>
+      </s-table>
+    </template>
+  </e-pro-table>
+</template>
+
+<script>
+<% for(imp in staticConfig.listImports){ %>
+<% if(GeneratorImportConst.IMPORT_TYPE_SINGLE == imp.importType){ %>
+import ${imp.imps} from '${imp.from}'
+<% } else { %>
+import { ${imp.imps} } from '${imp.from}'
+<% } %>
+<% } %>
+
+const columns = [
+  <% for(fieldSet in config.tableItems){ %>
+  {
+    <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
+    title: '${fieldSet.title}',
+    dataIndex: '${fieldSet.propertyName}',
+    width: 100,
+    sorter: true,
+    scopedSlots: { customRender: '${fieldSet.propertyName}' }
+    <% } else if(fieldSet.propertyType == 'Date'){ %>
+    title: '${fieldSet.title}',
+    dataIndex: '${fieldSet.propertyName}',
+    width: 170,
+    sorter: true,
+    customRender: (text) => formatDate(text)
+    <% } else { %>
+    title: '${fieldSet.title}',
+    dataIndex: '${fieldSet.propertyName}',
+    width: 100,
+    sorter: true
+    <% } %>
+  }${config.isGeneratorMethodsSave || config.isGeneratorMethodsRemove ? "," : ""}
+  <% } %>
+  <% if(config.isGeneratorMethodsSave || config.isGeneratorMethodsRemove){ %>
+  {
+    title: '操作',
+    dataIndex: 'action',
+    width: 90,
+    fixed: 'right',
+    scopedSlots: { customRender: 'action' }
+  }
+  <% } %>
+]
+
+export default {
+  name: '${config.modelName}List',
+  components: {
+    <% for(imp in staticConfig.listImports){ %>
+    <% if(GeneratorImportConst.TYPE_COMPONENT == imp.type){ %>
+    <% for(item in imp.imp){ %>
+    ${item}${impLP.last && itemLP.last ? "" : ","}
+    <% } %>
+    <% } %>
+    <% } %>
+  },
+  data () {
+    this.columns = columns
+    return {
+      <% for(imp in staticConfig.listImports){ %>
+      <% if(GeneratorImportConst.TYPE_VARIABLE == imp.type){ %>
+      ${imp.imps}: ${imp.imps},
+      <% } %>
+      <% } %>
+
+      // 查询参数
+      advanced: false,
+      queryParam: {},
+      selectedRowKeys: [],
+      selectedRows: [],
+      removeBathLoading: false
+    }
+  },
+  activated () {
+    this.$refs.eTable.refresh(true)
+  },
+  computed: {
+    rowSelection () {
+      return {
+        selectedRowKeys: this.selectedRowKeys,
+        onChange: this.onSelectChange
+      }
+    }
+  },
+  methods: {
+    // 加载数据方法 必须为 Promise 对象
+    loadData (parameter) {
+      const requestParameters = Object.assign({}, parameter, this.queryParam)
+      return select(requestParameters)
+        .then(res => {
+          return res.data
+        })
+    },
+    onSelectChange (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+    }${config.generatorMethodsRemove ? "," : ""}
+    <% if(config.generatorMethodsRemove){ %>
+    remove (id) {
+      remove(id).then(res => {
+        this.$refs.eTable.refresh(true)
+        this.removeBathLoading = false
+      }).catch(({ response }) => {
+        this.removeBathLoading = false
+      })
+    }
+    <% } %>
+  }
+}
+</script>

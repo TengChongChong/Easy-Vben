@@ -1,0 +1,14 @@
+//== ${config.businessName}-详情页
+let ${GeneratorJsUtil.capitalLowercase(config.modelName)}Input = function () {
+
+    return {
+        //== 初始化页面
+        init: function () {
+            ETool.setBaseUrl(basePath + '/auth/${config.controllerMapping}/');
+        }
+    };
+}();
+//== 初始化
+${config.jquery}(document).ready(function () {
+    ${GeneratorJsUtil.capitalLowercase(config.modelName)}Input.init();
+});

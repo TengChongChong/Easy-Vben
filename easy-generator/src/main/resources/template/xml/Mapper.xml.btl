@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${config.packagePath}.dao.${tableInfo.mapperName}">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="${config.packagePath}.model.${config.modelName}">
+        <% for(field in tableInfo.fields){ %>
+        <% if(field.keyIdentityFlag) { %>
+        <id column="${field.name}" property="${field.propertyName}" />
+        <% } else { %>
+        <result column="${field.name}" property="${field.propertyName}" />
+        <% } %>
+        <% } %>
+    </resultMap>
+
+    <select id="select" resultType="${config.packagePath}.model.${config.modelName}">
+        select ${tableInfo.fieldNames}
+        from ${tableInfo.name} t
+        <where>
+            \${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getById" resultType="${config.packagePath}.model.${config.modelName}">
+        select ${tableInfo.fieldNames}
+        from ${tableInfo.name} t
+        where t.id = #{id}
+    </select>
+
+</mapper>

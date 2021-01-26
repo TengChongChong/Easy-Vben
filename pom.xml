@@ -23,6 +23,7 @@
         <module>easy-api</module>
         <module>easy-common</module>
         <module>easy-file</module>
+        <module>easy-generator</module>
         <module>easy-sample</module>
         <module>easy-scheduler</module>
         <module>easy-sys</module>
@@ -73,6 +74,11 @@
             <dependency>
                 <groupId>com.easy.restful</groupId>
                 <artifactId>easy-file</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.easy.restful</groupId>
+                <artifactId>easy-generator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
