@@ -22,10 +22,10 @@
 
     <template slot="button">
       <% if(config.isGeneratorMethodsAdd){ %>
-      <e-btn-add to="${staticConfig.inputViewPath}"/>
+      <e-btn-add permissions="${config.permissionsCode}:save" to="${staticConfig.inputViewPath}"/>
       <% } %>
       <% if(config.isGeneratorMethodsRemove){ %>
-      <e-btn-remove-batch :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch permissions="${config.permissionsCode}:remove" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
       <% } %>
     </template>
 
@@ -49,10 +49,10 @@
         <span slot="action" slot-scope="text, record">
           <template>
             <% if(config.isGeneratorMethodsSave){ %>
-            <e-btn-edit :to="`${staticConfig.inputViewPath}`"${config.isGeneratorMethodsRemove ? "" : " :divider=\"false\""} :tab-name="record.key" :id="record.id"/>
+            <e-btn-edit permissions="${config.permissionsCode}:save" :to="`${staticConfig.inputViewPath}`"${config.isGeneratorMethodsRemove ? "" : " :divider=\"false\""} :tab-name="record.key" :id="record.id"/>
             <% } %>
             <% if(config.isGeneratorMethodsRemove){ %>
-            <e-btn-remove :id="record.id" :divider="false" :click-callback="remove"/>
+            <e-btn-remove permissions="${config.permissionsCode}:remove" :id="record.id" :divider="false" :click-callback="remove"/>
             <% } %>
           </template>
         </span>

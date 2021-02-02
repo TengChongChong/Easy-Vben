@@ -65,7 +65,7 @@
 
         <a-col :sm="24">
           <div class="input-btn-group">
-            <e-btn-save :loading="saveLoading" :click-callback="save"/>
+            <e-btn-save permissions="${config.permissionsCode}:save" :loading="saveLoading" :click-callback="save"/>
           </div>
         </a-col>
       </a-row>
