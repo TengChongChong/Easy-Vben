@@ -2,12 +2,12 @@ package com.easy.restful.sys.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.SecureUtil;
 import cn.hutool.extra.mail.MailUtil;
 import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.common.redis.constant.RedisPrefix;
 import com.easy.restful.common.redis.util.RedisUtil;
 import com.easy.restful.core.mail.MailTemplate;
+import com.easy.restful.sys.model.SysUser;
 import com.easy.restful.sys.service.SysMailVerifiesService;
 import com.easy.restful.sys.service.SysUserRetrievePasswordService;
 import com.easy.restful.sys.service.SysUserService;
@@ -34,41 +34,54 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
 
     @Override
     public boolean sendEmail(String username, String email) {
-        if (StrUtil.isNotBlank(username)) {
-            String userMail = sysUserService.getSysUserMailByUserName(username);
-            if (StrUtil.isNotBlank(userMail) && userMail.equals(email)) {
-                String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
-                // 验证码
-                String code = RandomUtil.randomString(6);
-                // 放到redis中,用于修改密码时验证
-                RedisUtil.set(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username, code);
-                Map<String,Object> params = new HashMap<>(2);
-                params.put("code", code);
-                params.put("username", hideUsername);
-                MailUtil.sendHtml(email, "账号" + hideUsername + "密码重置", MailTemplate.getContent("/mail/rest-password.html", params));
-
-                return true;
-            }
+        SysUser sysUser = sysUserService.getSysUserMailAndPhoneByUserName(username);
+        if (sysUser == null || StrUtil.isBlank(sysUser.getEmail()) || !sysUser.getEmail().equals(email)) {
             throw new EasyException("用户名与邮箱不匹配");
-        } else {
-            throw new EasyException("获取用户名失败");
         }
+        String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
+        // 验证码
+        String code = RandomUtil.randomString(6);
+        // 放到redis中,用于修改密码时验证
+        RedisUtil.set(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username, code);
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("code", code);
+        params.put("username", hideUsername);
+        MailUtil.sendHtml(email, "账号" + hideUsername + "密码重置", MailTemplate.getContent("/mail/rest-password.html", params));
+        return true;
+    }
+
+    @Override
+    public String sendMessage(String username, String phone) {
+        SysUser sysUser = sysUserService.getSysUserMailAndPhoneByUserName(username);
+        if (sysUser == null || StrUtil.isBlank(sysUser.getEmail()) || !sysUser.getPhone().equals(phone)) {
+            throw new EasyException("用户名与手机号不匹配");
+        }
+        String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
+        // 验证码
+        String code = RandomUtil.randomString(6);
+        // 放到redis中,用于修改密码时验证
+        RedisUtil.set(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username, code);
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("code", code);
+        params.put("username", hideUsername);
+        // todo: 发送短信，这里只做模拟
+        return code;
     }
 
     @Override
     public boolean verifiesCode(String username, String code) {
-        if (StrUtil.isNotBlank(username) && StrUtil.isNotBlank(code)) {
-            String relCode = (String)RedisUtil.get(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username);
-            // 缓存中有当前用户重置密码需要的验证码
-            if(StrUtil.isNotBlank(relCode)){
-                if(SecureUtil.md5(relCode).equals(code)){
-                    return true;
-                }
-                throw new EasyException("验证码错误，请重新输入");
-            }
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(code)) {
+            throw new EasyException("获取用户名或验证码失败");
+        }
+        String relCode = (String) RedisUtil.get(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username);
+        // 缓存中有当前用户重置密码需要的验证码
+        if (StrUtil.isBlank(relCode)) {
             throw new EasyException("验证码已过期，请重新发送");
         }
-        throw new EasyException("获取用户名或验证码失败");
+        if (!relCode.equals(code)) {
+            throw new EasyException("验证码错误，请重新输入");
+        }
+        return true;
     }
 
     @Override

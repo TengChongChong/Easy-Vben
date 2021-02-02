@@ -117,9 +117,9 @@ public interface SysUserService {
      * 根据用户名查询用户邮箱
      *
      * @param username 用户名
-     * @return mail
+     * @return SysUser
      */
-    String getSysUserMailByUserName(String username);
+    SysUser getSysUserMailAndPhoneByUserName(String username);
 
     /**
      * 更新用户最后登录时间

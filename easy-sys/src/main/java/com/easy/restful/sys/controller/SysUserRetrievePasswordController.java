@@ -37,6 +37,17 @@ public class SysUserRetrievePasswordController extends BaseController {
     }
 
     /**
+     * 发送重置密码短信
+     *
+     * @param json {username: '', phone: ''}
+     * @return 验证码
+     */
+    @PostMapping("message")
+    public String sendMessage(@RequestBody JSONObject json) {
+        return service.sendMessage(json.getStr("username"), json.getStr("phone"));
+    }
+
+    /**
      * 验证用户名与校验码是否匹配
      *
      * @param username 用户名
@@ -53,12 +64,12 @@ public class SysUserRetrievePasswordController extends BaseController {
      *
      * @param username 用户名
      * @param code     校验码
-     * @param password 密码
+     * @param json {password: ''}
      * @return true/false
      */
     @PostMapping("reset/password/{username}/{code}")
     public boolean resetPassword(@PathVariable("username") String username, @PathVariable("code") String code,
-                                 @RequestParam("password") String password) {
-        return service.resetPassword(username, code, password);
+                                 @RequestBody JSONObject json) {
+        return service.resetPassword(username, code, json.getStr("password"));
     }
 }

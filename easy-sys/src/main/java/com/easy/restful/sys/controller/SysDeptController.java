@@ -89,7 +89,17 @@ public class SysDeptController extends BaseController {
     public boolean remove(@PathVariable("id") String id) {
         return service.remove(id);
     }
-
+    /**
+     * 设置状态
+     *
+     * @param ids 部门类型ids
+     * @return true/false
+     */
+    @PostMapping("{id}/status/{status}")
+    @RequiresPermissions("sys:dept:type:status")
+    public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
+        return service.setStatus(ids, status);
+    }
     /**
      * 保存
      *

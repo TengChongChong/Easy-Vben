@@ -244,17 +244,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public String getSysUserMailByUserName(String username) {
+    public SysUser getSysUserMailAndPhoneByUserName(String username) {
         if (Validator.isNotEmpty(username)) {
             QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-            queryWrapper.select("email");
+            queryWrapper.select("email, phone");
             queryWrapper.eq("username", username);
             SysUser sysUser = getBaseMapper().selectOne(queryWrapper);
-            if (sysUser != null) {
-                return sysUser.getEmail();
-            } else {
-                return null;
-            }
+            return sysUser;
         }
         return null;
     }

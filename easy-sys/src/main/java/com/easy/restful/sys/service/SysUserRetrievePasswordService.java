@@ -17,6 +17,15 @@ public interface SysUserRetrievePasswordService {
     boolean sendEmail(String username, String email);
 
     /**
+     * 发送重置密码短信
+     *
+     * @param username 用户名
+     * @param phone     手机号
+     * @return 验证码
+     */
+    String sendMessage(String username, String phone);
+
+    /**
      * 验证验证码
      *
      * @param username 用户名

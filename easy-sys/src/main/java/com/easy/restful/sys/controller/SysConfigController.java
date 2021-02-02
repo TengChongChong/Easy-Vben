@@ -19,7 +19,6 @@ import javax.validation.Valid;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/config")
 public class SysConfigController extends BaseController {
 
     /**
@@ -34,7 +33,7 @@ public class SysConfigController extends BaseController {
      * @param object 查询条件
      * @param page   Page<SysConfig>
      */
-    @GetMapping
+    @GetMapping("/auth/sys/config")
     @RequiresPermissions("sys:config:select")
     public Page<SysConfig> select(SysConfig object, Page<SysConfig> page) {
         return service.select(object, page);
@@ -46,7 +45,7 @@ public class SysConfigController extends BaseController {
      * @param id id
      * @return SysConfig
      */
-    @GetMapping("{id}")
+    @GetMapping("/auth/sys/config/{id}")
     @RequiresPermissions("sys:config:select")
     public SysConfig get(@PathVariable("id") String id) {
         return service.get(id);
@@ -58,7 +57,7 @@ public class SysConfigController extends BaseController {
      * @param key key
      * @return SysConfig
      */
-    @GetMapping("key/{key}")
+    @GetMapping("/sys/config/key/{key}")
     @RequiresPermissions("sys:config:select")
     public SysConfig getByKey(@PathVariable("key") String key) {
         return service.getByKey(key);
@@ -70,7 +69,7 @@ public class SysConfigController extends BaseController {
      * @param ids 数据ids
      * @return true/false
      */
-    @DeleteMapping("{ids}")
+    @DeleteMapping("/auth/sys/config/{ids}")
     @RequiresPermissions("sys:config:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
@@ -82,7 +81,7 @@ public class SysConfigController extends BaseController {
      * @param object 表单内容
      * @return SysConfig
      */
-    @PostMapping
+    @PostMapping("/auth/sys/config")
     @RequiresPermissions("sys:config:save")
     public SysConfig save(@RequestBody @Valid SysConfig object) {
         return service.saveData(object);
@@ -93,7 +92,7 @@ public class SysConfigController extends BaseController {
      *
      * @return true/false
      */
-    @PostMapping("refresh/cache")
+    @PostMapping("/auth/sys/config/refresh/cache")
     @RequiresPermissions("sys:config:save")
     public boolean refreshCache() {
         return service.refreshCache();
