@@ -20,6 +20,11 @@
           left join sys_user_role ur on ur.role_id = r.id
         where ur.user_id = #{userId} and r.status = #{status} and r.code != ''
     </select>
+    <select id="selectRoleIdByUserId" resultType="java.lang.String">
+        select r.id from sys_role r
+           left join sys_user_role ur on ur.role_id = r.id
+        where ur.user_id = #{userId} and r.status = #{status} and r.code != ''
+    </select>
     <select id="selectRoleNameByUserId" resultType="java.lang.String">
         select r.name from sys_role r
            left join sys_user_role ur on ur.role_id = r.id

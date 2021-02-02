@@ -62,6 +62,14 @@ public interface SysUserRoleService {
     List<String> selectRoleByUserId(String userId);
 
     /**
+     * 根据角色id获取角色id集合
+     *
+     * @param userId 用户id
+     * @return 角色集合
+     */
+    List<String> selectRoleIdByUserId(String userId);
+
+    /**
      * 根据角色id获取角色名称集合
      *
      * @param userId 用户id

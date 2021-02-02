@@ -72,6 +72,11 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     public List<String> selectRoleByUserId(String userId) {
         return getBaseMapper().selectRoleByUserId(userId, RoleStatus.ENABLE.getCode());
     }
+
+    @Override
+    public List<String> selectRoleIdByUserId(String userId) {
+        return getBaseMapper().selectRoleIdByUserId(userId, RoleStatus.ENABLE.getCode());
+    }
     @Override
     public List<String> selectRoleNameByUserId(String userId) {
         return getBaseMapper().selectRoleNameByUserId(userId, RoleStatus.ENABLE.getCode());

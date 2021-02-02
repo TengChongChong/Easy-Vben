@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
@@ -119,10 +118,15 @@ public class SysUser extends Model<SysUser> implements Serializable {
     @TableField(exist = false)
     private SysDept dept;
     /**
-     * 角色集合
+     * 角色集合(标识)
      */
     @TableField(exist = false)
     private List<String> roles;
+    /**
+     * 角色集合
+     */
+    @TableField(exist = false)
+    private List<String> roleIds;
     /**
      * 角色名称集合
      */
@@ -430,5 +434,13 @@ public class SysUser extends Model<SysUser> implements Serializable {
 
     public void setRoleNames(List<String> roleNames) {
         this.roleNames = roleNames;
+    }
+
+    public List<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(List<String> roleIds) {
+        this.roleIds = roleIds;
     }
 }

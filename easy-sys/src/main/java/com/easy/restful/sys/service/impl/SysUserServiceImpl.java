@@ -115,9 +115,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         ToolUtil.checkParams(id);
         SysUser sysUser = getBaseMapper().selectInfo(id);
         if (sysUser != null) {
-            sysUser.setRoles(getBaseMapper().selectRoles(id));
-            if (Validator.isEmpty(sysUser.getRoles())) {
-                sysUser.setRoles(Collections.emptyList());
+            sysUser.setRoleIds(getBaseMapper().selectRoles(id));
+            if (Validator.isEmpty(sysUser.getRoleIds())) {
+                sysUser.setRoleIds(Collections.emptyList());
             }
         }
         return sysUser;
@@ -131,7 +131,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setStatus(UserStatus.ENABLE.getCode());
         sysUser.setSex(SexConst.BOY);
         sysUser.setDeptName(sysDeptService.getName(deptId));
-        sysUser.setRoles(Collections.emptyList());
+        sysUser.setRoleIds(Collections.emptyList());
         return sysUser;
     }
 
@@ -179,7 +179,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         boolean isSuccess = saveOrUpdate(object);
         if (isSuccess && updateAuthorization) {
-            sysUserRoleService.saveUserRole(object.getId(), object.getRoles());
+            sysUserRoleService.saveUserRole(object.getId(), object.getRoleIds());
             // 删除授权信息,下次请求资源重新授权
             RedisUtil.del(RedisPrefix.SHIRO_AUTHORIZATION + object.toString());
         }
@@ -342,8 +342,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (Validator.isNotEmpty(sysUser.getDeptId())) {
                 queryWrapper.eq("su.dept_id", sysUser.getDeptId());
             }
-            if (Validator.isNotEmpty(sysUser.getRoles())) {
-                queryWrapper.in("sur.role_id", sysUser.getRoles());
+            if (Validator.isNotEmpty(sysUser.getRoleIds())) {
+                queryWrapper.in("sur.role_id", sysUser.getRoleIds());
             }
         }
 

@@ -84,7 +84,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
                     // 待签收
                     queryWrapper.isNull("art.assignee_")
                             .eq("ari.type_", "candidate")
-                            .and(i -> i.eq("ari.user_id_", currentUser.getId()).or().in("ari.group_id_", currentUser.getRoles().toArray()));
+                            .and(i -> i.eq("ari.user_id_", currentUser.getId()).or().in("ari.group_id_", currentUser.getRoleIds().toArray()));
                 } else if (TaskStatusConst.CLAIMED.equals(task.getStatus())) {
                     // 待办任务：签收人或委托人为当前用户
                     queryWrapper.and(i -> i.eq("art.assignee_", currentUser.getId()).or().eq("art.owner_", currentUser.getId()));
