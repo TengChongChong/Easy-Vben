@@ -7,7 +7,7 @@ const baseUrl = '/auth/${config.controllerMapping}/'
 /**
  * 查询数据
  *
- * @param params 查询参数
+ * @param params {object} 查询参数
  * @return Page<${config.modelName}>
  */
 export function select (params) {
@@ -21,7 +21,7 @@ export function select (params) {
 /**
  * 详情
  *
- * @param id id
+ * @param id {string} id
  * @return ${config.modelName}
  */
 export function get (id) {
@@ -50,7 +50,7 @@ export function add () {
 /**
  * 删除
  *
- * @param ids {string} ids
+ * @param ids {string} ids 多个使用 , 隔开
  * @return true/false
  */
 export function remove (ids) {
@@ -65,7 +65,7 @@ export function remove (ids) {
 /**
  * 保存
  *
- * @param params 查询条件
+ * @param params {object} 表单数据
  * @return ${config.modelName}
  */
 export function save (params) {

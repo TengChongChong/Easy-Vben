@@ -10,9 +10,7 @@ import com.easy.restful.generator.constant.GeneratorImportConst;
 import com.easy.restful.generator.constant.GeneratorTemplateConst;
 import com.easy.restful.generator.engine.config.*;
 import com.easy.restful.generator.model.Generator;
-import com.easy.restful.generator.util.GeneratorHtmlUtil;
 import com.easy.restful.generator.util.GeneratorJavaUtil;
-import com.easy.restful.generator.util.GeneratorJsUtil;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -114,9 +112,7 @@ public class TemplateEngine {
         ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();
         groupTemplate = new GroupTemplate(resourceLoader, configuration);
         // 拓展
-        groupTemplate.registerFunctionPackage("GeneratorHtmlUtil", GeneratorHtmlUtil.class);
         groupTemplate.registerFunctionPackage("GeneratorJavaUtil", GeneratorJavaUtil.class);
-        groupTemplate.registerFunctionPackage("GeneratorJsUtil", GeneratorJsUtil.class);
         groupTemplate.registerFunctionPackage("strUtil", StrUtil.class);
         groupTemplate.registerFunctionPackage("arrayUtil", ArrayUtil.class);
 
