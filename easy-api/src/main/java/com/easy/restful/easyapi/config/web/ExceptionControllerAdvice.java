@@ -121,7 +121,6 @@ public class ExceptionControllerAdvice {
         return Response.failError(ResultCode.BAD_REQUEST.getCode(), "参数效验异常[" + e.getMessage() + "]");
     }
 
-
     /**
      * 未知异常
      */

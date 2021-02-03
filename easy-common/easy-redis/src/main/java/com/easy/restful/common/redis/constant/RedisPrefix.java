@@ -19,6 +19,11 @@ public class RedisPrefix {
     public static final String SESSION = "account:session:";
 
     /**
+     * 登录验证码
+     */
+    public static final String VERIFICATION_CODE = "verification:code:";
+
+    /**
      * shiro session
      */
     public static final String SHIRO_SESSION = "shiro:session:";

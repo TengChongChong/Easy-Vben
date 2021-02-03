@@ -86,4 +86,20 @@ public class FormPropertyVO implements FormProperty {
     public String getDatePattern() {
         return datePattern;
     }
+
+    @Override
+    public String toString() {
+        return "FormPropertyVO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", typeCode='" + typeCode + '\'' +
+                ", type=" + type +
+                ", required=" + required +
+                ", readable=" + readable +
+                ", writable=" + writable +
+                ", value='" + value + '\'' +
+                ", datePattern='" + datePattern + '\'' +
+                ", values=" + values +
+                '}';
+    }
 }

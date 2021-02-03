@@ -88,4 +88,16 @@ public class ProcessDefinitionVO {
     public void setHasFormData(Boolean hasFormData) {
         this.hasFormData = hasFormData;
     }
+
+    @Override
+    public String toString() {
+        return "ProcessDefinitionVO{" +
+                "processDefinitionId='" + processDefinitionId + '\'' +
+                ", businessKey='" + businessKey + '\'' +
+                ", businessTitle='" + businessTitle + '\'' +
+                ", businessDetailsPath='" + businessDetailsPath + '\'' +
+                ", extentParams=" + extentParams +
+                ", hasFormData=" + hasFormData +
+                '}';
+    }
 }

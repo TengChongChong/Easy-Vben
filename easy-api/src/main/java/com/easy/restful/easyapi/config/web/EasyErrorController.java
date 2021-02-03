@@ -35,12 +35,7 @@ public class EasyErrorController extends BasicErrorController {
         HttpStatus status = getStatus(request);
         // 响应数据
         Map<String, Object> map = getErrorAttributes(request, ErrorAttributeOptions.defaults());
-        map.put("success", false);
-        map.put("errorCode", "00" + map.get("status"));
-        map.put("showType", Response.NOTIFICATION_ERROR);
-        map.put("timestamp", System.currentTimeMillis());
-        map.remove("status");
-        return new ResponseEntity(map, status);
+        return new ResponseEntity(Response.failError("00" + map.get("status"),  map.get("error") + " - " + map.get("path")), status);
     }
 
     /**
@@ -50,7 +45,7 @@ public class EasyErrorController extends BasicErrorController {
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = getStatus(request);
         response.setStatus(status.value());
-        Map<String, Object> model =  getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE));
+        Map<String, Object> model = getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE));
         ModelAndView modelAndView = new ModelAndView("/global/" + status.value());
         modelAndView.addAllObjects(model);
         // 当前模式是否为开发模式
