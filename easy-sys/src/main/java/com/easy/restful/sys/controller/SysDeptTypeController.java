@@ -103,9 +103,9 @@ public class SysDeptTypeController extends BaseController {
      * @param pId 上级部门类型id
      * @return List<Tree>
      */
-    @GetMapping("pId")
+    @GetMapping("pId/{pId}")
     @RequiresPermissions("sys:dept:type:select")
-    public List<Tree> selectByPId(@RequestParam(name = "pId", required = false) String pId) {
+    public List<Tree> selectByPId(@PathVariable("pId") String pId) {
         return service.selectByPId(pId);
     }
 

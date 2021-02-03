@@ -75,14 +75,12 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     @Override
     protected Session doReadSession(Serializable sessionId) {
         HttpServletRequest request = WebUtils.getRequest();
-        if (request != null) {
-            String uri = request.getServletPath();
-            // 如果是静态文件 不读取session
-            if (WebUtils.isStaticRequest(uri)) {
-                return null;
-            }
-            logger.debug("readSession(" + request.getServletPath() + "):", sessionId.toString());
+        String uri = request.getServletPath();
+        // 如果是静态文件 不读取session
+        if (WebUtils.isStaticRequest(uri)) {
+            return null;
         }
+        logger.debug("readSession(" + request.getServletPath() + "):", sessionId.toString());
         // 从缓存中获取session
         return (Session) RedisUtil.get(getKey(sessionId.toString()));
     }

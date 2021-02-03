@@ -14,11 +14,6 @@ public class SessionConst {
     public static final String USER_SESSION_KEY = "user";
 
     /**
-     * 记住我cookie
-     */
-    public static final String REMEMBER_ME = "rememberMe";
-
-    /**
      * 管理员强制退出
      */
     public static final String FORCE_LOGOUT = "force_logout";
@@ -29,14 +24,13 @@ public class SessionConst {
     public static final String LOGIN_ELSEWHERE = "login_elsewhere";
 
     /**
-     * 超时失效
+     * 验证码id
      */
-    public static final String INVALID = "invalid";
+    public static final String CODE_ID = "codeId";
 
     /**
-     * 登录验证码
+     * 验证码
      */
     public static final String VERIFICATION_CODE = "verificationCode";
-
 
 }

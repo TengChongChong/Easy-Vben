@@ -13,7 +13,6 @@ import com.easy.restful.common.redis.util.RedisUtil;
 import com.easy.restful.config.shiro.service.ShiroService;
 import com.easy.restful.config.shiro.session.RedisSessionDAO;
 import com.easy.restful.exception.BusinessException;
-import com.easy.restful.sys.common.constant.SysConfigConst;
 import com.easy.restful.sys.common.constant.SysConst;
 import com.easy.restful.sys.common.status.UserStatus;
 import com.easy.restful.sys.dao.SysDeptMapper;
@@ -22,8 +21,6 @@ import com.easy.restful.sys.model.SysUser;
 import com.easy.restful.sys.service.SysDeptTypeService;
 import com.easy.restful.sys.service.SysUserRoleService;
 import com.easy.restful.util.PasswordUtil;
-import com.easy.restful.util.ShiroUtil;
-import com.easy.restful.util.SysConfigUtil;
 import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,27 +151,22 @@ public class ShiroServiceImpl implements ShiroService {
      * @return true/false
      */
     private boolean checkVerificationCode() {
-        // 如果开启了验证码验证,用户尝试登录次数已超出最大免验证码登录次数
-        if (SysConst.projectProperties.getLoginVerificationCode() &&
-                getClientTrialFrequency(ShiroUtil.getSession().getId().toString(), true) > (Integer) SysConfigUtil.get(SysConfigConst.LOGIN_ATTEMPTS_VERIFICATION_CODE)) {
+        // 如果开启了验证码验证
+        if (SysConst.projectProperties.getLoginVerificationCode()) {
+            HttpServletRequest request = WebUtils.getRequest();
             // 检查验证码
-            String code = (String) ShiroUtil.getAttribute(SessionConst.VERIFICATION_CODE);
+            String code = (String) RedisUtil.get(RedisPrefix.VERIFICATION_CODE + request.getAttribute(SessionConst.CODE_ID));
             if (StrUtil.isBlank(code)) {
                 // 如果验证码为空，说明验证码过期了，需要刷新验证码
                 throw new EasyException(Response.SILENT, "03014", "验证码已过期，请重新输入");
             }
-            HttpServletRequest request = WebUtils.getRequest();
-            if (request != null) {
-                String receivedCode = request.getParameter("code");
-                if (StrUtil.isNotBlank(receivedCode)) {
-                    if (!receivedCode.equalsIgnoreCase(code)) {
-                        throw new EasyException(Response.SILENT, "03012", "验证码错误，请重新输入");
-                    }
-                } else {
-                    throw new EasyException(Response.SILENT, "03013", "请输入验证码");
+            String receivedCode = (String) request.getAttribute(SessionConst.VERIFICATION_CODE);
+            if (StrUtil.isNotBlank(receivedCode)) {
+                if (!receivedCode.equalsIgnoreCase(code)) {
+                    throw new EasyException(Response.SILENT, "03012", "验证码错误，请重新输入");
                 }
             } else {
-                throw new EasyException(Response.SILENT, "获取请求失败");
+                throw new EasyException(Response.SILENT, "03013", "请输入验证码");
             }
         }
         return true;

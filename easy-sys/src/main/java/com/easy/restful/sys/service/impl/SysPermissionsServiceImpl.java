@@ -188,6 +188,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
                     sysPermissions.setComponent(permission.getComponent());
                     sysPermissions.setHide(permission.getHide());
                     sysPermissions.setpId(parentPermission.getId());
+                    sysPermissions.setTarget(permission.getTarget());
                     if (Validator.isNotEmpty(permission.getCode())) {
                         try {
                             // code默认为 父code + 最后一个:后面的字符

@@ -58,7 +58,6 @@ public class SysConfigController extends BaseController {
      * @return SysConfig
      */
     @GetMapping("/sys/config/key/{key}")
-    @RequiresPermissions("sys:config:select")
     public SysConfig getByKey(@PathVariable("key") String key) {
         return service.getByKey(key);
     }
