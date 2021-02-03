@@ -13,7 +13,19 @@ public class LoginVO {
     private String username;
     @NotBlank(message = "密码不能为空")
     private String password;
+    /**
+     * 记住我
+     */
     private Boolean rememberMe;
+
+    /**
+     * 验证码id
+     */
+    private String codeId;
+    /**
+     * 验证码
+     */
+    private String verificationCode;
 
     public String getUsername() {
         return username;
@@ -39,12 +51,30 @@ public class LoginVO {
         this.rememberMe = rememberMe;
     }
 
+    public String getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
     @Override
     public String toString() {
         return "LoginVO{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", rememberMe=" + rememberMe +
+                ", codeId='" + codeId + '\'' +
+                ", verificationCode='" + verificationCode + '\'' +
                 '}';
     }
 }

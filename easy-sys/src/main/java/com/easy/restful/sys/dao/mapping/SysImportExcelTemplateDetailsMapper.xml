@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.restful.sys.dao.SysImportExcelTemplateDetailsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.restful.sys.model.SysImportExcelTemplateDetails">
+        <id column="id" property="id"/>
+        <result column="template_id" property="templateId"/>
+        <result column="field_name" property="fieldName"/>
+        <result column="title" property="title"/>
+        <result column="field_length" property="fieldLength"/>
+        <result column="field_type" property="fieldType"/>
+        <result column="replace_table" property="replaceTable"/>
+        <result column="replace_table_field_name" property="replaceTableFieldName"/>
+        <result column="replace_table_field_value" property="replaceTableFieldValue"/>
+        <result column="replace_table_dict_type" property="replaceTableDictType"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="required" property="required"/>
+        <result column="only" property="only"/>
+        <result column="create_date" property="createDate" />
+        <result column="create_user" property="createUser" />
+        <result column="edit_date" property="editDate" />
+        <result column="edit_user" property="editUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <select id="selectTableHeadByTemplateId" resultType="com.easy.restful.sys.model.Column">
+        select title, replace_table_dict_type as dictType
+        from sys_import_excel_template_details
+        where template_id = #{templateId}
+        order by order_no
+    </select>
+
+</mapper>
