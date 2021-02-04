@@ -89,6 +89,15 @@ public class SysDownload extends Model<SysDownload> implements Serializable {
 
     //
 
+
+    public SysDownload() {
+    }
+
+    public SysDownload(String name, String path) {
+        this.name = name;
+        this.path = path;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;

@@ -31,7 +31,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RedisProperties redisProperties;
@@ -39,9 +39,8 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean
     public JedisPool redisPoolFactory() {
         logger.info("JedisPool注入成功");
-        JedisPool jedisPool = new JedisPool(getJedisPoolConfig(), redisProperties.getHost(), redisProperties.getPort(),
+        return new JedisPool(getJedisPoolConfig(), redisProperties.getHost(), redisProperties.getPort(),
                 redisProperties.getTimeout(), redisProperties.getPassword());
-        return jedisPool;
     }
 
 
@@ -71,8 +70,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         logger.info("cacheManager注入成功");
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().disableCachingNullValues();
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory);
-        RedisCacheManager redisCacheManager = new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
-        return redisCacheManager;
+        return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
     }
 
     @Bean(name = "redisTemplate")

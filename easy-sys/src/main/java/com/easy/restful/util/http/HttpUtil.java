@@ -15,8 +15,8 @@ import java.util.Date;
 /**
  * HttpUtil
  *
- * @Author tengchong
- * @Date 2019-04-09
+ * @author tengchong
+ * @date 2019-04-09
  */
 public class HttpUtil {
     private HttpUtil() {}

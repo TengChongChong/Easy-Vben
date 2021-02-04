@@ -3,7 +3,7 @@ package com.easy.restful.common.core.exception;
 /**
  * 封装异常接口
  *
- * @Author tengchong
+ * @author tengchong
  * @date 2019-01-20
  */
 public interface EasyServiceException {

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "spring.redis")
 public class RedisProperties {
-    private static Logger logger = LoggerFactory.getLogger(RedisProperties.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisProperties.class);
     /**
      * Redis数据库编号
      */

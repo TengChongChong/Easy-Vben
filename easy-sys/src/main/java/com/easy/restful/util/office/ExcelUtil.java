@@ -1,22 +1,38 @@
 package com.easy.restful.util.office;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.BigExcelWriter;
 import com.easy.restful.common.core.constant.CommonConst;
+import com.easy.restful.common.core.exception.EasyException;
+import com.easy.restful.sys.model.SysDownload;
+import com.easy.restful.sys.service.SysDownloadService;
 import com.easy.restful.util.file.FileUtil;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Excel 工具
  *
- * @Author tengchong
- * @Date 2019-04-09
+ * @author tengchong
+ * @date 2019-04-09
  */
+@Component
 public class ExcelUtil {
-    private ExcelUtil() {}
+
+    private static SysDownloadService downloadService;
+
+    private ExcelUtil() {
+    }
 
     /**
      * excel 文件后缀 07
@@ -28,14 +44,26 @@ public class ExcelUtil {
     public static final String EXCEL_SUFFIX_XLS = ".xls";
 
     /**
-     * 写excel文件
+     * 导出数据并获取下载id
      *
-     * @param body 表格内容
-     * @param head 表格标题 示例 标题1,标题2,标题3
-     * @return 文件路径
+     * @param title 文件&标题名称
+     * @param sheetName sheet 名称
+     * @param data 数据
+     * @param clazz 类
+     * @return 文件下载id
      */
-    public static String writFile(List<List<Object>> body, String head) {
-        return writFile(body, head.split(CommonConst.SPLIT), null, null, null);
+    public static String writeAndGetDownloadId(String title, String sheetName, List<?> data, Class clazz) {
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(title, sheetName), clazz, data);
+        FileOutputStream fos;
+        String path = FileUtil.getTemporaryPath() + UUID.randomUUID() + EXCEL_SUFFIX_XLS;
+        try {
+            fos = new FileOutputStream(path);
+            workbook.write(fos);
+            fos.close();
+        } catch (IOException e) {
+            throw new EasyException("文件写入失败[" + e.getMessage() + "]");
+        }
+        return downloadService.saveData(new SysDownload(title + EXCEL_SUFFIX_XLS, path)).getId();
     }
 
     /**
@@ -87,7 +115,7 @@ public class ExcelUtil {
             }
         }
         // 设置表格标题
-        if(head != null){
+        if (head != null) {
             writer.writeHeadRow(Arrays.asList(head));
         }
         // 设置内容
@@ -98,5 +126,10 @@ public class ExcelUtil {
         //关闭writer，释放内存
         writer.close();
         return path;
+    }
+
+    @Autowired
+    public void setDownloadService(SysDownloadService downloadService) {
+        ExcelUtil.downloadService = downloadService;
     }
 }

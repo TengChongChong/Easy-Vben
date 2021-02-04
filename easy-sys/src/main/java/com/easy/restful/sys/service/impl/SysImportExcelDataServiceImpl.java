@@ -15,7 +15,6 @@ import com.easy.restful.sys.model.*;
 import com.easy.restful.sys.service.*;
 import com.easy.restful.util.ShiroUtil;
 import com.easy.restful.util.ToolUtil;
-import com.easy.restful.util.http.HttpUtil;
 import com.easy.restful.util.office.ExcelUtil;
 import com.easy.restful.util.office.ImportExportUtil;
 import org.apache.shiro.SecurityUtils;
@@ -23,14 +22,11 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -45,6 +41,9 @@ import java.util.*;
 public class SysImportExcelDataServiceImpl implements SysImportExcelDataService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private SysDownloadService sysDownloadService;
 
     /**
      * 导入模板
@@ -264,8 +263,8 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     /**
      * 向缓存中添加字典
      *
-     * @param cacheMap 缓存map
-     * @param dictionaries    本次导入所需的字典
+     * @param cacheMap     缓存map
+     * @param dictionaries 本次导入所需的字典
      */
     private void setDictMap(Map<String, String> cacheMap, List<SysDict> dictionaries) {
         if (dictionaries != null) {
@@ -322,7 +321,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
                     // 将单元格数据转为string
                     String cell = objectToString(data.get(configLength));
                     // todo: 长度验证
-                    if(data.size() > configLength){
+                    if (data.size() > configLength) {
 
                     }
 
@@ -469,36 +468,35 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     }
 
     @Override
-    public ResponseEntity<FileSystemResource> exportVerificationFailData(String templateId, HttpServletRequest request) {
+    public String exportVerificationFailData(String templateId, HttpServletRequest request) {
         ToolUtil.checkParams(templateId);
         SysImportExcelTemplate importExcelTemplate = importExcelTemplateService.get(templateId);
         // 导入规则
         List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
-        if (configs != null && configs.size() > 0) {
-            String selectFields = ImportExportUtil.getSelectFields(configs, false);
-            String leftJoinTables = ImportExportUtil.getLeftJoinTables(configs, false);
-            QueryWrapper<SysImportExcelTemporary> queryWrapper = new QueryWrapper<>();
-            // 导入用户id
-            queryWrapper.eq("user_id", ShiroUtil.getCurrentUser().getId());
-            queryWrapper.eq("template_id", importExcelTemplate.getId());
-            // 查询验证失败数据
-            List<SysImportExcelTemporary> temporaryList = mapper.selectVerificationFailData(selectFields,
-                    leftJoinTables,
-                    queryWrapper);
-            // 数据
-            List<List<Object>> rows = ImportExportUtil.toExportData(temporaryList, configs, true);
-            // 表头
-            List<String> titles = ImportExportUtil.getTitles(configs, true);
-            String path = ExcelUtil.writFile(rows, titles.toArray(new String[]{}),
-                    importExcelTemplate.getName() + "验证失败数据", "验证失败", null);
-            try {
-                return HttpUtil.getResponseEntity(new File(path),
-                        importExcelTemplate.getName() + "验证失败数据" + DateUtil.today() + ExcelUtil.EXCEL_SUFFIX_XLSX, request);
-            } catch (UnsupportedEncodingException e) {
-                throw new EasyException("导出文件失败");
-            }
-        } else {
+        if (configs == null || configs.size() == 0) {
             throw new EasyException("模板[" + importExcelTemplate.getImportCode() + "]未配置导入规则");
         }
+        String selectFields = ImportExportUtil.getSelectFields(configs, false);
+        String leftJoinTables = ImportExportUtil.getLeftJoinTables(configs, false);
+        QueryWrapper<SysImportExcelTemporary> queryWrapper = new QueryWrapper<>();
+        // 导入用户id
+        queryWrapper.eq("user_id", ShiroUtil.getCurrentUser().getId());
+        queryWrapper.eq("template_id", importExcelTemplate.getId());
+        // 查询验证失败数据
+        List<SysImportExcelTemporary> temporaryList = mapper.selectVerificationFailData(selectFields,
+                leftJoinTables,
+                queryWrapper);
+        // 数据
+        List<List<Object>> rows = ImportExportUtil.toExportData(temporaryList, configs, true);
+        // 表头
+        List<String> titles = ImportExportUtil.getTitles(configs, true);
+        String path = ExcelUtil.writFile(rows, titles.toArray(new String[]{}),
+                importExcelTemplate.getName() + "验证失败数据", "验证失败", null);
+
+        return sysDownloadService.saveData(new SysDownload(
+                importExcelTemplate.getName() + "验证失败数据" + DateUtil.today() + ExcelUtil.EXCEL_SUFFIX_XLSX,
+                path
+        )).getId();
+
     }
 }

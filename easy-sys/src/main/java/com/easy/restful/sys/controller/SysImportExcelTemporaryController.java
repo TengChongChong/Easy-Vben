@@ -41,7 +41,6 @@ public class SysImportExcelTemporaryController extends BaseController {
      * @return Page<SysImportExcelTemporary>
      */
     @GetMapping()
-    @RequiresPermissions("import:data")
     public Page<SysImportExcelTemporary> select(SysImportExcelTemporary object, Page<SysImportExcelTemporary> page) {
         return service.select(object, page);
     }

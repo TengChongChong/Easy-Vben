@@ -79,6 +79,25 @@
             <artifactId>mail</artifactId>
             <version>${javax.mail.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-spring-boot-starter</artifactId>
+            <version>${easypoi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>poi</artifactId>
+                    <groupId>org.apache.poi</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>poi-ooxml</artifactId>
+                    <groupId>org.apache.poi</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>poi-ooxml-schemas</artifactId>
+                    <groupId>org.apache.poi</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>

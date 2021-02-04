@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 /**
  * 系统模块公用常量
  *
- * @Author tengchong
- * @Date 2019-04-15
+ * @author tengchong
+ * @date 2019-04-15
  */
 @Component
 public class SysConst {

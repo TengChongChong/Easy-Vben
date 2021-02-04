@@ -8,8 +8,6 @@ import com.easy.restful.sys.model.SysImportSummary;
 import com.easy.restful.sys.service.SysImportExcelDataService;
 import com.easy.restful.sys.service.SysImportExcelTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +36,7 @@ public class SysImportExcelDataController extends BaseController {
      * @return {template: {}, hasLast: boolean}
      */
     @GetMapping("{importCode}")
-    public JSONObject list(@PathVariable("importCode") String importCode) {
+    public JSONObject select(@PathVariable("importCode") String importCode) {
         JSONObject res = new JSONObject();
         SysImportExcelTemplate template = importExcelTemplateService.getByImportCode(importCode);
         res.set("template", template);
@@ -62,7 +60,7 @@ public class SysImportExcelDataController extends BaseController {
      * 查询指定导入汇总信息
      *
      * @param templateId 模板id
-     * @return 导入汇总
+     * @return SysImportSummary
      */
     @GetMapping("summary/{templateId}")
     public SysImportSummary selectSummary(@PathVariable("templateId") String templateId) {
@@ -84,10 +82,10 @@ public class SysImportExcelDataController extends BaseController {
      *
      * @param templateId 模板id
      * @param request    request
-     * @return 文件
+     * @return 文件下载id
      */
     @GetMapping("export/verification/fail/data/{templateId}")
-    public ResponseEntity<FileSystemResource> exportVerificationFailData(@PathVariable("templateId") String templateId,
+    public String exportVerificationFailData(@PathVariable("templateId") String templateId,
                                                                          HttpServletRequest request) {
         return service.exportVerificationFailData(templateId, request);
     }

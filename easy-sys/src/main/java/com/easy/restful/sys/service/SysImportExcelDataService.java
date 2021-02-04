@@ -1,8 +1,6 @@
 package com.easy.restful.sys.service;
 
 import com.easy.restful.sys.model.SysImportSummary;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,7 +50,7 @@ public interface SysImportExcelDataService {
      *
      * @param templateId 模板id
      * @param request    request
-     * @return ResponseEntity<FileSystemResource>
+     * @return 文件下载id
      */
-    ResponseEntity<FileSystemResource> exportVerificationFailData(String templateId, HttpServletRequest request);
+    String exportVerificationFailData(String templateId, HttpServletRequest request);
 }

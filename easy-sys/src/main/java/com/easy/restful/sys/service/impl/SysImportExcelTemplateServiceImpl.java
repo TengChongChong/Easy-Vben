@@ -166,11 +166,10 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
         }
         String path = ExcelUtil.writFile(null, title.toArray(new String[details.size()]), sysImportExcelTemplate.getName(), sysImportExcelTemplate.getName(), null);
 
-        SysDownload sysDownload = new SysDownload();
-        sysDownload.setName(sysImportExcelTemplate.getName() + ExcelUtil.EXCEL_SUFFIX_XLSX);
-        sysDownload.setPath(path);
-        return sysDownloadService.saveData(sysDownload).getId();
-
+        return sysDownloadService.saveData(new SysDownload(
+                sysImportExcelTemplate.getName() + ExcelUtil.EXCEL_SUFFIX_XLSX,
+                path
+        )).getId();
     }
 
 }
