@@ -48,4 +48,12 @@ public interface SampleGeneralService {
      * @return SampleGeneral
      */
     SampleGeneral saveData(SampleGeneral object);
+
+    /**
+     * 导出数据
+     *
+     * @param object 查询条件
+     * @return 文件下载id
+     */
+    String export(SampleGeneral object);
 }

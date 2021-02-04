@@ -37,6 +37,7 @@
         <hutool.version>5.5.4</hutool.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <poi.version>4.1.2</poi.version>
+        <easypoi.version>4.1.2</easypoi.version>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <druid.version>1.1.10</druid.version>
         <mysql-connector-java.version>8.0.22</mysql-connector-java.version>

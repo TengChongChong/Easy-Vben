@@ -3,9 +3,10 @@ package com.easy.restful.sample.dao;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.restful.common.core.common.pagination.Page;
-import org.apache.ibatis.annotations.Param;
-import java.util.List;
 import com.easy.restful.sample.model.SampleGeneral;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 代码生成示例
@@ -22,6 +23,14 @@ public interface SampleGeneralMapper extends BaseMapper<SampleGeneral> {
      * @return List<SampleGeneral>
      */
     List<SampleGeneral> select(Page<SampleGeneral> page, @Param("ew") QueryWrapper<SampleGeneral> queryWrapper);
+
+    /**
+     * 获取列表数据
+     *
+     * @param queryWrapper 查询条件
+     * @return List<SampleGeneral>
+     */
+    List<SampleGeneral> export(@Param("ew") QueryWrapper<SampleGeneral> queryWrapper);
 
     /**
      * 查询详细信息

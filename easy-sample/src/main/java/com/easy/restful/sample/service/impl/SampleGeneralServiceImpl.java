@@ -1,19 +1,19 @@
 package com.easy.restful.sample.service.impl;
 
+import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.restful.util.ToolUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.Arrays;
-import java.util.List;
 import com.easy.restful.common.core.common.pagination.Page;
-import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.StrUtil;
+import com.easy.restful.sample.dao.SampleGeneralMapper;
 import com.easy.restful.sample.model.SampleGeneral;
 import com.easy.restful.sample.service.SampleGeneralService;
-import com.easy.restful.sample.dao.SampleGeneralMapper;
+import com.easy.restful.util.ToolUtil;
+import com.easy.restful.util.office.ExcelUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 代码生成示例
@@ -104,5 +104,27 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
             // 新增,设置默认值
         }
         return (SampleGeneral) ToolUtil.checkResult(saveOrUpdate(object), object);
+    }
+
+    @Override
+    public String export(SampleGeneral object) {
+        QueryWrapper<SampleGeneral> queryWrapper = new QueryWrapper<>();
+        if(object != null){
+            // 查询条件
+            // 姓名
+            if (Validator.isNotEmpty(object.getName())) {
+                queryWrapper.like("t.name", object.getName());
+            }
+            // 性别
+            if (Validator.isNotEmpty(object.getSex())) {
+                queryWrapper.eq("t.sex", object.getSex());
+            }
+            // 手机号码
+            if (Validator.isNotEmpty(object.getPhone())) {
+                queryWrapper.eq("t.phone", object.getPhone());
+            }
+        }
+        List<SampleGeneral> list = getBaseMapper().export(queryWrapper);
+        return ExcelUtil.writeAndGetDownloadId("导出示例", "人员", list, SampleGeneral.class);
     }
 }

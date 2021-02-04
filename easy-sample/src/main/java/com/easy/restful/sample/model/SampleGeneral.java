@@ -1,15 +1,15 @@
 package com.easy.restful.sample.model;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 代码生成示例
@@ -27,23 +27,27 @@ public class SampleGeneral extends Model<SampleGeneral> {
      * 姓名
      */
     @NotBlank(message = "姓名不能为空")
+    @Excel(name = "姓名", orderNum = "0")
     private String name;
 
     /**
      * 性别
      */
     @NotBlank(message = "性别不能为空")
+    @Excel(name = "性别", orderNum = "1")
     private String sex;
 
     /**
      * 手机号码
      */
     @NotBlank(message = "手机号码不能为空")
+    @Excel(name = "手机号码", orderNum = "2")
     private String phone;
 
     /**
      * 地址
      */
+    @Excel(name = "地址", orderNum = "4", width = 20)
     private String address;
 
     /**
@@ -78,6 +82,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     /**
      * 年龄
      */
+    @Excel(name = "年龄", orderNum = "3")
     private Integer age;
 
     //

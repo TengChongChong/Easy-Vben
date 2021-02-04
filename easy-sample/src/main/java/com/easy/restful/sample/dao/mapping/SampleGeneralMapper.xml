@@ -30,5 +30,12 @@
         from sample_general t
         where t.id = #{id}
     </select>
+    <select id="export" resultType="com.easy.restful.sample.model.SampleGeneral">
+        select id, name, sex, phone, address, create_user, create_date, edit_user, edit_date, status, age
+        from sample_general t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
 
 </mapper>
