@@ -1,20 +1,25 @@
 package com.easy.restful.sample.controller;
 
-import com.easy.restful.common.core.common.pagination.Page;
-import com.easy.restful.core.annotation.ResponseResult;
-import com.easy.restful.sample.model.SampleGeneral;
-import com.easy.restful.sample.service.SampleGeneralService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RestController;
+import com.easy.restful.core.annotation.ResponseResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import com.easy.restful.common.core.common.pagination.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
+import com.easy.restful.sample.model.SampleGeneral;
+import com.easy.restful.sample.service.SampleGeneralService;
 
 /**
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2021-01-25
+ * @date 2021-02-23
  */
 @RestController
 @ResponseResult
@@ -85,16 +90,15 @@ public class SampleGeneralController {
     public SampleGeneral saveData(@Valid @RequestBody SampleGeneral object){
         return service.saveData(object);
     }
-
     /**
      * 导出数据
      *
      * @param object 查询条件
      * @return 文件下载id
      */
-    @GetMapping("export")
+    @GetMapping("export/data")
     @RequiresPermissions("sample:general:select")
-    public String export(SampleGeneral object){
-        return service.export(object);
+    public String exportData(SampleGeneral object){
+        return service.exportData(object);
     }
 }

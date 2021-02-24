@@ -44,7 +44,7 @@ import java.util.zip.ZipInputStream;
 @Service
 public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> implements ProcessService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RepositoryService repositoryService;

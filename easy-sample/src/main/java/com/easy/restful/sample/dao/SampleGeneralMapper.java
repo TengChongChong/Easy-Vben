@@ -12,7 +12,7 @@ import java.util.List;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2021-01-25
+ * @date 2021-02-23
  */
 public interface SampleGeneralMapper extends BaseMapper<SampleGeneral> {
     /**
@@ -25,18 +25,18 @@ public interface SampleGeneralMapper extends BaseMapper<SampleGeneral> {
     List<SampleGeneral> select(Page<SampleGeneral> page, @Param("ew") QueryWrapper<SampleGeneral> queryWrapper);
 
     /**
-     * 获取列表数据
-     *
-     * @param queryWrapper 查询条件
-     * @return List<SampleGeneral>
-     */
-    List<SampleGeneral> export(@Param("ew") QueryWrapper<SampleGeneral> queryWrapper);
-
-    /**
      * 查询详细信息
      *
      * @param id id
      * @return SampleGeneral
      */
     SampleGeneral getById(@Param("id") String id);
+
+    /**
+     * 获取列表数据
+     *
+     * @param queryWrapper 查询条件
+     * @return List<SampleGeneral>
+     */
+    List<SampleGeneral> exportData(@Param("ew") QueryWrapper<SampleGeneral> queryWrapper);
 }

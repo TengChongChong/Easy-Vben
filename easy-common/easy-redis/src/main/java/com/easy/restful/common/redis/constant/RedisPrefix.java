@@ -19,11 +19,6 @@ public class RedisPrefix {
     public static final String SESSION = "account:session:";
 
     /**
-     * 登录验证码
-     */
-    public static final String VERIFICATION_CODE = "verification:code:";
-
-    /**
      * shiro session
      */
     public static final String SHIRO_SESSION = "shiro:session:";
@@ -37,7 +32,6 @@ public class RedisPrefix {
      * 系统参数
      */
     public static final String SYS_CONFIG = "sys:config:";
-
     /**
      * 找回密码验证码
      */
@@ -49,7 +43,7 @@ public class RedisPrefix {
     public static final String BINDING_PHONE_VERIFICATION_CODE = "binding:phone:verification:code";
 
     /**
-     * 插件js/css资源是否存在
+     * 登录验证码
      */
-    public static final String PLUGIN_CHECK = "plugin:check:";
+    public static final String VERIFICATION_CODE = "verification:code:";
 }

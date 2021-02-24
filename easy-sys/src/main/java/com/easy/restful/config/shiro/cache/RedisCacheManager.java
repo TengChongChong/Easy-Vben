@@ -18,9 +18,9 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class RedisCacheManager implements CacheManager {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap();
+    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<>();
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;

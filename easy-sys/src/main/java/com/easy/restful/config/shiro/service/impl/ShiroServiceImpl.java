@@ -41,7 +41,7 @@ import java.util.List;
  */
 @Service
 public class ShiroServiceImpl implements ShiroService {
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SysUserMapper userMapper;

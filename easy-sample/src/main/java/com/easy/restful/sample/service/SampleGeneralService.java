@@ -7,7 +7,7 @@ import com.easy.restful.sample.model.SampleGeneral;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2021-01-25
+ * @date 2021-02-23
  */
 public interface SampleGeneralService {
     /**
@@ -55,5 +55,5 @@ public interface SampleGeneralService {
      * @param object 查询条件
      * @return 文件下载id
      */
-    String export(SampleGeneral object);
+    String exportData(SampleGeneral object);
 }

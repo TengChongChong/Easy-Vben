@@ -9,8 +9,7 @@ package com.easy.restful.sys.service;
 public interface ImportService {
 
     /**
-     * 验证数据
-     * 插入临时表后调用
+     * 验证数据，插入临时表后调用
      * 注: 返回false会触发异常回滚
      *
      * @param templateId 模板id
@@ -20,9 +19,8 @@ public interface ImportService {
     boolean verificationData(String templateId, String userId);
 
     /**
-     * 导入前回调
-     * 插入正式表之前会调用此方法
-     * 建议导入正式表之前使用次方法再次验证数据,防止验证~导入之间数据发送变动
+     * 导入前回调，插入正式表之前会调用此方法
+     * 建议导入正式表之前使用次方法再次验证数据，防止验证 ~ 导入之间数据发送变动
      * 注: 返回false会触发异常回滚
      *
      * @param templateId 模板id

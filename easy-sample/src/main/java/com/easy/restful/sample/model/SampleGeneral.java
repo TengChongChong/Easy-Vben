@@ -1,90 +1,83 @@
 package com.easy.restful.sample.model;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.Date;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import cn.afterturn.easypoi.excel.annotation.Excel;
 
 /**
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2021-01-25
+ * @date 2021-02-23
  */
 @TableName("sample_general")
 public class SampleGeneral extends Model<SampleGeneral> {
 
     @TableId(value = "id")
+    
     private String id;
-
     /**
      * 姓名
      */
-    @NotBlank(message = "姓名不能为空")
-    @Excel(name = "姓名", orderNum = "0")
+    @Excel(name = "姓名", orderNum = "0")    
     private String name;
-
     /**
      * 性别
      */
-    @NotBlank(message = "性别不能为空")
-    @Excel(name = "性别", orderNum = "1")
+    @Excel(name = "性别", orderNum = "1")    
     private String sex;
-
+    /**
+     * 年龄
+     */
+    @Excel(name = "年龄", orderNum = "2")    
+    private Integer age;
     /**
      * 手机号码
      */
-    @NotBlank(message = "手机号码不能为空")
-    @Excel(name = "手机号码", orderNum = "2")
+    @Excel(name = "手机号码", orderNum = "3")    
     private String phone;
-
+    /**
+     * 状态
+     */
+    @Excel(name = "状态", orderNum = "4")    
+    private Integer status;
     /**
      * 地址
      */
-    @Excel(name = "地址", orderNum = "4", width = 20)
+    @Excel(name = "地址", orderNum = "5")    
     private String address;
-
     /**
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
+    
     private String createUser;
-
     /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
+    
     private Date createDate;
-
     /**
      * 编辑人
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    
     private String editUser;
-
     /**
      * 编辑时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    
     private Date editDate;
-
-    /**
-     * 状态
-     */
-    private Integer status;
-
-    /**
-     * 年龄
-     */
-    @Excel(name = "年龄", orderNum = "3")
-    private Integer age;
-
     //
 
     @Override
@@ -113,12 +106,26 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setSex(String sex) {
         this.sex = sex;
     }
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
     public String getAddress() {
         return address;
@@ -154,19 +161,5 @@ public class SampleGeneral extends Model<SampleGeneral> {
 
     public void setEditDate(Date editDate) {
         this.editDate = editDate;
-    }
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 }

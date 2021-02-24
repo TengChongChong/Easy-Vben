@@ -57,7 +57,7 @@ import static org.activiti.editor.constants.ModelDataJsonConstants.MODEL_NAME;
 @Service
 public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements ModelService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RepositoryService repositoryService;
