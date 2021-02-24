@@ -97,6 +97,16 @@ public class Generator {
      * 表单页面字段排序
      */
     private List<FieldSet> inputItems;
+
+    /**
+     * 导入字段排序
+     */
+    private List<FieldSet> importItems;
+
+    /**
+     * 导出字段排序
+     */
+    private List<FieldSet> exportItems;
     /**
      * 列配置
      */
@@ -302,6 +312,22 @@ public class Generator {
     public boolean isGeneratorMethodsSelect(){
         return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.SELECT);
     }
+    /**
+     * 是否生成导入数据方法
+     *
+     * @return true/false
+     */
+    public boolean isGeneratorMethodsImport(){
+        return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.IMPORT_DATA);
+    }
+    /**
+     * 是否生成导出数据方法
+     *
+     * @return true/false
+     */
+    public boolean isGeneratorMethodsExport(){
+        return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.EXPORT_DATA);
+    }
 
     /**
      * 是否生成实体类
@@ -374,5 +400,21 @@ public class Generator {
      */
     public boolean isGeneratorFileApi(){
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.API_JS);
+    }
+
+    public List<FieldSet> getImportItems() {
+        return importItems;
+    }
+
+    public void setImportItems(List<FieldSet> importItems) {
+        this.importItems = importItems;
+    }
+
+    public List<FieldSet> getExportItems() {
+        return exportItems;
+    }
+
+    public void setExportItems(List<FieldSet> exportItems) {
+        this.exportItems = exportItems;
     }
 }

@@ -3,6 +3,7 @@
   <e-pro-table title="${config.businessName}" :advanced.sync="advanced">
     <template slot="query">
       <% for(fieldSet in config.queryItems){ %>
+      <% if(fieldSetLP.index < 4){ %>
       <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
         <a-form-model-item label="${fieldSet.label}">
           <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
@@ -15,8 +16,24 @@
         </a-form-model-item>
       </a-col>
       <% } %>
+      <% } %>
       <template v-if="advanced">
         <!-- 点击展开显示的查询条件 -->
+        <% for(fieldSet in config.queryItems){ %>
+        <% if(fieldSetLP.index >= 4){ %>
+        <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
+          <a-form-model-item label="${fieldSet.label}">
+            <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
+            <e-dict-select type="${fieldSet.dictType}" v-model="queryParam.${fieldSet.propertyName}" @change="$refs.eTable.refresh(true)"/>
+            <% } else if(fieldSet.propertyType == 'Integer') {%>
+            <a-input-number v-model="queryParam.${fieldSet.propertyName}"/>
+            <% } else {%>
+            <a-input v-model="queryParam.${fieldSet.propertyName}"/>
+            <% } %>
+          </a-form-model-item>
+        </a-col>
+        <% } %>
+        <% } %>
       </template>
     </template>
 
@@ -25,7 +42,13 @@
       <e-btn-add permissions="${config.permissionsCode}:save" to="${staticConfig.inputViewPath}"/>
       <% } %>
       <% if(config.isGeneratorMethodsRemove){ %>
-      <e-btn-remove-batch permissions="${config.permissionsCode}:remove" :loading="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <e-btn-remove-batch permissions="${config.permissionsCode}:remove" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
+      <% } %>
+      <% if(config.isGeneratorMethodsImport){ %>
+      <e-btn-import import-code="${config.permissionsCode}"/>
+      <% } %>
+      <% if(config.isGeneratorMethodsExport){ %>
+      <a-button icon="download" @click="exportData">导出数据</a-button>
       <% } %>
     </template>
 
@@ -153,6 +176,13 @@ export default {
           return res.data
         })
     },
+    <% if(config.isGeneratorMethodsExport){ %>
+    exportData () {
+      exportData(this.queryParam).then(res => {
+        downloadFileById(res.data)
+      })
+    },
+    <% } %>
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows

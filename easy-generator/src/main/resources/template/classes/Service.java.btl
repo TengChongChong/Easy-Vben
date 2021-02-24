@@ -58,4 +58,14 @@ public interface ${config.modelName}Service {
      */
     ${config.modelName} saveData(${config.modelName} object);
     <% } %>
+
+    <% if(config.isGeneratorMethodsExport){ %>
+    /**
+     * 导出数据
+     *
+     * @param object 查询条件
+     * @return 文件下载id
+     */
+    String exportData(${config.modelName} object);
+    <% } %>
 }

@@ -1,7 +1,7 @@
 package com.easy.restful.generator.constant;
 
 /**
- * 生成方法
+ * 生成文件
  *
  * @author tengchong
  * @date 2021/1/23

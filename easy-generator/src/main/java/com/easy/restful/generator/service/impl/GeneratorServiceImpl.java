@@ -17,12 +17,17 @@ import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.config.properties.ProjectProperties;
 import com.easy.restful.generator.constant.GeneratorConst;
 import com.easy.restful.generator.engine.TemplateEngine;
+import com.easy.restful.generator.model.FieldSet;
 import com.easy.restful.generator.model.Generator;
 import com.easy.restful.generator.service.GeneratorService;
 import com.easy.restful.sys.common.status.PermissionsStatus;
 import com.easy.restful.sys.common.status.ProfilesActiveStatus;
 import com.easy.restful.sys.common.type.PermissionsType;
+import com.easy.restful.sys.model.SysImportExcelTemplate;
+import com.easy.restful.sys.model.SysImportExcelTemplateDetails;
 import com.easy.restful.sys.model.SysPermissions;
+import com.easy.restful.sys.service.SysImportExcelTemplateDetailsService;
+import com.easy.restful.sys.service.SysImportExcelTemplateService;
 import com.easy.restful.sys.service.SysPermissionsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +55,10 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     @Autowired
     private SysPermissionsService sysPermissionsService;
+    @Autowired
+    private SysImportExcelTemplateService sysImportExcelTemplateService;
+    @Autowired
+    private SysImportExcelTemplateDetailsService sysImportExcelTemplateDetailsService;
 
     @Autowired
     private ProjectProperties projectProperties;
@@ -65,6 +74,42 @@ public class GeneratorServiceImpl implements GeneratorService {
             }
             // 生成文件
             new TemplateEngine(object, selectFields(object.getTableName())).start();
+            SysImportExcelTemplate sysImportExcelTemplate = null;
+            if (object.isGeneratorMethodsImport()) {
+                // 需要创建导入模板
+                sysImportExcelTemplate = new SysImportExcelTemplate();
+                sysImportExcelTemplate.setName(object.getBusinessName());
+                sysImportExcelTemplate.setImportTable(object.getTableName());
+                sysImportExcelTemplate.setStartRow(1);
+                sysImportExcelTemplate.setCallback(StrUtil.lowerFirst(object.getModelName()) + "ServiceImpl");
+                sysImportExcelTemplate.setImportCode(object.getPermissionsCode());
+                sysImportExcelTemplate.setPermissionCode(sysImportExcelTemplate.getImportCode() + ":import:data");
+                try {
+                    sysImportExcelTemplate = sysImportExcelTemplateService.saveData(sysImportExcelTemplate);
+                    // 保存导入规则
+                    List<SysImportExcelTemplateDetails> sysImportExcelTemplateDetails = new ArrayList<>();
+                    int index = 1;
+                    for (FieldSet item : object.getImportItems()) {
+                        SysImportExcelTemplateDetails importExcelTemplateDetails = new SysImportExcelTemplateDetails();
+                        importExcelTemplateDetails.setTemplateId(sysImportExcelTemplate.getId());
+                        importExcelTemplateDetails.setTitle(item.getTitle());
+                        importExcelTemplateDetails.setFieldName(item.getColumnName());
+                        importExcelTemplateDetails.setFieldType(item.getColumnType());
+                        importExcelTemplateDetails.setOrderNo(index);
+                        if(StrUtil.isNotBlank(item.getDictType())){
+                            importExcelTemplateDetails.setReplaceTable("sys_dict");
+                            importExcelTemplateDetails.setReplaceTableDictType(item.getDictType());
+                            importExcelTemplateDetails.setReplaceTableFieldName("name");
+                            importExcelTemplateDetails.setReplaceTableFieldValue("code");
+                        }
+                        index++;
+                        sysImportExcelTemplateDetails.add(importExcelTemplateDetails);
+                    }
+                    sysImportExcelTemplateDetailsService.saveData(sysImportExcelTemplate.getId(), sysImportExcelTemplateDetails);
+                } catch (EasyException e) {
+                    // ignore，可能用户已经自己新增
+                }
+            }
             // 检查是否需要添加菜单
             if (StrUtil.isNotBlank(object.getMenuName())) {
                 // 菜单名称不为空
@@ -113,6 +158,18 @@ public class GeneratorServiceImpl implements GeneratorService {
                                     PermissionsType.PERMISSIONS.getCode(),
                                     "1",
                                     object.getPermissionsCode() + ":remove",
+                                    null,
+                                    null
+                            );
+                            savePermission.setpId(basePermission.getId());
+                            sysPermissionsService.saveData(savePermission);
+                        }
+                        if(object.isGeneratorMethodsImport() && StrUtil.isNotBlank(sysImportExcelTemplate.getId())){
+                            SysPermissions savePermission = getNewMenu(
+                                    "导入数据",
+                                    PermissionsType.PERMISSIONS.getCode(),
+                                    "1",
+                                    sysImportExcelTemplate.getPermissionCode(),
                                     null,
                                     null
                             );
@@ -202,6 +259,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         globalConfig.setDateType(DateType.ONLY_DATE);
         return globalConfig;
     }
+
     /**
      * 生成策略
      *
@@ -214,6 +272,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         strategyConfig.setNaming(NamingStrategy.underline_to_camel);
         return strategyConfig;
     }
+
     /**
      * 获取数据源配置
      *
@@ -237,9 +296,9 @@ public class GeneratorServiceImpl implements GeneratorService {
         List<Select> selectList = new ArrayList<>();
         UserInfo userInfo = SystemUtil.getUserInfo();
         File[] files = new File(userInfo.getCurrentDir()).listFiles();
-        if(files != null && files.length > 0){
+        if (files != null && files.length > 0) {
             for (File file : files) {
-                if(file.isDirectory() && file.getName().startsWith("easy-")){
+                if (file.isDirectory() && file.getName().startsWith("easy-")) {
                     selectList.add(new Select(file.getPath(), file.getName()));
                     selectList.addAll(selectModules(file));
                 }
@@ -248,12 +307,12 @@ public class GeneratorServiceImpl implements GeneratorService {
         return selectList;
     }
 
-    private List<Select> selectModules(File parentFile){
+    private List<Select> selectModules(File parentFile) {
         List<Select> selectList = new ArrayList<>();
         File[] files = parentFile.listFiles();
-        if(files != null && files.length > 0){
+        if (files != null && files.length > 0) {
             for (File file : files) {
-                if(file.isDirectory() && file.getName().startsWith("easy-")){
+                if (file.isDirectory() && file.getName().startsWith("easy-")) {
                     selectList.add(new Select(file.getPath(), parentFile.getName() + "/" + file.getName()));
                 }
             }

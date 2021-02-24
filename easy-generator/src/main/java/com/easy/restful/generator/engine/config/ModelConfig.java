@@ -1,5 +1,6 @@
 package com.easy.restful.generator.engine.config;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.restful.generator.constant.GeneratorPackageConst;
@@ -29,9 +30,13 @@ public class ModelConfig extends AbstractConfig {
         imports.add(FieldFill.class);
         imports.add(Serializable.class);
         // mybatis 相关
-        if(generator.isGeneratorMethodsSave()){
+        if (generator.isGeneratorMethodsSave()) {
             imports.add(NotBlank.class);
             imports.add(NotNull.class);
+        }
+        // 导出
+        if (generator.isGeneratorMethodsExport()) {
+            imports.add(Excel.class);
         }
 
         this.path = backEndFilePath + GeneratorPackageConst.MODEL + File.separator + generator.getModelName() + ".java";

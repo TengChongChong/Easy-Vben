@@ -28,4 +28,14 @@ public interface ${config.modelName}Mapper extends BaseMapper<${config.modelName
      * @return ${config.modelName}
      */
     ${config.modelName} getById(@Param("id") String id);
+
+    <% if(config.isGeneratorMethodsExport){ %>
+    /**
+     * 获取列表数据
+     *
+     * @param queryWrapper 查询条件
+     * @return List<${config.modelName}>
+     */
+    List<${config.modelName}> exportData(@Param("ew") QueryWrapper<${config.modelName}> queryWrapper);
+    <% } %>
 }

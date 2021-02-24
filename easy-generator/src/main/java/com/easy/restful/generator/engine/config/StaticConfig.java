@@ -70,8 +70,8 @@ public class StaticConfig extends AbstractConfig {
         this.listImports.addAll(selectVariables(GeneratorFileConst.LIST_VUE));
         this.inputImports.addAll(selectVariables(GeneratorFileConst.INPUT_VUE));
 
-        this.listImports.addAll(selectMethods(GeneratorFileConst.LIST_VUE));
-        this.inputImports.addAll(selectMethods(GeneratorFileConst.INPUT_VUE));
+        this.listImports.addAll(selectMethods(GeneratorFileConst.LIST_VUE, generator));
+        this.inputImports.addAll(selectMethods(GeneratorFileConst.INPUT_VUE, generator));
 
         this.listImports.addAll(selectComponents(GeneratorFileConst.LIST_VUE));
         this.inputImports.addAll(selectComponents(GeneratorFileConst.INPUT_VUE));
@@ -110,7 +110,7 @@ public class StaticConfig extends AbstractConfig {
         return imports;
     }
 
-    private List<Import> selectMethods(String pageType) {
+    private List<Import> selectMethods(String pageType, Generator generator) {
         List<Import> imports = new ArrayList<>();
         if (GeneratorFileConst.LIST_VUE.equals(pageType)) {
             Import imp = new Import("@" + generator.getApiPath().replace(".js", ""), GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE);
@@ -120,9 +120,16 @@ public class StaticConfig extends AbstractConfig {
             if (generator.isGeneratorMethodsRemove()) {
                 imp.getImp().add(GeneratorMethodConst.REMOVE);
             }
-            imports.add(imp);
+            if (generator.isGeneratorMethodsExport()) {
+                imp.getImp().add(GeneratorMethodConst.EXPORT_DATA);
+            }
+            if(imp.getImp().size() > 0){
+                imports.add(imp);
+            }
             if (hasDatePropertyType()) {
-                imports.add(new Import("@/utils/util", GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "formatDate"));
+                imports.add(new Import("@/utils/util", GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, generator.isGeneratorMethodsExport() ? "formatDate,downloadFileById" : "formatDate"));
+            } else if (generator.isGeneratorMethodsExport()) {
+                imports.add(new Import("@/utils/util", GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "downloadFileById"));
             }
         } else if (GeneratorFileConst.INPUT_VUE.equals(pageType)) {
             imports.add(new Import("@" + generator.getApiPath().replace(".js", ""), GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "get," + GeneratorMethodConst.SAVE));
@@ -148,6 +155,9 @@ public class StaticConfig extends AbstractConfig {
             if (hasDict()) {
                 imports.add(new Import("@/components/Easy/data-display/DictTag", GeneratorImportConst.TYPE_COMPONENT, GeneratorImportConst.IMPORT_TYPE_SINGLE, "EDictTag"));
                 imports.add(new Import("@/components/Easy/data-entry/DictSelect", GeneratorImportConst.TYPE_COMPONENT, GeneratorImportConst.IMPORT_TYPE_SINGLE, "EDictSelect"));
+            }
+            if (generator.isGeneratorMethodsImport()) {
+                imports.add(new Import("@/components/Easy/general/BtnImport", GeneratorImportConst.TYPE_COMPONENT, GeneratorImportConst.IMPORT_TYPE_SINGLE, "EBtnImport"));
             }
         } else if (GeneratorFileConst.INPUT_VUE.equals(pageType)) {
             imports.add(new Import("@/components/Easy/general/BtnSave", GeneratorImportConst.TYPE_COMPONENT, GeneratorImportConst.IMPORT_TYPE_SINGLE, "EBtnSave"));

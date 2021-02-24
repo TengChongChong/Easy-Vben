@@ -76,3 +76,19 @@ export function save (params) {
   })
 }
 <% } %>
+
+<% if(config.isGeneratorMethodsExport){ %>
+/**
+ * 导出数据
+ *
+ * @param params 查询参数
+ * @return 文件下载id
+ */
+export function exportData (params) {
+  return request({
+    url: `\${baseUrl}export/data`,
+    method: HTTP_METHOD.GET,
+    params
+  })
+}
+<% } %>

@@ -12,19 +12,32 @@
         <% } %>
         <% } %>
     </resultMap>
-
     <select id="select" resultType="${config.packagePath}.model.${config.modelName}">
-        select ${tableInfo.fieldNames}
+        select t.id<% for(item in config.queryItems){ %>, t.${item.columnName}<% } %>
         from ${tableInfo.name} t
         <where>
             \${ew.sqlSegment}
         </where>
     </select>
-
+    <%index = 0;%>
     <select id="getById" resultType="${config.packagePath}.model.${config.modelName}">
-        select ${tableInfo.fieldNames}
+        select <% for(item in tableInfo.fields){ %>${index == 0 ? '' : ', '}t.${item.name}<% index++;} %>
         from ${tableInfo.name} t
         where t.id = #{id}
     </select>
-
+    <% if(config.isGeneratorMethodsExport){ %>
+    <%index = 0;%>
+    <select id="exportData" resultType="com.easy.restful.sample.model.SampleGeneral">
+        select <% for(item in config.exportItems){ %>${index == 0 ? '' : ', '}${strUtil.isNotBlank(item.dictType) ? 'sd_' + item.columnName + '.name as ' + item.columnName : 't.' + item.columnName}<% index++;} %>
+        from ${tableInfo.name} t
+        <% for(item in config.exportItems){ %>
+        <% if(strUtil.isNotBlank(item.dictType)){ %>
+        left join sys_dict sd_${item.columnName} on sd_${item.columnName}.code = t.${item.columnName} and sd_${item.columnName}.dict_type = '${item.dictType}'
+        <% } %>
+        <% } %>
+        <where>
+            \${ew.sqlSegment}
+        </where>
+    </select>
+    <% } %>
 </mapper>

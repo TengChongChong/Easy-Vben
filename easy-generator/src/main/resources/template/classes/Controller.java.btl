@@ -99,4 +99,17 @@ public class ${config.modelName}Controller {
         return service.saveData(object);
     }
     <% } %>
+    <% if(config.isGeneratorMethodsExport){ %>
+    /**
+     * 导出数据
+     *
+     * @param object 查询条件
+     * @return 文件下载id
+     */
+    @GetMapping("export/data")
+    @RequiresPermissions("sample:general:select")
+    public String exportData(SampleGeneral object){
+        return service.exportData(object);
+    }
+    <% } %>
 }

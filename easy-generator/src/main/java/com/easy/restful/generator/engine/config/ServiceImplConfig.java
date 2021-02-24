@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.common.core.common.pagination.Page;
 import com.easy.restful.generator.constant.GeneratorPackageConst;
 import com.easy.restful.generator.model.Generator;
+import com.easy.restful.sys.service.ImportService;
 import com.easy.restful.util.ToolUtil;
+import com.easy.restful.util.office.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,12 @@ public class ServiceImplConfig extends AbstractConfig {
         imports.add(Page.class);
         imports.add(Validator.class);
         imports.add(StrUtil.class);
+
+        // 导入
+        if (generator.isGeneratorMethodsImport()) {
+            imports.add(ImportService.class);
+            imports.add(ExcelUtil.class);
+        }
 
         this.path = backEndFilePath + GeneratorPackageConst.SERVICE_IMPL + File.separator + generator.getModelName() + "ServiceImpl.java";
     }

@@ -23,4 +23,12 @@ public class GeneratorMethodConst {
      * 查询
      */
     public static final String SELECT = "select";
+    /**
+     * 导出数据
+     */
+    public static final String EXPORT_DATA = "exportData";
+    /**
+     * 导入数据
+     */
+    public static final String IMPORT_DATA = "importData";
 }
