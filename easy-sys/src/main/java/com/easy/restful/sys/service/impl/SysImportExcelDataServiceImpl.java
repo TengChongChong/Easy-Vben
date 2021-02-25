@@ -157,7 +157,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      */
     private void checkOnly(List<SysImportExcelTemplateDetails> configs, String templateId, String userId) {
         for (SysImportExcelTemplateDetails config : configs) {
-            if (config.getOnly()) {
+            if (config.getOnly() != null && config.getOnly()) {
                 importExcelTemporaryService.updateDuplicateData("field" + config.getOrderNo(), templateId, userId);
             }
         }
@@ -314,7 +314,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
                 Method method = temporaryClass.getMethod("setField" + (configLength + 1), String.class);
                 // 简单验证,此处只做非空检查
                 boolean addVerificationResults = (data.size() <= configLength || Validator.isEmpty(data.get(configLength)))
-                        && configs.get(configLength).getRequired();
+                        && configs.get(configLength).getRequired() != null && configs.get(configLength).getRequired();
                 if (addVerificationResults) {
                     verificationResults.append(configs.get(configLength).getTitle()).append("不能为空;");
                 } else {
