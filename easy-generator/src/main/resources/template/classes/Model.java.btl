@@ -34,8 +34,7 @@ public class ${config.modelName} extends Model<${config.modelName}> {
     <% } else if ("createUser" == field.propertyName || "createDate" == field.propertyName) { %>
     @TableField(fill = FieldFill.INSERT)
     <% } %>
-    ${GeneratorJavaUtil.generatorVerification(field.propertyName, config.fieldSets)}${GeneratorJavaUtil.generatorExport(field.propertyName, config.exportItems)}
-    private ${field.propertyType} ${field.propertyName};
+    ${GeneratorJavaUtil.generatorVerification(field.propertyName, config.fieldSets)}${GeneratorJavaUtil.generatorExport(field.propertyName, config.exportItems)}private ${field.propertyType} ${field.propertyName};
     <% } %>
     //
 

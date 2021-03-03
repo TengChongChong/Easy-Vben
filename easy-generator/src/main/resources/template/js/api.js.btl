@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import { HTTP_METHOD } from '@/utils/const/http/method'
 
-const baseUrl = '/auth/${config.controllerMapping}/'
+const baseUrl = '/auth${config.controllerMapping}/'
 
 <% if(config.generatorMethodsSelect){ %>
 /**

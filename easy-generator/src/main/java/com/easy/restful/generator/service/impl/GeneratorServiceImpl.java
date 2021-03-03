@@ -122,7 +122,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                             "0",
                             object.getPermissionsCode() + ":select",
                             object.getControllerMapping() + "/list",
-                            object.getViewPath() + "/List"
+                            object.getViewPath().replace("/views", "") + "/List"
                     );
                     basePermission.setpId("0");
                     basePermission.setType(PermissionsType.MENU.getCode());
@@ -145,8 +145,8 @@ public class GeneratorServiceImpl implements GeneratorService {
                                     PermissionsType.MENU.getCode(),
                                     "1",
                                     null,
-                                    object.getViewPath() + "/input",
-                                    object.getViewPath() + "/Input"
+                                    object.getControllerMapping() + "/input",
+                                    object.getViewPath().replace("/views", "") + "/Input"
                             );
                             savePermission.setpId(basePermission.getId());
                             sysPermissionsService.saveData(savePermission);

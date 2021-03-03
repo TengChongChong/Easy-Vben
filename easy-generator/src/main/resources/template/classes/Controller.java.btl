@@ -14,7 +14,7 @@ import ${config.packagePath}.service.${config.modelName}Service;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/${config.controllerMapping}")
+@RequestMapping("/auth${config.controllerMapping}")
 public class ${config.modelName}Controller {
 
     /**
@@ -61,7 +61,7 @@ public class ${config.modelName}Controller {
      */
     @GetMapping("add")
     <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
-    @RequiresPermissions("${config.permissionsCode}:add")
+    @RequiresPermissions("${config.permissionsCode}:save")
     <% } %>
     public ${config.modelName} add() {
         return service.add();
@@ -107,7 +107,7 @@ public class ${config.modelName}Controller {
      * @return 文件下载id
      */
     @GetMapping("export/data")
-    @RequiresPermissions("sample:general:select")
+    @RequiresPermissions("${config.permissionsCode}:select")
     public String exportData(SampleGeneral object){
         return service.exportData(object);
     }

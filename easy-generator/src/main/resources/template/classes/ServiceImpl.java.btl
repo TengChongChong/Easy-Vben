@@ -105,7 +105,7 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
     @Override
     public ${config.modelName} saveData(${config.modelName} object) {
         ToolUtil.checkParams(object);
-        if (Validator.isNotEmpty(object.getId())) {
+        if (Validator.isEmpty(object.getId())) {
             // 新增,设置默认值
         }
         return (${config.modelName}) ToolUtil.checkResult(saveOrUpdate(object), object);
@@ -153,7 +153,7 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
 
     <% if(config.isGeneratorMethodsExport){ %>
     @Override
-    public String exportData(SampleGeneral object) {
+    public String exportData(${config.modelName} object) {
         QueryWrapper<${config.modelName}> queryWrapper = new QueryWrapper<>();
         if(object != null){
             // 查询条件

@@ -13,7 +13,7 @@
         <% } %>
     </resultMap>
     <select id="select" resultType="${config.packagePath}.model.${config.modelName}">
-        select t.id<% for(item in config.queryItems){ %>, t.${item.columnName}<% } %>
+        select t.id<% for(item in config.tableItems){ %>, t.${item.columnName}<% } %>
         from ${tableInfo.name} t
         <where>
             \${ew.sqlSegment}
@@ -27,7 +27,7 @@
     </select>
     <% if(config.isGeneratorMethodsExport){ %>
     <%index = 0;%>
-    <select id="exportData" resultType="com.easy.restful.sample.model.SampleGeneral">
+    <select id="exportData" resultType="${config.packagePath}.model.${config.modelName}">
         select <% for(item in config.exportItems){ %>${index == 0 ? '' : ', '}${strUtil.isNotBlank(item.dictType) ? 'sd_' + item.columnName + '.name as ' + item.columnName : 't.' + item.columnName}<% index++;} %>
         from ${tableInfo.name} t
         <% for(item in config.exportItems){ %>

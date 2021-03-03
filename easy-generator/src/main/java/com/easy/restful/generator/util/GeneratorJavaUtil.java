@@ -40,9 +40,9 @@ public class GeneratorJavaUtil {
     private static String generatorVerification(FieldSet fieldSet) {
         if (fieldSet.getRequired()) {
             if (STRING.equals(fieldSet.getPropertyType())) {
-                return addTab("@NotBlank(message = \"" + fieldSet.getLabel() + "不能为空\")\r\n");
+                return addTab("@NotBlank(message = \"" + fieldSet.getLabel() + "不能为空\")");
             }
-            return addTab("@NotNull(message = \"" + fieldSet.getLabel() + "不能为空\")\r\n");
+            return addTab("@NotNull(message = \"" + fieldSet.getLabel() + "不能为空\")");
         }
         return null;
     }
@@ -77,6 +77,6 @@ public class GeneratorJavaUtil {
      * @return 代码
      */
     private static String addTab(String code) {
-        return code + "    ";
+        return code + "    \r\n";
     }
 }
