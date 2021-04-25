@@ -25,10 +25,11 @@ public interface SysUserService {
      * 根据关键字搜索用户
      *
      * @param keyword 关键字
+     * @param range   数据范围，可以选择哪些用户 'all' | 'currentDept'
      * @param page    分页
      * @return Page<SysUser>
      */
-    Page<SysUser> search(String keyword, Page<SysUser> page);
+    Page<SysUser> search(String keyword, String range, Page<SysUser> page);
 
     /**
      * 获取指定用户信息

@@ -40,18 +40,18 @@ public class CommonConst {
     /**
      * 缓存方式
      */
-    public static String CACHE_TYPE_REDIS = "redis";
+    public static final String CACHE_TYPE_REDIS = "redis";
 
     /**
      * 静态数据存放路径
      * 例如: 字典数据
      */
-    public static String STATIC_DATA_PATH = File.separator + "data";
+    public static final String STATIC_DATA_PATH = File.separator + "data";
 
     /**
      * 默认文件夹图标
      */
-    public static String DEFAULT_FOLDER_ICON = "appstore";
+    public static final String DEFAULT_FOLDER_ICON = "appstore";
 
     /**
      * 静态资源后缀,用于优化性能

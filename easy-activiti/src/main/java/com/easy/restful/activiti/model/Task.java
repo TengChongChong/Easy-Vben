@@ -1,7 +1,5 @@
 package com.easy.restful.activiti.model;
 
-import com.easy.restful.common.core.common.pagination.Page;
-
 import java.util.Date;
 
 /**
@@ -100,10 +98,6 @@ public class Task {
      * 状态
      */
     private String status;
-    /**
-     * 分页
-     */
-    private Page page;
 
     /**
      * 业务数据ID

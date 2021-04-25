@@ -51,13 +51,13 @@ public class ShiroConfig {
      * 记住我过期时间 默认30天 单位: 秒
      */
     @Value("${project.login.remember.invalidate-time}")
-    private Integer loginRememberInvalidateTime = 259200;
+    private final Integer loginRememberInvalidateTime = 259200;
 
     /**
      * 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 30分钟
      */
     @Value("${project.session-validation-interval}")
-    private Integer sessionValidationInterval = 60 * 30;
+    private final Integer sessionValidationInterval = 60 * 30;
 
     @Bean
     public MethodInvokingFactoryBean methodInvokingFactoryBean(SecurityManager securityManager) {

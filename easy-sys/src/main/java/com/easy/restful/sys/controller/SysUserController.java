@@ -43,11 +43,14 @@ public class SysUserController extends BaseController {
      * 搜索用户
      *
      * @param keyword 关键字
+     * @param range   数据范围，可以选择哪些用户 'all' | 'currentDept'
      * @return Page<SysUser>
      */
     @GetMapping("keyword")
-    public Page<SysUser> search(@RequestParam("keyword") String keyword, Page<SysUser> page) {
-        return service.search(keyword, page);
+    public Page<SysUser> search(@RequestParam("keyword") String keyword,
+                                @RequestParam(value = "range", required = false) String range,
+                                Page<SysUser> page) {
+        return service.search(keyword, range, page);
     }
 
     /**

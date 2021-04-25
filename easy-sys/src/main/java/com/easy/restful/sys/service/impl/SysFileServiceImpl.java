@@ -58,8 +58,8 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
             sysFile.setSize(file.length());
             sysFile.setName(file.getName());
             // 检查文件是否在临时目录
-            if (FileUtil.inTemporaryPath(FileUtil.getPath(sysFile.getPath()))) {
-                sysFile.setPath(FileUtil.moveToFormal(FileUtil.getPath(sysFile.getPath())));
+            if (FileUtil.inTemporaryPath(sysFile.getPath())) {
+                sysFile.setPath(FileUtil.moveToFormal(sysFile.getPath()));
             }
         });
         saveBatch(object);

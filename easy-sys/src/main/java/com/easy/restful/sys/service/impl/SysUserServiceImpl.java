@@ -92,11 +92,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Page<SysUser> search(String keyword, Page<SysUser> page) {
+    public Page<SysUser> search(String keyword, String range, Page<SysUser> page) {
         if (StrUtil.isBlank(keyword)) {
             throw new EasyException("请输入关键字");
         }
-        page.setRecords(getBaseMapper().search(page, "%" + keyword + "%", UserStatus.ENABLE.getCode(), DeptStatus.ENABLE.getCode(), CommonStatus.ENABLE.getCode()));
+        String deptId = null;
+        if (StrUtil.isBlank(range)) {
+            range = "all";
+        }
+        if("currentDept".equals(range)){
+            deptId = ShiroUtil.getCurrentUser().getDeptId();
+        }
+
+        page.setRecords(getBaseMapper().search(page, "%" + keyword + "%", deptId, UserStatus.ENABLE.getCode(), DeptStatus.ENABLE.getCode(), CommonStatus.ENABLE.getCode()));
         return page;
     }
 

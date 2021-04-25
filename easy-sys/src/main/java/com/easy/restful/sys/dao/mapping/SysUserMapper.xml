@@ -72,6 +72,9 @@
           and sd.status = #{deptStatus}
           and sdt.status = #{deptTypeStatus}
           and (u.username like #{keyword} or nickname like #{keyword} or sd.name like #{keyword})
+        <if test="deptId != null">
+          and sd.id = #{deptId}
+        </if>
     </select>
     <select id="selectPasswordAndSalt" resultType="com.easy.restful.sys.model.SysUser">
         select u.password, u.salt from sys_user u where u.id = #{id}
