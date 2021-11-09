@@ -7,6 +7,9 @@ package com.easy.restful.sys.common.constant;
  * @date 2019-04-24
  */
 public class ImportConst {
+
+    private ImportConst() {}
+
     /**
      * 临时表class
      */

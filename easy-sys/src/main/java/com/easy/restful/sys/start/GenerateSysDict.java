@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GenerateSysDict implements CommandLineRunner {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SysDictService sysDictService;

@@ -299,7 +299,7 @@ public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements
         }
         // 验证模型结构
         BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(jsonNode);
-        if (bpmnModel.getProcesses().size() == 0) {
+        if (bpmnModel.getProcesses().isEmpty()) {
             throw new EasyException("请至少设计一条主线流程");
         }
         byte[] modelBytes = new BpmnXMLConverter().convertToXML(bpmnModel);

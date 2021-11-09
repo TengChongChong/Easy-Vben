@@ -54,11 +54,9 @@ public class FileUtil {
      * @param file 文件
      */
     private static void checkDirs(File file) {
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                logger.debug("文件创建失败[" + file.getPath() + "]");
-                throw new EasyException("文件创建失败[" + file.getPath() + "]");
-            }
+        if (!file.exists() && !file.mkdirs()) {
+            logger.debug("文件创建失败[" + file.getPath() + "]");
+            throw new EasyException("文件创建失败[" + file.getPath() + "]");
         }
     }
 
@@ -148,7 +146,7 @@ public class FileUtil {
      * @return true/false
      */
     public static boolean del(String url) {
-        return delByPath(SysConst.projectProperties.getFileUploadPath() + url.replaceAll("/" + STATIC + "/", ""));
+        return delByPath(SysConst.projectProperties.getFileUploadPath() + url.replace("/" + STATIC + "/", ""));
     }
 
     /**
@@ -167,7 +165,7 @@ public class FileUtil {
      * @param sysUser sysUser
      * @return sysUser
      */
-    public static SysUser initAvatar(SysUser sysUser){
+    public static SysUser initAvatar(SysUser sysUser) {
         if (StrUtil.isNotBlank(sysUser.getAvatar())) {
             sysUser.setAvatarLg(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_LG));
             sysUser.setAvatarMd(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_MD));

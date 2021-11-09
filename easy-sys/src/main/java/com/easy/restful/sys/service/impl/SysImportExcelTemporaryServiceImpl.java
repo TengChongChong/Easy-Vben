@@ -153,7 +153,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
         SysUser sysUser = ShiroUtil.getCurrentUser();
         List<SysImportExcelTemporary> temporaries = getBaseMapper().selectImportSummary(templateId, sysUser.getId());
         SysImportSummary summary = new SysImportSummary();
-        if (temporaries != null && temporaries.size() > 0) {
+        if (temporaries != null && !temporaries.isEmpty()) {
             for (SysImportExcelTemporary temporary : temporaries) {
                 int count = Integer.parseInt(temporary.getField1());
                 if (ImportConst.VERIFICATION_STATUS_SUCCESS.equals(temporary.getVerificationStatus())) {
@@ -173,7 +173,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
         ToolUtil.checkParams(object);
         // 保存之前检查数据状态
         List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(object.getTemplateId());
-        if (configs != null && configs.size() > 0) {
+        if (configs != null && !configs.isEmpty()) {
             Class temporaryClass = ImportExportUtil.getTemporaryClass();
             for (int i = 0; i < configs.size(); i++) {
                 String value;
@@ -197,11 +197,10 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
                     logger.debug("设置替换值失败", e);
                     throw new EasyException("设置替换值失败" + e.getMessage());
                 }
-                if (configs.get(i).getOnly()) {
-                    /**
-                     * 唯一校验, 这里只检查临时表中是否唯一,在正式表中是否唯一请在导入前回调中检查
-                     * 因为此处校验无意义,正式表中数据可能会发生变动导致校验过时
-                     */
+                boolean only = configs.get(i).getOnly();
+                if (only) {
+                    // 唯一校验, 这里只检查临时表中是否唯一,在正式表中是否唯一请在导入前回调中检查
+                    // 因为此处校验无意义,正式表中数据可能会发生变动导致校验过时
                     int count = getBaseMapper().count("field" + (i + 1), replaceValue, object.getId());
                     if (count > 0) {
                         throw new EasyException("数据中已存在[" + configs.get(i).getTitle() + "=" + value + "]的数据，请勿重复导入");

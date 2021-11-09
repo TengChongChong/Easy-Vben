@@ -26,6 +26,6 @@ public class SysConst {
     @Autowired
     public void setProjectProperties(ProjectProperties projectProperties) {
         SysConst.projectProperties = projectProperties;
-        IS_PROD = ProfilesActiveStatus.prod.getProfilesActive().equals(projectProperties.getProfilesActive());
+        IS_PROD = ProfilesActiveStatus.PROD.getProfilesActive().equals(projectProperties.getProfilesActive());
     }
 }

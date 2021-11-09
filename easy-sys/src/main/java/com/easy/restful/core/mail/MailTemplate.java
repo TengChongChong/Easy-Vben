@@ -44,16 +44,4 @@ public class MailTemplate {
         return template.render();
     }
 
-    public static void main(String[] args) {
-        ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();
-        Configuration cfg;
-        try {
-            cfg = Configuration.defaultConfiguration();
-        } catch (IOException e) {
-            throw new EasyException("获取defaultConfiguration失败[" + e.getMessage() + "]");
-        }
-        GroupTemplate groupTemplate = new GroupTemplate(resourceLoader, cfg);
-        Template template = groupTemplate.getTemplate("/mail/verify-mail.html");
-        System.out.println(template.render());
-    }
 }

@@ -44,12 +44,8 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     @Override
     public Page<SysMessage> select(SysMessage object, Page<SysMessage> page) {
         QueryWrapper<SysMessage> queryWrapper = commonQuery(object);
-        if (object != null) {
-            // 查询条件
-            // 状态
-            if (Validator.isNotEmpty(object.getStatus())) {
-                queryWrapper.eq("m.status", object.getStatus());
-            }
+        if (object != null && Validator.isNotEmpty(object.getStatus())) {
+            queryWrapper.eq("m.status", object.getStatus());
         }
         page.setRecords(getBaseMapper().selectSend(page, queryWrapper));
         return page;

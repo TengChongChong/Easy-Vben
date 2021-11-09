@@ -1,5 +1,6 @@
 package com.easy.restful.sys.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -121,7 +122,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         queryWrapper.eq("p_id", id);
         int count = getBaseMapper().selectCount(queryWrapper);
         if (count > 0) {
-            throw new RuntimeException(GlobalException.EXIST_CHILD.getMessage());
+            throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }
         boolean isSuccess = removeById(id);
         if (isSuccess) {
@@ -142,7 +143,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         queryWrapper.in("p_id", ids.split(CommonConst.SPLIT));
         int count = count(queryWrapper);
         if (count > 0) {
-            throw new RuntimeException(GlobalException.EXIST_CHILD.getMessage());
+            throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
@@ -234,7 +235,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 int deviation = 1;
                 // 放到了最后一个
                 if (position == oldSysRole.size()) {
-                    if (oldSysRole.size() == 0) {
+                    if (oldSysRole.isEmpty()) {
                         newSysRole.add(new SysRole(id, parent, 1));
                     } else {
                         newSysRole.add(new SysRole(id, parent, oldSysRole.get(oldSysRole.size() - 1).getOrderNo() + 1));
@@ -284,7 +285,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 如果是查询用于显示已选择的角色列表，必须传入id
         boolean isInvalid = !isSelect && (sysRole == null || StrUtil.isBlank(sysRole.getId()));
         if(isInvalid){
-            return null;
+            return CollectionUtil.empty(SysRole.class);
         }
         if(sysRole != null && StrUtil.isNotBlank(sysRole.getId())){
             if (sysRole.getId().contains(CommonConst.SPLIT)) {

@@ -129,11 +129,9 @@ public class SysDownloadServiceImpl extends ServiceImpl<SysDownloadMapper, SysDo
             // 默认常规类型，过期时间12小时
             object.setEffectiveType(DownloadEffectiveTypeConst.GENERAL);
         }
-        if(DownloadEffectiveTypeConst.GENERAL.equals(object.getEffectiveType())){
-            if(object.getExpire() == null){
-                // 常规下载默认12小时有效期
-                object.setExpire(DateUtil.offsetHour(new Date(), 12));
-            }
+        if(DownloadEffectiveTypeConst.GENERAL.equals(object.getEffectiveType()) && object.getExpire() == null){
+            // 常规下载默认12小时有效期
+            object.setExpire(DateUtil.offsetHour(new Date(), 12));
         }
         return (SysDownload) ToolUtil.checkResult(saveOrUpdate(object), object);
     }
@@ -145,12 +143,9 @@ public class SysDownloadServiceImpl extends ServiceImpl<SysDownloadMapper, SysDo
             throw new EasyException("链接不存在或已过期");
         }
 
-        if (DownloadEffectiveTypeConst.GENERAL.equals(sysDownload.getEffectiveType())) {
-            // 常规资源，检查有效期
-            if (System.currentTimeMillis() > sysDownload.getExpire().getTime()) {
-//                throw new EasyException("链接不存在或已过期");
-                throw new EasyException("链接已过期");
-            }
+        if (DownloadEffectiveTypeConst.GENERAL.equals(sysDownload.getEffectiveType()) && System.currentTimeMillis() > sysDownload.getExpire().getTime()) {
+//            throw new EasyException("链接不存在或已过期");
+            throw new EasyException("链接已过期");
         }
 
         // 检查文件是否存在

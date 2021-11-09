@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.common.core.common.pagination.Page;
+import com.easy.restful.common.core.common.status.CommonStatus;
 import com.easy.restful.common.core.constant.CommonConst;
 import com.easy.restful.common.core.exception.EasyException;
 import com.easy.restful.sys.dao.SysDictTypeMapper;
@@ -44,7 +45,9 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
 
     @Override
     public List<SysDictType> selectAll() {
-        return getBaseMapper().selectList(null);
+        QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("status", CommonStatus.ENABLE.getCode());
+        return getBaseMapper().selectList(queryWrapper);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)

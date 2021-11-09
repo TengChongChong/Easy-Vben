@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -265,7 +266,7 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
                 int deviation = 1;
                 // 放到了最后一个
                 if (position == oldSysDeptType.size()) {
-                    if (oldSysDeptType.size() == 0) {
+                    if (oldSysDeptType.isEmpty()) {
                         newSysDeptType.add(new SysDeptType(id, parent, 1));
                     } else {
                         newSysDeptType.add(new SysDeptType(id, parent, oldSysDeptType.get(oldSysDeptType.size() - 1).getOrderNo() + 1));
@@ -303,7 +304,7 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
         if (Validator.isNotEmpty(code)) {
             return getBaseMapper().selectOptionBySameLevel(code);
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -312,7 +313,7 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
         if (Validator.isNotEmpty(parentCode)) {
             return getBaseMapper().selectOptionByParentCode(parentCode);
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 

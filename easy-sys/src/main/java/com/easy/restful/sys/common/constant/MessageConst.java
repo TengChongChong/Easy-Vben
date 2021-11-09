@@ -7,6 +7,9 @@ package com.easy.restful.sys.common.constant;
  * @date 2019-06-07
  */
 public class MessageConst {
+
+    private MessageConst() {}
+
     //==== 页面nav
     /**
      * 收信箱

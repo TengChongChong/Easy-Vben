@@ -63,22 +63,20 @@
       >
         <% for(fieldSet in config.tableItems){ %>
         <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
-        <span slot="${fieldSet.propertyName}" slot-scope="text">
+        <template #${fieldSet.propertyName}="text">
           <e-dict-tag type="${fieldSet.dictType}" :code="text"/>
-        </span>
+        </template>
         <% } %>
         <% } %>
         <% if(config.isGeneratorMethodsSave || config.isGeneratorMethodsRemove){ %>
-        <span slot="action" slot-scope="text, record">
-          <template>
-            <% if(config.isGeneratorMethodsSave){ %>
-            <e-btn-edit permissions="${config.permissionsCode}:save" :to="`${staticConfig.inputViewPath}`"${config.isGeneratorMethodsRemove ? "" : " :divider=\"false\""} :tab-name="record.key" :id="record.id"/>
-            <% } %>
-            <% if(config.isGeneratorMethodsRemove){ %>
-            <e-btn-remove permissions="${config.permissionsCode}:remove" :id="record.id" :divider="false" :click-callback="remove"/>
-            <% } %>
-          </template>
-        </span>
+        <template #action="text, record">
+          <% if(config.isGeneratorMethodsSave){ %>
+          <e-btn-edit permissions="${config.permissionsCode}:save" :to="`${staticConfig.inputViewPath}`"${config.isGeneratorMethodsRemove ? "" : " :divider=\"false\""} :tab-name="record.key" :id="record.id"/>
+          <% } %>
+          <% if(config.isGeneratorMethodsRemove){ %>
+          <e-btn-remove permissions="${config.permissionsCode}:remove" :id="record.id" :divider="false" :click-callback="remove"/>
+          <% } %>
+        </template>
         <% } %>
       </s-table>
     </template>

@@ -26,10 +26,11 @@ public interface SysUserService {
      *
      * @param keyword 关键字
      * @param range   数据范围，可以选择哪些用户 'all' | 'currentDept'
+     * @param deptId 部门id，如传入range='currentDept'，此参数无效
      * @param page    分页
      * @return Page<SysUser>
      */
-    Page<SysUser> search(String keyword, String range, Page<SysUser> page);
+    Page<SysUser> search(String keyword, String range, String deptId, Page<SysUser> page);
 
     /**
      * 获取指定用户信息

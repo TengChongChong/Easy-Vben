@@ -7,6 +7,9 @@ package com.easy.restful.sys.common.constant;
  * @date 2021/1/4
  */
 public class OpeningModeConst {
+
+    private OpeningModeConst() {}
+
     /**
      * 默认
      */

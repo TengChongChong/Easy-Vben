@@ -92,11 +92,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Page<SysUser> search(String keyword, String range, Page<SysUser> page) {
+    public Page<SysUser> search(String keyword, String range, String deptId, Page<SysUser> page) {
         if (StrUtil.isBlank(keyword)) {
             throw new EasyException("请输入关键字");
         }
-        String deptId = null;
         if (StrUtil.isBlank(range)) {
             range = "all";
         }
@@ -257,8 +256,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
             queryWrapper.select("email, phone");
             queryWrapper.eq("username", username);
-            SysUser sysUser = getBaseMapper().selectOne(queryWrapper);
-            return sysUser;
+            return getBaseMapper().selectOne(queryWrapper);
         }
         return null;
     }

@@ -8,6 +8,9 @@ package com.easy.restful.auth.constant;
  */
 public class SessionConst {
 
+    private SessionConst() {
+    }
+
     /**
      * 当前登录用户session key
      */

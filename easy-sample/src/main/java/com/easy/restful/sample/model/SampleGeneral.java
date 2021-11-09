@@ -1,16 +1,14 @@
 package com.easy.restful.sample.model;
 
-import java.util.Date;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 代码生成示例
@@ -22,7 +20,6 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 public class SampleGeneral extends Model<SampleGeneral> {
 
     @TableId(value = "id")
-    
     private String id;
     /**
      * 姓名
@@ -58,25 +55,21 @@ public class SampleGeneral extends Model<SampleGeneral> {
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
-    
     private String createUser;
     /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    
     private Date createDate;
     /**
      * 编辑人
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    
     private String editUser;
     /**
      * 编辑时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    
     private Date editDate;
     //
 

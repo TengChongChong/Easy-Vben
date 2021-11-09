@@ -77,6 +77,6 @@ public class GeneratorJavaUtil {
      * @return 代码
      */
     private static String addTab(String code) {
-        return code + "    \r\n";
+        return code + "\r\n    ";
     }
 }

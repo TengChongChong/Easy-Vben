@@ -109,10 +109,8 @@ public class ProjectProperties {
                 fileUploadPath = fileUploadPath + File.separator;
             }
             File file = new File(fileUploadPath);
-            if (!file.exists()) {
-                if(!file.mkdirs()){
-                    logger.warn("创建文件上传保存目录失败");
-                }
+            if (!file.exists() && !file.mkdirs()) {
+                logger.warn("创建文件上传保存目录失败");
             }
             return fileUploadPath;
         } else {

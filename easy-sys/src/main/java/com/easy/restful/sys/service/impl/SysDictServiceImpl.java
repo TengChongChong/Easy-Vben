@@ -27,8 +27,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 字典管理
@@ -74,8 +73,8 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
     @Override
     public List<SysDict> selectDictType(List<String> dictTypes) {
-        if (dictTypes == null || dictTypes.size() == 0) {
-            return null;
+        if (dictTypes == null || dictTypes.isEmpty()) {
+            return Collections.emptyList();
         }
         QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("code, name, dict_type");
@@ -205,5 +204,29 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
             return "const SYS_DICT = " + sysDictData.toJSONString(0);
         }
         return null;
+    }
+
+    @Override
+    public Map<String, List<SysDict>> selectDictionaries(String[] dictTypes) {
+        QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
+        // 状态
+        queryWrapper.eq("status", CommonStatus.ENABLE.getCode());
+        queryWrapper.in("dict_type", dictTypes);
+        queryWrapper.orderByAsc("dict_type, order_no");
+
+        Map<String, List<SysDict>> dictionaries = new HashMap<>(dictTypes.length);
+
+        for (String dictType : dictTypes) {
+            dictionaries.put(dictType, new ArrayList<>());
+        }
+
+        List<SysDict> dictList = list(queryWrapper);
+        if(dictList != null && !dictList.isEmpty()){
+            dictList.forEach(dict -> {
+                dictionaries.get(dict.getDictType()).add(dict);
+            });
+        }
+
+        return dictionaries;
     }
 }

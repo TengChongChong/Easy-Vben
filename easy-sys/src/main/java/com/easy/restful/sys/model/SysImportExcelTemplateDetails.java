@@ -53,7 +53,7 @@ public class SysImportExcelTemplateDetails extends Model<SysImportExcelTemplateD
     private String fieldType;
 
     /**
-     * 替换表
+     * 替换表(小写)
      */
     private String replaceTable;
 

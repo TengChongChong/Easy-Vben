@@ -7,6 +7,9 @@ package com.easy.restful.sys.common.constant;
  * @date 2019/11/11
  */
 public class DownloadEffectiveTypeConst {
+
+    private DownloadEffectiveTypeConst() {}
+
     /**
      * 常规 - 经过一段时间会失效 （有效期为系统参数：downloadEffectiveExpire）
      */

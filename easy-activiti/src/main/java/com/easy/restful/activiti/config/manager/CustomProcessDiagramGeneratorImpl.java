@@ -160,7 +160,7 @@ public class CustomProcessDiagramGeneratorImpl extends DefaultProcessDiagramGene
             FlowElement sourceElement = bpmnModel.getFlowElement(sourceRef);
             FlowElement targetElement = bpmnModel.getFlowElement(targetRef);
             List<GraphicInfo> graphicInfoList = bpmnModel.getFlowLocationGraphicInfo(flowId);
-            if (graphicInfoList != null && graphicInfoList.size() > 0) {
+            if (graphicInfoList != null && !graphicInfoList.isEmpty()) {
                 graphicInfoList = connectionPerfectionizer(processDiagramCanvas, bpmnModel, sourceElement, targetElement, graphicInfoList);
                 int[] xPoints = new int[graphicInfoList.size()];
                 int[] yPoints = new int[graphicInfoList.size()];

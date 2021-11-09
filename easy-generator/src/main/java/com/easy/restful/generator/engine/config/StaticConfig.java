@@ -123,7 +123,7 @@ public class StaticConfig extends AbstractConfig {
             if (generator.isGeneratorMethodsExport()) {
                 imp.getImp().add(GeneratorMethodConst.EXPORT_DATA);
             }
-            if(imp.getImp().size() > 0){
+            if(!imp.getImp().isEmpty()){
                 imports.add(imp);
             }
             if (hasDatePropertyType()) {
@@ -181,11 +181,12 @@ public class StaticConfig extends AbstractConfig {
                     components.put("EDatePicker", "@/components/Easy/data-entry/DatePicker");
                 }
             }
-            for (String key : components.keySet()) {
-                if ("EDatePicker".equals(key)) {
+
+            for (Map.Entry<String, String> entry : components.entrySet()) {
+                if ("EDatePicker".equals(entry.getKey())) {
                     imports.add(new Import("@/utils/const/datePattern", GeneratorImportConst.TYPE_VARIABLE, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "DATE_PATTERN"));
                 }
-                imports.add(new Import(components.get(key), GeneratorImportConst.TYPE_COMPONENT, GeneratorImportConst.IMPORT_TYPE_SINGLE, key));
+                imports.add(new Import(entry.getValue(), GeneratorImportConst.TYPE_COMPONENT, GeneratorImportConst.IMPORT_TYPE_SINGLE, entry.getKey()));
             }
         }
         return imports;

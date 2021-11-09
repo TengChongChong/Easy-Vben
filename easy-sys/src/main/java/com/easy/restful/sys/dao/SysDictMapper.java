@@ -22,7 +22,7 @@ public interface SysDictMapper extends BaseMapper<SysDict> {
      * @param queryWrapper 查询条件
      * @return
      */
-    List<SysDict> select(Page page, @Param("ew") QueryWrapper<SysDict> queryWrapper);
+    List<SysDict> select(Page<SysDict> page, @Param("ew") QueryWrapper<SysDict> queryWrapper);
 
     /**
      * 根据类型获取数据

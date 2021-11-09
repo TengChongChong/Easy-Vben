@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.sys.common.constant.MessageConst;
 import com.easy.restful.sys.dao.SysMessageDetailsMapper;
 import com.easy.restful.sys.model.SysMessageDetails;
-import com.easy.restful.sys.model.SysUser;
 import com.easy.restful.sys.service.SysMessageDetailsService;
 import com.easy.restful.util.ShiroUtil;
 import com.easy.restful.util.ToolUtil;

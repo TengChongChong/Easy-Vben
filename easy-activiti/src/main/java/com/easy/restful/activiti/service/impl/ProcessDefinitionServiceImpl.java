@@ -90,7 +90,7 @@ public class ProcessDefinitionServiceImpl extends ServiceImpl<ProcessDefinitionM
         ProcessDefinition processDefinition = getProcessDefinition(processDefinitionVO.getProcessDefinitionId());
         if(processDefinitionVO.getHasFormData() == null || !processDefinitionVO.getHasFormData()){
             StartFormData startFormData = formService.getStartFormData(processDefinitionVO.getProcessDefinitionId());
-            if (startFormData.getFormProperties() != null && startFormData.getFormProperties().size() > 0) {
+            if (startFormData.getFormProperties() != null && !startFormData.getFormProperties().isEmpty()) {
                 List<FormPropertyVO> formPropertyVOList = new ArrayList<>();
                 for (FormProperty formProperty : startFormData.getFormProperties()) {
                     formPropertyVOList.add(new FormPropertyVO(formProperty));

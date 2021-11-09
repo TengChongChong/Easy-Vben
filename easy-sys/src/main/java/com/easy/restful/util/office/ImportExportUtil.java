@@ -35,8 +35,8 @@ public class ImportExportUtil {
                                                   List<SysImportExcelTemplateDetails> configs,
                                                   boolean containVerificationResults) {
         List<List<Object>> rows = new ArrayList<>();
-        if (temporaries != null && temporaries.size() > 0 &&
-                configs != null && configs.size() > 0) {
+        if (temporaries != null && !temporaries.isEmpty() &&
+                configs != null && !configs.isEmpty()) {
             Class temporaryClass = getTemporaryClass();
             for (SysImportExcelTemporary temporary : temporaries) {
                 rows.add(callingGetMethodToArray(temporary, configs, temporaryClass, containVerificationResults));
@@ -57,7 +57,7 @@ public class ImportExportUtil {
                                                   int columnNumber,
                                                   boolean containVerificationResults) {
         List<List<Object>> rows = new ArrayList<>();
-        if (temporaries != null && temporaries.size() > 0 &&
+        if (temporaries != null && !temporaries.isEmpty() &&
                 columnNumber > 0) {
             Class temporaryClass = getTemporaryClass();
             for (SysImportExcelTemporary temporary : temporaries) {
@@ -317,43 +317,36 @@ public class ImportExportUtil {
      *
      * @param data   单元格数据
      * @param config 单元格导入规则
-     * @return true/false
      */
-    private static boolean verificationLength(String data, SysImportExcelTemplateDetails config) {
-        if (StrUtil.isNotBlank(config.getFieldLength())) {
-            if (ImportConst.FIELD_LENGRH_ARBITRARILY.equals(config.getFieldLength())) {
-                return true;
-            } else if (config.getFieldLength().contains(CommonConst.SPLIT)) {
-                // 小数格式,检查小数点前后是否超出限制
-                int integerLength = Integer.parseInt(config.getFieldLength().split(CommonConst.SPLIT)[0]);
-                int decimalLength = Integer.parseInt(config.getFieldLength().split(CommonConst.SPLIT)[1]);
-                String integerStr, decimalStr = null;
-                if (data.contains(CommonConst.DECIMAL_POINT)) {
-                    integerStr = data.substring(0, data.indexOf(CommonConst.DECIMAL_POINT));
-                    decimalStr = data.substring(data.indexOf(CommonConst.DECIMAL_POINT) + 1);
-                } else {
-                    integerStr = data;
-                }
-                if (integerStr.length() > integerLength) {
-                    throw new EasyException(config.getTitle() + "整数部分超出限制[" + integerLength + "];");
-                }
-                if (decimalStr != null) {
-                    if (decimalStr.length() > decimalLength) {
-                        throw new EasyException(config.getTitle() + "小数部分超出限制[" + decimalLength + "];");
-                    }
-                }
+    private static void verificationLength(String data, SysImportExcelTemplateDetails config) {
+        if (StrUtil.isNotBlank(config.getFieldLength()) && !ImportConst.FIELD_LENGRH_ARBITRARILY.equals(config.getFieldLength()) && config.getFieldLength().contains(CommonConst.SPLIT)) {
+            // 小数格式,检查小数点前后是否超出限制
+            int integerLength = Integer.parseInt(config.getFieldLength().split(CommonConst.SPLIT)[0]);
+            int decimalLength = Integer.parseInt(config.getFieldLength().split(CommonConst.SPLIT)[1]);
+            String integerStr;
+            String decimalStr = null;
+            if (data.contains(CommonConst.DECIMAL_POINT)) {
+                integerStr = data.substring(0, data.indexOf(CommonConst.DECIMAL_POINT));
+                decimalStr = data.substring(data.indexOf(CommonConst.DECIMAL_POINT) + 1);
             } else {
-                try {
-                    int length = Integer.parseInt(config.getFieldLength());
-                    if (data.length() > length) {
-                        throw new EasyException(config.getTitle() + "长度超出限制[" + config.getFieldLength() + "];");
-                    }
-                } catch (NumberFormatException e) {
-                    // 如果长度不是int就不进行验证
+                integerStr = data;
+            }
+            if (integerStr.length() > integerLength) {
+                throw new EasyException(config.getTitle() + "整数部分超出限制[" + integerLength + "];");
+            }
+            if (decimalStr != null && decimalStr.length() > decimalLength) {
+                throw new EasyException(config.getTitle() + "小数部分超出限制[" + decimalLength + "];");
+            }
+        } else {
+            try {
+                int length = Integer.parseInt(config.getFieldLength());
+                if (data.length() > length) {
+                    throw new EasyException(config.getTitle() + "长度超出限制[" + config.getFieldLength() + "];");
                 }
+            } catch (NumberFormatException e) {
+                // 如果长度不是int就不进行验证
             }
         }
-        return true;
     }
 
     /**

@@ -8,9 +8,9 @@ package com.easy.restful.sys.common.status;
  */
 public enum ProfilesActiveStatus {
     // 开发模式
-    dev("dev", "开发模式"),
+    DEV("dev", "开发模式"),
     // 生产模式
-    prod("prod", "生产模式");
+    PROD("prod", "生产模式");
 
     private String profilesActive;
     private String name;

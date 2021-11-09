@@ -111,7 +111,7 @@ export default {
         <% if(fieldSet.elementType == 'select' || fieldSet.elementType == 'radio' || fieldSet.elementType == 'checkbox'|| fieldSet.elementType == 'date'|| fieldSet.elementType == 'datetime') {%>
         <% if(fieldSet.required) { %>
         ${fieldSet.propertyName}: [
-          { required: true, message: '请选择${fieldSet.label}', trigger: 'blur' }
+          { required: true, message: '请选择${fieldSet.label}', trigger: 'change' }
         ],
         <% } %>
         <% } else { %>

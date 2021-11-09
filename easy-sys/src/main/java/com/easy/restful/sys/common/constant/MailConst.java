@@ -7,6 +7,9 @@ package com.easy.restful.sys.common.constant;
  * @date 2019-03-28
  */
 public class MailConst {
+
+    private MailConst() {}
+
     /**
      * 验证密保问题
      */

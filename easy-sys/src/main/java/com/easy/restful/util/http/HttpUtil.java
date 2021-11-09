@@ -21,7 +21,7 @@ import java.util.Date;
 public class HttpUtil {
     private HttpUtil() {}
 
-    private static String[] IEBrowserSignals = {"MSIE", "Trident", "Edge"};
+    private static final String[] IEBrowserSignals = {"MSIE", "Trident", "Edge"};
 
     /**
      * 是否是IE浏览器

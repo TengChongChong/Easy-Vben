@@ -28,10 +28,11 @@ public class RetryLimitCredentialsMatcher extends SimpleCredentialsMatcher {
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         SysUser sysUser = (SysUser) info.getPrincipals().getPrimaryPrincipal();
         // 清空登录计数
-        RedisUtil.del(RedisPrefix.ACCOUNT + "login_count_" + sysUser.getUsername());
-        RedisUtil.del(RedisPrefix.ACCOUNT + "login_count_" + sysUser.getEmail());
-        RedisUtil.del(RedisPrefix.ACCOUNT + "login_count_" + sysUser.getPhone());
-        RedisUtil.del(RedisPrefix.SESSION + "login_count_" + ShiroUtil.getSession().getId().toString());
+        String loginCountKey = "login_count_";
+        RedisUtil.del(RedisPrefix.ACCOUNT + loginCountKey + sysUser.getUsername());
+        RedisUtil.del(RedisPrefix.ACCOUNT + loginCountKey + sysUser.getEmail());
+        RedisUtil.del(RedisPrefix.ACCOUNT + loginCountKey + sysUser.getPhone());
+        RedisUtil.del(RedisPrefix.SESSION + loginCountKey + ShiroUtil.getSession().getId().toString());
         // 更新最后登录时间
         shiroService.updateUserLastLoginDate(sysUser.getId());
         // 检查是否允许用户在多处登录

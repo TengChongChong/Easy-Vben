@@ -142,7 +142,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     public Collection<Session> getActiveSessions() {
         logger.debug("activeSession");
         Set<String> sessionKeys = RedisUtil.selectKeysByPrefix(RedisPrefix.SHIRO_SESSION);
-        if (sessionKeys != null && sessionKeys.size() > 0) {
+        if (sessionKeys != null && !sessionKeys.isEmpty()) {
             Collection<Session> sessions = new ArrayList<>();
             for (String sessionKey : sessionKeys) {
                 sessions.add((Session) RedisUtil.get(sessionKey));

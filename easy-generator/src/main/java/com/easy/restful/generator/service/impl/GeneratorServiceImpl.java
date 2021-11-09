@@ -69,7 +69,7 @@ public class GeneratorServiceImpl implements GeneratorService {
     @Override
     public boolean generate(Generator object) {
         if (object != null) {
-            if (!ProfilesActiveStatus.dev.getProfilesActive().equals(projectProperties.getProfilesActive())) {
+            if (!ProfilesActiveStatus.DEV.getProfilesActive().equals(projectProperties.getProfilesActive())) {
                 throw new EasyException("当前模式[" + projectProperties.getProfilesActive() + "]不允许生成");
             }
             // 生成文件
@@ -289,7 +289,7 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     @Override
     public List<Select> selectModules() {
-        if (!ProfilesActiveStatus.dev.getProfilesActive().equals(projectProperties.getProfilesActive())) {
+        if (!ProfilesActiveStatus.DEV.getProfilesActive().equals(projectProperties.getProfilesActive())) {
             // 除开发模式以外都返回虚拟数据
             return Collections.singletonList(new Select("/fictitious/easy-test", "easy-test"));
         }

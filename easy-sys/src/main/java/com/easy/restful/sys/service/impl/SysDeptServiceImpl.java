@@ -62,7 +62,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         if (Validator.isNotEmpty(title)) {
             return getBaseMapper().selectByTitle("%" + title + "%");
         } else {
-            throw new RuntimeException("请输入关键字后重试");
+            throw new EasyException("请输入关键字后重试");
         }
     }
 
@@ -123,7 +123,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             object.setStatus(CommonStatus.ENABLE.getCode());
             return object;
         } else {
-            throw new RuntimeException("获取部门信息失败");
+            throw new EasyException("获取部门信息失败");
         }
     }
 

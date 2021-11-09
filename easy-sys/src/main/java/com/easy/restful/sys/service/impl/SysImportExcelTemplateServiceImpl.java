@@ -1,18 +1,18 @@
 package com.easy.restful.sys.service.impl;
 
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.ArrayUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.common.core.common.pagination.Page;
 import com.easy.restful.common.core.exception.EasyException;
+import com.easy.restful.sys.common.constant.ImportConst;
 import com.easy.restful.sys.dao.SysImportExcelTemplateMapper;
+import com.easy.restful.sys.model.SysDict;
 import com.easy.restful.sys.model.SysDownload;
 import com.easy.restful.sys.model.SysImportExcelTemplate;
 import com.easy.restful.sys.model.SysImportExcelTemplateDetails;
-import com.easy.restful.sys.service.SysDownloadService;
-import com.easy.restful.sys.service.SysImportExcelTemplateDetailsService;
-import com.easy.restful.sys.service.SysImportExcelTemplateService;
-import com.easy.restful.sys.service.SysImportExcelTemporaryService;
+import com.easy.restful.sys.service.*;
 import com.easy.restful.util.ToolUtil;
 import com.easy.restful.util.office.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 导入模板
@@ -35,10 +36,16 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
 
     @Autowired
     private SysImportExcelTemplateDetailsService templateDetailsService;
+
     @Autowired
     private SysImportExcelTemporaryService temporaryService;
+
     @Autowired
     private SysDownloadService sysDownloadService;
+
+    @Autowired
+    private SysDictService sysDictService;
+
     /**
      * 列表
      *
@@ -160,11 +167,19 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
             throw new EasyException("模板信息不存在");
         }
         List<SysImportExcelTemplateDetails> details = templateDetailsService.selectDetails(sysImportExcelTemplate.getId());
-        List<String> title = new ArrayList<>();
+        List<String> dictTypes = new ArrayList<>();
         for (SysImportExcelTemplateDetails detail : details) {
-            title.add(detail.getTitle());
+            if(ImportConst.SYS_DICT.equals(detail.getReplaceTable())){
+                // 收集所需的字典类别数据
+                dictTypes.add(detail.getReplaceTableDictType());
+            }
         }
-        String path = ExcelUtil.writFile(null, title.toArray(new String[details.size()]), sysImportExcelTemplate.getName(), sysImportExcelTemplate.getName(), null);
+        Map<String, List<SysDict>> dictionaries = null;
+        if(!dictTypes.isEmpty()){
+            // 如果模板中包含字典，则设置select
+            dictionaries = sysDictService.selectDictionaries(ArrayUtil.toArray(dictTypes, String.class));
+        }
+        String path = ExcelUtil.writFile(sysImportExcelTemplate.getName(), details, dictionaries);
 
         return sysDownloadService.saveData(new SysDownload(
                 sysImportExcelTemplate.getName() + ExcelUtil.EXCEL_SUFFIX_XLSX,

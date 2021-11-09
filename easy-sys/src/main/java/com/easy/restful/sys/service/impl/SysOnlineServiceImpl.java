@@ -31,7 +31,7 @@ public class SysOnlineServiceImpl implements SysUserOnlineService {
     public List<SysUserOnline> select() {
         List<SysUserOnline> sysUserOnlineList = new ArrayList<>();
         Collection<Session> sessions = sessionDAO.getActiveSessions();
-        if (sessions != null && sessions.size() > 0) {
+        if (sessions != null && !sessions.isEmpty()) {
             for (Session session : sessions) {
                 SysUserOnline sysUserOnline = new SysUserOnline();
                 SysUser sysUser;

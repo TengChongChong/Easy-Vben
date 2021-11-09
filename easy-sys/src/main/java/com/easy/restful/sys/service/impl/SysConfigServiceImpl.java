@@ -145,7 +145,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("sys_key,value,type");
         List<SysConfig> configs = list(queryWrapper);
-        if (configs != null && configs.size() > 0) {
+        if (configs != null && !configs.isEmpty()) {
             for (SysConfig config : configs) {
                 updateCache(config);
             }

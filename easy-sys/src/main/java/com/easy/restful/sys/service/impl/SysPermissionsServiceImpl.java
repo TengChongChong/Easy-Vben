@@ -1,5 +1,6 @@
 package com.easy.restful.sys.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -168,7 +169,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
         ToolUtil.checkParams(targetId);
         // 查询复制的节点
         List<SysPermissions> copyPermissions = getBaseMapper().selectBatchIds(Arrays.asList(nodeIds.split(CommonConst.SPLIT)));
-        if (copyPermissions != null && copyPermissions.size() > 0) {
+        if (copyPermissions != null && !copyPermissions.isEmpty()) {
             SysPermissions parentPermission = getById(targetId);
             // 目标节点存在
             if (parentPermission != null) {
@@ -211,7 +212,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
                 return sysPermissionsList;
             }
         }
-        return null;
+        return CollectionUtil.empty(SysPermissions.class);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -273,7 +274,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
                 int deviation = 1;
                 // 放到了最后一个
                 if (position == oldSysPermissions.size()) {
-                    if (oldSysPermissions.size() == 0) {
+                    if (oldSysPermissions.isEmpty()) {
                         newSysPermissions.add(new SysPermissions(id, parent, 1));
                     } else {
                         newSysPermissions.add(new SysPermissions(id, parent, oldSysPermissions.get(oldSysPermissions.size() - 1).getOrderNo() + 1));

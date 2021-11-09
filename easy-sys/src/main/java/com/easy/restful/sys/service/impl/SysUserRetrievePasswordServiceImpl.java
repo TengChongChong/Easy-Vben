@@ -86,15 +86,13 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
 
     @Override
     public boolean resetPassword(String username, String code, String password) {
-        if (StrUtil.isNotBlank(username) && StrUtil.isNotBlank(code)) {
-            if (verifiesCode(username, code)) {
-                boolean isSuccess = sysUserService.resetPassword(username, password, null);
-                if (isSuccess) {
-                    sysMailVerifiesService.remove(code);
-                    return true;
-                } else {
-                    throw new EasyException("更新密码失败，请稍后重试");
-                }
+        if (StrUtil.isNotBlank(username) && StrUtil.isNotBlank(code) && verifiesCode(username, code)) {
+            boolean isSuccess = sysUserService.resetPassword(username, password, null);
+            if (isSuccess) {
+                sysMailVerifiesService.remove(code);
+                return true;
+            } else {
+                throw new EasyException("更新密码失败，请稍后重试");
             }
         }
         throw new EasyException("获取用户名或校验码失败");

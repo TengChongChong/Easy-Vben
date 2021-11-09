@@ -22,6 +22,6 @@ public class PasswordUtilTest extends TestCase {
      * 生成密码 用于用户注册/新增用户
      */
     public void test_generatingPasswords() {
-        System.out.println(PasswordUtil.generatingPasswords("123", "xm9lqcpwf6"));
+        System.out.println(PasswordUtil.generatingPasswords("admin123", "xm9lqcpwf6"));
     }
 }

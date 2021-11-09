@@ -7,6 +7,10 @@ package com.easy.restful.sys.common.constant;
  * @date 2019-05-30
  */
 public class SexConst {
+
+    private SexConst() {
+    }
+
     /**
      * 男
      */

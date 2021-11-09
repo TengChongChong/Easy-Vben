@@ -1,5 +1,6 @@
 package com.easy.restful.sys.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.restful.sys.dao.SysImportExcelTemplateDetailsMapper;
@@ -63,9 +64,12 @@ public class SysImportExcelTemplateDetailsServiceImpl extends ServiceImpl<SysImp
         remove(deleteOld);
 
         // 设置字段长度
-        if(list != null && list.size() > 0){
+        if(list != null && !list.isEmpty()){
             for (SysImportExcelTemplateDetails details : list) {
                 details.setTemplateId(templateId);
+                if(StrUtil.isNotBlank(details.getReplaceTable())){
+                    details.setReplaceTable(details.getReplaceTable().toLowerCase());
+                }
                 String type = details.getFieldType();
                 if(type.contains("(")){
                     details.setFieldType(type.substring(0, type.indexOf("(")));

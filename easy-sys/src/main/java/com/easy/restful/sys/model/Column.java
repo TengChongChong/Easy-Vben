@@ -1,6 +1,7 @@
 package com.easy.restful.sys.model;
 
-import cn.hutool.core.util.StrUtil;
+
+import cn.hutool.core.text.CharSequenceUtil;
 
 /**
  * 表格标题
@@ -43,7 +44,7 @@ public class Column {
     }
 
     public String getDictType() {
-        if (StrUtil.isNotBlank(dictType)) {
+        if (CharSequenceUtil.isNotBlank(dictType)) {
             return dictType;
         } else {
             return null;

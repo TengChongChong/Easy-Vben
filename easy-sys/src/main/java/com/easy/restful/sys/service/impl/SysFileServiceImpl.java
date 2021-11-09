@@ -36,11 +36,11 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
         QueryWrapper<SysFile> remove = new QueryWrapper<>();
         remove.eq("p_id", pId).eq("type", type);
         boolean isSuccess = remove(remove);
-        if (isSuccess){
+        if (isSuccess) {
             sysFileList.forEach(sysFile -> {
                 File file = new File(sysFile.getPath());
-                if (file.exists()) {
-                    file.delete();
+                if (file.exists() && !file.delete()) {
+                    throw new EasyException("文件删除失败[" + file.getPath() + "]");
                 }
             });
         }

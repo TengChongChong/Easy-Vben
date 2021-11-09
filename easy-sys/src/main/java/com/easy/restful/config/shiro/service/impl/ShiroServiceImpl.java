@@ -273,7 +273,7 @@ public class ShiroServiceImpl implements ShiroService {
     @Override
     public List<Session> getLoginedSession(SysUser user) {
         Collection<Session> sessions = sessionDAO.getActiveSessions();
-        if (sessions != null && sessions.size() > 0) {
+        if (sessions != null && !sessions.isEmpty()) {
             List<Session> loginedSession = new ArrayList<>();
             for (Session session : sessions) {
                 // 有效session
@@ -298,7 +298,7 @@ public class ShiroServiceImpl implements ShiroService {
     @Override
     public boolean kickOutSession(SysUser user) {
         List<Session> loginedSession = getLoginedSession(user);
-        if (loginedSession != null && loginedSession.size() > 0) {
+        if (loginedSession != null && !loginedSession.isEmpty()) {
             for (Session session : loginedSession) {
                 session.setAttribute(SessionConst.LOGIN_ELSEWHERE, true);
                 sessionDAO.update(session);

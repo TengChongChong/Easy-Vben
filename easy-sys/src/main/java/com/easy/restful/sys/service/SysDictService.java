@@ -5,6 +5,7 @@ import com.easy.restful.common.core.common.select.Select;
 import com.easy.restful.sys.model.SysDict;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 字典
@@ -93,5 +94,13 @@ public interface SysDictService {
      * @return true/false
      */
     boolean generateDictData();
+
+    /**
+     * 根据字典类型获取字典Map
+     *
+     * @param dictTypes 字典类型
+     * @return Map<String, List<SysDict>>
+     */
+    Map<String, List<SysDict>> selectDictionaries(String[] dictTypes);
 
 }

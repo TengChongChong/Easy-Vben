@@ -1,5 +1,6 @@
 package com.easy.restful.config.shiro;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
@@ -161,7 +162,7 @@ public class SessionManager extends DefaultWebSessionManager {
             return super.getAttributeKeys(key);
         } catch (InvalidSessionException e) {
             // 获取不到SESSION不抛出异常
-            return null;
+            return CollectionUtil.empty(Object.class);
         }
     }
 

@@ -115,7 +115,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
         res.set("processInstance", processInstance);
         TaskFormData taskFormData = formService.getTaskFormData(taskId);
-        if (taskFormData.getFormProperties() != null && taskFormData.getFormProperties().size() > 0) {
+        if (taskFormData.getFormProperties() != null && !taskFormData.getFormProperties().isEmpty()) {
             List<FormPropertyVO> formPropertyVOList = new ArrayList<>();
             for (FormProperty formProperty : taskFormData.getFormProperties()) {
                 formPropertyVOList.add(new FormPropertyVO(formProperty));
@@ -130,7 +130,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         // 流程发起信息
         StartFormData startTaskFormData = formService.getStartFormData(task.getProcessDefinitionId());
         // 有动态表单
-        if (startTaskFormData.getFormProperties() != null && startTaskFormData.getFormProperties().size() > 0) {
+        if (startTaskFormData.getFormProperties() != null && !startTaskFormData.getFormProperties().isEmpty()) {
             List<FormPropertyVO> formPropertyVOList = new ArrayList<>();
             for (FormProperty formProperty : startTaskFormData.getFormProperties()) {
                 formPropertyVOList.add(new FormPropertyVO(formProperty));

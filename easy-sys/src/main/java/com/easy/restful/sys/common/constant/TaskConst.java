@@ -7,6 +7,10 @@ package com.easy.restful.sys.common.constant;
  * @date 2019-06-19
  */
 public class TaskConst {
+
+    private TaskConst() {
+    }
+
     /**
      * 已发布
      */

@@ -7,6 +7,9 @@ package com.easy.restful.sys.common.constant;
  * @date 2019-03-04
  */
 public class DataTypeConst {
+
+    private DataTypeConst() {}
+
     /**
      * 字符串
      */

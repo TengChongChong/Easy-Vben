@@ -7,6 +7,10 @@ package com.easy.restful.sys.common.constant;
  * @date 2019-03-03
  */
 public class SysConfigConst {
+
+    private SysConfigConst() {
+    }
+
     /**
      * 登录时密码错误尝试次数，超过后会被账号会被锁定
      */
