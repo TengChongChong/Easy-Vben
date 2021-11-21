@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sample.dao.SampleGeneralMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.sample.model.SampleGeneral">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="sex" property="sex" />
+        <result column="age" property="age" />
+        <result column="phone" property="phone" />
+        <result column="status" property="status" />
+        <result column="address" property="address" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+    <select id="select" resultType="com.easy.admin.sample.model.SampleGeneral">
+        select t.id, t.name, t.sex, t.age, t.phone, t.status, t.address
+        from sample_general t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="getById" resultType="com.easy.admin.sample.model.SampleGeneral">
+        select t.id, t.name, t.sex, t.age, t.phone, t.status, t.address, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from sample_general t
+        where t.id = #{id}
+    </select>
+    <select id="exportData" resultType="com.easy.admin.sample.model.SampleGeneral">
+        select t.name, sd_sex.name as sex, t.age, t.phone, sd_status.name as status, t.address
+        from sample_general t
+        left join sys_dict sd_sex on sd_sex.code = t.sex and sd_sex.dict_type = 'sex'
+        left join sys_dict sd_status on sd_status.code = t.status and sd_status.dict_type = 'commonStatus'
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

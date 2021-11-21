@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.cms.dao.CmsArticleColumnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsArticleColumn">
+        <result column="id" property="id" />
+        <result column="article_id" property="articleId" />
+        <result column="column_id" property="columnId" />
+        <result column="order_no" property="orderNo" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+    </resultMap>
+    <delete id="deleteByArticleId">
+        delete from cms_article_column where article_id = #{articleId};
+    </delete>
+    <select id="selectColumnsByArticleId" resultType="java.lang.String">
+        select cac.column_id from cms_article_column cac where cac.article_id = #{articleId}
+    </select>
+
+</mapper>

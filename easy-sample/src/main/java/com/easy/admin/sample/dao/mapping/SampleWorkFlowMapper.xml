@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sample.dao.SampleWorkFlowMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.sample.model.SampleWorkFlow">
+        <result column="id" property="id" />
+        <result column="process_instance_id" property="processInstanceId" />
+        <result column="leave_type" property="leaveType" />
+        <result column="start_date" property="startDate" />
+        <result column="end_date" property="endDate" />
+        <result column="reason" property="reason" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <select id="select" resultType="com.easy.admin.sample.model.SampleWorkFlow">
+        select id, leave_type, start_date, end_date, reason, create_user, create_date, edit_user, edit_date,
+               proc_inst_id_ as process_instance_id,
+               workFlowStatus
+        from sample_work_flow t
+        left join (
+            select business_key_,
+                proc_inst_id_,
+                   if(delete_reason_ is null, IF(end_time_ is null, concat('[', t.name_, ']', if(nickname is null, '未签收', nickname)), '已办结'), '已撤销') as workFlowStatus
+            from(
+                select ahp.proc_inst_id_, ahp.business_key_, ahp.delete_reason_, aht.name_, su.nickname, aht.start_time_, ahp.end_time_, row_number() over (partition by business_key_ order by aht.start_time_ desc) as ranker
+                from act_hi_procinst ahp
+                left join act_hi_taskinst aht on aht.proc_inst_id_ = ahp.proc_inst_id_
+                left join sys_user su on su.id = aht.assignee_
+                order by aht.start_time_ desc
+            ) t where ranker = 1
+        ) business_status on business_status.business_key_ = t.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getById" resultType="com.easy.admin.sample.model.SampleWorkFlow">
+        select id, process_instance_id, leave_type, start_date, end_date, reason, create_user, create_date, edit_user, edit_date, status
+        from sample_work_flow t
+        where t.id = #{id}
+    </select>
+
+</mapper>

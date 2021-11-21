@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysFileMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysFile">
+        <result column="id" property="id" />
+        <result column="p_id" property="pId" />
+        <result column="type" property="type" />
+        <result column="display_name" property="displayName" />
+        <result column="name" property="name" />
+        <result column="path" property="path" />
+        <result column="size" property="size" />
+        <result column="order_no" property="orderNo" />
+        <result column="remarks" property="remarks" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+
+    <select id="select" resultType="com.easy.admin.sys.model.SysFile">
+        select id, p_id, type, display_name, name, path, size, order_no, remarks, status, version, create_user, create_date, edit_user, edit_date
+        from sys_file t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

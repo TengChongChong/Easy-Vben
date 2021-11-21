@@ -132,7 +132,7 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     if (isNotBlank(this.id)) {
       this.edit(this.id)
     }

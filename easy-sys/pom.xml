@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.easy.restful</groupId>
-        <artifactId>Easy-RESTful</artifactId>
+        <groupId>com.easy.admin</groupId>
+        <artifactId>Easy-Admin</artifactId>
         <version>0.1.0</version>
     </parent>
 
@@ -18,15 +18,15 @@
     <dependencies>
         <!-- str:common -->
         <dependency>
-            <groupId>com.easy.restful</groupId>
+            <groupId>com.easy.admin</groupId>
             <artifactId>easy-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.easy.restful</groupId>
+            <groupId>com.easy.admin</groupId>
             <artifactId>easy-mybatis</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.easy.restful</groupId>
+            <groupId>com.easy.admin</groupId>
             <artifactId>easy-redis</artifactId>
         </dependency>
         <!-- end:common -->

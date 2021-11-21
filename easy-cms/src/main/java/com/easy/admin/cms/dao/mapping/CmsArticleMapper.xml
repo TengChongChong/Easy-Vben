@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.cms.dao.CmsArticleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsArticle">
+        <result column="id" property="id" />
+        <result column="site_id" property="siteId" />
+        <result column="title" property="title" />
+        <result column="title_font_family" property="titleFontFamily" />
+        <result column="title_color" property="titleColor" />
+        <result column="title_font_weight" property="titleFontWeight" />
+        <result column="title_font_size" property="titleFontSize" />
+        <result column="subtitle" property="subtitle" />
+        <result column="excerpt" property="excerpt" />
+        <result column="content" property="content" />
+        <result column="keyword" property="keyword" />
+        <result column="description" property="description" />
+        <result column="source" property="source" />
+        <result column="author" property="author" />
+        <result column="release_type" property="releaseType" />
+        <result column="release_date" property="releaseDate" />
+        <result column="offline_date" property="offlineDate" />
+        <result column="view_count" property="viewCount" />
+        <result column="type" property="type" />
+        <result column="url" property="url" />
+        <result column="dept_id" property="deptId" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+    <select id="select" resultType="com.easy.admin.cms.model.CmsArticle">
+        select t.id, t.title, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.release_date, t.offline_date, t.view_count, t.url, t.status, t.edit_user, t.edit_date
+        from cms_article t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="getById" resultType="com.easy.admin.cms.model.CmsArticle">
+        select t.id, t.site_id, t.title, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.subtitle, t.excerpt, t.content, t.keyword, t.description, t.source, t.author, t.release_type, t.release_date, t.offline_date, t.view_count, t.type, t.url, t.dept_id, t.status, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from cms_article t
+        where t.id = #{id}
+    </select>
+</mapper>

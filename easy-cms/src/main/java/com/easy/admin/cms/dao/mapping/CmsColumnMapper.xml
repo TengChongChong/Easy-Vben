@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.cms.dao.CmsColumnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsColumn">
+        <result column="id" property="id" />
+        <result column="p_id" property="pId" />
+        <result column="site_id" property="siteId" />
+        <result column="name" property="name" />
+        <result column="slug" property="slug" />
+        <result column="type" property="type" />
+        <result column="is_release" property="isRelease" />
+        <result column="cover_proportion_width" property="coverProportionWidth" />
+        <result column="cover_proportion_height" property="coverProportionHeight" />
+        <result column="description" property="description" />
+        <result column="remarks" property="remarks" />
+        <result column="order_no" property="orderNo" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+    <select id="selectByPId" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title,
+               (case when (select count(1) from cms_column where p_id = t.id) > 0 then 'false' else 'true' end ) as isLeaf
+        from cms_column t
+        where t.p_id = #{pId} and t.site_id = #{siteId}
+        order by t.order_no
+    </select>
+    <select id="selectInfo" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.id, t.p_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.cover_proportion_width, t.cover_proportion_height,
+               t.description, t.remarks, t.status, cc.name as parentName
+        from cms_column t
+        left join cms_column cc on cc.id = t.p_id
+        where t.id= #{id}
+    </select>
+    <select id="selectOrderInfo" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.id,t.name,t.order_no
+        from cms_column t
+        where t.p_id = #{pId} and t.site_id = #{siteId} order by t.order_no
+        <if test="str != null and length != null">
+            limit #{str},#{length}
+        </if>
+    </select>
+    <select id="selectByTitle" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title
+        from cms_column t
+        where t.name like #{title} and t.site_id = #{siteId} order by t.p_id,t.order_no
+    </select>
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(order_no), 0)
+        from cms_column t
+        where t.p_id = #{pId} and t.site_id = #{siteId}
+    </select>
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title
+        from cms_column t
+        where t.status = #{status} and t.site_id = #{siteId}
+        order by t.order_no
+    </select>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.cms.dao.CmsSiteMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsSite">
+        <result column="id" property="id" />
+        <result column="p_id" property="pId" />
+        <result column="name" property="name" />
+        <result column="keyword" property="keyword" />
+        <result column="description" property="description" />
+        <result column="domain_name" property="domainName" />
+        <result column="deployment_path" property="deploymentPath" />
+        <result column="status" property="status" />
+        <result column="order_no" property="orderNo" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+    <select id="selectByPId" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title,
+               (case when (select count(1) from cms_site where p_id = t.id) > 0 then 'false' else 'true' end ) as isLeaf
+        from cms_site t
+        where t.p_id = #{pId}
+        order by t.order_no
+    </select>
+    <select id="selectInfo" resultType="com.easy.admin.cms.model.CmsSite">
+        select t.id, t.p_id, t.name, t.keyword, t.description, t.domain_name, t.deployment_path, t.status from cms_site t where t.id= #{id}
+    </select>
+    <select id="selectOrderInfo" resultType="com.easy.admin.cms.model.CmsSite">
+        select t.id,t.name,t.order_no
+        from cms_site t
+        where t.p_id = #{pId} order by t.order_no
+        <if test="str != null and length != null">
+            limit #{str},#{length}
+        </if>
+    </select>
+    <select id="selectByTitle" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title
+        from cms_site t
+        where t.name like #{title} order by t.p_id,t.order_no
+    </select>
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(order_no), 0)
+        from cms_site t
+        where t.p_id = #{pId}
+    </select>
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title
+        from cms_site t
+        where t.status = #{status}
+        order by t.order_no
+    </select>
+</mapper>

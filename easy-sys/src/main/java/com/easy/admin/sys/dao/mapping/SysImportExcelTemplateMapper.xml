@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysImportExcelTemplateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysImportExcelTemplate">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="import_table" property="importTable"/>
+        <result column="start_row" property="startRow"/>
+        <result column="callback" property="callback"/>
+        <result column="import_code" property="importCode"/>
+        <result column="permission_code" property="permissionCode"/>
+        <result column="remarks" property="remarks"/>
+        <result column="create_date" property="createDate" />
+        <result column="create_user" property="createUser" />
+        <result column="edit_date" property="editDate" />
+        <result column="edit_user" property="editUser" />
+    </resultMap>
+
+</mapper>

@@ -11,12 +11,12 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.easy.restful</groupId>
-    <artifactId>Easy-RESTful</artifactId>
+    <groupId>com.easy.admin</groupId>
+    <artifactId>Easy-Admin</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0</version>
     <name>${project.artifactId}</name>
-    <url>http://www.easy-restful.com</url>
+    <url>http://www.easy-admin.com</url>
 
     <modules>
         <module>easy-activiti</module>
@@ -27,6 +27,7 @@
         <module>easy-sample</module>
         <module>easy-scheduler</module>
         <module>easy-sys</module>
+        <module>easy-cms</module>
     </modules>
 
     <properties>
@@ -53,48 +54,53 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-activiti</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-mybatis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-redis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-file</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-generator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-sample</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-scheduler</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.easy.restful</groupId>
+                <groupId>com.easy.admin</groupId>
                 <artifactId>easy-sys</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.easy.admin</groupId>
+                <artifactId>easy-cms</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

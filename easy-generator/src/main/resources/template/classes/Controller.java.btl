@@ -14,7 +14,7 @@ import ${config.packagePath}.service.${config.modelName}Service;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth${config.controllerMapping}")
+@RequestMapping("${config.controllerMapping}")
 public class ${config.modelName}Controller {
 
     /**

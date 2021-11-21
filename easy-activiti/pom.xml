@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>Easy-RESTful</artifactId>
-        <groupId>com.easy.restful</groupId>
+        <artifactId>Easy-Admin</artifactId>
+        <groupId>com.easy.admin</groupId>
         <version>0.1.0</version>
     </parent>
 
@@ -21,7 +21,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.easy.restful</groupId>
+            <groupId>com.easy.admin</groupId>
             <artifactId>easy-sys</artifactId>
         </dependency>
 

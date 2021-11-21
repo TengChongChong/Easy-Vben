@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysDictTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysDictType">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <resultMap id="select" type="com.easy.admin.common.core.common.select.Select">
+        <result column="value" property="value"/>
+        <result column="text" property="text"/>
+    </resultMap>
+
+    <select id="selectType" resultType="com.easy.admin.common.core.common.select.Select">
+        select type as value,concat(name, '（', type, '）') as text from sys_dict_type where status = #{status} order by id
+    </select>
+
+    <select id="countDict" resultType="java.lang.Integer">
+        select count(1) from sys_dict t left join sys_dict_type dt on dt.type = t.dict_type
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

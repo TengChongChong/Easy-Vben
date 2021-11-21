@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysImportExcelDataMapper">
+    <insert id="insert">
+        insert into ${table} (id, ${fields})
+        select id, ${tempFields}
+        from sys_import_excel_temporary
+        where user_id = #{userId}
+          and template_id = #{templateId}
+          and verification_status = #{verificationStatusSuccess}
+    </insert>
+
+    <select id="queryString" resultType="java.lang.String">
+        select ${value}
+        from ${table}
+        where ${field} = #{query}
+    </select>
+    <select id="selectVerificationFailData"
+            resultType="com.easy.admin.sys.model.SysImportExcelTemporary">
+        select ${selectFields} temp.verification_results,temp.verification_status
+        from sys_import_excel_temporary temp
+        ${leftJoinTable}
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

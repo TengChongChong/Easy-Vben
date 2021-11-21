@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysRolePermissionsMapper">
+    <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysRolePermissions">
+        <id column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="permissions_id" property="permissionsId"/>
+    </resultMap>
+    <select id="selectPermissionsByRoleId" resultType="com.easy.admin.sys.model.SysPermissions">
+        select * from sys_permissions p
+        left join sys_role_permissions rp on rp.permissions_id = p.id
+        where p.status = #{status} and rp.role_id = #{roleId}
+    </select>
+
+
+</mapper>

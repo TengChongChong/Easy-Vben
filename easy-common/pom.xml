@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.easy.restful</groupId>
-        <artifactId>Easy-RESTful</artifactId>
+        <groupId>com.easy.admin</groupId>
+        <artifactId>Easy-Admin</artifactId>
         <version>0.1.0</version>
     </parent>
 

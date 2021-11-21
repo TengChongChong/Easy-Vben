@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysDeptTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysDeptType">
+        <id column="id" property="id"/>
+        <result column="p_id" property="pId"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="remarks" property="remarks"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="status" property="status"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_date" property="createDate"/>
+        <result column="edit_user" property="editUser"/>
+        <result column="edit_date" property="editDate"/>
+    </resultMap>
+
+    <select id="selectByPId" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title,(case when t.status = 2 then 'disabled' end) as type,
+          (case when (select count(1) from sys_dept_type where p_id = t.id) > 0 then 'false' else 'true' end ) as isLeaf
+        from sys_dept_type t where t.p_id = #{pId} order by t.order_no
+    </select>
+    <select id="selectInfo" resultType="com.easy.admin.sys.model.SysDeptType">
+        select t.id,t.code,t.name,t.status,t.remarks,t.p_id,p.name as p_name
+        from sys_dept_type t
+        left join sys_dept_type p on p.id = t.p_id
+        where t.id= #{id}
+    </select>
+    <select id="selectRoles" resultType="java.lang.String">
+        select role_id from sys_dept_type_role tr where tr.dept_type_id = #{id}
+    </select>
+    <select id="selectOrderInfo" resultType="com.easy.admin.sys.model.SysDeptType">
+        select t.id,t.name,t.order_no from sys_dept_type t where t.p_id = #{pId} order by t.order_no
+        <if test="str != null and length != null">
+            limit #{str},#{length}
+        </if>
+    </select>
+    <select id="selectByTitle" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.p_id,t.name as title,(case when t.status = 2 then 'disabled' end) as type,t.code as data
+        from sys_dept_type t where t.name like #{title} order by t.p_id,t.order_no
+    </select>
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(order_no), 0) from sys_dept_type t where t.p_id = #{pId}
+    </select>
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id,t.name as title,t.p_id,t.code as data from sys_dept_type t where t.status = #{status} order by t.order_no
+    </select>
+    <select id="selectOptionBySameLevel" resultType="com.easy.admin.common.core.common.select.Select">
+        select t.code as value,t.name as text from sys_dept_type t
+        where t.p_id = (select p_id from sys_dept_type where code = #{code})
+    </select>
+    <select id="selectOptionByParentCode" resultType="com.easy.admin.common.core.common.select.Select">
+        select t.code as value,t.name as text from sys_dept_type t
+          left join sys_dept_type pdt on pdt.id = t.p_id
+        where pdt.code = #{parentCode}
+    </select>
+    <select id="selectChildCount" resultType="java.lang.Integer">
+        select count(1) from sys_dept_type sdt where sdt.p_id = (select id from sys_dept_type sdt2 where sdt2.code = #{code})
+    </select>
+
+</mapper>
