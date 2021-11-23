@@ -51,7 +51,7 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
         }
         queryWrapper.eq("t.create_user", ShiroUtil.getCurrentUser().getId());
         page.setDefaultDesc("t.create_date");
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -62,9 +62,9 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
      * @return 详细信息
      */
     @Override
-    public SampleWorkFlow input(String id) {
+    public SampleWorkFlow get(String id) {
         ToolUtil.checkParams(id);
-        return getBaseMapper().getById(id);
+        return baseMapper.getById(id);
     }
 
     /**

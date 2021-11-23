@@ -127,10 +127,10 @@ public class ProcessDefinitionServiceImpl extends ServiceImpl<ProcessDefinitionM
      */
     @Override
     public boolean autoClaimTask(String processInstanceId) {
-        String taskId = getBaseMapper().selectTaskId(processInstanceId);
+        String taskId = baseMapper.selectTaskId(processInstanceId);
         if(StrUtil.isNotBlank(taskId)){
             // 查询可以签收此任务的所有用户列表，去重计数
-            List<String> candidateList = getBaseMapper().selectCandidate(taskId);
+            List<String> candidateList = baseMapper.selectCandidate(taskId);
             if (candidateList.size() == 1) {
                 // 只有一个候选人
                 taskService.claim(taskId, candidateList.get(0));
@@ -224,7 +224,7 @@ public class ProcessDefinitionServiceImpl extends ServiceImpl<ProcessDefinitionM
      * @return true/false
      */
     private boolean checkBusinessKey(String businessKey) {
-        return getBaseMapper().countBusinessKey(businessKey) > 0;
+        return baseMapper.countBusinessKey(businessKey) > 0;
     }
 
 }

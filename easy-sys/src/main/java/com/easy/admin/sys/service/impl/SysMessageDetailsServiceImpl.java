@@ -28,7 +28,7 @@ import java.util.List;
 public class SysMessageDetailsServiceImpl extends ServiceImpl<SysMessageDetailsMapper, SysMessageDetails> implements SysMessageDetailsService {
     @Override
     public List<String> selectReceiverUser(String messageId) {
-        return getBaseMapper().selectReceiverUser(messageId);
+        return baseMapper.selectReceiverUser(messageId);
     }
 
     /**

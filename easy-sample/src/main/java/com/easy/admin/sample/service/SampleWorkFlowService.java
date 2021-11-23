@@ -26,7 +26,7 @@ public interface SampleWorkFlowService {
      * @param id id
      * @return 详细信息
      */
-    SampleWorkFlow input(String id);
+    SampleWorkFlow get(String id);
 
     /**
      * 新增

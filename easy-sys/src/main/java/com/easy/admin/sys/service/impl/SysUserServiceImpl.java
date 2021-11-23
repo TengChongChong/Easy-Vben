@@ -103,7 +103,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             deptId = ShiroUtil.getCurrentUser().getDeptId();
         }
 
-        page.setRecords(getBaseMapper().search(page, "%" + keyword + "%", deptId, UserStatus.ENABLE.getCode(), DeptStatus.ENABLE.getCode(), CommonStatus.ENABLE.getCode()));
+        page.setRecords(baseMapper.search(page, "%" + keyword + "%", deptId, UserStatus.ENABLE.getCode(), DeptStatus.ENABLE.getCode(), CommonStatus.ENABLE.getCode()));
         return page;
     }
 
@@ -114,15 +114,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         queryWrapper.eq("u.status", UserStatus.ENABLE.getCode());
         queryWrapper.eq("sd.status", DeptStatus.ENABLE.getCode());
         queryWrapper.eq("sdt.status", CommonStatus.ENABLE.getCode());
-        return getBaseMapper().selectUsersByIds(queryWrapper);
+        return baseMapper.selectUsersByIds(queryWrapper);
     }
 
     @Override
     public SysUser get(String id) {
         ToolUtil.checkParams(id);
-        SysUser sysUser = getBaseMapper().selectInfo(id);
+        SysUser sysUser = baseMapper.selectInfo(id);
         if (sysUser != null) {
-            sysUser.setRoleIds(getBaseMapper().selectRoles(id));
+            sysUser.setRoleIds(baseMapper.selectRoles(id));
             if (Validator.isEmpty(sysUser.getRoleIds())) {
                 sysUser.setRoleIds(Collections.emptyList());
             }
@@ -165,7 +165,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (object.getId() != null) {
                 queryWrapper.ne("id", object.getId());
             }
-            int count = getBaseMapper().selectCount(queryWrapper);
+            int count = baseMapper.selectCount(queryWrapper);
             if (count > 0) {
                 throw new EasyException(BusinessException.USER_REGISTERED);
             }
@@ -201,7 +201,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         String salt = RandomUtil.randomString(10);
         String password = PasswordUtil.generatingPasswords(SysConst.projectProperties.getDefaultPassword(), salt);
         queryWrapper.in("id", ids.split(CommonConst.SPLIT));
-        return getBaseMapper().resetPassword(password, salt, Convert.toStr((SysConfigUtil.get(SysConfigConst.PASSWORD_SECURITY_LEVEL))), queryWrapper) > 0;
+        return baseMapper.resetPassword(password, salt, Convert.toStr((SysConfigUtil.get(SysConfigConst.PASSWORD_SECURITY_LEVEL))), queryWrapper) > 0;
     }
 
     @Override
@@ -219,7 +219,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             passwordStrength = Convert.toStr((SysConfigUtil.get(SysConfigConst.PASSWORD_SECURITY_LEVEL)));
         }
         queryWrapper.eq("username", username);
-        return getBaseMapper().resetPassword(password, salt, passwordStrength, queryWrapper) > 0;
+        return baseMapper.resetPassword(password, salt, passwordStrength, queryWrapper) > 0;
     }
 
     @Override
@@ -227,7 +227,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         ToolUtil.checkParams(ids);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", ids.split(CommonConst.SPLIT));
-        int count = getBaseMapper().updateUserStatus(UserStatus.DISABLE.getCode(), queryWrapper);
+        int count = baseMapper.updateUserStatus(UserStatus.DISABLE.getCode(), queryWrapper);
         return ToolUtil.checkResult(count > 0);
     }
 
@@ -236,7 +236,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         ToolUtil.checkParams(ids);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", ids.split(CommonConst.SPLIT));
-        int count = getBaseMapper().updateUserStatus(UserStatus.ENABLE.getCode(), queryWrapper);
+        int count = baseMapper.updateUserStatus(UserStatus.ENABLE.getCode(), queryWrapper);
         return ToolUtil.checkResult(count > 0);
     }
 
@@ -245,7 +245,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (Validator.isNotEmpty(username)) {
             QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("username", username);
-            return getBaseMapper().selectOne(queryWrapper);
+            return baseMapper.selectOne(queryWrapper);
         }
         return null;
     }
@@ -256,7 +256,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
             queryWrapper.select("email, phone");
             queryWrapper.eq("username", username);
-            return getBaseMapper().selectOne(queryWrapper);
+            return baseMapper.selectOne(queryWrapper);
         }
         return null;
     }
@@ -266,7 +266,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = new SysUser();
         sysUser.setId(userId);
         sysUser.setLastLogin(new Date());
-        return getBaseMapper().updateById(sysUser) > 0;
+        return baseMapper.updateById(sysUser) > 0;
     }
 
     @Override
@@ -292,7 +292,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public int countUser(String deptIds) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("dept_id", deptIds.split(CommonConst.SPLIT));
-        return getBaseMapper().selectCount(queryWrapper);
+        return baseMapper.selectCount(queryWrapper);
     }
 
     @Override
@@ -323,7 +323,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser getUser(String id) {
         ToolUtil.checkParams(id);
-        SysUser sysUser = getBaseMapper().selectInfo(id);
+        SysUser sysUser = baseMapper.selectInfo(id);
         if (sysUser != null) {
             sysUser.setDept(sysDeptService.get(sysUser.getDeptId()));
         }
@@ -366,13 +366,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         queryWrapper.eq("su.status", UserStatus.ENABLE.getCode());
 
-        page.setRecords(getBaseMapper().selectUser(page, queryWrapper));
+        page.setRecords(baseMapper.selectUser(page, queryWrapper));
         return page;
     }
 
     @Override
     public SysUser selectPasswordAndSalt(String id) {
-        return getBaseMapper().selectPasswordAndSalt(id);
+        return baseMapper.selectPasswordAndSalt(id);
     }
 
     @Override

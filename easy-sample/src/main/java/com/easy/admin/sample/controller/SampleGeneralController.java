@@ -1,19 +1,14 @@
 package com.easy.admin.sample.controller;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import com.easy.admin.core.annotation.ResponseResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import com.easy.admin.common.core.common.pagination.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import javax.validation.Valid;
+import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.sample.model.SampleGeneral;
 import com.easy.admin.sample.service.SampleGeneralService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * 代码生成示例
@@ -52,8 +47,8 @@ public class SampleGeneralController {
      */
     @GetMapping("{id}")
     @RequiresPermissions("sample:general:select")
-    public SampleGeneral input(@PathVariable("id") String id) {
-        return service.input(id);
+    public SampleGeneral get(@PathVariable("id") String id) {
+        return service.get(id);
     }
 
     /**

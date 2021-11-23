@@ -27,7 +27,7 @@ public interface ModelService {
      * @param id 数据id
      * @return 详细信息
      */
-    ModelEntity input(String id);
+    ModelEntity get(String id);
 
     /**
      * 获取模型信息

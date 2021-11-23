@@ -25,12 +25,12 @@ public class HistoricServiceImpl extends ServiceImpl<HistoricMapper, Historic> i
         queryWrapper.eq("aha.proc_inst_id_", processInstanceId);
         queryWrapper.orderByAsc("aha.start_time_");
 
-        List<Historic> historicList = getBaseMapper().select(queryWrapper);
+        List<Historic> historicList = baseMapper.select(queryWrapper);
         return historicList;
     }
 
     @Override
     public Task selectTask(String businessKey) {
-        return getBaseMapper().selectTask(businessKey);
+        return baseMapper.selectTask(businessKey);
     }
 }

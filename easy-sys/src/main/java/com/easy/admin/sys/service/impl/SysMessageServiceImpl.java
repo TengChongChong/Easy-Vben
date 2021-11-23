@@ -47,7 +47,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
         if (object != null && Validator.isNotEmpty(object.getStatus())) {
             queryWrapper.eq("m.status", object.getStatus());
         }
-        page.setRecords(getBaseMapper().selectSend(page, queryWrapper));
+        page.setRecords(baseMapper.selectSend(page, queryWrapper));
         return page;
     }
 
@@ -73,7 +73,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
             queryWrapper.ne("d.status", MessageConst.RECEIVE_STATUS_DELETED);
         }
         page.setDefaultDesc("m.send_date");
-        page.setRecords(getBaseMapper().selectReceive(page, queryWrapper));
+        page.setRecords(baseMapper.selectReceive(page, queryWrapper));
         return page;
     }
 
@@ -103,7 +103,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
 
     @Override
     public SysMessage info(String id) {
-        return getBaseMapper().selectInfoById(id);
+        return baseMapper.selectInfoById(id);
     }
 
     /**
@@ -189,6 +189,6 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
         queryWrapper.eq("m.status", MessageConst.STATUS_HAS_BEEN_SENT);
         // 未读
         queryWrapper.eq("d.status", MessageConst.RECEIVE_STATUS_UNREAD);
-        return getBaseMapper().selectUnreadCount(queryWrapper);
+        return baseMapper.selectUnreadCount(queryWrapper);
     }
 }

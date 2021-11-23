@@ -59,26 +59,26 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     @Override
     public List<String> selectPermissionsByUserId(String userId) {
-        return getBaseMapper().selectPermissionsByUserId(userId, PermissionsStatus.ENABLE.getCode());
+        return baseMapper.selectPermissionsByUserId(userId, PermissionsStatus.ENABLE.getCode());
     }
 
     @Override
     public List<SysPermissions> selectMenusByUserId(String userId) {
-        return getBaseMapper().selectMenusByUserId(userId, PermissionsStatus.ENABLE.getCode(), PermissionsType.MENU.getCode());
+        return baseMapper.selectMenusByUserId(userId, PermissionsStatus.ENABLE.getCode(), PermissionsType.MENU.getCode());
     }
 
 
     @Override
     public List<String> selectRoleByUserId(String userId) {
-        return getBaseMapper().selectRoleByUserId(userId, RoleStatus.ENABLE.getCode());
+        return baseMapper.selectRoleByUserId(userId, RoleStatus.ENABLE.getCode());
     }
 
     @Override
     public List<String> selectRoleIdByUserId(String userId) {
-        return getBaseMapper().selectRoleIdByUserId(userId, RoleStatus.ENABLE.getCode());
+        return baseMapper.selectRoleIdByUserId(userId, RoleStatus.ENABLE.getCode());
     }
     @Override
     public List<String> selectRoleNameByUserId(String userId) {
-        return getBaseMapper().selectRoleNameByUserId(userId, RoleStatus.ENABLE.getCode());
+        return baseMapper.selectRoleNameByUserId(userId, RoleStatus.ENABLE.getCode());
     }
 }

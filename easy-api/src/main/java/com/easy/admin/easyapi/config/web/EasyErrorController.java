@@ -8,10 +8,8 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -36,21 +34,5 @@ public class EasyErrorController extends BasicErrorController {
         // 响应数据
         Map<String, Object> map = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         return new ResponseEntity(Response.failError("00" + map.get("status"),  map.get("error") + " - " + map.get("path")), status);
-    }
-
-    /**
-     * 自定义页面响应
-     */
-    @Override
-    public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
-        HttpStatus status = getStatus(request);
-        response.setStatus(status.value());
-        Map<String, Object> model = getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE));
-        ModelAndView modelAndView = new ModelAndView("/global/" + status.value());
-        modelAndView.addAllObjects(model);
-        // 当前模式是否为开发模式
-        modelAndView.addObject("isDev", true);
-        // 记录异常
-        return modelAndView;
     }
 }

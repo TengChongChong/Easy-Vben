@@ -47,8 +47,8 @@ public class ModelController {
     @GetMapping("{id}")
     @ResponseResult
     @RequiresPermissions("activiti:model:select")
-    public ModelEntity input(@PathVariable("id") String id) {
-        return service.input(id);
+    public ModelEntity get(@PathVariable("id") String id) {
+        return service.get(id);
     }
 
     /**

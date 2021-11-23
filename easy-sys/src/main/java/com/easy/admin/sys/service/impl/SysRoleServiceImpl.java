@@ -55,7 +55,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             trees = new ArrayList<>();
             // 根节点
             Tree tree = TreeUtil.getBaseNode();
-            List<Tree> treeList = getBaseMapper().selectByPId(TreeUtil.BASE_ID);
+            List<Tree> treeList = baseMapper.selectByPId(TreeUtil.BASE_ID);
             if (treeList.size() > 0) {
                 tree.setIsLeaf(false);
                 trees.addAll(treeList);
@@ -64,14 +64,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             }
             trees.add(tree);
         } else {
-            trees = getBaseMapper().selectByPId(pId);
+            trees = baseMapper.selectByPId(pId);
         }
         return trees;
     }
 
     @Override
     public List<Tree> selectAll() {
-        List<Tree> trees = getBaseMapper().selectAll(CommonStatus.ENABLE.getCode());
+        List<Tree> trees = baseMapper.selectAll(CommonStatus.ENABLE.getCode());
         Tree tree = TreeUtil.getBaseNode();
         trees.add(tree);
         return trees;
@@ -86,12 +86,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             sysRole.setId(TreeUtil.BASE_ID);
             sysRole.setName(SysConfigUtil.getProjectName());
         } else {
-            sysRole = getBaseMapper().selectInfo(id);
+            sysRole = baseMapper.selectInfo(id);
             if (sysRole != null) {
                 if (sysRole.getpId().equals(TreeUtil.BASE_ID)) {
                     sysRole.setpName(SysConfigUtil.getProjectName());
                 }
-                sysRole.setPermissions(getBaseMapper().selectPermissions(id));
+                sysRole.setPermissions(baseMapper.selectPermissions(id));
             }
         }
         return sysRole;
@@ -106,7 +106,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             if (TreeUtil.BASE_ID.equals(pId)) {
                 sysRole.setpName(SysConfigUtil.getProjectName());
             } else {
-                SysRole parentSysRole = getBaseMapper().selectInfo(pId);
+                SysRole parentSysRole = baseMapper.selectInfo(pId);
                 if (parentSysRole != null) {
                     sysRole.setpName(parentSysRole.getName());
                 } else {
@@ -126,7 +126,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 检查是否有子节点
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("p_id", id);
-        int count = getBaseMapper().selectCount(queryWrapper);
+        int count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
             throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }
@@ -183,7 +183,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public SysRole saveData(SysRole object) {
         ToolUtil.checkParams(object);
         if (object.getOrderNo() == null) {
-            object.setOrderNo(getBaseMapper().getMaxOrderNo(object.getpId()) + 1);
+            object.setOrderNo(baseMapper.getMaxOrderNo(object.getpId()) + 1);
         }
         boolean isSuccess = saveOrUpdate(object);
         if (isSuccess) {
@@ -206,7 +206,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 int str = Math.min(position, oldPosition);
                 // 拖动影响顺序节点数量
                 int length = Math.abs(position - oldPosition) + 1;
-                List<SysRole> oldSysRole = getBaseMapper().selectOrderInfo(parent, str, length);
+                List<SysRole> oldSysRole = baseMapper.selectOrderInfo(parent, str, length);
                 List<SysRole> newSysRole = new ArrayList<>();
                 // 是否需要偏移
                 boolean needDeviation = false;
@@ -233,7 +233,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 }
                 isSuccess = updateBatchById(newSysRole);
             } else {
-                List<SysRole> oldSysRole = getBaseMapper().selectOrderInfo(parent, null, null);
+                List<SysRole> oldSysRole = baseMapper.selectOrderInfo(parent, null, null);
                 List<SysRole> newSysRole = new ArrayList<>();
                 // 是否需要偏移
                 boolean needDeviation = false;
@@ -268,7 +268,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public List<Tree> selectByTitle(String title) {
         if (Validator.isNotEmpty(title)) {
-            return getBaseMapper().selectByTitle("%" + title + "%");
+            return baseMapper.selectByTitle("%" + title + "%");
         } else {
             throw new EasyException("请输入关键字后重试");
         }
@@ -276,12 +276,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public List<String> selectRoleCodeByUserId(String userId) {
-        return getBaseMapper().selectRoleCodeByUserId(userId);
+        return baseMapper.selectRoleCodeByUserId(userId);
     }
 
     @Override
     public List<String> selectAllRoleCodes() {
-        return getBaseMapper().selectAllRoleCodes();
+        return baseMapper.selectAllRoleCodes();
     }
 
     @Override
@@ -300,6 +300,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 queryWrapper.eq("t.id", sysRole.getId());
             }
         }
-        return getBaseMapper().selectRole(queryWrapper);
+        return baseMapper.selectRole(queryWrapper);
     }
 }

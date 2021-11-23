@@ -34,7 +34,7 @@ public interface SchedulerJobService {
      * @param id id
      * @return 详细信息
      */
-    SchedulerJob input(String id);
+    SchedulerJob get(String id);
 
     /**
      * 新增

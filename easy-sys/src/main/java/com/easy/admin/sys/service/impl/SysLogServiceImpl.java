@@ -62,7 +62,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         }
         // 设置默认排序
         page.setDefaultDesc("operation_date");
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -75,7 +75,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     @Override
     public SysLog get(String id) {
         ToolUtil.checkParams(id);
-        return getBaseMapper().getById(id);
+        return baseMapper.getById(id);
     }
 
     /**

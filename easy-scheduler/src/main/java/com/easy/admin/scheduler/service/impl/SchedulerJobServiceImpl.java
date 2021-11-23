@@ -86,7 +86,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     public List<SchedulerJob> selectAll() {
         QueryWrapper<SchedulerJob> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("status", SchedulerStatus.ENABLE.getCode());
-        return getBaseMapper().selectList(queryWrapper);
+        return baseMapper.selectList(queryWrapper);
     }
 
     /**
@@ -96,7 +96,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
      * @return 详细信息
      */
     @Override
-    public SchedulerJob input(String id) {
+    public SchedulerJob get(String id) {
         ToolUtil.checkParams(id);
         return getById(id);
     }
@@ -128,7 +128,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
         List<String> idList = Arrays.asList(ids.split(","));
         QueryWrapper<SchedulerJob> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", idList);
-        List<SchedulerJob> schedulerJobs = getBaseMapper().selectSchedulerJobCodes(queryWrapper);
+        List<SchedulerJob> schedulerJobs = baseMapper.selectSchedulerJobCodes(queryWrapper);
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
             // 删除成功后删除任务
@@ -169,7 +169,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
             object.setCreateDate(new Date());
             object.setCreateUser(currentUser.getId());
         } else {
-            jobJobCode = getBaseMapper().getJobCodeById(object.getId());
+            jobJobCode = baseMapper.getJobCodeById(object.getId());
 
         }
         boolean isSuccess = saveOrUpdate(object);

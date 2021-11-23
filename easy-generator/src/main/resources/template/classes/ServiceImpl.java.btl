@@ -47,7 +47,7 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
             <% } %>
             <% } %>
         }
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -58,9 +58,9 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
      * @return ${config.modelName}
      */
     @Override
-    public ${config.modelName} input(String id) {
+    public ${config.modelName} get(String id) {
         ToolUtil.checkParams(id);
-        return getBaseMapper().getById(id);
+        return baseMapper.getById(id);
     }
     <% } %>
     <% if(config.isGeneratorMethodsAdd){ %>
@@ -176,7 +176,7 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
             <% } %>
             <% } %>
         }
-        List<${config.modelName}> list = getBaseMapper().exportData(queryWrapper);
+        List<${config.modelName}> list = baseMapper.exportData(queryWrapper);
         return ExcelUtil.writeAndGetDownloadId("${config.businessName}", "${config.businessName}", list, ${config.modelName}.class);
     }
     <% } %>

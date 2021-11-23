@@ -74,7 +74,7 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
         }
         // 根据流程实例ID排序
         page.setDefaultDesc("ard.deploy_time_");
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -216,6 +216,6 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
 
     @Override
     public List<Select> selectProcessForSelect() {
-        return getBaseMapper().selectProcessForSelect();
+        return baseMapper.selectProcessForSelect();
     }
 }

@@ -65,7 +65,7 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
             }
         }
         page.setDefaultDesc("trigger_time");
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -78,7 +78,7 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
     @Override
     public SysException get(String id) {
         ToolUtil.checkParams(id);
-        return getBaseMapper().getById(id);
+        return baseMapper.getById(id);
     }
 
     /**

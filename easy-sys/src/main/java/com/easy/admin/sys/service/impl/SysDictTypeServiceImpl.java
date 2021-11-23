@@ -47,7 +47,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
     public List<SysDictType> selectAll() {
         QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("status", CommonStatus.ENABLE.getCode());
-        return getBaseMapper().selectList(queryWrapper);
+        return baseMapper.selectList(queryWrapper);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -57,7 +57,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("dt.id", idList);
-        if (getBaseMapper().countDict(queryWrapper) > 0) {
+        if (baseMapper.countDict(queryWrapper) > 0) {
             throw new EasyException("所选字典类型中包含字典，请删除字典后重试");
         }
         return removeByIds(idList);
@@ -78,7 +78,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
         if (Validator.isNotEmpty(object.getId())) {
             queryWrapper.ne("id", object.getId());
         }
-        int count = getBaseMapper().selectCount(queryWrapper);
+        int count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
             throw new EasyException("字典类型代码 " + object.getType() + " 已存在");
         }

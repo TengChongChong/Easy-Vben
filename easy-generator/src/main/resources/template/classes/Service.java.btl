@@ -27,7 +27,7 @@ public interface ${config.modelName}Service {
      * @param id id
      * @return ${config.modelName}
      */
-    ${config.modelName} input(String id);
+    ${config.modelName} get(String id);
     <% } %>
     <% if(config.isGeneratorMethodsAdd){ %>
 

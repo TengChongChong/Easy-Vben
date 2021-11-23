@@ -98,7 +98,7 @@ public class SysMailVerifiesServiceImpl extends ServiceImpl<SysMailVerifiesMappe
 
     @Override
     public String getMailByUserId(String userId) {
-        return getBaseMapper().getMailByUserId(userId, MailConst.MAIL_BINDING_MAIL);
+        return baseMapper.getMailByUserId(userId, MailConst.MAIL_BINDING_MAIL);
     }
 
     @Override

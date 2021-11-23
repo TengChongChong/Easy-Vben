@@ -48,9 +48,19 @@ public interface SysFileService {
     /**
      * 保存
      *
-     * @param pId  数据id
-     * @param type 类型
-     * @param path 路径
+     * @param pId         数据id
+     * @param type        类型
+     * @param path        路径
+     * @param displayName 显示名称
+     * @return SysFile
+     */
+    SysFile saveData(String pId, String type, String path, String displayName);
+    /**
+     * 保存
+     *
+     * @param pId         数据id
+     * @param type        类型
+     * @param path        路径
      * @return SysFile
      */
     SysFile saveData(String pId, String type, String path);

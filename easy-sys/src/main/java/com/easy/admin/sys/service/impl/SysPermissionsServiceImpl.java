@@ -48,7 +48,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
             trees = new ArrayList<>();
             // 根节点
             Tree tree = TreeUtil.getBaseNode();
-            List<Tree> treeList = getBaseMapper().selectByPId(TreeUtil.BASE_ID);
+            List<Tree> treeList = baseMapper.selectByPId(TreeUtil.BASE_ID);
             if (treeList.size() > 0) {
                 tree.setIsLeaf(false);
                 trees.addAll(treeList);
@@ -57,18 +57,18 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
             }
             trees.add(tree);
         } else {
-            trees = getBaseMapper().selectByPId(pId);
+            trees = baseMapper.selectByPId(pId);
         }
         return trees;
     }
 
     @Override
     public List<Tree> selectAll() {
-        List<Tree> trees = getBaseMapper().selectAll(PermissionsStatus.ENABLE.getCode());
+        List<Tree> trees = baseMapper.selectAll(PermissionsStatus.ENABLE.getCode());
         // 根节点
         Tree tree = TreeUtil.getBaseNode();
         trees.add(tree);
-        trees.addAll(getBaseMapper().selectAll(TreeUtil.BASE_ID));
+        trees.addAll(baseMapper.selectAll(TreeUtil.BASE_ID));
         return trees;
     }
 
@@ -81,7 +81,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
             sysPermissions.setId(TreeUtil.BASE_ID);
             sysPermissions.setName(SysConfigUtil.getProjectName());
         } else {
-            sysPermissions = getBaseMapper().selectInfo(id);
+            sysPermissions = baseMapper.selectInfo(id);
             if (sysPermissions != null && sysPermissions.getpId().equals(TreeUtil.BASE_ID)) {
                 sysPermissions.setpName(SysConfigUtil.getProjectName());
             }
@@ -101,7 +101,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
             if (TreeUtil.BASE_ID.equals(pId)) {
                 sysPermissions.setpName(SysConfigUtil.getProjectName());
             } else {
-                SysPermissions parentSysPermissions = getBaseMapper().selectInfo(pId);
+                SysPermissions parentSysPermissions = baseMapper.selectInfo(pId);
                 if (parentSysPermissions != null) {
                     sysPermissions.setpName(parentSysPermissions.getName());
                 } else {
@@ -174,12 +174,12 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
         ToolUtil.checkParams(nodeIds);
         ToolUtil.checkParams(targetId);
         // 查询复制的节点
-        List<SysPermissions> copyPermissions = getBaseMapper().selectBatchIds(Arrays.asList(nodeIds.split(CommonConst.SPLIT)));
+        List<SysPermissions> copyPermissions = baseMapper.selectBatchIds(Arrays.asList(nodeIds.split(CommonConst.SPLIT)));
         if (copyPermissions != null && !copyPermissions.isEmpty()) {
             SysPermissions parentPermission = getById(targetId);
             // 目标节点存在
             if (parentPermission != null) {
-                int maxOrderNo = getBaseMapper().getMaxOrderNo(targetId);
+                int maxOrderNo = baseMapper.getMaxOrderNo(targetId);
                 List<SysPermissions> sysPermissionsList = new ArrayList<>();
                 SysPermissions sysPermissions;
                 for (SysPermissions permission : copyPermissions) {
@@ -227,7 +227,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
         ToolUtil.checkParams(object);
 
         if (StrUtil.isBlank(object.getId()) && object.getOrderNo() == null) {
-            object.setOrderNo(getBaseMapper().getMaxOrderNo(object.getpId()) + 1);
+            object.setOrderNo(baseMapper.getMaxOrderNo(object.getpId()) + 1);
         }
 
         return (SysPermissions) ToolUtil.checkResult(saveOrUpdate(object), object);
@@ -245,7 +245,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
                 int str = Math.min(position, oldPosition);
                 // 拖动影响顺序节点数量
                 int length = Math.abs(position - oldPosition) + 1;
-                List<SysPermissions> oldSysPermissions = getBaseMapper().selectOrderInfo(parent, str, length);
+                List<SysPermissions> oldSysPermissions = baseMapper.selectOrderInfo(parent, str, length);
                 List<SysPermissions> newSysPermissions = new ArrayList<>();
                 // 是否需要偏移
                 boolean needDeviation = false;
@@ -272,7 +272,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
                 }
                 isSuccess = updateBatchById(newSysPermissions);
             } else {
-                List<SysPermissions> oldSysPermissions = getBaseMapper().selectOrderInfo(parent, null, null);
+                List<SysPermissions> oldSysPermissions = baseMapper.selectOrderInfo(parent, null, null);
                 List<SysPermissions> newSysPermissions = new ArrayList<>();
                 // 是否需要偏移
                 boolean needDeviation = false;
@@ -307,7 +307,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
     @Override
     public List<Tree> selectByTitle(String title) {
         if (Validator.isNotEmpty(title)) {
-            return getBaseMapper().selectByTitle("%" + title + "%");
+            return baseMapper.selectByTitle("%" + title + "%");
         } else {
             throw new EasyException("请输入关键字后重试");
         }
@@ -319,7 +319,7 @@ public class SysPermissionsServiceImpl extends ServiceImpl<SysPermissionsMapper,
             QueryWrapper<SysPermissions> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("name", name);
             queryWrapper.eq("type", PermissionsType.MENU.getCode());
-            int count = getBaseMapper().selectCount(queryWrapper);
+            int count = baseMapper.selectCount(queryWrapper);
             return count > 0;
         } else {
             throw new EasyException("[checkMenuIsHaving(String name)]菜单名称不能为空");

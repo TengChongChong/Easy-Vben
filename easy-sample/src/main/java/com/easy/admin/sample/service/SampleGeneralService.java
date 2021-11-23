@@ -24,7 +24,7 @@ public interface SampleGeneralService {
      * @param id id
      * @return SampleGeneral
      */
-    SampleGeneral input(String id);
+    SampleGeneral get(String id);
 
     /**
      * 新增

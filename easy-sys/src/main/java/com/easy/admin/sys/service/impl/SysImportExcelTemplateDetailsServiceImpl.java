@@ -41,7 +41,7 @@ public class SysImportExcelTemplateDetailsServiceImpl extends ServiceImpl<SysImp
     @Override
     public List<Column> selectTableHeadByTemplateCode(String templateId) {
         ToolUtil.checkParams(templateId);
-        List<Column> columns = getBaseMapper().selectTableHeadByTemplateId(templateId);
+        List<Column> columns = baseMapper.selectTableHeadByTemplateId(templateId);
         int columnsLength = columns.size();
         while (columnsLength-- > 0) {
             columns.get(columnsLength).setField("field" + (columnsLength + 1));

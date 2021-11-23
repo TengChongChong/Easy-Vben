@@ -26,7 +26,7 @@ public class HistoryTaskInstanceServiceImpl extends ServiceImpl<HistoryTaskInsta
         QueryWrapper<HistoryTaskInstance> queryWrapper = getQueryWrapper(task);
         queryWrapper.eq("arv_applyUserId.text_", currentUser.getId());
         page.setDefaultDesc("start_time_");
-        page.setRecords(getBaseMapper().select(page, queryWrapper, "asc"));
+        page.setRecords(baseMapper.select(page, queryWrapper, "asc"));
         return page;
     }
 
@@ -36,7 +36,7 @@ public class HistoryTaskInstanceServiceImpl extends ServiceImpl<HistoryTaskInsta
         QueryWrapper<HistoryTaskInstance> queryWrapper = getQueryWrapper(task);
         queryWrapper.eq("aht.assignee_", currentUser.getId());
         page.setDefaultDesc("start_time_");
-        page.setRecords(getBaseMapper().select(page, queryWrapper, "desc"));
+        page.setRecords(baseMapper.select(page, queryWrapper, "desc"));
         return page;
     }
 
@@ -44,7 +44,7 @@ public class HistoryTaskInstanceServiceImpl extends ServiceImpl<HistoryTaskInsta
     public Page<HistoryTaskInstance> selectAll(HistoryTaskInstance task, Page<HistoryTaskInstance> page) {
         QueryWrapper<HistoryTaskInstance> queryWrapper = getQueryWrapper(task);
         page.setDefaultDesc("start_time_");
-        page.setRecords(getBaseMapper().select(page, queryWrapper, "desc"));
+        page.setRecords(baseMapper.select(page, queryWrapper, "desc"));
         return page;
     }
 

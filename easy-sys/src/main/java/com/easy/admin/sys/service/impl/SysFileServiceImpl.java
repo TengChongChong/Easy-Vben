@@ -1,5 +1,6 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.exception.EasyException;
@@ -25,8 +26,12 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     @Override
     public List<SysFile> select(String pId, String type) {
         QueryWrapper<SysFile> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("p_id", pId).eq("type", type).orderByAsc("order_no");
-        return getBaseMapper().select(queryWrapper);
+        queryWrapper.eq("p_id", pId);
+        if (StrUtil.isNotBlank(type)) {
+            queryWrapper.eq("type", type);
+        }
+        queryWrapper.orderByAsc("order_no");
+        return baseMapper.select(queryWrapper);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -83,11 +88,17 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     }
 
     @Override
-    public SysFile saveData(String pId, String type, String path) {
+    public SysFile saveData(String pId, String type, String path, String displayName) {
         SysFile sysFile = new SysFile();
         sysFile.setpId(pId);
         sysFile.setType(type);
         sysFile.setPath(path);
+        sysFile.setDisplayName(displayName);
         return saveData(sysFile);
+    }
+
+    @Override
+    public SysFile saveData(String pId, String type, String path) {
+        return saveData(pId, type, path, null);
     }
 }

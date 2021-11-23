@@ -49,8 +49,8 @@ public class SampleWorkFlowController {
      */
     @GetMapping("{id}")
     @RequiresPermissions("sample:work:flow:select")
-    public SampleWorkFlow input(Model model, @PathVariable("id") String id) {
-        return service.input(id);
+    public SampleWorkFlow get(Model model, @PathVariable("id") String id) {
+        return service.get(id);
     }
 
     /**

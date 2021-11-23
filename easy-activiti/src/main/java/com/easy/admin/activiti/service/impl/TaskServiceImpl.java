@@ -96,7 +96,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         // 待签、待办中只查询激活流程实例数据，已挂起的不查询
         queryWrapper.eq("arp.suspension_state_", SuspensionStatus.ACTIVATION.getCode());
         page.setDefaultDesc("art.id_");
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -152,7 +152,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     @Override
     public void completeTask(String taskId, JSONObject params) {
         // 流程定义ID
-        Task task = getBaseMapper().selectProcessDefinitionId(taskId, SuspensionStatus.ACTIVATION.getCode());
+        Task task = baseMapper.selectProcessDefinitionId(taskId, SuspensionStatus.ACTIVATION.getCode());
         if (task == null) {
             throw new EasyException("任务不存在，请检查后重试");
         }
@@ -173,7 +173,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     public void revoke(String processInstanceId, String deleteReason) {
         // 检查是否可以撤销
         Subject subject = SecurityUtils.getSubject();
-        Task task = getBaseMapper().selectTask(processInstanceId);
+        Task task = baseMapper.selectTask(processInstanceId);
         if(task == null){
             throw new EasyException("撤销失败，流程未发起或已办结");
         }

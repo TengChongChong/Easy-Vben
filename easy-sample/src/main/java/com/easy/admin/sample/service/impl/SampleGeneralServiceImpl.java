@@ -1,19 +1,20 @@
 package com.easy.admin.sample.service.impl;
 
+import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.util.ToolUtil;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.Arrays;
-import java.util.List;
 import com.easy.admin.common.core.common.pagination.Page;
-import cn.hutool.core.lang.Validator;
-import com.easy.admin.sys.service.ImportService;
-import com.easy.admin.util.office.ExcelUtil;
+import com.easy.admin.sample.dao.SampleGeneralMapper;
 import com.easy.admin.sample.model.SampleGeneral;
 import com.easy.admin.sample.service.SampleGeneralService;
-import com.easy.admin.sample.dao.SampleGeneralMapper;
+import com.easy.admin.sys.service.ImportService;
+import com.easy.admin.util.ToolUtil;
+import com.easy.admin.util.office.ExcelUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 代码生成示例
@@ -60,7 +61,7 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
                 queryWrapper.eq("t.address", object.getAddress());
             }
         }
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -71,9 +72,9 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
      * @return SampleGeneral
      */
     @Override
-    public SampleGeneral input(String id) {
+    public SampleGeneral get(String id) {
         ToolUtil.checkParams(id);
-        return getBaseMapper().getById(id);
+        return baseMapper.getById(id);
     }
 
     /**
@@ -185,7 +186,7 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
                 queryWrapper.eq("t.address", object.getAddress());
             }
         }
-        List<SampleGeneral> list = getBaseMapper().exportData(queryWrapper);
+        List<SampleGeneral> list = baseMapper.exportData(queryWrapper);
         return ExcelUtil.writeAndGetDownloadId("代码生成示例", "代码生成示例", list, SampleGeneral.class);
     }
 }

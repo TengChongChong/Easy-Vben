@@ -151,7 +151,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
     @Override
     public SysImportSummary selectImportSummary(String templateId) {
         SysUser sysUser = ShiroUtil.getCurrentUser();
-        List<SysImportExcelTemporary> temporaries = getBaseMapper().selectImportSummary(templateId, sysUser.getId());
+        List<SysImportExcelTemporary> temporaries = baseMapper.selectImportSummary(templateId, sysUser.getId());
         SysImportSummary summary = new SysImportSummary();
         if (temporaries != null && !temporaries.isEmpty()) {
             for (SysImportExcelTemporary temporary : temporaries) {
@@ -201,7 +201,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
                 if (only) {
                     // 唯一校验, 这里只检查临时表中是否唯一,在正式表中是否唯一请在导入前回调中检查
                     // 因为此处校验无意义,正式表中数据可能会发生变动导致校验过时
-                    int count = getBaseMapper().count("field" + (i + 1), replaceValue, object.getId());
+                    int count = baseMapper.count("field" + (i + 1), replaceValue, object.getId());
                     if (count > 0) {
                         throw new EasyException("数据中已存在[" + configs.get(i).getTitle() + "=" + value + "]的数据，请勿重复导入");
                     }
@@ -252,27 +252,27 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
             // 如果设置了替换信息, 先判断value是否已经是替换后的值,如果不是在替换
             if (ImportConst.SYS_DICT.equals(config.getReplaceTable())) {
                 // 字典表中有字典类型 单独处理
-                replaceValue = getBaseMapper().getDictReplaceTableFieldValue(
+                replaceValue = baseMapper.getDictReplaceTableFieldValue(
                         config.getReplaceTable(),
                         config.getReplaceTableFieldValue(),
                         config.getReplaceTableFieldValue(),
                         value, config.getReplaceTableDictType());
                 if (StrUtil.isBlank(replaceValue)) {
                     // 字典表中有字典类型 单独处理
-                    replaceValue = getBaseMapper().getDictReplaceTableFieldValue(
+                    replaceValue = baseMapper.getDictReplaceTableFieldValue(
                             config.getReplaceTable(),
                             config.getReplaceTableFieldName(),
                             config.getReplaceTableFieldValue(),
                             value, config.getReplaceTableDictType());
                 }
             } else {
-                replaceValue = getBaseMapper().getReplaceTableFieldValue(
+                replaceValue = baseMapper.getReplaceTableFieldValue(
                         config.getReplaceTable(),
                         config.getReplaceTableFieldValue(),
                         config.getReplaceTableFieldValue(),
                         value);
                 if (StrUtil.isBlank(replaceValue)) {
-                    replaceValue = getBaseMapper().getReplaceTableFieldValue(
+                    replaceValue = baseMapper.getReplaceTableFieldValue(
                             config.getReplaceTable(),
                             config.getReplaceTableFieldName(),
                             config.getReplaceTableFieldValue(),

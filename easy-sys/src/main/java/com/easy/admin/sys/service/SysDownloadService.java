@@ -20,7 +20,7 @@ public interface SysDownloadService {
      * @param id id
      * @return 详细信息
      */
-    SysDownload input(String id);
+    SysDownload get(String id);
 
     /**
      * 保存
@@ -60,10 +60,23 @@ public interface SysDownloadService {
     /**
      * 下载
      *
-     * @param id 文件id
+     * @param id      文件id
      * @param request request
      * @return ResponseEntity<FileSystemResource>
      * @throws UnsupportedEncodingException ex
      */
     ResponseEntity<FileSystemResource> download(String id, HttpServletRequest request) throws UnsupportedEncodingException;
+
+
+    /**
+     * 下载SysFile数据中文件
+     *
+     * @param pId         数据id
+     * @param type        类型
+     * @param displayName 显示名称
+     * @return ResponseEntity
+     */
+    ResponseEntity<FileSystemResource> downloadSysFileById(String pId, String type, String displayName, HttpServletRequest request) throws UnsupportedEncodingException;
+
+
 }

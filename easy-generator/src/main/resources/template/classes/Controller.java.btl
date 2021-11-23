@@ -48,8 +48,8 @@ public class ${config.modelName}Controller {
     <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
     @RequiresPermissions("${config.permissionsCode}:select")
     <% } %>
-    public ${config.modelName} input(@PathVariable("id") String id) {
-        return service.input(id);
+    public ${config.modelName} get(@PathVariable("id") String id) {
+        return service.get(id);
     }
     <% } %>
 

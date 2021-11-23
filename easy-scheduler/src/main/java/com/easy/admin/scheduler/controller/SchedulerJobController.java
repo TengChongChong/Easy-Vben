@@ -47,8 +47,8 @@ public class SchedulerJobController {
      */
     @GetMapping("{id}")
     @RequiresPermissions("scheduler:job:select")
-    public SchedulerJob input(@PathVariable("id") String id) {
-        return service.input(id);
+    public SchedulerJob get(@PathVariable("id") String id) {
+        return service.get(id);
     }
 
     /**

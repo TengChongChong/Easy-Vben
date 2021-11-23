@@ -57,6 +57,6 @@ public class SysDeptTypeRoleServiceImpl extends ServiceImpl<SysDeptTypeRoleMappe
     @Override
     public List<SysRole> selectRoleByDept(String deptId) {
         ToolUtil.checkParams(deptId);
-        return getBaseMapper().selectRoleByDept(deptId);
+        return baseMapper.selectRoleByDept(deptId);
     }
 }

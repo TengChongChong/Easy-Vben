@@ -82,12 +82,12 @@ public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements
             }
         }
         page.setDefaultDesc("arm.create_time_");
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
     @Override
-    public ModelEntity input(String id) {
+    public ModelEntity get(String id) {
         return (ModelEntity) repositoryService.getModel(id);
     }
 
@@ -322,12 +322,12 @@ public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements
         if (StrUtil.isNotBlank(id)) {
             queryWrapper.ne("id_", key);
         }
-        return getBaseMapper().selectCountByKey(queryWrapper) > 0;
+        return baseMapper.selectCountByKey(queryWrapper) > 0;
     }
 
     @Override
     public String selectProcessDefinitionId(String key) {
-        String processDefinitionId = getBaseMapper().selectProcessDefinitionId(key);
+        String processDefinitionId = baseMapper.selectProcessDefinitionId(key);
         if (StrUtil.isBlank(processDefinitionId)) {
             throw new EasyException("流程不存在或未部署，请联系系统管理员");
         }
