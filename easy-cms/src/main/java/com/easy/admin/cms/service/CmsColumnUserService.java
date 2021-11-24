@@ -29,4 +29,20 @@ public interface CmsColumnUserService {
      */
     List<CmsColumn> selectColumnsByUserId(String userId);
 
+    /**
+     * 根据站点id删除
+     *
+     * @param siteId 站点id
+     * @return true/false
+     */
+    boolean removeBySiteId(String siteId);
+
+    /**
+     * 根据栏目id删除
+     *
+     * @param columnId 栏目id
+     * @return true/false
+     */
+    boolean removeByColumnId(String columnId);
+
 }

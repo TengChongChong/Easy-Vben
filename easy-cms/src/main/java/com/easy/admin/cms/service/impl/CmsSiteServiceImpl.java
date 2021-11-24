@@ -5,17 +5,20 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.cms.common.constant.RedisKeyPrefix;
 import com.easy.admin.cms.dao.CmsSiteMapper;
 import com.easy.admin.cms.model.CmsSite;
-import com.easy.admin.cms.service.CmsSiteService;
+import com.easy.admin.cms.service.*;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.common.tree.TreeUtil;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
+import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.util.SysConfigUtil;
 import com.easy.admin.util.ToolUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +37,19 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
 //    @Autowired
 //    private SysRoleSiteService sysRoleSiteService;
 
+    @Autowired
+    private CmsSiteUserService cmsSiteUserService;
+    @Autowired
+    private CmsColumnService cmsColumnService;
+    @Autowired
+    private CmsColumnUserService cmsColumnUserService;
+    @Autowired
+    private CmsArticleService cmsArticleService;
+    @Autowired
+    private CmsArticleColumnService cmsArticleColumnService;
+    @Autowired
+    private CmsPageService cmsPageService;
+
     @Override
     public List<Tree> selectByPId(String pId) {
         List<Tree> trees;
@@ -42,7 +58,7 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
             trees = new ArrayList<>();
             // 根节点
             Tree tree = TreeUtil.getBaseNode();
-            List<Tree> treeList = getBaseMapper().selectByPId(TreeUtil.BASE_ID);
+            List<Tree> treeList = baseMapper.selectByPId(TreeUtil.BASE_ID);
             if (treeList.size() > 0) {
                 tree.setIsLeaf(false);
                 trees.addAll(treeList);
@@ -51,19 +67,24 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
             }
             trees.add(tree);
         } else {
-            trees = getBaseMapper().selectByPId(pId);
+            trees = baseMapper.selectByPId(pId);
         }
         return trees;
     }
 
     @Override
     public List<Tree> selectAll() {
-        List<Tree> trees = getBaseMapper().selectAll(CommonStatus.ENABLE.getCode());
+        List<Tree> trees = baseMapper.selectAll(CommonStatus.ENABLE.getCode());
         // 根节点
         Tree tree = TreeUtil.getBaseNode();
         trees.add(tree);
-        trees.addAll(getBaseMapper().selectAll(TreeUtil.BASE_ID));
+        trees.addAll(baseMapper.selectAll(TreeUtil.BASE_ID));
         return trees;
+    }
+
+    @Override
+    public List<CmsSite> selectAllSite() {
+        return baseMapper.selectAllSite(CommonStatus.ENABLE.getCode());
     }
 
     @Override
@@ -75,7 +96,11 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
             cmsSite.setId(TreeUtil.BASE_ID);
             cmsSite.setName(SysConfigUtil.getProjectName());
         } else {
-            cmsSite = getBaseMapper().selectInfo(id);
+            // 由于此处发布静态页面时频繁调用，优先从缓存读取
+            cmsSite = (CmsSite) RedisUtil.get(RedisKeyPrefix.SITE + id);
+            if (cmsSite == null) {
+                cmsSite = baseMapper.selectInfo(id);
+            }
             if (cmsSite != null && cmsSite.getpId().equals(TreeUtil.BASE_ID)) {
                 cmsSite.setParentName(SysConfigUtil.getProjectName());
             }
@@ -92,16 +117,16 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
             if (TreeUtil.BASE_ID.equals(pId)) {
                 cmsSite.setParentName(SysConfigUtil.getProjectName());
             } else {
-                CmsSite parentCmsSite = getBaseMapper().selectInfo(pId);
+                CmsSite parentCmsSite = baseMapper.selectInfo(pId);
                 if (parentCmsSite != null) {
                     cmsSite.setParentName(parentCmsSite.getName());
                 } else {
-                    throw new EasyException("获取父权限信息失败，请重试");
+                    throw new EasyException("获取父节点信息失败，请重试");
                 }
             }
             return cmsSite;
         } else {
-            throw new EasyException("获取父权限信息失败，请重试");
+            throw new EasyException("获取父节点信息失败，请重试");
         }
     }
 
@@ -109,7 +134,7 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
     @Override
     public boolean remove(String id) {
         ToolUtil.checkParams(id);
-        // 检查是否有子权限
+        // 检查是否有子节点
         QueryWrapper<CmsSite> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("p_id", id);
         int count = count(queryWrapper);
@@ -118,29 +143,15 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
         }
         boolean isSuccess = removeById(id);
         if (isSuccess) {
-            // todo:同时删除已分配的权限
-
+            // 删除站点相关数据，注意删除顺序
+            cmsSiteUserService.removeBySiteId(id);
+            cmsColumnUserService.removeBySiteId(id);
+            cmsColumnService.removeBySiteId(id);
+            cmsArticleColumnService.removeBySiteId(id);
+            cmsArticleService.removeBySiteId(id);
+            cmsPageService.removeBySiteId(id);
         }
 
-        return isSuccess;
-    }
-
-    @Transactional(rollbackFor = RuntimeException.class)
-    @Override
-    public boolean batchRemove(String ids) {
-        ToolUtil.checkParams(ids);
-        // 检查是否有子权限
-        QueryWrapper<CmsSite> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("p_id", ids.split(CommonConst.SPLIT));
-        int count = count(queryWrapper);
-        if (count > 0) {
-            throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
-        }
-        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
-        boolean isSuccess = removeByIds(idList);
-        if (isSuccess) {
-            // todo:同时删除已分配的权限
-        }
         return isSuccess;
     }
 
@@ -156,7 +167,12 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
             cmsSite.setStatus(status);
             cmsSiteList.add(cmsSite);
         }
-        return ToolUtil.checkResult(updateBatchById(cmsSiteList));
+        boolean isSuccess = updateBatchById(cmsSiteList);
+        if (isSuccess) {
+            // 刷新缓存数据
+            refreshCache();
+        }
+        return ToolUtil.checkResult(isSuccess);
     }
 
     @Override
@@ -164,12 +180,12 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
         ToolUtil.checkParams(nodeIds);
         ToolUtil.checkParams(targetId);
         // 查询复制的节点
-        List<CmsSite> copySite = getBaseMapper().selectBatchIds(Arrays.asList(nodeIds.split(CommonConst.SPLIT)));
+        List<CmsSite> copySite = baseMapper.selectBatchIds(Arrays.asList(nodeIds.split(CommonConst.SPLIT)));
         if (copySite != null && !copySite.isEmpty()) {
             CmsSite parentSite = getById(targetId);
             // 目标节点存在
             if (parentSite != null) {
-                int maxOrderNo = getBaseMapper().getMaxOrderNo(targetId);
+                int maxOrderNo = baseMapper.getMaxOrderNo(targetId);
                 List<CmsSite> cmsSiteList = new ArrayList<>();
                 CmsSite cmsSite;
                 for (CmsSite site : copySite) {
@@ -184,6 +200,8 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
                     }
                 }
                 saveBatch(cmsSiteList);
+                // 刷新缓存数据
+                refreshCache();
                 return cmsSiteList;
             }
         }
@@ -196,10 +214,14 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
         ToolUtil.checkParams(object);
 
         if (StrUtil.isBlank(object.getId()) && object.getOrderNo() == null) {
-            object.setOrderNo(getBaseMapper().getMaxOrderNo(object.getpId()) + 1);
+            object.setOrderNo(baseMapper.getMaxOrderNo(object.getpId()) + 1);
         }
-
-        return (CmsSite) ToolUtil.checkResult(saveOrUpdate(object), object);
+        boolean isSuccess = saveOrUpdate(object);
+        if (isSuccess) {
+            // 刷新缓存数据
+            refreshCache();
+        }
+        return object;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -214,7 +236,7 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
                 int str = Math.min(position, oldPosition);
                 // 拖动影响顺序节点数量
                 int length = Math.abs(position - oldPosition) + 1;
-                List<CmsSite> oldCmsSite = getBaseMapper().selectOrderInfo(parent, str, length);
+                List<CmsSite> oldCmsSite = baseMapper.selectOrderInfo(parent, str, length);
                 List<CmsSite> newCmsSite = new ArrayList<>();
                 // 是否需要偏移
                 boolean needDeviation = false;
@@ -241,7 +263,7 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
                 }
                 isSuccess = updateBatchById(newCmsSite);
             } else {
-                List<CmsSite> oldCmsSite = getBaseMapper().selectOrderInfo(parent, null, null);
+                List<CmsSite> oldCmsSite = baseMapper.selectOrderInfo(parent, null, null);
                 List<CmsSite> newCmsSite = new ArrayList<>();
                 // 是否需要偏移
                 boolean needDeviation = false;
@@ -267,6 +289,10 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
                 }
                 isSuccess = updateBatchById(newCmsSite);
             }
+            if (isSuccess) {
+                // 刷新缓存数据
+                refreshCache();
+            }
             return isSuccess;
         } else {
             throw new EasyException(GlobalException.FAILED_TO_GET_DATA.getMessage());
@@ -276,7 +302,7 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
     @Override
     public List<Tree> selectByTitle(String title) {
         if (Validator.isNotEmpty(title)) {
-            return getBaseMapper().selectByTitle("%" + title + "%");
+            return baseMapper.selectByTitle("%" + title + "%");
         } else {
             throw new EasyException("请输入关键字后重试");
         }
@@ -287,11 +313,24 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
         if (StrUtil.isNotBlank(name)) {
             QueryWrapper<CmsSite> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("name", name);
-            int count = getBaseMapper().selectCount(queryWrapper);
+            int count = baseMapper.selectCount(queryWrapper);
             return count > 0;
         } else {
             throw new EasyException("[checkMenuIsHaving(String name)]站点名称不能为空");
         }
     }
 
+    @Override
+    public boolean refreshCache() {
+        // 清除之前的
+        RedisUtil.delByPrefix(RedisKeyPrefix.SITE);
+
+        List<CmsSite> siteList = selectAllSite();
+        if (siteList != null && siteList.size() > 0) {
+            for (CmsSite cmsSite : siteList) {
+                RedisUtil.set(RedisKeyPrefix.SITE + cmsSite.getId(), cmsSite, 0);
+            }
+        }
+        return true;
+    }
 }

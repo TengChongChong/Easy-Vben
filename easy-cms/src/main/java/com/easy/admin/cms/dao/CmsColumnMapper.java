@@ -31,12 +31,29 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     List<Tree> selectAll(@Param("siteId") String siteId, @Param("status") String status);
 
     /**
+     * 查询所有栏目
+     *
+     * @param status 状态
+     * @return List<CmsColumn>
+     */
+    List<CmsColumn> selectAllColumn(@Param("status") String status);
+
+    /**
      * 获取详情信息
      *
-     * @param id 权限id
+     * @param id id
      * @return CmsColumn
      */
     CmsColumn selectInfo(@Param("id") String id);
+
+    /**
+     * 获取详情信息
+     *
+     * @param siteId 站点id
+     * @param slug   slug
+     * @return CmsColumn
+     */
+    CmsColumn selectBySlug(@Param("siteId") String siteId, @Param("slug") String slug);
 
     /**
      * 查询指定数据
@@ -63,5 +80,13 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
      * @return Integer
      */
     Integer getMaxOrderNo(@Param("siteId") String siteId, @Param("pId") String id);
+
+    /**
+     * 根据站点id删除
+     *
+     * @param siteId 站点id
+     * @return true/false
+     */
+    int deleteBySiteId(@Param("siteId") String siteId);
 
 }

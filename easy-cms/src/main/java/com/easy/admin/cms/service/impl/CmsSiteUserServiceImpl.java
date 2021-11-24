@@ -31,7 +31,7 @@ public class CmsSiteUserServiceImpl extends ServiceImpl<CmsSiteUserMapper, CmsSi
         if(StrUtil.isBlank(userId)){
             userId = ShiroUtil.getCurrentUser().getId();
         }
-        return getBaseMapper().getSitesByUserId(userId, CommonStatus.ENABLE.getCode());
+        return baseMapper.getSitesByUserId(userId, CommonStatus.ENABLE.getCode());
     }
 
     @Override
@@ -52,5 +52,10 @@ public class CmsSiteUserServiceImpl extends ServiceImpl<CmsSiteUserMapper, CmsSi
     public boolean setCurrentEditSiteId(String siteId) {
         CmsSiteUtils.setCurrentEditSiteId(siteId);
         return true;
+    }
+
+    @Override
+    public boolean removeBySiteId(String siteId) {
+        return baseMapper.deleteBySiteId(siteId) > 0;
     }
 }

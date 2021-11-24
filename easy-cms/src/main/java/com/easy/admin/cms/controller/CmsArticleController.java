@@ -1,19 +1,15 @@
 package com.easy.admin.cms.controller;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import com.easy.admin.core.annotation.ResponseResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.easy.admin.common.core.common.pagination.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import javax.validation.Valid;
+import com.easy.admin.cms.common.status.CmsArticleStatus;
 import com.easy.admin.cms.model.CmsArticle;
 import com.easy.admin.cms.service.CmsArticleService;
+import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.core.annotation.ResponseResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * 文章管理
@@ -40,7 +36,7 @@ public class CmsArticleController {
      */
     @GetMapping()
     @RequiresPermissions("cms:article:select")
-    public Page<CmsArticle> select(CmsArticle object, Page<CmsArticle> page){
+    public Page<CmsArticle> select(CmsArticle object, Page<CmsArticle> page) {
         return service.select(object, page);
     }
 
@@ -52,19 +48,20 @@ public class CmsArticleController {
      */
     @GetMapping("{id}")
     @RequiresPermissions("cms:article:select")
-    public CmsArticle input(@PathVariable("id") String id) {
-        return service.input(id);
+    public CmsArticle get(@PathVariable("id") String id) {
+        return service.get(id);
     }
 
     /**
      * 新增
      *
+     * @param columnId 栏目id
      * @return CmsArticle
      */
     @GetMapping("add")
     @RequiresPermissions("cms:article:save")
-    public CmsArticle add() {
-        return service.add();
+    public CmsArticle add(@RequestParam(value = "columnId", required = false) String columnId) {
+        return service.add(columnId);
     }
 
     /**
@@ -87,8 +84,32 @@ public class CmsArticleController {
      */
     @PostMapping()
     @RequiresPermissions("cms:article:save")
-    public CmsArticle saveData(@Valid @RequestBody CmsArticle object){
+    public CmsArticle saveData(@Valid @RequestBody CmsArticle object) {
         return service.saveData(object);
     }
 
+
+    /**
+     * 发布
+     *
+     * @param ids 数据ids
+     * @return true/false
+     */
+    @PostMapping("release/{ids}")
+    @RequiresPermissions("cms:article:status")
+    public boolean release(@PathVariable("ids") String ids) {
+        return service.setStatus(ids, CmsArticleStatus.PUBLISHED.getCode());
+    }
+
+    /**
+     * 撤销
+     *
+     * @param ids 数据ids
+     * @return true/false
+     */
+    @PostMapping("revoke/{ids}")
+    @RequiresPermissions("cms:article:status")
+    public boolean revoke(@PathVariable("ids") String ids) {
+        return service.setStatus(ids, CmsArticleStatus.RESCINDED.getCode());
+    }
 }

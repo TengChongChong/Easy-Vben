@@ -1,5 +1,7 @@
 package com.easy.admin.cms.service;
 
+import com.easy.admin.cms.model.CmsColumn;
+
 import java.util.List;
 
 /**
@@ -16,6 +18,14 @@ public interface CmsArticleColumnService {
      * @return 栏目id
      */
     List<String> selectColumnsByArticleId(String articleId);
+
+    /**
+     * 根据栏目id查询文章数量
+     *
+     * @param columnId 栏目id
+     * @return 数量
+     */
+    int selectCountByColumnId(String columnId);
 
     /**
      * 保存文章栏目
@@ -42,4 +52,21 @@ public interface CmsArticleColumnService {
      * @return true/false
      */
     boolean remove(String articleId);
+
+    /**
+     * 根据站点id删除
+     *
+     * @param siteId 站点id
+     * @return true/false
+     */
+    boolean removeBySiteId(String siteId);
+
+    /**
+     * 根据文章id获取文章所属栏目
+     *
+     * @param siteId    站点id
+     * @param articleId 文章id
+     * @return CmsColumn
+     */
+    CmsColumn getCmsColumnByArticleId(String siteId, String articleId);
 }

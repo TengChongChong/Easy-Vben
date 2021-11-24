@@ -53,18 +53,6 @@ public class CmsSiteController {
     }
 
     /**
-     * 批量删除
-     *
-     * @param ids ids
-     * @return true/false
-     */
-    @DeleteMapping("batch/{ids}")
-    @RequiresPermissions("cms:site:remove")
-    public boolean batchRemove(@PathVariable("ids") String ids) {
-        return service.batchRemove(ids);
-    }
-
-    /**
      * 设置状态
      *
      * @param ids    ids
@@ -159,5 +147,15 @@ public class CmsSiteController {
     @RequiresPermissions("cms:site:move")
     public boolean move(@RequestBody DragVO dragVO) {
         return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());
+    }
+
+    /**
+     * 刷新缓存数据
+     *
+     * @return true/false
+     */
+    @PostMapping("refresh/cache")
+    public boolean refreshCache() {
+        return service.refreshCache();
     }
 }

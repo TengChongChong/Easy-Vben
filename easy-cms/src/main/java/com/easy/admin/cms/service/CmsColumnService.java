@@ -36,6 +36,15 @@ public interface CmsColumnService {
     CmsColumn get(String id);
 
     /**
+     * 详情
+     *
+     * @param siteId 站点id
+     * @param slug   别名
+     * @return CmsColumn
+     */
+    CmsColumn getBySlug(String siteId, String slug);
+
+    /**
      * 新增
      *
      * @param pId 上级id
@@ -52,12 +61,12 @@ public interface CmsColumnService {
     boolean remove(String id);
 
     /**
-     * 批量删除
+     * 根据站点id删除
      *
-     * @param ids String ids 示例 1,2,3,4
+     * @param siteId 站点id
      * @return true/false
      */
-    boolean batchRemove(String ids);
+    boolean removeBySiteId(String siteId);
 
     /**
      * 设置状态
@@ -113,4 +122,10 @@ public interface CmsColumnService {
      */
     boolean checkMenuIsHaving(String name);
 
+    /**
+     * 刷新缓存数据
+     *
+     * @return true/false
+     */
+    boolean refreshCache();
 }

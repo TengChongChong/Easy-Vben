@@ -53,18 +53,6 @@ public class CmsColumnController {
     }
 
     /**
-     * 批量删除
-     *
-     * @param ids ids
-     * @return true/false
-     */
-    @DeleteMapping("batch/{ids}")
-    @RequiresPermissions("cms:site:remove")
-    public boolean batchRemove(@PathVariable("ids") String ids) {
-        return service.batchRemove(ids);
-    }
-
-    /**
      * 设置状态
      *
      * @param ids    ids

@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.cms.common.status.CmsArticleStatus;
 import com.easy.admin.cms.common.type.CmsArticleReleaseType;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,14 +56,19 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         QueryWrapper<CmsArticle> queryWrapper = new QueryWrapper<>();
         if (object != null) {
             // 查询条件
-            // 站点id
-            if (Validator.isNotEmpty(object.getSiteId())) {
-                queryWrapper.eq("t.site_id", object.getSiteId());
-            }
             // 标题
             if (Validator.isNotEmpty(object.getTitle())) {
                 queryWrapper.eq("t.title", object.getTitle());
             }
+            // 栏目Id
+            if (Validator.isNotEmpty(object.getColumns())) {
+                queryWrapper.eq("cac.column_id", object.getColumns());
+            }
+            // 栏目别名
+            if (Validator.isNotEmpty(object.getColumnSlug())) {
+                queryWrapper.eq("cc.slug", object.getColumnSlug());
+            }
+
             // 信息来源
             if (Validator.isNotEmpty(object.getSource())) {
                 queryWrapper.eq("t.source", object.getSource());
@@ -75,7 +82,13 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
                 queryWrapper.eq("t.status", object.getStatus());
             }
         }
-        page.setRecords(getBaseMapper().select(page, queryWrapper));
+        if (object == null || StrUtil.isBlank(object.getSiteId())) {
+            queryWrapper.eq("t.site_id", CmsSiteUtils.getCurrentEditSiteId());
+        } else {
+            queryWrapper.eq("t.site_id", object.getSiteId());
+        }
+        page.setDefaultDesc("t.create_date");
+        page.setRecords(baseMapper.select(page, queryWrapper, CmsFileType.ARTICLE_COVER.getCode()));
         return page;
     }
 
@@ -86,9 +99,9 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
      * @return CmsArticle
      */
     @Override
-    public CmsArticle input(String id) {
+    public CmsArticle get(String id) {
         ToolUtil.checkParams(id);
-        CmsArticle cmsArticle = getBaseMapper().getById(id);
+        CmsArticle cmsArticle = baseMapper.getById(id);
         if (cmsArticle != null) {
             // 设置封面
             List<SysFile> coverFiles = sysFileService.select(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode());
@@ -97,7 +110,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
             }
             // 设置栏目
             List<String> columns = cmsArticleColumnService.selectColumnsByArticleId(cmsArticle.getId());
-            if(columns != null && columns.size() > 0){
+            if (columns != null && columns.size() > 0) {
                 cmsArticle.setColumns(CollUtil.join(columns, CommonConst.SPLIT));
             }
         }
@@ -110,13 +123,13 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
      * @return CmsArticle
      */
     @Override
-    public CmsArticle add() {
+    public CmsArticle add(String columnId) {
         SysUser currentUser = ShiroUtil.getCurrentUser();
         CmsArticle object = new CmsArticle();
         object.setAuthor(currentUser.getNickname());
         object.setReleaseType(CmsArticleReleaseType.MANUAL.getCode());
         object.setStatus(CmsArticleStatus.DRAFT.getCode());
-
+        object.setColumns(columnId);
         // 设置默认值
         return object;
     }
@@ -132,7 +145,19 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(","));
-        return removeByIds(idList);
+        boolean isSuccess = removeByIds(idList);
+        if (isSuccess) {
+            // 删除封面
+            for (String id : idList) {
+                sysFileService.delete(id);
+            }
+        }
+        return isSuccess;
+    }
+
+    @Override
+    public boolean removeBySiteId(String siteId) {
+        return baseMapper.deleteBySiteId(siteId) > 0;
     }
 
     /**
@@ -177,4 +202,17 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         return object;
     }
 
+    @Override
+    public boolean setStatus(String ids, String status) {
+        UpdateWrapper<CmsArticle> setStatus = new UpdateWrapper<>();
+        setStatus.in("id", ids.split(CommonConst.SPLIT));
+        setStatus.set("status", status);
+        if (CmsArticleStatus.PUBLISHED.getCode().equals(status)) {
+            // 发布
+            setStatus.set("release_date", new Date());
+        } else {
+            setStatus.set("release_date", null);
+        }
+        return update(setStatus);
+    }
 }

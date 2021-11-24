@@ -4,7 +4,9 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.cms.dao.CmsArticleColumnMapper;
 import com.easy.admin.cms.model.CmsArticleColumn;
+import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.service.CmsArticleColumnService;
+import com.easy.admin.cms.utils.CmsColumnUtils;
 import com.easy.admin.common.core.constant.CommonConst;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,11 @@ public class CmsArticleColumnServiceImpl extends ServiceImpl<CmsArticleColumnMap
     @Override
     public List<String> selectColumnsByArticleId(String articleId) {
         return baseMapper.selectColumnsByArticleId(articleId);
+    }
+
+    @Override
+    public int selectCountByColumnId(String columnId) {
+        return baseMapper.selectCountByColumnId(columnId);
     }
 
     @Override
@@ -45,4 +52,15 @@ public class CmsArticleColumnServiceImpl extends ServiceImpl<CmsArticleColumnMap
     public boolean remove(String articleId) {
         return baseMapper.deleteByArticleId(articleId) > 0;
     }
+
+    @Override
+    public boolean removeBySiteId(String siteId) {
+        return baseMapper.deleteBySiteId(siteId) > 0;
+    }
+    @Override
+    public CmsColumn getCmsColumnByArticleId(String siteId, String articleId) {
+        String columnId = baseMapper.getCmsColumnIdByArticleId(articleId);
+        return CmsColumnUtils.getById(siteId, columnId);
+    }
+
 }

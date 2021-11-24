@@ -7,7 +7,7 @@
         <result column="id" property="id" />
         <result column="p_id" property="pId" />
         <result column="name" property="name" />
-        <result column="keyword" property="keyword" />
+        <result column="keywords" property="keywords" />
         <result column="description" property="description" />
         <result column="domain_name" property="domainName" />
         <result column="deployment_path" property="deploymentPath" />
@@ -27,7 +27,7 @@
         order by t.order_no
     </select>
     <select id="selectInfo" resultType="com.easy.admin.cms.model.CmsSite">
-        select t.id, t.p_id, t.name, t.keyword, t.description, t.domain_name, t.deployment_path, t.status from cms_site t where t.id= #{id}
+        select t.id, t.p_id, t.name, t.keywords, t.description, t.domain_name, t.deployment_path, t.theme, t.status from cms_site t where t.id= #{id}
     </select>
     <select id="selectOrderInfo" resultType="com.easy.admin.cms.model.CmsSite">
         select t.id,t.name,t.order_no
@@ -52,5 +52,8 @@
         from cms_site t
         where t.status = #{status}
         order by t.order_no
+    </select>
+    <select id="selectAllSite" resultType="com.easy.admin.cms.model.CmsSite">
+        select t.id, t.p_id, t.name, t.keywords, t.description, t.domain_name, t.deployment_path, t.status, t.theme from cms_site t where t.status = #{status}
     </select>
 </mapper>

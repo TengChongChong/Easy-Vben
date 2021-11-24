@@ -36,7 +36,7 @@ public class CmsSite extends Model<CmsSite> implements Cloneable {
     /**
      * 关键字
      */
-    private String keyword;
+    private String keywords;
     /**
      * 描述
      */
@@ -56,6 +56,10 @@ public class CmsSite extends Model<CmsSite> implements Cloneable {
      */
     @NotBlank(message = "状态不能为空")
     private String status;
+    /**
+     * 主题
+     */
+    private String theme;
     /**
      * 排序值
      */
@@ -141,12 +145,12 @@ public class CmsSite extends Model<CmsSite> implements Cloneable {
         this.name = name;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public String getDescription() {
@@ -179,6 +183,14 @@ public class CmsSite extends Model<CmsSite> implements Cloneable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 
     public Integer getOrderNo() {

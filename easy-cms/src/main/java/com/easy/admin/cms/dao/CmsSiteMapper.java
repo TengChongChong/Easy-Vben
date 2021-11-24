@@ -30,9 +30,16 @@ public interface CmsSiteMapper extends BaseMapper<CmsSite> {
     List<Tree> selectAll(@Param("status") String status);
 
     /**
+     * 获取所有数据
+     * @param status 状态
+     * @return List<CmsSite>
+     */
+    List<CmsSite> selectAllSite(@Param("status") String status);
+
+    /**
      * 获取详情信息
      *
-     * @param id 权限id
+     * @param id id
      * @return CmsSite
      */
     CmsSite selectInfo(@Param("id") String id);

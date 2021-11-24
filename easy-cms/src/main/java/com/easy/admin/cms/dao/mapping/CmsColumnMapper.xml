@@ -23,6 +23,9 @@
         <result column="edit_user" property="editUser" />
         <result column="edit_date" property="editDate" />
     </resultMap>
+    <delete id="deleteBySiteId">
+        delete from cms_column where site_id = #{siteId}
+    </delete>
     <select id="selectByPId" resultType="com.easy.admin.common.core.common.tree.Tree">
         select t.id, t.p_id,t.name as title,
                (case when (select count(1) from cms_column where p_id = t.id) > 0 then 'false' else 'true' end ) as isLeaf
@@ -48,7 +51,7 @@
     <select id="selectByTitle" resultType="com.easy.admin.common.core.common.tree.Tree">
         select t.id, t.p_id,t.name as title
         from cms_column t
-        where t.name like #{title} and t.site_id = #{siteId} order by t.p_id,t.order_no
+        where (t.name like #{title} or t.slug like #{title}) and t.site_id = #{siteId} order by t.p_id,t.order_no
     </select>
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0)
@@ -60,5 +63,18 @@
         from cms_column t
         where t.status = #{status} and t.site_id = #{siteId}
         order by t.order_no
+    </select>
+    <select id="selectBySlug" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.id, t.p_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.cover_proportion_width, t.cover_proportion_height,
+               t.description, t.remarks, t.status, cc.name as parentName
+        from cms_column t
+                 left join cms_column cc on cc.id = t.p_id
+        where t.slug= #{slug} and t.site_id = #{siteId}
+    </select>
+    <select id="selectAllColumn" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.id, t.p_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.cover_proportion_width, t.cover_proportion_height, t.description,
+               t.remarks, t.order_no, t.status
+        from cms_column t
+        where t.status = #{status}
     </select>
 </mapper>

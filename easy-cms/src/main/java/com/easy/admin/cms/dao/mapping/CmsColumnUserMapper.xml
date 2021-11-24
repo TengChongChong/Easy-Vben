@@ -10,12 +10,21 @@
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
     </resultMap>
+    <delete id="deleteBySiteId">
+        delete from cms_column_user where column_id in (select id from cms_column where site_id = #{siteId})
+    </delete>
+    <delete id="deleteByColumnId">
+        delete from cms_column_user where column_id = #{columnId}
+    </delete>
     <select id="selectUsersByColumnId" resultType="com.easy.admin.cms.model.CmsColumnUser">
         select t.user_id from cms_column_user t
           left join cms_column cc on cc.id = t.column_id
         where t.column_id = #{columnId} and cc.status = #{columnStatus}
     </select>
     <select id="selectColumnsByUserId" resultType="com.easy.admin.cms.model.CmsColumn">
-        select t.id, t.p_id, t.name from cms_column t where t.site_id = #{siteId} and t.status = #{columnStatus} order by t.order_no
+        select t.id, t.p_id, t.name, t.cover_proportion_width, t.cover_proportion_height
+        from cms_column t
+        where t.site_id = #{siteId} and t.status = #{columnStatus}
+        order by t.order_no
     </select>
 </mapper>

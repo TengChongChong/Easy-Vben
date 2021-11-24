@@ -35,4 +35,14 @@ public class CmsColumnUserServiceImpl extends ServiceImpl<CmsColumnUserMapper, C
 
         return baseMapper.selectColumnsByUserId(CmsSiteUtils.getCurrentEditSiteId(), userId, CommonStatus.ENABLE.getCode());
     }
+
+    @Override
+    public boolean removeBySiteId(String siteId) {
+        return baseMapper.deleteBySiteId(siteId) > 0;
+    }
+
+    @Override
+    public boolean removeByColumnId(String columnId) {
+        return baseMapper.deleteByColumnId(columnId) > 0;
+    }
 }

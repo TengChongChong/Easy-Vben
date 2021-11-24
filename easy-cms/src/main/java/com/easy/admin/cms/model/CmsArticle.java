@@ -1,11 +1,13 @@
 package com.easy.admin.cms.model;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.admin.sys.model.SysFile;
+import com.easy.admin.util.file.FileUtil;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -79,6 +81,10 @@ public class CmsArticle extends Model<CmsArticle> {
      */
     private String author;
     /**
+     * 标签
+     */
+    private String tags;
+    /**
      * 发布方式 1.手动 2.定时
      */
     private String releaseType;
@@ -140,10 +146,31 @@ public class CmsArticle extends Model<CmsArticle> {
     private SysFile cover;
 
     /**
+     * 封面路径
+     */
+    @TableField(exist = false)
+    private String coverPath;
+
+    /**
      * 文章所属栏目
      */
     @TableField(exist = false)
     private String columns;
+
+    /**
+     * 栏目别名
+     */
+    @TableField(exist = false)
+    private String columnSlug;
+
+    public CmsArticle() {
+    }
+
+    public CmsArticle(String siteId, String columnSlug, String status) {
+        this.siteId = siteId;
+        this.columnSlug = columnSlug;
+        this.status = status;
+    }
 
     @Override
     protected Serializable pkVal() {
@@ -260,6 +287,14 @@ public class CmsArticle extends Model<CmsArticle> {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public String getReleaseType() {
@@ -380,5 +415,25 @@ public class CmsArticle extends Model<CmsArticle> {
 
     public void setColumns(String columns) {
         this.columns = columns;
+    }
+
+    public String getCoverPath() {
+        return coverPath;
+    }
+
+    public void setCoverPath(String coverPath) {
+        if (StrUtil.isNotBlank(coverPath)) {
+            this.coverPath = FileUtil.getUrl(coverPath);
+        } else {
+            this.coverPath = null;
+        }
+    }
+
+    public String getColumnSlug() {
+        return columnSlug;
+    }
+
+    public void setColumnSlug(String columnSlug) {
+        this.columnSlug = columnSlug;
     }
 }

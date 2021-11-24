@@ -42,4 +42,12 @@ public interface CmsSiteUserMapper extends BaseMapper<CmsSiteUser> {
      * @return List<CmsSiteUser>
      */
     List<CmsSite> selectSitesByUserId(@Param("userId") String userId, @Param("siteStatus") String siteStatus);
+
+    /**
+     * 根据站点id删除
+     *
+     * @param siteId 站点id
+     * @return true/false
+     */
+    int deleteBySiteId(@Param("siteId") String siteId);
 }

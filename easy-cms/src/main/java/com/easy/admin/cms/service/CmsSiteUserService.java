@@ -50,4 +50,12 @@ public interface CmsSiteUserService {
      * @return true/false
      */
     boolean setCurrentEditSiteId(String siteId);
+
+    /**
+     * 根据站点id删除
+     *
+     * @param siteId 站点id
+     * @return true/false
+     */
+    boolean removeBySiteId(String siteId);
 }

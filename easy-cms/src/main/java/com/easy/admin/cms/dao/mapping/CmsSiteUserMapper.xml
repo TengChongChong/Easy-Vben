@@ -10,6 +10,9 @@
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
     </resultMap>
+    <delete id="deleteBySiteId">
+        delete from cms_site_user where site_id = #{siteId}
+    </delete>
     <select id="selectUsersBySiteId" resultType="com.easy.admin.cms.model.CmsSiteUser">
         select t.user_id from cms_site_user t
         left join cms_site cs on cs.id = t.site_id

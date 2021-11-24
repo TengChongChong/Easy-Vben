@@ -1,0 +1,29 @@
+<%include("../common/head.html"){}%>
+
+<div class="details_banner" style="background:url(${themeUrl}/assets/images/news_banner.jpg) no-repeat 50%/cover;"></div>
+
+<div class="IndexService NewsDetails">
+	<div class="IndexService_content all">
+		<div class="NewsDetails_title">
+			<h1>${article.title}</h1>
+			<div class="NewsDetails_title_sort clear vertical">
+				<span class="fl">作者：${article.author}</span>
+				<span class="fl">发布时间：${article.releaseDate, "yyyy-MM-dd HH:mm"}</span>
+			</div>
+		</div>
+		<div class="NewsDetails_content">
+			<div class="NewsDetails_content_top">${article.content}</div>
+			<div class="NewsDetails_content_bottom clear">
+				<div class="content_bottom_left fl">
+				 <div class='bottom_left_copyright'>此内容来源于网络，如涉及版权问题请与我们联系。</div>				
+					<div class="bottom_left_TAG clear">
+						<dd class="fl">TAG：${articleUtils.formatTags(article.tags)}</dd>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%include("../common/footer.html"){}%>
+</body>
+</html>

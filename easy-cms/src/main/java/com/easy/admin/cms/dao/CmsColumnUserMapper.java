@@ -33,4 +33,19 @@ public interface CmsColumnUserMapper extends BaseMapper<CmsColumnUser> {
      */
     List<CmsColumn> selectColumnsByUserId(@Param("siteId") String siteId, @Param("userId") String userId, @Param("columnStatus") String columnStatus);
 
+    /**
+     * 根据站点id删除
+     *
+     * @param siteId 站点id
+     * @return true/false
+     */
+    int deleteBySiteId(@Param("siteId") String siteId);
+
+    /**
+     * 根据栏目id删除
+     *
+     * @param columnId 栏目id
+     * @return true/false
+     */
+    int deleteByColumnId(@Param("columnId") String columnId);
 }

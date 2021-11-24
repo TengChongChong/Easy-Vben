@@ -28,6 +28,13 @@ public interface CmsSiteService {
     List<Tree> selectAll();
 
     /**
+     * 查询所有站点数据
+     *
+     * @return List<CmsSite>
+     */
+    List<CmsSite> selectAllSite();
+
+    /**
      * 详情
      *
      * @param id id
@@ -50,14 +57,6 @@ public interface CmsSiteService {
      * @return true/false
      */
     boolean remove(String id);
-
-    /**
-     * 批量删除
-     *
-     * @param ids String ids 示例 1,2,3,4
-     * @return true/false
-     */
-    boolean batchRemove(String ids);
 
     /**
      * 设置状态
@@ -112,4 +111,11 @@ public interface CmsSiteService {
      * @return true/false
      */
     boolean checkMenuIsHaving(String name);
+
+    /**
+     * 刷新缓存数据
+     *
+     * @return true/false
+     */
+    boolean refreshCache();
 }

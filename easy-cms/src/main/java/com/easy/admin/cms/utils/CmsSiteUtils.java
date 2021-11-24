@@ -3,6 +3,7 @@ package com.easy.admin.cms.utils;
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.cms.common.constant.CmsSessionKey;
 import com.easy.admin.cms.model.CmsSite;
+import com.easy.admin.cms.service.CmsSiteService;
 import com.easy.admin.cms.service.CmsSiteUserService;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.util.ShiroUtil;
@@ -20,21 +21,37 @@ public class CmsSiteUtils {
 
     private static CmsSiteUserService cmsSiteUserService;
 
+    private static CmsSiteService cmsSiteService;
+
+    /**
+     * 获取当前登录用户编辑的站点
+     *
+     * @return 站点id
+     */
+    public static CmsSite getCurrentEditSite() {
+        String siteId = (String) ShiroUtil.getAttribute(CmsSessionKey.CURRENT_SITE);
+        if (StrUtil.isNotBlank(siteId)) {
+            CmsSite cmsSite = cmsSiteService.get(siteId);
+            if (cmsSite != null) {
+                return cmsSite;
+            }
+        }
+
+        // 站点id不存在
+        CmsSite cmsSite = cmsSiteUserService.getSitesByUserId(ShiroUtil.getCurrentUser().getId());
+        if (cmsSite == null) {
+            throw new EasyException("用户无站点权限");
+        }
+        return cmsSite;
+    }
+
     /**
      * 获取当前登录用户编辑的站点id
      *
      * @return 站点id
      */
     public static String getCurrentEditSiteId() {
-        String siteId = (String) ShiroUtil.getAttribute(CmsSessionKey.CURRENT_SITE);
-        if (StrUtil.isBlank(siteId)) {
-            CmsSite cmsSite = cmsSiteUserService.getSitesByUserId(ShiroUtil.getCurrentUser().getId());
-            if (cmsSite == null) {
-                throw new EasyException("用户无站点权限");
-            }
-            return cmsSite.getId();
-        }
-        return siteId;
+        return getCurrentEditSite().getId();
     }
 
     /**
@@ -49,5 +66,10 @@ public class CmsSiteUtils {
     @Autowired
     public void setCmsSiteUserService(CmsSiteUserService cmsSiteUserService) {
         CmsSiteUtils.cmsSiteUserService = cmsSiteUserService;
+    }
+
+    @Autowired
+    public void setCmsSiteService(CmsSiteService cmsSiteService) {
+        CmsSiteUtils.cmsSiteService = cmsSiteService;
     }
 }
