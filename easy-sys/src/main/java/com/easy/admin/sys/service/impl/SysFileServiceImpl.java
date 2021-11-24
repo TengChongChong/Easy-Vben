@@ -39,7 +39,10 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     public boolean delete(String pId, String type) {
         List<SysFile> sysFileList = select(pId, type);
         QueryWrapper<SysFile> remove = new QueryWrapper<>();
-        remove.eq("p_id", pId).eq("type", type);
+        remove.eq("p_id", pId);
+        if(StrUtil.isNotBlank(type)){
+            remove.eq("type", type);
+        }
         boolean isSuccess = remove(remove);
         if (isSuccess) {
             sysFileList.forEach(sysFile -> {
@@ -50,6 +53,11 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
             });
         }
         return isSuccess;
+    }
+
+    @Override
+    public boolean delete(String pId) {
+        return delete(pId, null);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)

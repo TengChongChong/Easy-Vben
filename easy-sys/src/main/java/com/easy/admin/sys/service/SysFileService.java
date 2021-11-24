@@ -30,6 +30,15 @@ public interface SysFileService {
     boolean delete(String pId, String type);
 
     /**
+     * 删除
+     *
+     * @param pId  父id
+     * @return true/false
+     */
+    boolean delete(String pId);
+
+
+    /**
      * 保存
      *
      * @param object 表单内容
