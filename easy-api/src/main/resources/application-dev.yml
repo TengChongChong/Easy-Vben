@@ -48,3 +48,16 @@ spring:
         url: jdbc:mysql://localhost:3306/easy-admin?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
         username: root
         password: tengchong
+async:
+    executor:
+        thread:
+            # 配置核心线程数
+            core-pool-size: 5
+            # 配置最大线程数
+            max-pool-size: 5
+            # 配置队列大小
+            queue-capacity: 999
+            # 配置线程池中的线程的名称前缀
+            name-prefix: async-
+            # 配置线程最大空闲时间 s
+            keep-alive-seconds: 30

@@ -1,6 +1,8 @@
 project:
     # 版本号
     version: 0.5.0
+    # 项目访问url
+    url: http://127.0.0.1
 spring:
     profiles:
         # dev - 开发模式 / prod - 生产模式
