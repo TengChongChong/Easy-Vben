@@ -76,5 +76,14 @@
                t.remarks, t.order_no, t.status
         from cms_column t
         where t.status = #{status}
+        <if test="siteId != null">
+            and t.site_id = #{siteId}
+        </if>
+    </select>
+    <select id="selectColumns" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.id, t.site_id, t.name from cms_column t
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
 </mapper>

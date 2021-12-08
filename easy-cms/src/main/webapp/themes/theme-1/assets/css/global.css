@@ -424,10 +424,10 @@ input:-webkit-autofill {
     font-size: 16px;
     color: #fff;
     display: inline-block;
+    padding: 0 10px;
     line-height: 88px;
     position: relative;
     text-align: center;
-    width: 64px;
 }
 
 .pc_header .pc_header_content .header_content_right .menu ul li:hover .DropDown .DropDown_close {
@@ -1925,7 +1925,7 @@ input:-webkit-autofill {
     max-width: 1500px;
     margin: 0 auto;
     position: relative;
-    height: 760px;
+    height: 520px;
 }
 
 .case_banner .case_banner_content .banner_content_left {
@@ -2533,17 +2533,7 @@ input:-webkit-autofill {
 
 .ContactBanner .ContactBanner_content .ContactBanner_content_left {
     position: absolute;
-    bottom: 115px;
-}
-
-.ContactBanner .ContactBanner_content:before {
-    content: "";
-    position: absolute;
-    display: inline-block;
-    width: 50px;
-    height: 3px;
-    background: #fff;
-    top: 285px;
+    bottom: 145px;
 }
 
 .ContactBanner .ContactBanner_content .ContactBanner_content_left dd {
@@ -2562,7 +2552,7 @@ input:-webkit-autofill {
 
 .ContactBanner .ContactBanner_content .ContactBanner_content_right {
     position: absolute;
-    bottom: 115px;
+    bottom: 35px;
     right: 0;
 }
 

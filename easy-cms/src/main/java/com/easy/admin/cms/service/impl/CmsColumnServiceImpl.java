@@ -6,13 +6,13 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.pinyin.PinyinUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.cms.common.constant.RedisKeyPrefix;
+import com.easy.admin.cms.common.constant.CmsRedisKeyPrefix;
 import com.easy.admin.cms.dao.CmsColumnMapper;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.service.CmsArticleColumnService;
 import com.easy.admin.cms.service.CmsColumnService;
 import com.easy.admin.cms.service.CmsColumnUserService;
-import com.easy.admin.cms.utils.CmsSiteUtils;
+import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.common.tree.TreeUtil;
@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,7 +48,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
     @Override
     public List<Tree> selectByPId(String pId) {
         List<Tree> trees;
-        String siteId = CmsSiteUtils.getCurrentEditSiteId();
+        String siteId = CmsSiteUtil.getCurrentEditSiteId();
         // 第一次请求,返回项目名称 + 一级菜单 数据
         if (StrUtil.isBlank(pId)) {
             trees = new ArrayList<>();
@@ -70,14 +69,21 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
     }
 
     @Override
-    public List<Tree> selectAll() {
-        String siteId = CmsSiteUtils.getCurrentEditSiteId();
+    public List<Tree> selectAll(boolean containBaseNode) {
+        String siteId = CmsSiteUtil.getCurrentEditSiteId();
         List<Tree> trees = baseMapper.selectAll(siteId, CommonStatus.ENABLE.getCode());
-        // 根节点
-        Tree tree = TreeUtil.getBaseNode();
-        trees.add(tree);
+        if(containBaseNode){
+            // 根节点
+            Tree tree = TreeUtil.getBaseNode();
+            trees.add(tree);
+        }
         trees.addAll(baseMapper.selectAll(siteId, TreeUtil.BASE_ID));
         return trees;
+    }
+
+    @Override
+    public List<CmsColumn> selectCmsColumns(String[] ids) {
+        return baseMapper.selectColumns(new QueryWrapper<CmsColumn>().in("t.id", ids));
     }
 
     @Override
@@ -148,7 +154,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
             // 同时删除已分配的节点
             cmsColumnUserService.removeByColumnId(id);
 
-            refreshCache();
+            refreshCache(CmsSiteUtil.getCurrentEditSiteId());
         }
 
         return isSuccess;
@@ -158,7 +164,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
     public boolean removeBySiteId(String siteId) {
         boolean isSuccess = baseMapper.deleteBySiteId(siteId) > 0;
         if (isSuccess) {
-            refreshCache();
+            refreshCache(CmsSiteUtil.getCurrentEditSiteId());
         }
         return isSuccess;
     }
@@ -176,8 +182,8 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
             cmsColumnList.add(cmsColumn);
         }
         boolean isSuccess = updateBatchById(cmsColumnList);
-        if(isSuccess){
-            refreshCache();
+        if (isSuccess) {
+            refreshCache(CmsSiteUtil.getCurrentEditSiteId());
         }
         return isSuccess;
     }
@@ -189,7 +195,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
         // 查询复制的节点
         List<CmsColumn> copyColumn = baseMapper.selectBatchIds(Arrays.asList(nodeIds.split(CommonConst.SPLIT)));
         if (copyColumn != null && !copyColumn.isEmpty()) {
-            String siteId = CmsSiteUtils.getCurrentEditSiteId();
+            String siteId = CmsSiteUtil.getCurrentEditSiteId();
             CmsColumn parentColumn = getById(targetId);
             // 目标节点存在
             if (parentColumn != null) {
@@ -204,7 +210,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
                         maxOrderNo++;
                         cmsColumn.setpId(parentColumn.getId());
                         cmsColumn.setOrderNo(maxOrderNo);
-                        cmsColumn.setSlug("copy-" + cmsColumn.getSlug() + "-" + new Date().getTime() + index);
+                        cmsColumn.setSlug("copy-" + cmsColumn.getSlug() + "-" + System.currentTimeMillis() + index);
                         cmsColumnList.add(cmsColumn);
                         index++;
                     } catch (CloneNotSupportedException e) {
@@ -213,7 +219,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
                 }
                 boolean isSuccess = saveBatch(cmsColumnList);
                 if (isSuccess) {
-                    refreshCache();
+                    refreshCache(CmsSiteUtil.getCurrentEditSiteId());
                 }
                 return cmsColumnList;
             }
@@ -225,12 +231,12 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
     @Override
     public CmsColumn saveData(CmsColumn object) {
         ToolUtil.checkParams(object);
-        String siteId = CmsSiteUtils.getCurrentEditSiteId();
+        String siteId = CmsSiteUtil.getCurrentEditSiteId();
         if (StrUtil.isBlank(object.getId()) && object.getOrderNo() == null) {
             object.setOrderNo(baseMapper.getMaxOrderNo(siteId, object.getpId()) + 1);
         }
         if (StrUtil.isBlank(object.getSiteId())) {
-            object.setSiteId(CmsSiteUtils.getCurrentEditSiteId());
+            object.setSiteId(CmsSiteUtil.getCurrentEditSiteId());
         }
         if (StrUtil.isBlank(object.getSlug())) {
             object.setSlug(PinyinUtil.getPinyin(object.getName()));
@@ -242,7 +248,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
 
         boolean isSuccess = saveOrUpdate(object);
         if (isSuccess) {
-            refreshCache();
+            refreshCache(CmsSiteUtil.getCurrentEditSiteId());
         }
         return object;
     }
@@ -272,7 +278,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
         if (Validator.isNotEmpty(id) && Validator.isNotEmpty(parent) && Validator.isNotEmpty(oldParent) &&
                 Validator.isNotEmpty(position) && Validator.isNotEmpty(oldPosition)) {
             boolean isSuccess;
-            String siteId = CmsSiteUtils.getCurrentEditSiteId();
+            String siteId = CmsSiteUtil.getCurrentEditSiteId();
             // 没有改变所属节点,内部排序
             if (parent.equals(oldParent)) {
                 // 拖动影响节点顺序的开始序号
@@ -333,7 +339,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
                 isSuccess = updateBatchById(newCmsColumn);
             }
             if (isSuccess) {
-                refreshCache();
+                refreshCache(CmsSiteUtil.getCurrentEditSiteId());
             }
             return isSuccess;
         } else {
@@ -344,7 +350,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
     @Override
     public List<Tree> selectByTitle(String title) {
         if (Validator.isNotEmpty(title)) {
-            String siteId = CmsSiteUtils.getCurrentEditSiteId();
+            String siteId = CmsSiteUtil.getCurrentEditSiteId();
             return baseMapper.selectByTitle(siteId, "%" + title + "%");
         } else {
             throw new EasyException("请输入关键字后重试");
@@ -364,16 +370,19 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
     }
 
     @Override
-    public boolean refreshCache() {
-        String siteId = CmsSiteUtils.getCurrentEditSiteId();
+    public boolean refreshCache(String siteId) {
         // 清除之前的
-        RedisUtil.delByPrefix(RedisKeyPrefix.COLUMN + siteId);
+        String keyPrefix = CmsRedisKeyPrefix.COLUMN;
+        if(StrUtil.isNotBlank(siteId)){
+            keyPrefix = keyPrefix + siteId + ":";
+        }
+        RedisUtil.delByPrefix(keyPrefix);
 
-        List<CmsColumn> columnList = baseMapper.selectAllColumn(CommonStatus.ENABLE.getCode());
+        List<CmsColumn> columnList = baseMapper.selectAllColumn(siteId, CommonStatus.ENABLE.getCode());
         if (columnList != null && columnList.size() > 0) {
             for (CmsColumn cmsColumn : columnList) {
-                RedisUtil.set(RedisKeyPrefix.COLUMN + siteId + ":" + cmsColumn.getId(), cmsColumn, 0);
-                RedisUtil.set(RedisKeyPrefix.COLUMN + siteId + ":" + cmsColumn.getSlug(), cmsColumn, 0);
+                RedisUtil.set(CmsRedisKeyPrefix.COLUMN + cmsColumn.getSiteId() + ":" + cmsColumn.getId(), cmsColumn, 0);
+                RedisUtil.set(CmsRedisKeyPrefix.COLUMN + cmsColumn.getSiteId() + ":" + cmsColumn.getSlug(), cmsColumn, 0);
             }
         }
         return true;

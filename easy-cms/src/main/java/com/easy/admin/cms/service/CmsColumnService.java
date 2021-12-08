@@ -23,9 +23,18 @@ public interface CmsColumnService {
     /**
      * 获取所有数据
      *
+     * @param containBaseNode 包含根节点
      * @return List<JsTree>
      */
-    List<Tree> selectAll();
+    List<Tree> selectAll(boolean containBaseNode);
+
+    /**
+     * 查询栏目数据 for 网站发布
+     *
+     * @param ids ids
+     * @return List<CmsColumn>
+     */
+    List<CmsColumn> selectCmsColumns(String[] ids);
 
     /**
      * 详情
@@ -125,7 +134,8 @@ public interface CmsColumnService {
     /**
      * 刷新缓存数据
      *
+     * @param siteId 站点id
      * @return true/false
      */
-    boolean refreshCache();
+    boolean refreshCache(String siteId);
 }

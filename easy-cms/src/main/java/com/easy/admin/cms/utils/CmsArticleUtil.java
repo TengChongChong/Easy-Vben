@@ -18,7 +18,8 @@ import java.util.List;
  * @date 2021/11/18
  */
 @Component
-public class CmsArticleUtils {
+public class CmsArticleUtil {
+    private CmsArticleUtil() {}
 
     private static CmsArticleService cmsArticleService;
 
@@ -79,7 +80,7 @@ public class CmsArticleUtils {
 
     @Autowired
     public void setCmsArticleService(CmsArticleService cmsArticleService) {
-        CmsArticleUtils.cmsArticleService = cmsArticleService;
+        CmsArticleUtil.cmsArticleService = cmsArticleService;
     }
 
 }

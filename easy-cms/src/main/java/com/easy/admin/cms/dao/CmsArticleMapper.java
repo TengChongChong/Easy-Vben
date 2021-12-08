@@ -26,6 +26,14 @@ public interface CmsArticleMapper extends BaseMapper<CmsArticle> {
     List<CmsArticle> select(Page<CmsArticle> page, @Param("ew") QueryWrapper<CmsArticle> queryWrapper, @Param("sysFileType") String sysFileType);
 
     /**
+     * 根据栏目ids获取已发布的文章 for 网站发布
+     *
+     * @param queryWrapper 查询条件
+     * @return List<CmsArticle>
+     */
+    List<CmsArticle> selectArticleByColumnIds(@Param("ew") QueryWrapper<CmsArticle> queryWrapper);
+
+    /**
      * 查询详细信息
      *
      * @param id id
@@ -40,5 +48,21 @@ public interface CmsArticleMapper extends BaseMapper<CmsArticle> {
      * @return true/false
      */
     int deleteBySiteId(@Param("siteId") String siteId);
+
+    /**
+     * 查询站点ids
+     *
+     * @param queryWrapper 查询条件
+     * @return 站点ids
+     */
+    List<String> selectSiteIds(@Param("ew") QueryWrapper<CmsArticle> queryWrapper);
+
+    /**
+     * 查询要发布的文章数据
+     *
+     * @param queryWrapper 查询条件
+     * @return 文章数据
+     */
+    List<CmsArticle> selectCmsArticle(@Param("ew") QueryWrapper<CmsArticle> queryWrapper);
 
 }

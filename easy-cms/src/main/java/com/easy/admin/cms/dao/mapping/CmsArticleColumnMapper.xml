@@ -33,5 +33,12 @@
     <select id="selectColumnsByArticleId" resultType="java.lang.String">
         select cac.column_id from cms_article_column cac where cac.article_id = #{articleId}
     </select>
+    <select id="selectColumnByArticleId" resultType="com.easy.admin.cms.model.CmsColumn">
+        select cc.id, cc.site_id from cms_article_column cac
+        left join cms_column cc on cc.id = cac.column_id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
 
 </mapper>

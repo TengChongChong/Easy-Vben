@@ -1,9 +1,7 @@
 package com.easy.admin.cms.config.beetl;
 
-import com.easy.admin.cms.core.beetl.BeetlConfiguration;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.ext.spring.BeetlSpringViewResolver;
-import org.beetl.ext.web.WebErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

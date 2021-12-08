@@ -6,7 +6,7 @@ import com.easy.admin.cms.dao.CmsSiteUserMapper;
 import com.easy.admin.cms.model.CmsSite;
 import com.easy.admin.cms.model.CmsSiteUser;
 import com.easy.admin.cms.service.CmsSiteUserService;
-import com.easy.admin.cms.utils.CmsSiteUtils;
+import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.util.ShiroUtil;
 import org.springframework.stereotype.Service;
@@ -45,12 +45,12 @@ public class CmsSiteUserServiceImpl extends ServiceImpl<CmsSiteUserMapper, CmsSi
 
     @Override
     public String getCurrentEditSiteId() {
-        return CmsSiteUtils.getCurrentEditSiteId();
+        return CmsSiteUtil.getCurrentEditSiteId();
     }
 
     @Override
     public boolean setCurrentEditSiteId(String siteId) {
-        CmsSiteUtils.setCurrentEditSiteId(siteId);
+        CmsSiteUtil.setCurrentEditSiteId(siteId);
         return true;
     }
 

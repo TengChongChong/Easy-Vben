@@ -5,7 +5,7 @@ import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.model.CmsPage;
 import com.easy.admin.cms.model.CmsSite;
 import com.easy.admin.cms.service.*;
-import com.easy.admin.cms.utils.CmsColumnUtils;
+import com.easy.admin.cms.utils.CmsColumnUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,7 +71,7 @@ public class CmsRouteController {
         CmsSite cmsSite = cmsSiteService.get(siteId);
         service.setCommonAttribute(model, cmsSite);
 
-        CmsColumn cmsColumn = CmsColumnUtils.getBySlug(siteId, slug);
+        CmsColumn cmsColumn = CmsColumnUtil.getBySlug(siteId, slug);
         model.addAttribute("column", cmsColumn);
 
         model.addAttribute("title", cmsColumn.getName() + " | " + cmsSite.getName());
@@ -116,7 +116,7 @@ public class CmsRouteController {
         CmsSite cmsSite = cmsSiteService.get(siteId);
         service.setCommonAttribute(model, cmsSite);
 
-        CmsPage cmsPage = cmsPageService.getBySlug(slug);
+        CmsPage cmsPage = cmsPageService.getBySlug(siteId, slug);
         model.addAttribute("page", cmsPage);
 
         model.addAttribute("title", cmsPage.getTitle() + " | " + cmsSite.getName());

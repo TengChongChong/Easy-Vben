@@ -68,6 +68,27 @@ public class Tree {
     private String type;
     private String data;
 
+    public Tree() {
+    }
+
+    public Tree(String id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    public Tree(String id, String pId, String title) {
+        this.id = id;
+        this.pId = pId;
+        this.title = title;
+    }
+
+    public Tree(String id, String pId, String title, String type) {
+        this.id = id;
+        this.pId = pId;
+        this.title = title;
+        this.type = type;
+    }
+
     public String getId() {
         return id;
     }

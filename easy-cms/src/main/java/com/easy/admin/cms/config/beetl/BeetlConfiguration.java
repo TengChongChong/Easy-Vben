@@ -1,8 +1,8 @@
-package com.easy.admin.cms.core.beetl;
+package com.easy.admin.cms.config.beetl;
 
-import com.easy.admin.cms.utils.CmsArticleUtils;
-import com.easy.admin.cms.utils.CmsColumnUtils;
-import com.easy.admin.cms.utils.CmsSiteUtils;
+import com.easy.admin.cms.utils.CmsArticleUtil;
+import com.easy.admin.cms.utils.CmsColumnUtil;
+import com.easy.admin.cms.utils.CmsSiteUtil;
 import org.beetl.ext.spring.BeetlGroupUtilConfiguration;
 
 import java.lang.reflect.Field;
@@ -20,9 +20,9 @@ public class BeetlConfiguration extends BeetlGroupUtilConfiguration {
 
     @Override
     public void initOther(){
-        groupTemplate.registerFunctionPackage("articleUtils", CmsArticleUtils.class);
-        groupTemplate.registerFunctionPackage("columnUtils", CmsColumnUtils.class);
-        groupTemplate.registerFunctionPackage("siteUtils", CmsSiteUtils.class);
+        groupTemplate.registerFunctionPackage("articleUtils", CmsArticleUtil.class);
+        groupTemplate.registerFunctionPackage("columnUtils", CmsColumnUtil.class);
+        groupTemplate.registerFunctionPackage("siteUtils", CmsSiteUtil.class);
     }
 
     /**

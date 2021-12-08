@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.cms.dao.CmsReleaseQueueMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsReleaseQueue">
+        <result column="id" property="id" />
+        <result column="p_id" property="pId" />
+        <result column="title" property="title" />
+        <result column="type" property="type" />
+        <result column="site_id" property="siteId" />
+        <result column="weight" property="weight" />
+        <result column="data_id" property="dataId" />
+        <result column="status" property="status" />
+        <result column="receipt" property="receipt" />
+        <result column="duration" property="duration" />
+
+    </resultMap>
+    <select id="selectQueue" resultType="com.easy.admin.cms.model.CmsReleaseQueue">
+        select t.id, t.p_id, t.title, t.type, t.site_id, t.weight, t.data_id
+        from cms_release_queue t
+        where t.p_id = #{pId} and t.status = #{status}
+        order by t.weight desc
+    </select>
+    <select id="selectDoneCount" resultType="java.lang.Long">
+        select count(1) from cms_release_queue where p_id = #{pId} and status = #{status}
+    </select>
+    <select id="select" resultType="com.easy.admin.cms.model.CmsReleaseQueue">
+        select t.id, t.p_id, t.title, t.type, t.site_id, t.weight, t.data_id, t.status, t.receipt, t.duration
+        from cms_release_queue t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="getQueueById" resultType="com.easy.admin.cms.model.CmsReleaseQueue">
+        select t.id, t.p_id, t.title, t.type, t.site_id, t.weight, t.data_id
+        from cms_release_queue t
+        where t.id = #{id}
+    </select>
+
+</mapper>

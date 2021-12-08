@@ -1,0 +1,192 @@
+package com.easy.admin.cms.model;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * 网站发布
+ *
+ * @author TengChongChong
+ * @date 2021-11-29
+ */
+@TableName("cms_release")
+public class CmsRelease extends Model<CmsRelease> {
+
+    @TableId(value = "id")
+    private String id;
+
+    /**
+     * 站点id
+     */
+    private String siteId;
+
+    /**
+     * 页面id
+     */
+    private String pageIds;
+    /**
+     * 栏目id
+     */
+    private String columnIds;
+    /**
+     * 是否发布栏目下文章
+     */
+    private String releaseArticle;
+    /**
+     * 状态
+     */
+    private String status;
+    /**
+     * 总任务
+     */
+    private Long total;
+    /**
+     * 已完成数量
+     */
+    private Long done;
+    /**
+     * 发布失败数量
+     */
+    private Long fail;
+    /**
+     * 发布回执
+     */
+    private String receipt;
+    /**
+     * 发布时间
+     */
+    private Date releaseDate;
+    /**
+     * 结束时间
+     */
+    private Date endDate;
+    /**
+     * 创建人id
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private String createUser;
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Date createDate;
+    //
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+
+    public String getPageIds() {
+        return pageIds;
+    }
+
+    public void setPageIds(String pageIds) {
+        this.pageIds = pageIds;
+    }
+    public String getColumnIds() {
+        return columnIds;
+    }
+
+    public void setColumnIds(String columnIds) {
+        this.columnIds = columnIds;
+    }
+    public String getReleaseArticle() {
+        return releaseArticle;
+    }
+
+    public void setReleaseArticle(String releaseArticle) {
+        this.releaseArticle = releaseArticle;
+    }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
+    }
+
+    public Long getDone() {
+        return done;
+    }
+
+    public void setDone(Long done) {
+        this.done = done;
+    }
+
+    public String getReceipt() {
+        return receipt;
+    }
+
+    public void setReceipt(String receipt) {
+        this.receipt = receipt;
+    }
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Long getFail() {
+        return fail;
+    }
+
+    public void setFail(Long fail) {
+        this.fail = fail;
+    }
+}

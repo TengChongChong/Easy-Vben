@@ -69,4 +69,12 @@ public interface CmsArticleColumnService {
      * @return CmsColumn
      */
     CmsColumn getCmsColumnByArticleId(String siteId, String articleId);
+
+    /**
+     * 查询文章所属栏目ids
+     *
+     * @param articleIds 文章ids
+     * @return 栏目
+     */
+    List<CmsColumn> selectColumnByArticleId(String articleIds);
 }

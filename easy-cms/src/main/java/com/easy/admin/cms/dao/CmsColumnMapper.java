@@ -1,5 +1,6 @@
 package com.easy.admin.cms.dao;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.common.core.common.tree.Tree;
@@ -31,12 +32,21 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     List<Tree> selectAll(@Param("siteId") String siteId, @Param("status") String status);
 
     /**
+     * 查询栏目数据 for 网站发布
+     *
+     * @param queryWrapper 查询条件
+     * @return List<CmsColumn>
+     */
+    List<CmsColumn> selectColumns(@Param("ew") QueryWrapper<CmsColumn> queryWrapper);
+
+    /**
      * 查询所有栏目
      *
+     * @param siteId 站点id
      * @param status 状态
      * @return List<CmsColumn>
      */
-    List<CmsColumn> selectAllColumn(@Param("status") String status);
+    List<CmsColumn> selectAllColumn(@Param("siteId") String siteId, @Param("status") String status);
 
     /**
      * 获取详情信息

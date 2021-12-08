@@ -56,4 +56,24 @@
         from cms_article t
         where t.id = #{id}
     </select>
+    <select id="selectSiteIds" resultType="java.lang.String">
+        select t.site_id from cms_article t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="selectCmsArticle" resultType="com.easy.admin.cms.model.CmsArticle">
+        select t.id, t.site_id from cms_article t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="selectArticleByColumnIds" resultType="com.easy.admin.cms.model.CmsArticle">
+        select t.id, t.site_id, t.title
+        from cms_article t
+        left join cms_article_column cac on cac.article_id = t.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
 </mapper>

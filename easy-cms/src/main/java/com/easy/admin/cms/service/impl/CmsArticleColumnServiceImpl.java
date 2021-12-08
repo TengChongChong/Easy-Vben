@@ -1,12 +1,13 @@
 package com.easy.admin.cms.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.cms.dao.CmsArticleColumnMapper;
 import com.easy.admin.cms.model.CmsArticleColumn;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.service.CmsArticleColumnService;
-import com.easy.admin.cms.utils.CmsColumnUtils;
+import com.easy.admin.cms.utils.CmsColumnUtil;
 import com.easy.admin.common.core.constant.CommonConst;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +61,11 @@ public class CmsArticleColumnServiceImpl extends ServiceImpl<CmsArticleColumnMap
     @Override
     public CmsColumn getCmsColumnByArticleId(String siteId, String articleId) {
         String columnId = baseMapper.getCmsColumnIdByArticleId(articleId);
-        return CmsColumnUtils.getById(siteId, columnId);
+        return CmsColumnUtil.getById(siteId, columnId);
     }
 
+    @Override
+    public List<CmsColumn> selectColumnByArticleId(String articleIds) {
+        return baseMapper.selectColumnByArticleId(new QueryWrapper<CmsArticleColumn>().in("cac.article_id", articleIds.split(CommonConst.SPLIT)));
+    }
 }

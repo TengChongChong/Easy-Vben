@@ -5,7 +5,7 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.cms.common.constant.RedisKeyPrefix;
+import com.easy.admin.cms.common.constant.CmsRedisKeyPrefix;
 import com.easy.admin.cms.dao.CmsSiteMapper;
 import com.easy.admin.cms.model.CmsSite;
 import com.easy.admin.cms.service.*;
@@ -97,7 +97,7 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
             cmsSite.setName(SysConfigUtil.getProjectName());
         } else {
             // 由于此处发布静态页面时频繁调用，优先从缓存读取
-            cmsSite = (CmsSite) RedisUtil.get(RedisKeyPrefix.SITE + id);
+            cmsSite = (CmsSite) RedisUtil.get(CmsRedisKeyPrefix.SITE + id);
             if (cmsSite == null) {
                 cmsSite = baseMapper.selectInfo(id);
             }
@@ -323,12 +323,12 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
     @Override
     public boolean refreshCache() {
         // 清除之前的
-        RedisUtil.delByPrefix(RedisKeyPrefix.SITE);
+        RedisUtil.delByPrefix(CmsRedisKeyPrefix.SITE);
 
         List<CmsSite> siteList = selectAllSite();
         if (siteList != null && siteList.size() > 0) {
             for (CmsSite cmsSite : siteList) {
-                RedisUtil.set(RedisKeyPrefix.SITE + cmsSite.getId(), cmsSite, 0);
+                RedisUtil.set(CmsRedisKeyPrefix.SITE + cmsSite.getId(), cmsSite, 0);
             }
         }
         return true;

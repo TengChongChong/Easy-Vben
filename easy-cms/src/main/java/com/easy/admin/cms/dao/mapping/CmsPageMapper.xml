@@ -35,6 +35,15 @@
     <select id="getBySlug" resultType="com.easy.admin.cms.model.CmsPage">
         select t.id, t.site_id, t.title, t.slug, t.template, t.status, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
         from cms_page t
-        where t.slug = #{slug}
+        where t.slug = #{slug} and t.site_id = #{siteId}
+    </select>
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select id, title from cms_page where site_id = #{siteId} and status = #{status}
+    </select>
+    <select id="selectPages" resultType="com.easy.admin.cms.model.CmsPage">
+        select t.id, t.site_id, t.title from cms_page t
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
 </mapper>

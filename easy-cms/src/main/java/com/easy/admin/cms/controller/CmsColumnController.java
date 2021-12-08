@@ -121,7 +121,7 @@ public class CmsColumnController {
     @GetMapping("all")
     @RequiresPermissions("cms:site:select")
     public List<Tree> selectAll() {
-        return service.selectAll();
+        return service.selectAll(true);
     }
 
     /**

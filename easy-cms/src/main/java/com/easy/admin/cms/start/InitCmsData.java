@@ -1,5 +1,6 @@
 package com.easy.admin.cms.start;
 
+import com.easy.admin.cms.service.CmsColumnService;
 import com.easy.admin.cms.service.CmsSiteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +20,17 @@ public class InitCmsData implements CommandLineRunner {
     @Autowired
     private CmsSiteService cmsSiteService;
 
+    @Autowired
+    private CmsColumnService cmsColumnService;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void run(String... args) {
         logger.debug("加载CMS数据");
         cmsSiteService.refreshCache();
+
+        cmsColumnService.refreshCache(null);
     }
 
 }

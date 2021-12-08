@@ -6,7 +6,7 @@ import com.easy.admin.cms.dao.CmsColumnUserMapper;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.model.CmsColumnUser;
 import com.easy.admin.cms.service.CmsColumnUserService;
-import com.easy.admin.cms.utils.CmsSiteUtils;
+import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.util.ShiroUtil;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class CmsColumnUserServiceImpl extends ServiceImpl<CmsColumnUserMapper, C
             userId = ShiroUtil.getCurrentUser().getId();
         }
 
-        return baseMapper.selectColumnsByUserId(CmsSiteUtils.getCurrentEditSiteId(), userId, CommonStatus.ENABLE.getCode());
+        return baseMapper.selectColumnsByUserId(CmsSiteUtil.getCurrentEditSiteId(), userId, CommonStatus.ENABLE.getCode());
     }
 
     @Override

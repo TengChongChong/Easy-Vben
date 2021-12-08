@@ -1,7 +1,9 @@
 package com.easy.admin.cms.dao;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.cms.model.CmsArticleColumn;
+import com.easy.admin.cms.model.CmsColumn;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -53,4 +55,12 @@ public interface CmsArticleColumnMapper extends BaseMapper<CmsArticleColumn> {
      * @return 栏目id
      */
     String getCmsColumnIdByArticleId(@Param("articleId") String articleId);
+
+    /**
+     * 查询文章所属栏目ids
+     *
+     * @param queryWrapper 查询条件
+     * @return 栏目
+     */
+    List<CmsColumn> selectColumnByArticleId(@Param("ew") QueryWrapper<CmsArticleColumn> queryWrapper);
 }

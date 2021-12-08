@@ -1,7 +1,9 @@
 package com.easy.admin.cms.service;
 
-import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.cms.model.CmsArticle;
+import com.easy.admin.common.core.common.pagination.Page;
+
+import java.util.List;
 
 /**
  * 文章管理
@@ -18,6 +20,14 @@ public interface CmsArticleService {
      * @return Page<CmsArticle>
      */
     Page<CmsArticle> select(CmsArticle object, Page<CmsArticle> page);
+
+    /**
+     * 根据栏目ids获取已发布的文章 for 网站发布
+     *
+     * @param columnIds 栏目ids
+     * @return List<CmsArticle>
+     */
+    List<CmsArticle> selectArticleByColumnIds(String[] columnIds);
 
     /**
      * 详情

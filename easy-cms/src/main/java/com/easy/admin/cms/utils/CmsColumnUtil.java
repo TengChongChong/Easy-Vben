@@ -1,6 +1,6 @@
 package com.easy.admin.cms.utils;
 
-import com.easy.admin.cms.common.constant.RedisKeyPrefix;
+import com.easy.admin.cms.common.constant.CmsRedisKeyPrefix;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.service.CmsColumnService;
 import com.easy.admin.common.redis.util.RedisUtil;
@@ -14,7 +14,10 @@ import org.springframework.stereotype.Component;
  * @date 2021/11/18
  */
 @Component
-public class CmsColumnUtils {
+public class CmsColumnUtil {
+
+    private CmsColumnUtil() {
+    }
 
     private static CmsColumnService cmsColumnService;
 
@@ -27,7 +30,7 @@ public class CmsColumnUtils {
      * @return CmsColumn
      */
     public static CmsColumn getById(String siteId, String id) {
-        CmsColumn cmsColumn = (CmsColumn) RedisUtil.get(RedisKeyPrefix.COLUMN + siteId + ":" + id);
+        CmsColumn cmsColumn = (CmsColumn) RedisUtil.get(CmsRedisKeyPrefix.COLUMN + siteId + ":" + id);
         if (cmsColumn == null) {
             return cmsColumnService.get(id);
         }
@@ -43,7 +46,7 @@ public class CmsColumnUtils {
      * @return CmsColumn
      */
     public static CmsColumn getBySlug(String siteId, String slug) {
-        CmsColumn cmsColumn = (CmsColumn) RedisUtil.get(RedisKeyPrefix.COLUMN + siteId + ":" + slug);
+        CmsColumn cmsColumn = (CmsColumn) RedisUtil.get(CmsRedisKeyPrefix.COLUMN + siteId + ":" + slug);
         if (cmsColumn == null) {
             return cmsColumnService.getBySlug(siteId, slug);
         }
@@ -53,6 +56,6 @@ public class CmsColumnUtils {
 
     @Autowired
     public void setCmsColumnService(CmsColumnService cmsColumnService) {
-        CmsColumnUtils.cmsColumnService = cmsColumnService;
+        CmsColumnUtil.cmsColumnService = cmsColumnService;
     }
 }

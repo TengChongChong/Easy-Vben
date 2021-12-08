@@ -17,11 +17,23 @@ import org.springframework.stereotype.Component;
  * @date 2021/11/18
  */
 @Component
-public class CmsSiteUtils {
+public class CmsSiteUtil {
+
+    private CmsSiteUtil() {}
 
     private static CmsSiteUserService cmsSiteUserService;
 
     private static CmsSiteService cmsSiteService;
+
+    /**
+     * 根据站点id获取站点数据
+     *
+     * @param id 站点id
+     * @return CmsSite
+     */
+    public static CmsSite getSiteById(String id){
+        return cmsSiteService.get(id);
+    }
 
     /**
      * 获取当前登录用户编辑的站点
@@ -65,11 +77,11 @@ public class CmsSiteUtils {
 
     @Autowired
     public void setCmsSiteUserService(CmsSiteUserService cmsSiteUserService) {
-        CmsSiteUtils.cmsSiteUserService = cmsSiteUserService;
+        CmsSiteUtil.cmsSiteUserService = cmsSiteUserService;
     }
 
     @Autowired
     public void setCmsSiteService(CmsSiteService cmsSiteService) {
-        CmsSiteUtils.cmsSiteService = cmsSiteService;
+        CmsSiteUtil.cmsSiteService = cmsSiteService;
     }
 }

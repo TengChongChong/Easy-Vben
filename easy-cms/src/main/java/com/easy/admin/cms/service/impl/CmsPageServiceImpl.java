@@ -8,9 +8,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.cms.dao.CmsPageMapper;
 import com.easy.admin.cms.model.CmsPage;
 import com.easy.admin.cms.service.CmsPageService;
-import com.easy.admin.cms.utils.CmsSiteUtils;
+import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.status.CommonStatus;
+import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.stereotype.Service;
@@ -42,21 +43,34 @@ public class CmsPageServiceImpl extends ServiceImpl<CmsPageMapper, CmsPage> impl
             // 查询条件
             // 标题
             if (Validator.isNotEmpty(object.getTitle())) {
-                queryWrapper.eq("t.title", object.getTitle());
+                queryWrapper.like("t.title", object.getTitle());
             }
             // 别名
             if (Validator.isNotEmpty(object.getSlug())) {
-                queryWrapper.eq("t.slug", object.getSlug());
+                queryWrapper.like("t.slug", object.getSlug());
             }
         }
         if (object == null || StrUtil.isBlank(object.getSiteId())) {
-            queryWrapper.eq("t.site_id", CmsSiteUtils.getCurrentEditSiteId());
+            queryWrapper.eq("t.site_id", CmsSiteUtil.getCurrentEditSiteId());
         } else {
             queryWrapper.eq("t.site_id", object.getSiteId());
         }
         page.setDefaultDesc("t.create_date");
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
+    }
+
+    @Override
+    public List<Tree> selectAll() {
+        return baseMapper.selectAll(CmsSiteUtil.getCurrentEditSiteId(), CommonStatus.ENABLE.getCode());
+    }
+
+    @Override
+    public List<CmsPage> selectPages(String[] ids) {
+        QueryWrapper<CmsPage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("t.id", ids);
+        queryWrapper.eq("t.status", CommonStatus.ENABLE.getCode());
+        return baseMapper.selectPages(queryWrapper);
     }
 
     /**
@@ -72,8 +86,8 @@ public class CmsPageServiceImpl extends ServiceImpl<CmsPageMapper, CmsPage> impl
     }
 
     @Override
-    public CmsPage getBySlug(String slug) {
-        return baseMapper.getBySlug(slug);
+    public CmsPage getBySlug(String siteId, String slug) {
+        return baseMapper.getBySlug(siteId, slug);
     }
 
     /**
@@ -119,7 +133,7 @@ public class CmsPageServiceImpl extends ServiceImpl<CmsPageMapper, CmsPage> impl
     public CmsPage saveData(CmsPage object) {
         ToolUtil.checkParams(object);
         if (StrUtil.isBlank(object.getSiteId())) {
-            object.setSiteId(CmsSiteUtils.getCurrentEditSiteId());
+            object.setSiteId(CmsSiteUtil.getCurrentEditSiteId());
         }
         if (StrUtil.isBlank(object.getSlug())) {
             object.setSlug(PinyinUtil.getPinyin(object.getTitle()));

@@ -10,7 +10,7 @@ import com.easy.admin.cms.common.type.CmsFileType;
 import com.easy.admin.cms.dao.CmsMediaMapper;
 import com.easy.admin.cms.model.CmsMedia;
 import com.easy.admin.cms.service.CmsMediaService;
-import com.easy.admin.cms.utils.CmsSiteUtils;
+import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.service.SysFileService;
@@ -60,7 +60,7 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
                 queryWrapper.eq("t.status", object.getStatus());
             }
         }
-        queryWrapper.eq("t.site_id", CmsSiteUtils.getCurrentEditSiteId());
+        queryWrapper.eq("t.site_id", CmsSiteUtil.getCurrentEditSiteId());
         page.setDefaultDesc("t.create_date");
         page.setRecords(baseMapper.select(page, queryWrapper, CmsFileType.MEDIA_FILE.getCode()));
         return page;
@@ -127,7 +127,7 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
         // 只能新增，不能修改
         if (object.getFile() != null && StrUtil.isNotBlank(object.getFile().getPath())) {
             object.setName(object.getFile().getDisplayName());
-            object.setSiteId(CmsSiteUtils.getCurrentEditSiteId());
+            object.setSiteId(CmsSiteUtil.getCurrentEditSiteId());
             object.setType(getType(object.getFile().getPath()));
             boolean isSuccess = saveOrUpdate(object);
             if (isSuccess) {

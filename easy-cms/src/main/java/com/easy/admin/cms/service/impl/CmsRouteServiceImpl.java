@@ -1,6 +1,5 @@
 package com.easy.admin.cms.service.impl;
 
-import com.easy.admin.cms.config.beetl.BeetlProperties;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.model.CmsPage;
 import com.easy.admin.cms.model.CmsSite;
@@ -19,9 +18,6 @@ import org.springframework.ui.Model;
  */
 @Service
 public class CmsRouteServiceImpl implements CmsRouteService {
-
-    @Autowired
-    private BeetlProperties beetlProperties;
 
     @Autowired
     private ProjectProperties projectProperties;

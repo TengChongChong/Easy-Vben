@@ -1,0 +1,126 @@
+package com.easy.admin.cms.service;
+
+import cn.hutool.json.JSONObject;
+import com.easy.admin.cms.model.CmsRelease;
+import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.tree.Tree;
+
+import java.util.List;
+
+/**
+ * 网站发布
+ *
+ * @author tengchong
+ * @date 2021/11/24
+ */
+public interface CmsReleaseService {
+
+    /**
+     * 列表
+     *
+     * @param object 查询条件
+     * @param page   分页
+     * @return Page<CmsRelease>
+     */
+    Page<CmsRelease> select(CmsRelease object, Page<CmsRelease> page);
+
+    /**
+     * 获取发布资源
+     *
+     * @return List<Tree>
+     */
+    List<Tree> selectReleaseAssets();
+
+    /**
+     * 保存发布
+     *
+     * @param cmsRelease 要发布的资源
+     * @return CmsRelease
+     */
+    CmsRelease saveRelease(CmsRelease cmsRelease);
+
+    /**
+     * 开始发布
+     *
+     * @param id     id
+     * @param siteId 站点id
+     */
+    void startRelease(String id, String siteId);
+
+    /**
+     * 发布单个列队数据
+     *
+     * @param id    id
+     * @return true/false
+     */
+    boolean releaseQueue(String id);
+
+    /**
+     * 取消发布
+     *
+     * @param id id
+     * @return {done: 0, fail: 0}
+     */
+    JSONObject cancelRelease(String id);
+
+    /**
+     * 获取已发布数量
+     *
+     * @param id id
+     * @return {done: 0, fail: 0}
+     */
+    JSONObject getReleaseProgress(String id);
+
+    /**
+     * 发布资源
+     *
+     * @param siteId 站点id
+     * @return true/false
+     */
+    boolean releaseAssets(String siteId);
+
+    /**
+     * 发布首页
+     *
+     * @param siteId 站点id
+     * @return true/false
+     */
+    boolean releaseHome(String siteId);
+
+    /**
+     * 发布页面
+     *
+     * @param siteId 站点id
+     * @param id     id
+     * @return true/false
+     */
+    boolean releasePage(String siteId, String id);
+
+    /**
+     * 发布栏目列表
+     *
+     * @param siteId 站点id
+     * @param slug   别名
+     * @return true/false
+     */
+    boolean releaseColumn(String siteId, String slug);
+
+    /**
+     * 发布栏目列表
+     *
+     * @param siteId   站点id
+     * @param columnId 栏目id
+     * @return true/false
+     */
+    boolean releaseColumnById(String siteId, String columnId);
+
+    /**
+     * 发布文章
+     *
+     * @param siteId    站点id
+     * @param articleId 文章id
+     * @return true/false
+     */
+    boolean releaseArticle(String siteId, String articleId);
+
+}
