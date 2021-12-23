@@ -71,6 +71,10 @@ public class CmsReleaseQueueServiceImpl extends ServiceImpl<CmsReleaseQueueMappe
             if (Validator.isNotEmpty(object.getTitle())) {
                 queryWrapper.like("t.title", object.getTitle());
             }
+            // 类型
+            if (Validator.isNotEmpty(object.getType())) {
+                queryWrapper.eq("t.type", object.getType());
+            }
             // 状态
             if (Validator.isNotEmpty(object.getStatus())) {
                 queryWrapper.eq("t.status", object.getStatus());

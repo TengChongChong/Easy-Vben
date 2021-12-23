@@ -46,8 +46,6 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
     @Autowired
     private CmsArticleService cmsArticleService;
     @Autowired
-    private CmsArticleColumnService cmsArticleColumnService;
-    @Autowired
     private CmsPageService cmsPageService;
 
     @Override
@@ -147,7 +145,6 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
             cmsSiteUserService.removeBySiteId(id);
             cmsColumnUserService.removeBySiteId(id);
             cmsColumnService.removeBySiteId(id);
-            cmsArticleColumnService.removeBySiteId(id);
             cmsArticleService.removeBySiteId(id);
             cmsPageService.removeBySiteId(id);
         }

@@ -6,6 +6,8 @@
     <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsArticle">
         <result column="id" property="id" />
         <result column="site_id" property="siteId" />
+        <result column="column_id" property="columnId" />
+        <result column="order_no" property="orderNo" />
         <result column="title" property="title" />
         <result column="title_font_family" property="titleFontFamily" />
         <result column="title_color" property="titleColor" />
@@ -37,12 +39,26 @@
         delete from cms_article where site_id = #{siteId}
     </delete>
     <select id="select" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.title, t.subtitle, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
+        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.subtitle, t.excerpt, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
                t.release_date, t.offline_date, t.view_count, t.url, t.status, su.nickname as edit_user, t.edit_date,
-               sf.path as coverPath, cc.name as columns
+               sf.path as coverPath, cc.name as columnName
         from cms_article t
-        left join cms_article_column cac on cac.article_id = t.id
-        left join cms_column cc on cc.id = cac.column_id
+        left join cms_column cc on cc.id = t.column_id
+        left join sys_user su on su.id = t.edit_user
+        left join sys_file sf on sf.p_id = t.id and sf.type = #{sysFileType}
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="selectForUtil" resultType="com.easy.admin.cms.model.CmsArticle">
+        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.subtitle, t.excerpt, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
+        t.release_date, t.offline_date, t.view_count, t.url, t.status, su.nickname as edit_user, t.edit_date,
+        sf.path as coverPath, cc.name as columnName
+        <if test="appendField != null and appendField != null">
+            , ${appendField}
+        </if>
+        from cms_article t
+        left join cms_column cc on cc.id = t.column_id
         left join sys_user su on su.id = t.edit_user
         left join sys_file sf on sf.p_id = t.id and sf.type = #{sysFileType}
         <where>
@@ -50,7 +66,7 @@
         </where>
     </select>
     <select id="getById" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.title, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size,
+        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size,
                t.subtitle, t.excerpt, t.content, t.keyword, t.description, t.source, t.author, t.tags, t.release_type,
                t.release_date, t.offline_date, t.view_count, t.type, t.url, t.dept_id, t.status
         from cms_article t
@@ -69,11 +85,24 @@
         </where>
     </select>
     <select id="selectArticleByColumnIds" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.title
-        from cms_article t
-        left join cms_article_column cac on cac.article_id = t.id
+        select t.id, t.site_id, t.title from cms_article t
         <where>
             ${ew.sqlSegment}
         </where>
+    </select>
+    <select id="selectColumnIdByArticleId" resultType="com.easy.admin.cms.model.CmsColumn">
+        select cc.id, cc.site_id from cms_article t
+        left join cms_column cc on cc.id = t.column_id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="getColumnByArticleId" resultType="com.easy.admin.cms.model.CmsColumn">
+        select cc.id, cc.site_id, cc.name, cc.slug from cms_article t
+        left join cms_column cc on cc.id = t.column_id
+        where t.id = #{id}
+    </select>
+    <select id="selectCountByColumnId" resultType="java.lang.Integer">
+        select count(1) from cms_article where column_id = #{columnId}
     </select>
 </mapper>

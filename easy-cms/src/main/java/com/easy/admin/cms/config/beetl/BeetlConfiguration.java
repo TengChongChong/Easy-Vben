@@ -1,5 +1,6 @@
 package com.easy.admin.cms.config.beetl;
 
+import cn.hutool.json.JSONUtil;
 import com.easy.admin.cms.utils.CmsArticleUtil;
 import com.easy.admin.cms.utils.CmsColumnUtil;
 import com.easy.admin.cms.utils.CmsSiteUtil;
@@ -20,9 +21,10 @@ public class BeetlConfiguration extends BeetlGroupUtilConfiguration {
 
     @Override
     public void initOther(){
-        groupTemplate.registerFunctionPackage("articleUtils", CmsArticleUtil.class);
-        groupTemplate.registerFunctionPackage("columnUtils", CmsColumnUtil.class);
-        groupTemplate.registerFunctionPackage("siteUtils", CmsSiteUtil.class);
+        groupTemplate.registerFunctionPackage("ArticleUtil", CmsArticleUtil.class);
+        groupTemplate.registerFunctionPackage("ColumnUtil", CmsColumnUtil.class);
+        groupTemplate.registerFunctionPackage("SiteUtil", CmsSiteUtil.class);
+        groupTemplate.registerFunctionPackage("JSONUtil", JSONUtil.class);
     }
 
     /**

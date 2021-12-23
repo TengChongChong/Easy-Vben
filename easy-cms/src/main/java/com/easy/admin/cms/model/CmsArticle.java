@@ -32,6 +32,14 @@ public class CmsArticle extends Model<CmsArticle> {
      */
     private String siteId;
     /**
+     * 栏目id
+     */
+    private String columnId;
+    /**
+     * 排序值
+     */
+    private Integer orderNo;
+    /**
      * 标题
      */
     @NotBlank(message = "标题不能为空")
@@ -152,18 +160,26 @@ public class CmsArticle extends Model<CmsArticle> {
     private String coverPath;
 
     /**
-     * 文章所属栏目
-     */
-    @TableField(exist = false)
-    private String columns;
-
-    /**
      * 栏目别名
      */
     @TableField(exist = false)
     private String columnSlug;
 
+    /**
+     * 栏目名称
+     */
+    @TableField(exist = false)
+    private String columnName;
+
+    @TableField(exist = false)
+    private String appendField;
+
     public CmsArticle() {
+    }
+
+    public CmsArticle(String siteId, String columnSlug) {
+        this.siteId = siteId;
+        this.columnSlug = columnSlug;
     }
 
     public CmsArticle(String siteId, String columnSlug, String status) {
@@ -191,6 +207,22 @@ public class CmsArticle extends Model<CmsArticle> {
 
     public void setSiteId(String siteId) {
         this.siteId = siteId;
+    }
+
+    public String getColumnId() {
+        return columnId;
+    }
+
+    public void setColumnId(String columnId) {
+        this.columnId = columnId;
+    }
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
     }
 
     public String getTitle() {
@@ -409,14 +441,6 @@ public class CmsArticle extends Model<CmsArticle> {
         this.cover = cover;
     }
 
-    public String getColumns() {
-        return columns;
-    }
-
-    public void setColumns(String columns) {
-        this.columns = columns;
-    }
-
     public String getCoverPath() {
         return coverPath;
     }
@@ -435,5 +459,21 @@ public class CmsArticle extends Model<CmsArticle> {
 
     public void setColumnSlug(String columnSlug) {
         this.columnSlug = columnSlug;
+    }
+
+    public String getAppendField() {
+        return appendField;
+    }
+
+    public void setAppendField(String appendField) {
+        this.appendField = appendField;
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 }

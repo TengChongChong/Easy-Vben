@@ -1,6 +1,6 @@
 <%include("../common/head.html"){}%>
 
-<div class="details_banner" style="background:url(${themeUrl}/assets/images/news_banner.jpg) no-repeat 50%/cover;"></div>
+<%include("../common/sub-banner.html"){}%>
 
 <div class="IndexService NewsDetails">
 	<div class="IndexService_content all">
@@ -17,7 +17,7 @@
 				<div class="content_bottom_left fl">
 				 <div class='bottom_left_copyright'>此内容来源于网络，如涉及版权问题请与我们联系。</div>				
 					<div class="bottom_left_TAG clear">
-						<dd class="fl">TAG：${articleUtils.formatTags(article.tags)}</dd>
+						<dd class="fl">TAG：${ArticleUtil.formatTags(article.tags)}</dd>
 					</div>
 				</div>
 			</div>

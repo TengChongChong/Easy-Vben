@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.cms.common.constant.CmsRedisKeyPrefix;
 import com.easy.admin.cms.dao.CmsColumnMapper;
 import com.easy.admin.cms.model.CmsColumn;
-import com.easy.admin.cms.service.CmsArticleColumnService;
+import com.easy.admin.cms.service.CmsArticleService;
 import com.easy.admin.cms.service.CmsColumnService;
 import com.easy.admin.cms.service.CmsColumnUserService;
 import com.easy.admin.cms.utils.CmsSiteUtil;
@@ -43,7 +43,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
     private CmsColumnUserService cmsColumnUserService;
 
     @Autowired
-    private CmsArticleColumnService cmsArticleColumnService;
+    private CmsArticleService cmsArticleService;
 
     @Override
     public List<Tree> selectByPId(String pId) {
@@ -144,7 +144,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
         }
 
         // 检查是否有文章
-        count = cmsArticleColumnService.selectCountByColumnId(id);
+        count = cmsArticleService.selectCountByColumnId(id);
         if (count > 0) {
             throw new EasyException("当前分类下有" + count + "条文章，请删除后重试");
         }

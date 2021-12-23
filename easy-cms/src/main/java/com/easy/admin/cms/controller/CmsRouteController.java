@@ -30,13 +30,7 @@ public class CmsRouteController {
     private CmsSiteService cmsSiteService;
 
     @Autowired
-    private CmsColumnService cmsColumnService;
-
-    @Autowired
     private CmsArticleService cmsArticleService;
-
-    @Autowired
-    private CmsArticleColumnService cmsArticleColumnService;
 
     @Autowired
     private CmsPageService cmsPageService;
@@ -54,26 +48,26 @@ public class CmsRouteController {
         service.setCommonAttribute(model, cmsSite);
 
         model.addAttribute("title", cmsSite.getName());
-
+        model.addAttribute("currentPage", "page-index");
         return service.getIndexViewPath(cmsSite);
     }
 
     /**
      * 栏目列表
      *
-     * @param model  model
-     * @param siteId 站点id
-     * @param slug   栏目别名
+     * @param model    model
+     * @param siteId   站点id
+     * @param columnId 栏目id
      * @return view
      */
-    @GetMapping("{siteId}/column/{slug}")
-    public String column(Model model, @PathVariable("siteId") String siteId, @PathVariable("slug") String slug) {
+    @GetMapping("{siteId}/column/{columnId}")
+    public String column(Model model, @PathVariable("siteId") String siteId, @PathVariable("columnId") String columnId) {
         CmsSite cmsSite = cmsSiteService.get(siteId);
         service.setCommonAttribute(model, cmsSite);
 
-        CmsColumn cmsColumn = CmsColumnUtil.getBySlug(siteId, slug);
+        CmsColumn cmsColumn = CmsColumnUtil.getById(siteId, columnId);
         model.addAttribute("column", cmsColumn);
-
+        model.addAttribute("currentPage", "column-" + cmsColumn.getSlug());
         model.addAttribute("title", cmsColumn.getName() + " | " + cmsSite.getName());
 
         return service.getColumnListViewPath(cmsSite, cmsColumn);
@@ -92,9 +86,9 @@ public class CmsRouteController {
         CmsSite cmsSite = cmsSiteService.get(siteId);
         service.setCommonAttribute(model, cmsSite);
 
-        CmsColumn cmsColumn = cmsArticleColumnService.getCmsColumnByArticleId(siteId, articleId);
+        CmsColumn cmsColumn = cmsArticleService.getColumnByArticleId(articleId);
         model.addAttribute("column", cmsColumn);
-
+        model.addAttribute("currentPage", "column-" + cmsColumn.getSlug());
         CmsArticle cmsArticle = cmsArticleService.get(articleId);
         model.addAttribute("article", cmsArticle);
 
@@ -118,7 +112,7 @@ public class CmsRouteController {
 
         CmsPage cmsPage = cmsPageService.getBySlug(siteId, slug);
         model.addAttribute("page", cmsPage);
-
+        model.addAttribute("currentPage", "page-" + cmsPage.getSlug());
         model.addAttribute("title", cmsPage.getTitle() + " | " + cmsSite.getName());
 
         return service.getPageViewPath(cmsSite, cmsPage);

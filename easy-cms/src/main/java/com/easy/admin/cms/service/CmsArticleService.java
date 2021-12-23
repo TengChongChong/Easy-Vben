@@ -1,7 +1,9 @@
 package com.easy.admin.cms.service;
 
 import com.easy.admin.cms.model.CmsArticle;
+import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.common.core.common.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,6 +22,15 @@ public interface CmsArticleService {
      * @return Page<CmsArticle>
      */
     Page<CmsArticle> select(CmsArticle object, Page<CmsArticle> page);
+
+    /**
+     * 列表
+     *
+     * @param object 查询条件
+     * @param page   分页
+     * @return Page<CmsArticle>
+     */
+    Page<CmsArticle> selectForUtil(CmsArticle object, Page<CmsArticle> page);
 
     /**
      * 根据栏目ids获取已发布的文章 for 网站发布
@@ -77,5 +88,23 @@ public interface CmsArticleService {
      * @return true/false
      */
     boolean setStatus(String ids, String status);
+
+
+    /**
+     * 根据文章id获取文章所属栏目
+     *
+     * @param id id
+     * @return CmsColumn
+     */
+    CmsColumn getColumnByArticleId(@Param("id") String id);
+
+    /**
+     * 根据栏目id查询文章数量
+     *
+     * @param columnId 栏目id
+     * @return 数量
+     */
+    int selectCountByColumnId(String columnId);
+
 
 }

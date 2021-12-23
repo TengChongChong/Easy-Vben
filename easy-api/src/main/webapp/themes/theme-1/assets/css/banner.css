@@ -7,10 +7,10 @@
   background-position: center center;
   background-size: cover;
   position: relative;
-  height: 920px;
+  height: 520px;
 }
 
-.banner{ overflow: hidden; width: 100%;margin: 0 auto; height: 920px;}
+.banner{ overflow: hidden; width: 100%;margin: 0 auto; height: 520px;}
 .slick-hero-slider-caption {
   padding-top: 120px;
   padding-bottom: 100px;

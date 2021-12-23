@@ -1,9 +1,9 @@
 package com.easy.admin.cms.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HtmlUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,12 +14,12 @@ import com.easy.admin.cms.dao.CmsArticleMapper;
 import com.easy.admin.cms.model.CmsArticle;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.model.CmsSite;
-import com.easy.admin.cms.service.CmsArticleColumnService;
 import com.easy.admin.cms.service.CmsArticleService;
 import com.easy.admin.cms.utils.CmsReleaseUtil;
 import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.model.SysFile;
 import com.easy.admin.sys.model.SysUser;
 import com.easy.admin.sys.service.SysFileService;
@@ -46,9 +46,6 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
     @Autowired
     private SysFileService sysFileService;
 
-    @Autowired
-    private CmsArticleColumnService cmsArticleColumnService;
-
     /**
      * 列表
      *
@@ -59,35 +56,36 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
     @Override
     public Page<CmsArticle> select(CmsArticle object, Page<CmsArticle> page) {
         QueryWrapper<CmsArticle> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
-            // 查询条件
-            // 标题
-            if (Validator.isNotEmpty(object.getTitle())) {
-                queryWrapper.like("t.title", object.getTitle());
-            }
-            // 栏目Id
-            if (Validator.isNotEmpty(object.getColumns())) {
-                queryWrapper.eq("cac.column_id", object.getColumns());
-            }
-            // 栏目别名
-            if (Validator.isNotEmpty(object.getColumnSlug())) {
-                queryWrapper.eq("cc.slug", object.getColumnSlug());
-            }
-
-            // 信息来源
-            if (Validator.isNotEmpty(object.getSource())) {
-                queryWrapper.like("t.source", object.getSource());
-            }
-            // 作者
-            if (Validator.isNotEmpty(object.getAuthor())) {
-                queryWrapper.like("t.author", object.getAuthor());
-            }
-            // 状态
-            if (Validator.isNotEmpty(object.getStatus())) {
-                queryWrapper.eq("t.status", object.getStatus());
-            }
+        if (object == null) {
+            object = new CmsArticle();
         }
-        if (object == null || StrUtil.isBlank(object.getSiteId())) {
+        // 查询条件
+        // 标题
+        if (Validator.isNotEmpty(object.getTitle())) {
+            queryWrapper.like("t.title", object.getTitle());
+        }
+        // 栏目Id
+        if (Validator.isNotEmpty(object.getColumnId())) {
+            queryWrapper.eq("t.column_id", object.getColumnId());
+        }
+        // 栏目别名
+        if (Validator.isNotEmpty(object.getColumnSlug())) {
+            queryWrapper.eq("cc.slug", object.getColumnSlug());
+        }
+
+        // 信息来源
+        if (Validator.isNotEmpty(object.getSource())) {
+            queryWrapper.like("t.source", object.getSource());
+        }
+        // 作者
+        if (Validator.isNotEmpty(object.getAuthor())) {
+            queryWrapper.like("t.author", object.getAuthor());
+        }
+        // 状态
+        if (Validator.isNotEmpty(object.getStatus())) {
+            queryWrapper.eq("t.status", object.getStatus());
+        }
+        if (StrUtil.isBlank(object.getSiteId())) {
             queryWrapper.eq("t.site_id", CmsSiteUtil.getCurrentEditSiteId());
         } else {
             queryWrapper.eq("t.site_id", object.getSiteId());
@@ -98,10 +96,53 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
     }
 
     @Override
+    public Page<CmsArticle> selectForUtil(CmsArticle object, Page<CmsArticle> page) {
+        QueryWrapper<CmsArticle> queryWrapper = new QueryWrapper<>();
+        if (object == null || StrUtil.isBlank(object.getSiteId())) {
+            throw new EasyException("请指定站点id");
+        }
+        // 查询条件
+        // 标题
+        if (Validator.isNotEmpty(object.getTitle())) {
+            queryWrapper.like("t.title", object.getTitle());
+        }
+        // 栏目Id
+        if (Validator.isNotEmpty(object.getColumnId())) {
+            queryWrapper.eq("t.column_id", object.getColumnId());
+        }
+        // 栏目别名
+        if (Validator.isNotEmpty(object.getColumnSlug())) {
+            queryWrapper.eq("cc.slug", object.getColumnSlug());
+        }
+
+        // 信息来源
+        if (Validator.isNotEmpty(object.getSource())) {
+            queryWrapper.like("t.source", object.getSource());
+        }
+        // 作者
+        if (Validator.isNotEmpty(object.getAuthor())) {
+            queryWrapper.like("t.author", object.getAuthor());
+        }
+        // 站点
+        queryWrapper.eq("t.site_id", object.getSiteId());
+
+        // 只查询已发布
+        queryWrapper.eq("t.status", CmsArticleStatus.PUBLISHED.getCode());
+
+        page.setDefaultDesc("t.create_date");
+        if (page.getPageSize() == -1) {
+            page.setRecords(baseMapper.selectForUtil(null, queryWrapper, CmsFileType.ARTICLE_COVER.getCode(), object.getAppendField()));
+        } else {
+            page.setRecords(baseMapper.selectForUtil(page, queryWrapper, CmsFileType.ARTICLE_COVER.getCode(), object.getAppendField()));
+        }
+        return page;
+    }
+
+    @Override
     public List<CmsArticle> selectArticleByColumnIds(String[] columnIds) {
         QueryWrapper<CmsArticle> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("t.status", CmsArticleStatus.PUBLISHED.getCode());
-        queryWrapper.in("cac.column_id", columnIds);
+        queryWrapper.in("t.column_id", Arrays.asList(columnIds));
         return baseMapper.selectArticleByColumnIds(queryWrapper);
     }
 
@@ -121,11 +162,6 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
             if (coverFiles != null && coverFiles.size() > 0) {
                 cmsArticle.setCover(coverFiles.get(0));
             }
-            // 设置栏目
-            List<String> columns = cmsArticleColumnService.selectColumnsByArticleId(cmsArticle.getId());
-            if (columns != null && columns.size() > 0) {
-                cmsArticle.setColumns(CollUtil.join(columns, CommonConst.SPLIT));
-            }
         }
         return cmsArticle;
     }
@@ -142,7 +178,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         object.setAuthor(currentUser.getNickname());
         object.setReleaseType(CmsArticleReleaseType.MANUAL.getCode());
         object.setStatus(CmsArticleStatus.DRAFT.getCode());
-        object.setColumns(columnId);
+        object.setColumnId(columnId);
         // 设置默认值
         return object;
     }
@@ -189,6 +225,10 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
             object.setSiteId(CmsSiteUtil.getCurrentEditSiteId());
         }
 
+        // 自动摘要
+        if(StrUtil.isBlank(object.getExcerpt()) && StrUtil.isNotBlank(object.getContent())){
+            object.setExcerpt(StrUtil.maxLength(HtmlUtil.cleanHtmlTag(object.getContent()).trim().replaceAll("&nbsp;", ""), 200));
+        }
         if (Validator.isEmpty(object.getId())) {
             // 新增,设置默认值
             object.setStatus(CmsArticleStatus.DRAFT.getCode());
@@ -203,13 +243,10 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
                 // 删除旧封面
                 sysFileService.delete(object.getId(), CmsFileType.ARTICLE_COVER.getCode());
                 // 保存新封面
-                sysFileService.saveData(object.getId(), CmsFileType.ARTICLE_COVER.getCode(), object.getCover().getPath());
+                object.setCover(sysFileService.saveData(object.getId(), CmsFileType.ARTICLE_COVER.getCode(), object.getCover().getPath()));
             }
 
-            // 处理栏目
             // todo: 栏目文章排序
-            cmsArticleColumnService.remove(object.getId());
-            cmsArticleColumnService.saveData(object.getId(), object.getColumns());
         }
 
         return object;
@@ -218,7 +255,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
     @Override
     public boolean setStatus(String ids, String status) {
         UpdateWrapper<CmsArticle> setStatus = new UpdateWrapper<>();
-        setStatus.in("id", ids.split(CommonConst.SPLIT));
+        setStatus.in("id", Arrays.asList(ids.split(CommonConst.SPLIT)));
         setStatus.set("status", status);
         if (CmsArticleStatus.PUBLISHED.getCode().equals(status)) {
             // 发布
@@ -229,22 +266,24 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         boolean isSuccess = update(setStatus);
         if (isSuccess) {
             // 发布站点
-            List<String> siteIds = baseMapper.selectSiteIds(new QueryWrapper<CmsArticle>().in("t.id", ids.split(CommonConst.SPLIT)));
+            List<String> siteIds = baseMapper.selectSiteIds(new QueryWrapper<CmsArticle>().in("t.id", Arrays.asList(ids.split(CommonConst.SPLIT))));
             if (siteIds != null && siteIds.size() > 0) {
                 for (String siteId : siteIds) {
                     CmsReleaseUtil.releaseHome(siteId);
                 }
             }
             // 发布栏目
-            List<CmsColumn> cmsColumns = cmsArticleColumnService.selectColumnByArticleId(ids);
+            QueryWrapper<CmsArticle> queryColumns = new QueryWrapper<>();
+            queryColumns.in("id", Arrays.asList(ids.split(CommonConst.SPLIT)));
+            List<CmsColumn> cmsColumns = baseMapper.selectColumnIdByArticleId(queryColumns);
             if (cmsColumns != null && cmsColumns.size() > 0) {
                 for (CmsColumn cmsColumn : cmsColumns) {
                     CmsReleaseUtil.releaseColumn(cmsColumn.getSiteId(), cmsColumn.getId());
                 }
             }
 
-            List<CmsArticle> cmsArticles = baseMapper.selectCmsArticle(new QueryWrapper<CmsArticle>().in("t.id", ids.split(CommonConst.SPLIT)));
-            if(cmsArticles != null && cmsArticles.size() > 0){
+            List<CmsArticle> cmsArticles = baseMapper.selectCmsArticle(new QueryWrapper<CmsArticle>().in("t.id", Arrays.asList(ids.split(CommonConst.SPLIT))));
+            if (cmsArticles != null && cmsArticles.size() > 0) {
                 // 发布/撤销文章
                 if (CmsArticleStatus.PUBLISHED.getCode().equals(status)) {
                     for (CmsArticle cmsArticle : cmsArticles) {
@@ -254,7 +293,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
                     // 撤销删除文件
                     for (CmsArticle cmsArticle : cmsArticles) {
                         CmsSite cmsSite = CmsSiteUtil.getSiteById(cmsArticle.getSiteId());
-                        if(cmsSite != null){
+                        if (cmsSite != null) {
                             FileUtil.del(cmsSite.getDeploymentPath() + File.separator + "article" + File.separator + cmsArticle.getId() + ".html");
                         }
                     }
@@ -262,5 +301,15 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
             }
         }
         return isSuccess;
+    }
+
+    @Override
+    public CmsColumn getColumnByArticleId(String id) {
+        return baseMapper.getColumnByArticleId(id);
+    }
+
+    @Override
+    public int selectCountByColumnId(String columnId) {
+        return baseMapper.selectCountByColumnId(columnId);
     }
 }

@@ -7,35 +7,27 @@
             </div>
             <div class="content_top_left fl clear">
                 <div class="top_left_list fl">
-                    <dd><a href="/page/about.html">关于我们</a></dd>
+                    <dd><a href="/column/product.html">产品</a></dd>
                     <dt>
-                        <a href="about.html#">公司简介</a>
-                        <a href="about.html##qywh">企业文化</a>
-                        <a href="about.html##zzry">资质荣誉</a>
+                        <a href="/column/case.html">xxx</a>
+                        <a href="/column/case.html">xxx</a>
+                        <a href="/column/case.html">xxx</a>
                     </dt>
                 </div>
                 <div class="top_left_list fl">
-                    <dd><a href="service.html#">案例</a></dd>
+                    <dd><a href="/column/case.html">案例</a></dd>
                     <dt>
-                        <a href="service.html#">xxx</a>
-                        <a href="weixin.html#">xxx</a>
-                        <a href="app.html">xxx</a>
-                        <a href="yingxiao.html">xxx</a>
+                        <a href="/column/case.html">xxx</a>
+                        <a href="/column/case.html">xxx</a>
+                        <a href="/column/case.html">xxx</a>
                     </dt>
                 </div>
                 <div class="top_left_list fl">
-                    <dd><a href="news.html">产品</a></dd>
+                    <dd><a href="/page/contact.html">关于我们</a></dd>
                     <dt>
-                        <a href="newsinfo.html#hyxw/">xxx</a>
-                        <a href="newsinfo.html#xuetang/">xxx</a>
-                        <a href="newsinfo.html#wenti/">xxx</a>
-                    </dt>
-                </div>
-                <div class="top_left_list fl">
-                    <dd><a href="contact.html">联系我们</a></dd>
-                    <dt>
-                        <a href="contact.html">联系我们</a>
-                        <a href="contact.html">人才招聘</a>
+                        <a href="/page/contact.html">公司简介</a>
+                        <a href="/page/contact.html">人才招聘</a>
+                        <a href="/page/contact.html">联系我们</a>
                     </dt>
                 </div>
             </div>
@@ -65,14 +57,14 @@
         <div class="footer_content_bottom clear">
             <div class="content_bottom_left fl">友情链接：</div>
             <div class="content_bottom_right clear fl">
-                <%for(article in articleUtils.selectArticle(site.id, "links", 20)){%>
+                <%for(article in ArticleUtil.selectArticle(site.id, "links", 20)){%>
                     <a href="${article.url}" target="_blank" class="fl">${article.title}</a>
                 <%}%>
             </div>
         </div>
     </div>
     <div class="footer_content_copyright clear">Copyright©2012-2022 ${site.name} 版权所有
-        <a href="http://www.miitbeian.gov.cn/" rel="nofollow" target="_blank">备案号：沪ICP备xxxxx号</a>
+        <a href="https://beian.miit.gov.cn/#/Integrated/index" rel="nofollow" target="_blank"> 沪ICP备2021036956号</a>
     </div>
 </div>
 

@@ -1,7 +1,6 @@
 package com.easy.admin.cms.utils;
 
 import cn.hutool.core.util.StrUtil;
-import com.easy.admin.cms.common.status.CmsArticleStatus;
 import com.easy.admin.cms.model.CmsArticle;
 import com.easy.admin.cms.service.CmsArticleService;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -19,7 +18,8 @@ import java.util.List;
  */
 @Component
 public class CmsArticleUtil {
-    private CmsArticleUtil() {}
+    private CmsArticleUtil() {
+    }
 
     private static CmsArticleService cmsArticleService;
 
@@ -32,7 +32,24 @@ public class CmsArticleUtil {
      * @return List<CmsArticle>
      */
     public static List<CmsArticle> selectArticle(String siteId, String columnSlug, long pageSize) {
-        Page<CmsArticle> result = cmsArticleService.select(new CmsArticle(siteId, columnSlug, CmsArticleStatus.PUBLISHED.getCode()), new Page<>(1, pageSize));
+        return selectArticle(siteId, columnSlug, pageSize, false);
+    }
+
+    /**
+     * 获取文章数据
+     *
+     * @param siteId         站点id
+     * @param columnSlug     栏目别名
+     * @param pageSize       页大小
+     * @param containContent 是否查询内容
+     * @return List<CmsArticle>
+     */
+    public static List<CmsArticle> selectArticle(String siteId, String columnSlug, long pageSize, boolean containContent) {
+        CmsArticle cmsArticle = new CmsArticle(siteId, columnSlug);
+        if (containContent) {
+            cmsArticle.setAppendField("t.content");
+        }
+        Page<CmsArticle> result = cmsArticleService.selectForUtil(cmsArticle, new Page<>(1, pageSize));
         return initArticle(result.getRecords());
     }
 
@@ -67,8 +84,8 @@ public class CmsArticleUtil {
      * @param articleList 文章列表
      * @return 文章列表
      */
-    private static List<CmsArticle> initArticle(List<CmsArticle> articleList){
-        if(articleList == null || articleList.size() == 0){
+    private static List<CmsArticle> initArticle(List<CmsArticle> articleList) {
+        if (articleList == null || articleList.size() == 0) {
             return articleList;
         }
 

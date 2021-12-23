@@ -64,9 +64,6 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
     private CmsArticleService cmsArticleService;
 
     @Autowired
-    private CmsArticleColumnService cmsArticleColumnService;
-
-    @Autowired
     private CmsReleaseQueueService cmsReleaseQueueService;
 
     @Autowired
@@ -327,7 +324,6 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         } catch (RuntimeException | IOException e) {
             throw new EasyException("拷贝主题资源目录失败" + e.getMessage());
         }
-
         return false;
     }
 
@@ -340,7 +336,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
         // 页面 title
         params.put("title", cmsSite.getName());
-
+        params.put("currentPage", "page-index");
         generateFile(params, cmsRouteService.getIndexViewPath(cmsSite), getHomeFilePath(cmsSite));
         return true;
     }
@@ -370,6 +366,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
         CmsPage cmsPage = cmsPageService.get(id);
         params.put("page", cmsPage);
+        params.put("currentPage", "page-" + cmsPage.getSlug());
 
         params.put("title", cmsPage.getTitle() + " | " + cmsSite.getName());
 
@@ -393,6 +390,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         setCommonAttribute(params, cmsSite);
 
         params.put("column", cmsColumn);
+        params.put("currentPage", "column-" + cmsColumn.getSlug());
 
         params.put("title", cmsColumn.getName() + " | " + cmsSite.getName());
 
@@ -407,8 +405,9 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         CmsSite cmsSite = CmsSiteUtil.getSiteById(siteId);
         setCommonAttribute(params, cmsSite);
 
-        CmsColumn cmsColumn = cmsArticleColumnService.getCmsColumnByArticleId(siteId, articleId);
+        CmsColumn cmsColumn = cmsArticleService.getColumnByArticleId(articleId);
         params.put("column", cmsColumn);
+        params.put("currentPage", "column-" + cmsColumn.getSlug());
 
         CmsArticle cmsArticle = cmsArticleService.get(articleId);
         params.put("article", cmsArticle);
