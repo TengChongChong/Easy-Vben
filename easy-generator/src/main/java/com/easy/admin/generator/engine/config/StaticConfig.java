@@ -132,7 +132,7 @@ public class StaticConfig extends AbstractConfig {
                 imports.add(new Import("@/utils/util", GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "downloadFileById"));
             }
         } else if (GeneratorFileConst.INPUT_VUE.equals(pageType)) {
-            imports.add(new Import("@" + generator.getApiPath().replace(".js", ""), GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "get," + GeneratorMethodConst.SAVE));
+            imports.add(new Import("@" + generator.getApiPath().replace(".js", ""), GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "get,add," + GeneratorMethodConst.SAVE));
             imports.add(new Import("@/utils/tips", GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "saveSuccessTip"));
             imports.add(new Import("@/utils/util", GeneratorImportConst.TYPE_METHOD, GeneratorImportConst.IMPORT_TYPE_MULTIPLE, "isNotBlank"));
         }

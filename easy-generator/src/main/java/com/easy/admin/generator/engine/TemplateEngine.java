@@ -11,6 +11,7 @@ import com.easy.admin.generator.constant.GeneratorTemplateConst;
 import com.easy.admin.generator.engine.config.*;
 import com.easy.admin.generator.model.Generator;
 import com.easy.admin.generator.util.GeneratorJavaUtil;
+import com.easy.admin.sys.common.constant.SysConst;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -144,6 +145,9 @@ public class TemplateEngine {
         template.binding("mapping", mappingConfig);
         template.binding("tableInfo", tableInfo);
         template.binding("staticConfig", staticConfig);
+        // 数据源
+        template.binding("dataSource", generator.getDataSource());
+        template.binding("isMaster", SysConst.projectProperties.getDynamicPrimary().equals(generator.getDataSource()));
         template.binding("commonComment", commonComment());
     }
 
@@ -219,10 +223,10 @@ public class TemplateEngine {
      * @param c class
      * @return map
      */
-    private Map<String, Object> getVars(Class c){
+    private Map<String, Object> getVars(Class c) {
         Field[] fields = c.getFields();
         Map<String, Object> property = new HashMap<>(fields.length);
-        for( Field field : fields ){
+        for (Field field : fields) {
             try {
                 property.put(field.getName(), field.get(c));
             } catch (IllegalAccessException e) {

@@ -58,6 +58,11 @@ public class ProjectProperties {
     @Value("${project.session-validation-interval}")
     private Integer sessionValidationInterval = 60 * 30;
     /**
+     * 主数据源名称
+     */
+    @Value("${spring.datasource.dynamic.primary}")
+    private String dynamicPrimary;
+    /**
      * 是否开启登录验证码,默认开启
      */
     private Boolean loginVerificationCode = false;
@@ -223,5 +228,9 @@ public class ProjectProperties {
 
     public void setProjectFrontEndUrl(String projectFrontEndUrl) {
         this.projectFrontEndUrl = projectFrontEndUrl;
+    }
+
+    public String getDynamicPrimary() {
+        return dynamicPrimary;
     }
 }

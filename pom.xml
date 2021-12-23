@@ -42,6 +42,7 @@
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <druid.version>1.1.10</druid.version>
         <mysql-connector-java.version>8.0.22</mysql-connector-java.version>
+        <dynamic-datasource.version>3.5.0</dynamic-datasource.version>
         <fastjson.version>1.2.75</fastjson.version>
         <swagger.fox.version>2.9.2</swagger.fox.version>
         <swagger.core.version>1.5.24</swagger.core.version>
@@ -49,6 +50,7 @@
         <knife4j.version>2.0.4</knife4j.version>
         <shiro.version>1.7.0</shiro.version>
         <beetl.version>3.3.0.RELEASE</beetl.version>
+        <log4j2.version>2.15.0</log4j2.version>
     </properties>
 
     <dependencyManagement>

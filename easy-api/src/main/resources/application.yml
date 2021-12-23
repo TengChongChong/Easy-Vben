@@ -24,28 +24,32 @@ spring:
             stat-view-servlet:
                 login-username: admin
                 login-password: 123
-            connection-properties:
-                # 慢SQL记录
-                druid.stat.mergeSql: true
-                druid.stat.slowSqlMillis: 2000
-            filters: stat,wall
-            # 初始化时建立物理连接的个数
-            initial-size: 5
-            # 最小连接池数量
-            min-idle: 5
-            # 最大连接池数量
-            max-active: 30
-            # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。
-            max-pool-prepared-statement-per-connection-size: 50
-            # 获取连接时最大等待时间，单位毫秒
-            max-wait: 60000
-            # 连接保持空闲而不被驱逐的最小时间
-            min-evictable-idle-time-millis: 300000
-            # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-            time-between-eviction-runs-millis: 60000
-            pool-prepared-statements: true
-            test-on-borrow: false
-            test-on-return: false
-            test-while-idle: true
-            use-global-data-source-stat: true
-            validation-query: select 1 from dual
+        dynamic:
+            primary: 'master'
+            # druid连接池监控
+            druid:
+                connection-properties:
+                    # 慢SQL记录
+                    druid.stat.mergeSql: true
+                    druid.stat.slowSqlMillis: 2000
+                filters: stat
+                # 初始化时建立物理连接的个数
+                initial-size: 5
+                # 最小连接池数量
+                min-idle: 5
+                # 最大连接池数量
+                max-active: 30
+                # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。
+                max-pool-prepared-statement-per-connection-size: 50
+                # 获取连接时最大等待时间，单位毫秒
+                max-wait: 60000
+                # 连接保持空闲而不被驱逐的最小时间
+                min-evictable-idle-time-millis: 300000
+                # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+                time-between-eviction-runs-millis: 60000
+                pool-prepared-statements: true
+                test-on-borrow: false
+                test-on-return: false
+                test-while-idle: true
+                use-global-data-source-stat: true
+                validation-query: select 1 from dual

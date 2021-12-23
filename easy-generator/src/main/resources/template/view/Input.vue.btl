@@ -135,11 +135,18 @@ export default {
   mounted () {
     if (isNotBlank(this.id)) {
       this.edit(this.id)
+    } else {
+      this.add()
     }
   },
   methods: {
     edit (id) {
       get(id).then((res) => {
+        this.model = res.data
+      })
+    },
+    add () {
+      add().then((res) => {
         this.model = res.data
       })
     },

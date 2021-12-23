@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class Generator {
     /**
+     * 数据源
+     */
+    private String dataSource;
+    /**
      * 表名
      */
     private String tableName;
@@ -111,6 +115,14 @@ public class Generator {
      * 列配置
      */
     private List<FieldSet> fieldSets;
+
+    public String getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public String getTableName() {
         return tableName;

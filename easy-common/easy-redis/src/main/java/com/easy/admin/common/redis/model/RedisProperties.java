@@ -71,7 +71,6 @@ public class RedisProperties {
     }
 
     public void setDatabase(Integer database) {
-        logger.warn("load RedisProperties");
         this.database = database;
     }
 

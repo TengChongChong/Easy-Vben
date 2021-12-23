@@ -32,20 +32,21 @@ public class GeneratorController {
      */
     @RequiresRoles("sys:admin")
     @GetMapping("table")
-    public List<Select> selectTable() {
-        return service.selectTable();
+    public List<Select> selectTable(String dataSource) {
+        return service.selectTable(dataSource);
     }
 
     /**
      * 根据表名获取字段列表
      *
+     * @param dataSource 数据源
      * @param tableName      表名
      * @return TableInfo
      */
     @RequiresRoles("sys:admin")
     @GetMapping("fields")
-    public TableInfo selectFields(String tableName) {
-        return service.selectFields(tableName);
+    public TableInfo selectFields(String dataSource, String tableName) {
+        return service.selectFields(dataSource, tableName);
     }
 
     /**

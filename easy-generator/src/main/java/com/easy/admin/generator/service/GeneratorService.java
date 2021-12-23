@@ -24,17 +24,19 @@ public interface GeneratorService {
     /**
      * 获取表名
      *
+     * @param dataSource 数据源
      * @return List<Select>
      */
-    List<Select> selectTable();
+    List<Select> selectTable(String dataSource);
 
     /**
      * 根据表名获取字段列表
      *
+     * @param dataSource 数据源
      * @param tableName 表名
      * @return List<Select>
      */
-    TableInfo selectFields(String tableName);
+    TableInfo selectFields(String dataSource, String tableName);
 
     /**
      * 查询所有模块

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysDataSourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysDataSource">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="type" property="type" />
+        <result column="url" property="url" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="create_date" property="createDate" />
+        <result column="create_user" property="createUser" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+        <result column="version" property="version" />
+        <result column="status" property="status" />
+    </resultMap>
+    <select id="select" resultType="com.easy.admin.sys.model.SysDataSource">
+        select t.id, t.type, t.name, t.description, t.url, su.nickname as edit_user, t.edit_date, t.status
+        from sys_data_source t
+        left join sys_user su on su.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="selectAll" resultType="com.easy.admin.sys.model.SysDataSource">
+        select t.name, t.url, t.username, t.password
+        from sys_data_source t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="getById" resultType="com.easy.admin.sys.model.SysDataSource">
+        select t.id, t.name, t.description, t.type, t.url, t.username, t.password, t.create_date, t.create_user, t.edit_user, t.edit_date, t.version, t.status
+        from sys_data_source t
+        where t.id = #{id}
+    </select>
+</mapper>

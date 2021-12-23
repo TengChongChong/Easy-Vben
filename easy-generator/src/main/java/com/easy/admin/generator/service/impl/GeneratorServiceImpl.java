@@ -5,6 +5,8 @@ import cn.hutool.system.SystemUtil;
 import cn.hutool.system.UserInfo;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
+import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.ds.ItemDataSource;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
@@ -61,10 +63,11 @@ public class GeneratorServiceImpl implements GeneratorService {
     private SysImportExcelTemplateDetailsService sysImportExcelTemplateDetailsService;
 
     @Autowired
-    private ProjectProperties projectProperties;
+    private DynamicRoutingDataSource dynamicRoutingDataSource;
 
     @Autowired
-    private DruidDataSource druidDataSource;
+    private ProjectProperties projectProperties;
+
 
     @Override
     public boolean generate(Generator object) {
@@ -73,7 +76,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                 throw new EasyException("当前模式[" + projectProperties.getProfilesActive() + "]不允许生成");
             }
             // 生成文件
-            new TemplateEngine(object, selectFields(object.getTableName())).start();
+            new TemplateEngine(object, selectFields(object.getDataSource(), object.getTableName())).start();
             SysImportExcelTemplate sysImportExcelTemplate = null;
             if (object.isGeneratorMethodsImport()) {
                 // 需要创建导入模板
@@ -96,7 +99,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                         importExcelTemplateDetails.setFieldName(item.getColumnName());
                         importExcelTemplateDetails.setFieldType(item.getColumnType());
                         importExcelTemplateDetails.setOrderNo(index);
-                        if(StrUtil.isNotBlank(item.getDictType())){
+                        if (StrUtil.isNotBlank(item.getDictType())) {
                             importExcelTemplateDetails.setReplaceTable("sys_dict");
                             importExcelTemplateDetails.setReplaceTableDictType(item.getDictType());
                             importExcelTemplateDetails.setReplaceTableFieldName("name");
@@ -164,7 +167,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                             savePermission.setpId(basePermission.getId());
                             sysPermissionsService.saveData(savePermission);
                         }
-                        if(object.isGeneratorMethodsImport() && StrUtil.isNotBlank(sysImportExcelTemplate.getId())){
+                        if (object.isGeneratorMethodsImport() && StrUtil.isNotBlank(sysImportExcelTemplate.getId())) {
                             SysPermissions savePermission = getNewMenu(
                                     "导入数据",
                                     PermissionsType.PERMISSIONS.getCode(),
@@ -210,13 +213,15 @@ public class GeneratorServiceImpl implements GeneratorService {
     }
 
     @Override
-    public List<Select> selectTable() {
+    public List<Select> selectTable(String dataSource) {
         List<Select> tables = new ArrayList<>();
+        DruidPooledConnection connection = null;
+        ResultSet rs = null;
         try {
-            DruidPooledConnection connection = druidDataSource.getConnection();
+            connection = (DruidPooledConnection) dynamicRoutingDataSource.getDataSource(dataSource).getConnection();
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             // 获取表
-            ResultSet rs = databaseMetaData.getTables(null, null, null, new String[]{"TABLE"});
+            rs = databaseMetaData.getTables(null, null, null, new String[]{"TABLE"});
             while (rs.next()) {
                 String tableName = rs.getString("TABLE_NAME");
                 String remarks = rs.getString("REMARKS");
@@ -224,11 +229,20 @@ public class GeneratorServiceImpl implements GeneratorService {
                     tables.add(new Select(tableName, remarks));
                 }
             }
-            rs.close();
-            connection.close();
         } catch (SQLException e) {
             logger.warn("查询表信息失败", e);
             throw new EasyException("查询表信息失败" + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return tables;
     }
@@ -278,12 +292,14 @@ public class GeneratorServiceImpl implements GeneratorService {
      *
      * @return 数据源配置
      */
-    private DataSourceConfig getDataSourceConfig() {
+    private DataSourceConfig getDataSourceConfig(String dataSource) {
+        ItemDataSource itemDataSource = (ItemDataSource)dynamicRoutingDataSource.getDataSource(dataSource);
+        DruidDataSource ds = (DruidDataSource)itemDataSource.getRealDataSource();
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setUrl(druidDataSource.getUrl());
-        dataSourceConfig.setDriverName(druidDataSource.getDriverClassName());
-        dataSourceConfig.setUsername(druidDataSource.getUsername());
-        dataSourceConfig.setPassword(druidDataSource.getPassword());
+        dataSourceConfig.setUrl(ds.getUrl());
+        dataSourceConfig.setDriverName(ds.getDriverClassName());
+        dataSourceConfig.setUsername(ds.getUsername());
+        dataSourceConfig.setPassword(ds.getPassword());
         return dataSourceConfig;
     }
 
@@ -321,8 +337,8 @@ public class GeneratorServiceImpl implements GeneratorService {
     }
 
     @Override
-    public TableInfo selectFields(String tableName) {
-        ConfigBuilder configBuilder = new ConfigBuilder(null, getDataSourceConfig(), getStrategyConfig(tableName), null, getGlobalConfig());
+    public TableInfo selectFields(String dataSource, String tableName) {
+        ConfigBuilder configBuilder = new ConfigBuilder(null, getDataSourceConfig(dataSource), getStrategyConfig(tableName), null, getGlobalConfig());
         List<TableInfo> tableInfoList = configBuilder.getTableInfoList();
         return tableInfoList.get(0);
     }

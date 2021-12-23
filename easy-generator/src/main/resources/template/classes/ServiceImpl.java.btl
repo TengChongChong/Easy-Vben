@@ -3,6 +3,9 @@ package ${config.packagePath}.service.impl;
 <% for(import in serviceImpl.imports!){ %>
 import ${import.name};
 <% } %>
+<% if (!isMaster) { %>
+import com.baomidou.dynamic.datasource.annotation.DS;
+<% } %>
 import ${config.packagePath}.model.${config.modelName};
 import ${config.packagePath}.service.${config.modelName}Service;
 import ${config.packagePath}.dao.${config.modelName}Mapper;
@@ -14,6 +17,9 @@ import ${config.packagePath}.dao.${config.modelName}Mapper;
  * @date ${config.date}
  */
 @Service
+<% if (!isMaster) { %>
+@DS("${config.dataSource}")
+<% } %>
 public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelName}Mapper, ${config.modelName}> implements ${config.modelName}Service<% if(config.isGeneratorMethodsImport){ %> ,ImportService<% }%> {
 
     <% if(config.isGeneratorMethodsSelect){ %>
