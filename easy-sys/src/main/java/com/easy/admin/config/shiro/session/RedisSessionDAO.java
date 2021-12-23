@@ -28,7 +28,7 @@ import java.util.Set;
 @Repository("redisSessionDAO")
 public class RedisSessionDAO extends AbstractSessionDAO {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     private String getKey(String originalKey) {
@@ -52,16 +52,14 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     @Override
     protected Serializable doCreate(Session session) {
         HttpServletRequest request = WebUtils.getRequest();
-        if (request != null) {
-            String uri = request.getServletPath();
-            // 如果是静态文件 不创建session
-            if (WebUtils.isStaticRequest(uri)) {
-                return null;
-            }
+        String uri = request.getServletPath();
+        // 如果是静态文件 不创建session
+        if (WebUtils.isStaticRequest(uri)) {
+            return null;
         }
         Serializable sessionId = this.generateSessionId(session);
         this.assignSessionId(session, sessionId);
-        logger.debug("createSession:", sessionId.toString());
+        logger.debug("createSession:{}", sessionId.toString());
         RedisUtil.set(getKey(sessionId.toString()), session, projectProperties.getSessionInvalidateTime());
         return sessionId;
     }
@@ -80,7 +78,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         if (WebUtils.isStaticRequest(uri)) {
             return null;
         }
-        logger.debug("readSession(" + request.getServletPath() + "):", sessionId.toString());
+        logger.debug("readSession({}):{}", request.getServletPath(), sessionId.toString());
         // 从缓存中获取session
         return (Session) RedisUtil.get(getKey(sessionId.toString()));
     }
@@ -102,18 +100,15 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     @Override
     public void update(Session session) {
         if (checkSession(session)) {
-            logger.debug("updateSession:", session.getId().toString());
+            logger.debug("updateSession:{}", session.getId().toString());
             HttpServletRequest request = WebUtils.getRequest();
-            String ignore = null;
-            if (request != null) {
-                String uri = request.getServletPath();
-                if (WebUtils.isStaticRequest(uri)) {
-                    return;
-                }
-                ignore = request.getParameter("ignore");
+            String uri = request.getServletPath();
+            if (WebUtils.isStaticRequest(uri)) {
+                return;
             }
+            String ignore = request.getParameter("ignore");
             if (!IGNORE.equals(ignore)) {
-                // 如请求必须要更新session会话有效期,请在url中传入ignore=1
+                // 如请求不需要更新session会话有效期,请在url中传入ignore=1
                 String key = getKey(session.getId().toString());
                 RedisUtil.set(key, session, projectProperties.getSessionInvalidateTime());
             }
@@ -128,7 +123,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     @Override
     public void delete(Session session) {
         if (checkSession(session)) {
-            logger.debug("delSession:", session.getId());
+            logger.debug("delSession:{}", session.getId());
             RedisUtil.del(getKey(session.getId().toString()));
         }
     }

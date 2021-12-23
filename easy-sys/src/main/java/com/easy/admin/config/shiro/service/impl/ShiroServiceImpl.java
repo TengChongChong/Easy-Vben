@@ -203,19 +203,19 @@ public class ShiroServiceImpl implements ShiroService {
                 }
                 // 账号被禁用
                 if (UserStatus.DISABLE.getCode().equals(sysUser.getStatus())) {
-                    logger.debug("账号[" + username + "]被禁用");
+                    logger.debug("账号[{}]被禁用", username);
                     throw new EasyException(Response.SILENT, BusinessException.USER_DISABLED);
                 }
                 // 查询用户部门信息并验证
                 sysUser.setDept(departmentMapper.selectById(sysUser.getDeptId()));
                 // 部门被删除
                 if (sysUser.getDept() == null) {
-                    logger.debug("账号[" + username + "]所在部门[" + sysUser.getDeptName() + "]被删除");
+                    logger.debug("账号[{}]所在部门[{}]被删除", username, sysUser.getDeptName());
                     throw new EasyException(Response.SILENT, BusinessException.DEPT_NON_EXISTENT);
                 }
                 // 部门被禁用
                 if (CommonStatus.DISABLE.getCode().equals(sysUser.getDept().getStatus())) {
-                    logger.debug("账号[" + username + "]所在部门[" + sysUser.getDeptName() + "]被禁用");
+                    logger.debug("账号[{}]所在部门[{}]被禁用", username, sysUser.getDeptName());
                     throw new EasyException(Response.SILENT, BusinessException.DEPT_DISABLED);
                 }
                 // 检查部门类型是否被禁用

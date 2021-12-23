@@ -102,7 +102,7 @@ public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements
             try {
                 objectNode = (ObjectNode) objectMapper.readTree(model.getMetaInfo());
             } catch (IOException e) {
-                logger.debug("读取模型信息失败[" + model.getId() + "]", e);
+                logger.debug("读取模型信息失败[{}]", model.getId(), e);
                 throw new EasyException("读取模型信息失败[" + model.getId() + "]");
             }
         } else {
@@ -114,7 +114,7 @@ public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements
         try {
             editorJsonNode = (ObjectNode) objectMapper.readTree(new String(repositoryService.getModelEditorSource(model.getId()), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            logger.debug("读取模型信息失败[" + model.getId() + "]", e);
+            logger.debug("读取模型信息失败[{}]", model.getId(), e);
             throw new EasyException("读取模型信息失败[" + model.getId() + "]");
         }
         objectNode.set("model", editorJsonNode);

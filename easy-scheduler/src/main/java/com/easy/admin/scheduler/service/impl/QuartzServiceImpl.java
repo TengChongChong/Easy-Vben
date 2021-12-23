@@ -53,7 +53,7 @@ public class QuartzServiceImpl implements QuartzService {
             try {
                 jobDetail = scheduler.getJobDetail(jobKey);
             } catch (SchedulerException e) {
-                logger.debug("获取任务失败["+schedulerJob.getCode()+"]", e);
+                logger.debug("获取任务失败[{}]", schedulerJob.getCode(), e);
             }
             if (jobDetail == null) {
                 // 创建触发器

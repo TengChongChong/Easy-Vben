@@ -17,10 +17,10 @@ public class SampleJob {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public void sampleJob1() {
-        logger.debug("示例定时任务1执行了[" + DateUtil.now() + "]");
+        logger.debug("示例定时任务1执行了[{}]", DateUtil.now());
     }
 
     public void sampleJob2() {
-        logger.debug("示例定时任务2执行了[" + DateUtil.now() + "]");
+        logger.debug("示例定时任务2执行了[{}]", DateUtil.now());
     }
 }

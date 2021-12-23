@@ -38,7 +38,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) {
-        logger.info("=============> 认证");
+        logger.debug("=============> 认证");
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         SysUser sysUser = shiroService.validateUser(token.getUsername(), String.valueOf(token.getPassword()));
         return new SimpleAuthenticationInfo(sysUser, sysUser.getPassword().toCharArray(), ByteSource.Util.bytes(sysUser.getSalt()), getName());
@@ -52,7 +52,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        logger.info("=============> 授权");
+        logger.debug("=============> 授权");
         // 当前登录用户
         SysUser currentUser = (SysUser) principalCollection.getPrimaryPrincipal();
         Subject subject = SecurityUtils.getSubject();

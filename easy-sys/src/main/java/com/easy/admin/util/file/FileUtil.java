@@ -55,7 +55,7 @@ public class FileUtil {
      */
     private static void checkDirs(File file) {
         if (!file.exists() && !file.mkdirs()) {
-            logger.debug("文件创建失败[" + file.getPath() + "]");
+            logger.debug("文件创建失败[{}]", file.getPath());
             throw new EasyException("文件创建失败[" + file.getPath() + "]");
         }
     }

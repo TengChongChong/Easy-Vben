@@ -70,7 +70,7 @@ public class CheckSessionFilter extends AccessControlFilter {
             Session session = (Session) RedisUtil.get(RedisPrefix.SHIRO_SESSION + subject.getSession().getId());
             // 检查是否被踢出
             if (session.getAttribute(SessionConst.FORCE_LOGOUT) != null && (boolean) session.getAttribute(SessionConst.FORCE_LOGOUT)) {
-                logger.debug("管理员踢出会话[" + session.getId() + "]");
+                logger.debug("管理员踢出会话[{}]", session.getId());
                 RedisUtil.del(RedisPrefix.SHIRO_SESSION + session.getId());
                 responseJson(subject, servletResponse, "你被管理员强制退出");
                 return false;
@@ -78,7 +78,7 @@ public class CheckSessionFilter extends AccessControlFilter {
 
             // 检查是否在他处登录
             if (session.getAttribute(SessionConst.LOGIN_ELSEWHERE) != null && (boolean) session.getAttribute(SessionConst.LOGIN_ELSEWHERE)) {
-                logger.debug("用户在其他地方登录会话[" + session.getId() + "]被踢出");
+                logger.debug("用户在其他地方登录会话[{}]被踢出", session.getId());
                 RedisUtil.del(RedisPrefix.SHIRO_SESSION + session.getId());
                 responseJson(subject, servletResponse, "你的账号在其他地方登录，你被强制退出");
                 return false;

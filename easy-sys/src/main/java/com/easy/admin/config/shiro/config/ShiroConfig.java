@@ -175,6 +175,7 @@ public class ShiroConfig {
     @Bean
     public DefaultWebSessionManager sessionManager() {
         SessionManager sessionManager = new SessionManager();
+//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(sessionDAO());
 
         Collection<org.apache.shiro.session.SessionListener> sessionListeners = new ArrayList<>();

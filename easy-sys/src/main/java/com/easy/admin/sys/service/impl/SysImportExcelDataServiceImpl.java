@@ -83,7 +83,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public boolean analysis(String templateId, String path) {
-        logger.debug("解析文件:" + path);
+        logger.debug("解析文件:{}", path);
         ToolUtil.checkParams(templateId);
         ToolUtil.checkParams(path);
         // 检查模板信息
@@ -95,14 +95,14 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         // 检查是否有权限访问
         if (StrUtil.isNotBlank(importExcelTemplate.getPermissionCode()) && !hasPermission(importExcelTemplate.getPermissionCode())) {
             // 无权导入
-            logger.debug("无权访问导入[" + importExcelTemplate.getPermissionCode() + "]" + importExcelTemplate.getName());
+            logger.debug("无权访问导入[{}]{}", importExcelTemplate.getPermissionCode(), importExcelTemplate.getName());
             throw new EasyException("无权访问导入" + importExcelTemplate.getName());
         }
         // 检查导入规则
         List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
         if (configs == null || configs.isEmpty()) {
             // 无导入规则
-            logger.debug("模板[" + importExcelTemplate.getImportCode() + "]未配置导入规则");
+            logger.debug("模板[{}]未配置导入规则", importExcelTemplate.getImportCode());
             throw new EasyException("模板[" + importExcelTemplate.getImportCode() + "]未配置导入规则");
         }
         File file = new File(path);

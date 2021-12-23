@@ -32,7 +32,7 @@ public class SysConfigUtil {
      * @return value
      */
     public static Object get(String key) {
-        logger.debug("SysConfigUtil.get(" + key + ")");
+        logger.debug("SysConfigUtil.get({})", key);
         return transferType(sysConfigService.getByKey(key));
     }
 

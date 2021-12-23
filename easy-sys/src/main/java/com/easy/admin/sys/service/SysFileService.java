@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 文件
  *
- * @author 系统管理员
+ * @author TengChongChong
  * @date 2021-02-21
  */
 public interface SysFileService {
