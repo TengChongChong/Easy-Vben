@@ -1,0 +1,24 @@
+<%include("../common/head.html"){}%>
+
+<%include("../common/sub-banner.html"){}%>
+
+<div class="IndexService IndexCase case">
+	<div class="IndexService_content all">
+		<div class="IndexCase_content clear article-items"></div>
+		<div class="page vertical"></div>
+	</div>
+</div>
+<script>
+	var themeUrl = '${themeUrl}';
+	var baseUrl = '${baseUrl}';
+	var articleData = [
+		<%for(article in ArticleUtil.selectArticle(site.id, column.slug, -1)){%>
+			${JSONUtil.parseObj(article)},
+		<%}%>
+	];
+</script>
+<%include("../common/footer.html"){}%>
+<script src="${themeUrl}/assets/js/article-tool.js"></script>
+<script src="${themeUrl}/assets/js/column.js"></script>
+</body>
+</html>
