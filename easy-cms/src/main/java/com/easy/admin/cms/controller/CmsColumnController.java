@@ -47,7 +47,7 @@ public class CmsColumnController {
      * @return true/false
      */
     @DeleteMapping("{id}")
-    @RequiresPermissions("cms:site:remove")
+    @RequiresPermissions("cms:column:remove")
     public boolean remove(@PathVariable("id") String id) {
         return service.remove(id);
     }
@@ -60,7 +60,7 @@ public class CmsColumnController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("cms:site:status")
+    @RequiresPermissions("cms:column:status")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
@@ -73,7 +73,7 @@ public class CmsColumnController {
      * @return List<CmsColumn>
      */
     @PostMapping("copy/{nodeIds}/to/{targetId}")
-    @RequiresPermissions("cms:site:save")
+    @RequiresPermissions("cms:column:save")
     public List<CmsColumn> copyNodes(@PathVariable("nodeIds") String nodeIds, @PathVariable("targetId") String targetId) {
         return service.copyNode(nodeIds, targetId);
     }
@@ -85,7 +85,7 @@ public class CmsColumnController {
      * @return CmsColumn
      */
     @PostMapping
-    @RequiresPermissions("cms:site:save")
+    @RequiresPermissions("cms:column:save")
     public CmsColumn save(@RequestBody @Valid CmsColumn object) {
         return service.saveData(object);
     }
@@ -108,7 +108,7 @@ public class CmsColumnController {
      * @return List<JsTree>
      */
     @GetMapping("pId")
-    @RequiresPermissions("cms:site:select")
+    @RequiresPermissions("cms:column:select")
     public List<Tree> selectByPId(@RequestParam(value = "pId", required = false) String pId) {
         return service.selectByPId(pId);
     }
@@ -119,7 +119,7 @@ public class CmsColumnController {
      * @return List<JsTree>
      */
     @GetMapping("all")
-    @RequiresPermissions("cms:site:select")
+    @RequiresPermissions("cms:column:select")
     public List<Tree> selectAll() {
         return service.selectAll(true);
     }
@@ -131,7 +131,7 @@ public class CmsColumnController {
      * @return List<JsTree>
      */
     @GetMapping("title")
-    @RequiresPermissions("cms:site:select")
+    @RequiresPermissions("cms:column:select")
     public List<Tree> selectByTitle(@RequestParam("title") String title) {
         return service.selectByTitle(title);
     }
@@ -144,7 +144,7 @@ public class CmsColumnController {
      * @return true/false
      */
     @PostMapping("move")
-    @RequiresPermissions("cms:site:move")
+    @RequiresPermissions("cms:column:move")
     public boolean move(@RequestBody DragVO dragVO) {
         return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());
     }

@@ -6,7 +6,7 @@ project:
 spring:
     profiles:
         # dev - 开发模式 / prod - 生产模式
-        active: dev
+        active: liyou
     resources:
         # 静态资源映射
         static-locations: ["classpath:/static/", "classpath:/themes/", "file:${project.file-upload-path}/"]
