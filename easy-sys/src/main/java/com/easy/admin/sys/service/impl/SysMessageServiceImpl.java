@@ -47,6 +47,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
         if (object != null && Validator.isNotEmpty(object.getStatus())) {
             queryWrapper.eq("m.status", object.getStatus());
         }
+        queryWrapper.eq("m.create_user", ShiroUtil.getCurrentUser().getId());
         page.setRecords(baseMapper.selectSend(page, queryWrapper));
         return page;
     }

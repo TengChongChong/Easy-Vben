@@ -38,4 +38,10 @@
         from sys_data_source t
         where t.id = #{id}
     </select>
+    <select id="selectName" resultType="java.lang.String">
+        select name from sys_data_source
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
 </mapper>

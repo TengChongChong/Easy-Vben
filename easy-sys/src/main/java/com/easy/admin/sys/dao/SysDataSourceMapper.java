@@ -42,4 +42,12 @@ public interface SysDataSourceMapper extends BaseMapper<SysDataSource> {
      */
     SysDataSource getById(@Param("id") String id);
 
+    /**
+     * 查询数据源名称
+     *
+     * @param queryWrapper 查询条件
+     * @return List<String>
+     */
+    List<String> selectName(@Param("ew") QueryWrapper<SysDataSource> queryWrapper);
+
 }

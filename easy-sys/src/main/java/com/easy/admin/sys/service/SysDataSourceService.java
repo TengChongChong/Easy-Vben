@@ -66,4 +66,11 @@ public interface SysDataSourceService {
      */
     SysDataSource saveData(SysDataSource object);
 
+    /**
+     * 添加数据源
+     *
+     * @param dataSource 数据源
+     */
+    void addDataSource(SysDataSource dataSource);
+
 }
