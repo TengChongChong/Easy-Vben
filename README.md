@@ -87,4 +87,4 @@ project:
 
 ## 启动服务
 
-执行`com.easy.restful.Application`启动服务
+执行`com.easy.admin.Application`启动服务
