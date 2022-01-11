@@ -64,7 +64,7 @@ spring:
     # 服务器连接密码（默认为空）
     password:
   # 数据源，集成多数据源，此处仅需配置主数据源
-  [datasource:
+  datasource:
     dynamic:
       datasource:
         master:
