@@ -74,7 +74,9 @@ public interface SysDownloadService {
      * @param pId         数据id
      * @param type        类型
      * @param displayName 显示名称
+     * @param request request
      * @return ResponseEntity
+     * @throws UnsupportedEncodingException ex
      */
     ResponseEntity<FileSystemResource> downloadSysFileById(String pId, String type, String displayName, HttpServletRequest request) throws UnsupportedEncodingException;
 

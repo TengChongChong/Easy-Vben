@@ -19,6 +19,16 @@ server:
     # 端口号
     port: 80
 spring:
+    elasticsearch:
+      rest:
+          # 连接超时时间
+          connection-timeout: 1s
+          username:
+          password:
+          # 读取超时时间
+          read-timeout: 30s
+          # es rest 接口地址，多个用逗号隔开
+          uris: ${ES_HOST:127.0.0.1}:${ES_PORT:9200}
     # Redis
     redis:
         # 数据库索引（默认为0）
@@ -47,9 +57,9 @@ spring:
         dynamic:
             datasource:
                 master:
-                    url: jdbc:mysql://localhost:3306/easy-admin?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
-                    username: root
-                    password: tengchong
+                    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:easy-admin}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
+                    username: ${DB_USERNAME:root}
+                    password: ${DB_PASSWORD:tengchong}
 async:
     executor:
         thread:

@@ -21,7 +21,7 @@ import java.util.Date;
 public class HttpUtil {
     private HttpUtil() {}
 
-    private static final String[] IEBrowserSignals = {"MSIE", "Trident", "Edge"};
+    private static final String[] IE_BrowserSignals = {"MSIE", "Trident", "Edge"};
 
     /**
      * 是否是IE浏览器
@@ -31,7 +31,7 @@ public class HttpUtil {
      */
     private static boolean isMSBrowser(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
-        for (String signal : IEBrowserSignals) {
+        for (String signal : IE_BrowserSignals) {
             if (userAgent.contains(signal)){
                 return true;
             }
