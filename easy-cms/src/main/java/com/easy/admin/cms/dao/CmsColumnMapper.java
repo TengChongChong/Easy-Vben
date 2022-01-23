@@ -18,7 +18,8 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     /**
      * 根据父id查询数据
      *
-     * @param pId 父id
+     * @param siteId 站点id
+     * @param pId    父id
      * @return List<JsTree>
      */
     List<Tree> selectByPId(@Param("siteId") String siteId, @Param("pId") String pId);
@@ -26,6 +27,7 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     /**
      * 获取所有数据
      *
+     * @param siteId 站点id
      * @param status 状态
      * @return List<JsTree>
      */
@@ -68,6 +70,7 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     /**
      * 查询指定数据
      *
+     * @param siteId 站点id
      * @param pId    父id
      * @param str    开始位置
      * @param length 长度
@@ -78,6 +81,7 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     /**
      * 根据关键字搜索数据
      *
+     * @param siteId 站点id
      * @param title 关键字
      * @return List<JsTree>
      */
@@ -86,6 +90,7 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     /**
      * 获取最大排序值
      *
+     * @param siteId 站点id
      * @param id 父Id
      * @return Integer
      */

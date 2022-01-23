@@ -19,7 +19,7 @@
         <module>easy-core</module>
         <module>easy-mybatis</module>
         <module>easy-redis</module>
-
+        <module>easy-elasticsearch</module>
     </modules>
 
 </project>

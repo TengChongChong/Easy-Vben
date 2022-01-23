@@ -11,6 +11,7 @@ import com.easy.admin.cms.common.status.CmsArticleStatus;
 import com.easy.admin.cms.common.type.CmsArticleReleaseType;
 import com.easy.admin.cms.common.type.CmsFileType;
 import com.easy.admin.cms.dao.CmsArticleMapper;
+import com.easy.admin.cms.es.service.ElasticsearchCmsArticleService;
 import com.easy.admin.cms.model.CmsArticle;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.model.CmsSite;
@@ -45,6 +46,9 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
 
     @Autowired
     private SysFileService sysFileService;
+
+    @Autowired
+    private ElasticsearchCmsArticleService elasticsearchCmsArticleService;
 
     /**
      * 列表
@@ -196,9 +200,11 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         List<String> idList = Arrays.asList(ids.split(","));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
+            String siteId = CmsSiteUtil.getCurrentEditSiteId();
             // 删除封面
             for (String id : idList) {
                 sysFileService.delete(id);
+                elasticsearchCmsArticleService.deleteDoc(siteId, id);
             }
         }
         return isSuccess;
@@ -206,7 +212,11 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
 
     @Override
     public boolean removeBySiteId(String siteId) {
-        return baseMapper.deleteBySiteId(siteId) > 0;
+        boolean isSuccess = baseMapper.deleteBySiteId(siteId) > 0;
+        if(isSuccess){
+            elasticsearchCmsArticleService.deleteIndex(siteId);
+        }
+        return isSuccess;
     }
 
     /**
@@ -249,6 +259,11 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
             // todo: 栏目文章排序
         }
 
+        if(CmsArticleStatus.PUBLISHED.getCode().equals(object.getStatus())){
+            // 更新索引
+            elasticsearchCmsArticleService.saveOrUpdate(object);
+        }
+
         return object;
     }
 
@@ -274,7 +289,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
             }
             // 发布栏目
             QueryWrapper<CmsArticle> queryColumns = new QueryWrapper<>();
-            queryColumns.in("id", Arrays.asList(ids.split(CommonConst.SPLIT)));
+            queryColumns.in("t.id", Arrays.asList(ids.split(CommonConst.SPLIT)));
             List<CmsColumn> cmsColumns = baseMapper.selectColumnIdByArticleId(queryColumns);
             if (cmsColumns != null && cmsColumns.size() > 0) {
                 for (CmsColumn cmsColumn : cmsColumns) {
@@ -296,6 +311,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
                         if (cmsSite != null) {
                             FileUtil.del(cmsSite.getDeploymentPath() + File.separator + "article" + File.separator + cmsArticle.getId() + ".html");
                         }
+                        elasticsearchCmsArticleService.deleteDoc(cmsArticle.getSiteId(), cmsArticle.getId());
                     }
                 }
             }

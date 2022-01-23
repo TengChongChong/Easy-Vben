@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.admin.sys.model.SysFile;
 import com.easy.admin.util.file.FileUtil;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;

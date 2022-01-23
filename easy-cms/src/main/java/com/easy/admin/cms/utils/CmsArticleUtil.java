@@ -84,7 +84,7 @@ public class CmsArticleUtil {
      * @param articleList 文章列表
      * @return 文章列表
      */
-    private static List<CmsArticle> initArticle(List<CmsArticle> articleList) {
+    public static List<CmsArticle> initArticle(List<CmsArticle> articleList) {
         if (articleList == null || articleList.size() == 0) {
             return articleList;
         }

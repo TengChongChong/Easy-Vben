@@ -109,4 +109,16 @@ public interface CmsArticleMapper extends BaseMapper<CmsArticle> {
      * @return 数量
      */
     int selectCountByColumnId(@Param("columnId") String columnId);
+
+    /**
+     * 查询所有已发布文章
+     *
+     * @param queryWrapper 查询条件
+     * @param sysFileType  文件类型
+     * @return List<CmsArticle>
+     */
+    List<CmsArticle> selectAllArticleForElasticsearch(
+            @Param("ew") QueryWrapper<CmsArticle> queryWrapper,
+            @Param("sysFileType") String sysFileType
+    );
 }

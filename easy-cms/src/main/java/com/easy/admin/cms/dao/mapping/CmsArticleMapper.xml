@@ -39,7 +39,8 @@
         delete from cms_article where site_id = #{siteId}
     </delete>
     <select id="select" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.subtitle, t.excerpt, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
+        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.subtitle, t.excerpt,
+               t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
                t.release_date, t.offline_date, t.view_count, t.url, t.status, su.nickname as edit_user, t.edit_date,
                sf.path as coverPath, cc.name as columnName
         from cms_article t
@@ -51,7 +52,8 @@
         </where>
     </select>
     <select id="selectForUtil" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.subtitle, t.excerpt, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
+        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.subtitle, t.excerpt,
+               t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
         t.release_date, t.offline_date, t.view_count, t.url, t.status, su.nickname as edit_user, t.edit_date,
         sf.path as coverPath, cc.name as columnName
         <if test="appendField != null and appendField != null">
@@ -66,7 +68,8 @@
         </where>
     </select>
     <select id="getById" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size,
+        select t.id, t.site_id, t.column_id, t.order_no, t.title,
+               t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size,
                t.subtitle, t.excerpt, t.content, t.keyword, t.description, t.source, t.author, t.tags, t.release_type,
                t.release_date, t.offline_date, t.view_count, t.type, t.url, t.dept_id, t.status
         from cms_article t
@@ -104,5 +107,16 @@
     </select>
     <select id="selectCountByColumnId" resultType="java.lang.Integer">
         select count(1) from cms_article where column_id = #{columnId}
+    </select>
+    <select id="selectAllArticleForElasticsearch" resultType="com.easy.admin.cms.model.CmsArticle">
+        select t.id, t.site_id, t.column_id, t.title, concat( ifnull(t.subtitle, ''), ifnull(t.excerpt, ''), ifnull(t.content, '')) as content,
+               t.source, t.author, t.tags, t.release_date, t.url, sf.path as coverPath, cc.name as columnName
+        from cms_article t
+        left join cms_column cc on cc.id = t.column_id
+        left join sys_user su on su.id = t.edit_user
+        left join sys_file sf on sf.p_id = t.id and sf.type = #{sysFileType}
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
 </mapper>

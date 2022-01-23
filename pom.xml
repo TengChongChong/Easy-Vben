@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
     <version>0.1.0</version>
     <name>${project.artifactId}</name>
-    <url>http://www.easy-admin.com</url>
+    <url>http://ea-doc.easy-frame.top/</url>
 
     <modules>
         <module>easy-activiti</module>
@@ -103,6 +103,11 @@
             <dependency>
                 <groupId>com.easy.admin</groupId>
                 <artifactId>easy-cms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.easy.admin</groupId>
+                <artifactId>easy-elasticsearch</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

@@ -15,6 +15,7 @@ import com.easy.admin.cms.common.type.CmsPageType;
 import com.easy.admin.cms.common.type.CmsReleaseType;
 import com.easy.admin.cms.config.beetl.BeetlConfiguration;
 import com.easy.admin.cms.dao.CmsReleaseMapper;
+import com.easy.admin.cms.es.service.ElasticsearchCmsArticleService;
 import com.easy.admin.cms.model.*;
 import com.easy.admin.cms.service.*;
 import com.easy.admin.cms.utils.CmsColumnUtil;
@@ -65,6 +66,9 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
     @Autowired
     private CmsReleaseQueueService cmsReleaseQueueService;
+
+    @Autowired
+    private ElasticsearchCmsArticleService elasticsearchCmsArticleService;
 
     @Autowired
     private BeetlConfiguration beetlConfiguration;
@@ -413,6 +417,9 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         params.put("article", cmsArticle);
 
         params.put("title", cmsArticle.getTitle() + " | " + cmsSite.getName());
+
+        // 更新索引
+        elasticsearchCmsArticleService.saveOrUpdate(cmsArticle);
 
         generateFile(params, cmsRouteService.getArticleViewPath(cmsSite, cmsColumn), getArticleFilePath(cmsSite, cmsArticle));
         return true;
