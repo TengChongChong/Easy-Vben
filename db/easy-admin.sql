@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 26/04/2021 11:14:39
+ Date: 25/01/2022 17:29:03
 */
 
 SET NAMES utf8mb4;
@@ -22,16 +22,16 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `sample_general`;
 CREATE TABLE `sample_general` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '姓名',
-  `sex` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '性别',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '姓名',
+  `sex` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '性别',
   `age` int(3) DEFAULT NULL COMMENT '年龄',
-  `phone` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '手机号码',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '手机号码',
   `status` int(2) DEFAULT NULL COMMENT '状态',
-  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '地址',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '地址',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='代码生成示例';
@@ -68,6 +68,7 @@ INSERT INTO `sample_general` VALUES ('120a275ac6adb60c2182f5062b739cd6', '单玄
 INSERT INTO `sample_general` VALUES ('125fbd0e828a08e01795e99b62f9293b', '秋痴春', '2', 26, '17366393055', NULL, '江苏省南京市', '1', '2021-02-04 15:57:02', '1', '2021-02-04 15:57:02');
 INSERT INTO `sample_general` VALUES ('1291a5a058985cf476f0dc345fa78fd8', '针晓畅', '2', 26, '17366392937', NULL, '江苏省南京市', NULL, NULL, NULL, NULL);
 INSERT INTO `sample_general` VALUES ('12e3c46f2f686a66406232ec687b6b3b', '双初然', '1', 27, '17366392932', NULL, '江苏省南京市', '1', '2021-02-04 15:57:02', '1', '2021-02-04 15:57:02');
+INSERT INTO `sample_general` VALUES ('1482892945978826753', 'test', NULL, NULL, NULL, NULL, NULL, '1', '2022-01-17 09:50:04', '1', '2022-01-17 09:50:04');
 INSERT INTO `sample_general` VALUES ('14d3d3b141fc5e812aab91435b16f464', '员绮梅', '2', 23, '17366393051', NULL, '江苏省南京市', '1', '2021-02-04 15:57:02', '1', '2021-02-04 15:57:02');
 INSERT INTO `sample_general` VALUES ('1616c5653514b09ca3bd4f77754c620f', '伯景彰', '2', 23, '17366392809', NULL, '江苏省南京市', NULL, NULL, NULL, NULL);
 INSERT INTO `sample_general` VALUES ('16b667f85c4474e61b0b2c22899fd325', '孔丽君', '1', 23, '17366392929', NULL, '江苏省南京市', '1', '2021-02-04 15:57:02', '1', '2021-02-04 15:57:02');
@@ -528,9 +529,9 @@ CREATE TABLE `scheduler_job` (
 BEGIN;
 INSERT INTO `scheduler_job` VALUES ('1', '示例任务1', '0/5 * * * * ? *', 'sampleJob', 'sampleJob1', 2, NULL, NULL, '126', '2019-05-12 09:36:10', '1', '2021-01-21 17:43:40', 'sample-job', '2021-01-21 22:02:15');
 INSERT INTO `scheduler_job` VALUES ('2', '示例任务2', '0/10 * * * * ? *', 'sampleJob', 'sampleJob2', 2, NULL, NULL, '126', '2019-05-13 21:03:42', '126', '2019-05-13 21:03:42', 'sample-job-2', '2021-01-21 22:02:10');
-INSERT INTO `scheduler_job` VALUES ('2c83db466678081d2d65a99d2cc5c140', '清理异常日志表里的数据', '0 0 0 1/1 * ? *', 'cleanExceptionLog', 'clean', 1, NULL, NULL, '126', '2019-06-27 09:27:28', '126', '2019-06-27 09:29:24', 'CleanExceptionLog', '2021-04-26 11:13:12');
-INSERT INTO `scheduler_job` VALUES ('7a10407344e5c99a4423dca02c9e5b81', '清理访问日志表里的数据', '0 0 0 1/1 * ? *', 'cleanSysLog', 'clean', 1, NULL, NULL, '126', '2019-06-27 14:16:16', '126', '2019-11-05 21:00:05', 'CleanSysLog', '2021-04-26 11:13:12');
-INSERT INTO `scheduler_job` VALUES ('d82d3da7ab2ad39a2b2065f950d68f5b', '清理临时目录文件', '0 0 0 1/1 * ? *', 'cleanTemporaryFile', 'clean', 1, NULL, NULL, '126', '2019-06-26 20:38:01', '126', '2019-06-26 21:26:44', 'CleanTemporaryFile', '2021-04-26 11:13:12');
+INSERT INTO `scheduler_job` VALUES ('2c83db466678081d2d65a99d2cc5c140', '清理异常日志表里的数据', '0 0 0 1/1 * ? *', 'cleanExceptionLog', 'clean', 1, NULL, NULL, '126', '2019-06-27 09:27:28', '126', '2019-06-27 09:29:24', 'CleanExceptionLog', '2022-01-23 00:13:33');
+INSERT INTO `scheduler_job` VALUES ('7a10407344e5c99a4423dca02c9e5b81', '清理访问日志表里的数据', '0 0 0 1/1 * ? *', 'cleanSysLog', 'clean', 1, NULL, NULL, '126', '2019-06-27 14:16:16', '126', '2019-11-05 21:00:05', 'CleanSysLog', '2022-01-23 00:13:33');
+INSERT INTO `scheduler_job` VALUES ('d82d3da7ab2ad39a2b2065f950d68f5b', '清理临时目录文件', '0 0 0 1/1 * ? *', 'cleanTemporaryFile', 'clean', 1, NULL, NULL, '126', '2019-06-26 20:38:01', '126', '2019-06-26 21:26:44', 'CleanTemporaryFile', '2022-01-23 00:13:33');
 COMMIT;
 
 -- ----------------------------
@@ -549,9 +550,184 @@ CREATE TABLE `scheduler_job_log` (
 -- Records of scheduler_job_log
 -- ----------------------------
 BEGIN;
+INSERT INTO `scheduler_job_log` VALUES ('00d05d001c5587d73044810bbceca6af', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-17 09:22:42', 78);
+INSERT INTO `scheduler_job_log` VALUES ('0136c1d22286e909d3a134d4b5210c5d', '2c83db466678081d2d65a99d2cc5c140', '2021-05-14 00:03:16', 195);
+INSERT INTO `scheduler_job_log` VALUES ('02f98a082da86db668fce289448a6d55', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-14 14:22:35', 49);
+INSERT INTO `scheduler_job_log` VALUES ('0728784dacfa4aaf314f7ba803324906', '7a10407344e5c99a4423dca02c9e5b81', '2021-10-24 05:14:06', 164);
+INSERT INTO `scheduler_job_log` VALUES ('0a5265e87d8d332e25f0496424ebc942', '2c83db466678081d2d65a99d2cc5c140', '2021-06-28 09:30:32', 88);
+INSERT INTO `scheduler_job_log` VALUES ('0bad7312ff2a94f12e96132ce272a2c4', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-16 01:08:20', 103);
+INSERT INTO `scheduler_job_log` VALUES ('0c4a48004fe1abc28997be9370fe01f0', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-07 00:09:49', 94);
+INSERT INTO `scheduler_job_log` VALUES ('0c7e1fba023701fd0145db94a7385111', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-17 00:50:15', 69);
+INSERT INTO `scheduler_job_log` VALUES ('0f6f4ea33f905ff5f465cdf8c080f733', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-24 02:53:51', 61);
+INSERT INTO `scheduler_job_log` VALUES ('1305ab7a826941e2647753ecb0f9bb73', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-15 03:33:07', 268);
+INSERT INTO `scheduler_job_log` VALUES ('139de44c07c1177a3bfc9513b5307a7d', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-29 02:11:01', 68);
+INSERT INTO `scheduler_job_log` VALUES ('1483122184036556802', '2c83db466678081d2d65a99d2cc5c140', '2022-01-18 01:00:58', 303);
+INSERT INTO `scheduler_job_log` VALUES ('1483122184044945410', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-18 01:00:58', 256);
+INSERT INTO `scheduler_job_log` VALUES ('1483122184044945411', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-18 01:00:58', 280);
+INSERT INTO `scheduler_job_log` VALUES ('1483477422836817921', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-19 00:32:34', 106);
+INSERT INTO `scheduler_job_log` VALUES ('1483477422836817922', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-19 00:32:34', 79);
+INSERT INTO `scheduler_job_log` VALUES ('1483477422836817923', '2c83db466678081d2d65a99d2cc5c140', '2022-01-19 00:32:34', 120);
+INSERT INTO `scheduler_job_log` VALUES ('1484776122276233218', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-22 14:33:08', 33);
+INSERT INTO `scheduler_job_log` VALUES ('1484776122318176257', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-22 14:33:08', 70);
+INSERT INTO `scheduler_job_log` VALUES ('1484776122318176258', '2c83db466678081d2d65a99d2cc5c140', '2022-01-22 14:33:08', 82);
+INSERT INTO `scheduler_job_log` VALUES ('1484922189714145282', '2c83db466678081d2d65a99d2cc5c140', '2022-01-23 00:13:33', 68);
+INSERT INTO `scheduler_job_log` VALUES ('1484922189718339586', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-23 00:13:33', 51);
+INSERT INTO `scheduler_job_log` VALUES ('1484922189718339587', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-23 00:13:33', 62);
+INSERT INTO `scheduler_job_log` VALUES ('148e38359e167ba7888f49649c7ccb6f', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-19 10:37:50', 249);
+INSERT INTO `scheduler_job_log` VALUES ('14bafaa3aa5200b0f10d333373f833b9', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-20 07:53:26', 399);
+INSERT INTO `scheduler_job_log` VALUES ('1513fa8a600a14bb00ba23b6d50ec032', '2c83db466678081d2d65a99d2cc5c140', '2021-12-23 00:12:45', 72);
+INSERT INTO `scheduler_job_log` VALUES ('16faa052970806bed5df545f53cfa3dc', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-04-28 21:43:42', 144);
+INSERT INTO `scheduler_job_log` VALUES ('177bb935facc8f6bef45e83a529c824f', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-16 00:00:00', 85);
 INSERT INTO `scheduler_job_log` VALUES ('195bc5bb0153ea94b9f3786d260782cf', '2c83db466678081d2d65a99d2cc5c140', '2021-04-26 11:13:12', 258);
+INSERT INTO `scheduler_job_log` VALUES ('19f20286e3c142454b624a14505dca03', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-23 00:22:01', 133);
+INSERT INTO `scheduler_job_log` VALUES ('1a2ae17654ab8ead74f6f3720f8c1a5b', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-23 17:24:10', 104);
+INSERT INTO `scheduler_job_log` VALUES ('1ae840e917f93b60680549f87b17f5f1', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-17 00:45:47', 136);
+INSERT INTO `scheduler_job_log` VALUES ('1cc5ab11c530232ad9ac33650fbaec9c', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-09 06:08:59', 308);
+INSERT INTO `scheduler_job_log` VALUES ('1d674819aa66a5009a96b374b0e94016', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-20 03:47:44', 38);
+INSERT INTO `scheduler_job_log` VALUES ('1d805731fe377cd05301baeeb42a316b', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-15 01:12:40', 93);
+INSERT INTO `scheduler_job_log` VALUES ('1e7f230b83aa5cb4bfeea6972f1d36a0', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-21 15:30:02', 32);
+INSERT INTO `scheduler_job_log` VALUES ('1f1570376f2299b8f822e88a64739922', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-26 07:45:32', 102);
+INSERT INTO `scheduler_job_log` VALUES ('1f2727a82655bac61e51ee68f1d3bef9', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-18 02:49:31', 99);
+INSERT INTO `scheduler_job_log` VALUES ('1f4e1d767f52d2645597a0eaca256613', '2c83db466678081d2d65a99d2cc5c140', '2022-01-14 14:22:35', 111);
+INSERT INTO `scheduler_job_log` VALUES ('21db2d2474e07adcdf0c8b1af9bed173', '2c83db466678081d2d65a99d2cc5c140', '2021-07-07 00:09:49', 187);
+INSERT INTO `scheduler_job_log` VALUES ('21e553798ee61639f554a8ec9831bbb1', '2c83db466678081d2d65a99d2cc5c140', '2021-06-25 18:15:29', 341);
+INSERT INTO `scheduler_job_log` VALUES ('23b89041adff05c5e1ab6fe9da2f2697', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-12 01:25:52', 67);
+INSERT INTO `scheduler_job_log` VALUES ('251fff4b2f599f6f85c49ac9063cada2', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-25 18:15:29', 216);
+INSERT INTO `scheduler_job_log` VALUES ('25494582b84366af19c98ee82d70e7f3', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-17 07:45:08', 197);
+INSERT INTO `scheduler_job_log` VALUES ('25c6827355c17f1f929f1b61e69aeed3', '2c83db466678081d2d65a99d2cc5c140', '2021-06-27 03:01:24', 199);
+INSERT INTO `scheduler_job_log` VALUES ('2a6aadf0baa2346d328b03a4319fbdc0', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-20 07:53:26', 324);
+INSERT INTO `scheduler_job_log` VALUES ('2af56b85d6ef4f4578d58e3aa416b03f', '2c83db466678081d2d65a99d2cc5c140', '2021-07-10 00:00:00', 141);
+INSERT INTO `scheduler_job_log` VALUES ('2d11a0fecd7f14e1a10846ab98727516', '2c83db466678081d2d65a99d2cc5c140', '2022-01-16 01:08:20', 129);
+INSERT INTO `scheduler_job_log` VALUES ('2f2510bd78d0baa1ae75682e74448394', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-06 17:26:58', 129);
+INSERT INTO `scheduler_job_log` VALUES ('30820da8e9a8a3c3d1b535aacdb8fc94', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-28 09:30:32', 85);
+INSERT INTO `scheduler_job_log` VALUES ('30f280d359f9ecf0f36ebcd77d928f57', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-16 00:50:49', 134);
+INSERT INTO `scheduler_job_log` VALUES ('318e8348939e197b7247675695945b34', '2c83db466678081d2d65a99d2cc5c140', '2021-08-26 14:58:02', 130);
+INSERT INTO `scheduler_job_log` VALUES ('31a13808acca89acf1dc1e21c40d8d7d', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-20 01:32:47', 198);
+INSERT INTO `scheduler_job_log` VALUES ('31f54303b6160d6d54b8847af5242ba0', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-11 00:00:00', 193);
+INSERT INTO `scheduler_job_log` VALUES ('32b3f56e878703f49ba87fd072f0d924', '7a10407344e5c99a4423dca02c9e5b81', '2021-04-28 21:43:42', 196);
+INSERT INTO `scheduler_job_log` VALUES ('332866a06cb3ccdea5912814b186705e', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-02 02:05:57', 121);
+INSERT INTO `scheduler_job_log` VALUES ('35af8bc5a338f8b06f54897aabc6a3bd', '7a10407344e5c99a4423dca02c9e5b81', '2021-10-23 08:05:29', 240);
+INSERT INTO `scheduler_job_log` VALUES ('383696b6c2a2f1853d42c6641893bf41', '2c83db466678081d2d65a99d2cc5c140', '2021-06-23 17:24:10', 231);
+INSERT INTO `scheduler_job_log` VALUES ('39d4fd4c6369bb80593d0e4f559cf3e8', '2c83db466678081d2d65a99d2cc5c140', '2021-07-11 00:00:00', 226);
+INSERT INTO `scheduler_job_log` VALUES ('3b37afa579fe8feb21a99c04001bab13', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-04 00:45:32', 126);
+INSERT INTO `scheduler_job_log` VALUES ('3bcf77bd9b027350995f21351dc28b1f', '2c83db466678081d2d65a99d2cc5c140', '2021-08-28 01:47:41', 121);
+INSERT INTO `scheduler_job_log` VALUES ('3cbf13bb036f239b86dcf659efdaa147', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-02 16:04:24', 120);
+INSERT INTO `scheduler_job_log` VALUES ('3d9d5f810ae33cc9287c563a47809e2f', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-19 00:31:32', 481);
+INSERT INTO `scheduler_job_log` VALUES ('3f30107a6b53e7ffc2cc5232b139fbef', '2c83db466678081d2d65a99d2cc5c140', '2021-04-29 02:05:05', 99);
+INSERT INTO `scheduler_job_log` VALUES ('40014c2a5726e7803ae3e586832acdde', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-15 03:33:07', 109);
+INSERT INTO `scheduler_job_log` VALUES ('418be51d61c8344caee0164fa106b6b9', '2c83db466678081d2d65a99d2cc5c140', '2021-10-23 08:05:29', 261);
+INSERT INTO `scheduler_job_log` VALUES ('425818bc38fbc7d716a331c96bd216d1', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-21 01:28:26', 41);
+INSERT INTO `scheduler_job_log` VALUES ('42b5ac360046454550fe1712a255ea22', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-14 21:42:46', 79);
+INSERT INTO `scheduler_job_log` VALUES ('42be1f5e7768b1a0471764ebb5f265dd', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-07 07:55:44', 39);
+INSERT INTO `scheduler_job_log` VALUES ('42eacca5a0e68351d9003e825c04eb6c', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-08-27 07:30:10', 89);
+INSERT INTO `scheduler_job_log` VALUES ('4451a4b09acfd33783a70b1d9e3834aa', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-03 00:12:37', 194);
+INSERT INTO `scheduler_job_log` VALUES ('45d201f421e9e89e24b29877c690e203', '2c83db466678081d2d65a99d2cc5c140', '2021-06-02 16:04:24', 129);
+INSERT INTO `scheduler_job_log` VALUES ('4629c632a2039e03a3dc93ad3a808e37', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-05-13 00:00:00', 51);
+INSERT INTO `scheduler_job_log` VALUES ('487bfb1d31c89728e2d7c629c573e4d1', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-17 09:22:42', 101);
+INSERT INTO `scheduler_job_log` VALUES ('49c2932fda58f605da73d9df49ff3280', '2c83db466678081d2d65a99d2cc5c140', '2021-06-17 09:22:42', 120);
+INSERT INTO `scheduler_job_log` VALUES ('4b92f26c93891ecfefe9f678f078d46b', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-05-14 00:03:16', 18);
+INSERT INTO `scheduler_job_log` VALUES ('4d160139d7d0ccd7225f4bbfaca9db3a', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-10-22 10:30:59', 57);
+INSERT INTO `scheduler_job_log` VALUES ('4d556bb4cbe7ef258e608beceaa02b67', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-14 00:12:57', 112);
+INSERT INTO `scheduler_job_log` VALUES ('4e4dd0b025ef62e6abd69812605eaff9', '2c83db466678081d2d65a99d2cc5c140', '2021-07-17 07:45:08', 206);
+INSERT INTO `scheduler_job_log` VALUES ('528261e7f424542e420a33b83e50900c', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-18 00:05:32', 101);
+INSERT INTO `scheduler_job_log` VALUES ('53de34b7cd5297c37af1f7f56cfb6558', '2c83db466678081d2d65a99d2cc5c140', '2021-12-22 00:12:18', 68);
+INSERT INTO `scheduler_job_log` VALUES ('54fa82954c05b8c774ca0efb9ed36ad7', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-25 18:15:29', 329);
+INSERT INTO `scheduler_job_log` VALUES ('55488b137f119934c9f03dcff93e6ad0', '2c83db466678081d2d65a99d2cc5c140', '2021-07-15 03:33:07', 266);
+INSERT INTO `scheduler_job_log` VALUES ('55ce27b6435d14d6924d5fea6de633c0', '2c83db466678081d2d65a99d2cc5c140', '2021-06-18 02:49:31', 167);
+INSERT INTO `scheduler_job_log` VALUES ('5707ac4d8d7f1342968fcc546e7d7865', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-08 02:52:56', 165);
+INSERT INTO `scheduler_job_log` VALUES ('583ada64777115108914635193946919', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-27 03:01:24', 21);
+INSERT INTO `scheduler_job_log` VALUES ('5b87b9d092d040570017f60195c2a3e0', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-30 00:48:43', 172);
+INSERT INTO `scheduler_job_log` VALUES ('5f21a96c6d1c0cde3ceccae2175c4dff', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-15 01:22:12', 135);
+INSERT INTO `scheduler_job_log` VALUES ('6299fae577911535bdb8b54e9f1bd55d', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-10 00:00:00', 158);
+INSERT INTO `scheduler_job_log` VALUES ('641807e2d61280fc5bb8498d54a415f2', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-01 03:10:17', 139);
+INSERT INTO `scheduler_job_log` VALUES ('6507a648096848a4810f18a3dcf87861', '2c83db466678081d2d65a99d2cc5c140', '2022-01-17 00:45:47', 137);
+INSERT INTO `scheduler_job_log` VALUES ('665b281314f0ffe7569cc84eee685c09', '7a10407344e5c99a4423dca02c9e5b81', '2021-08-26 14:58:02', 110);
+INSERT INTO `scheduler_job_log` VALUES ('681a9df6538287ea3ed3bc0d010f46cf', '2c83db466678081d2d65a99d2cc5c140', '2021-04-28 21:43:42', 270);
+INSERT INTO `scheduler_job_log` VALUES ('68b81a5ea1bc5886685debe17f1e6b5b', '7a10407344e5c99a4423dca02c9e5b81', '2021-12-22 00:12:18', 58);
+INSERT INTO `scheduler_job_log` VALUES ('6ab5342f9ad70fcbd9633ecf10fc73f1', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-15 01:12:40', 81);
+INSERT INTO `scheduler_job_log` VALUES ('6d6a5860e3ae402f00b3ceb6be9fac91', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-16 01:08:20', 95);
+INSERT INTO `scheduler_job_log` VALUES ('6ebf058899f5e132a59e58f4ca1780b8', '2c83db466678081d2d65a99d2cc5c140', '2021-10-24 05:14:06', 174);
+INSERT INTO `scheduler_job_log` VALUES ('73f592749610ad9b7acec448b96effa2', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-14 14:22:35', 84);
+INSERT INTO `scheduler_job_log` VALUES ('749ecd499fe03f158e19f19e478ba5e9', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-16 00:00:00', 268);
+INSERT INTO `scheduler_job_log` VALUES ('75fda87e58f457bda36c196dd000172f', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-02 16:04:24', 79);
+INSERT INTO `scheduler_job_log` VALUES ('7690d32b8c3c346d53d7cb7865d784d7', '7a10407344e5c99a4423dca02c9e5b81', '2021-11-18 10:38:55', 160);
+INSERT INTO `scheduler_job_log` VALUES ('7789436a5662a31245b91313b65cf39d', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-23 17:24:10', 194);
+INSERT INTO `scheduler_job_log` VALUES ('78534db6c158e32f3b4da7acf30fc3d7', '2c83db466678081d2d65a99d2cc5c140', '2021-12-24 10:31:48', 141);
+INSERT INTO `scheduler_job_log` VALUES ('7872339f676d39f2c323655c59c365fc', '2c83db466678081d2d65a99d2cc5c140', '2021-07-12 07:46:04', 156);
+INSERT INTO `scheduler_job_log` VALUES ('7aaed0ee511e423800f3db8b7ebe6018', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-24 02:53:51', 118);
+INSERT INTO `scheduler_job_log` VALUES ('7b400ae7a95a726189af729d37af5596', '2c83db466678081d2d65a99d2cc5c140', '2021-05-12 15:45:22', 169);
+INSERT INTO `scheduler_job_log` VALUES ('7b636ed12bc6093e4ee38c766e11ad0d', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-26 07:45:32', 44);
+INSERT INTO `scheduler_job_log` VALUES ('7e91b7a12d3fc7c75c97bd405195ab8d', '2c83db466678081d2d65a99d2cc5c140', '2021-10-22 10:30:59', 97);
+INSERT INTO `scheduler_job_log` VALUES ('7e9e6eae62fdce7ff9960c655f3f0bfb', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-17 07:45:08', 234);
+INSERT INTO `scheduler_job_log` VALUES ('80655cf2eb3611fb3b50165437e6ea71', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-10 00:00:00', 102);
+INSERT INTO `scheduler_job_log` VALUES ('80bd82357ad54ac6f675a1c134347f99', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-04-29 02:05:05', 28);
+INSERT INTO `scheduler_job_log` VALUES ('8177fbc3da3a3240ae8e31f9841a637b', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-08-28 01:47:41', 104);
+INSERT INTO `scheduler_job_log` VALUES ('8290c0cae033bb0e70ee372f39633980', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-27 03:01:24', 154);
+INSERT INTO `scheduler_job_log` VALUES ('888d82aef554c7a7a7a997b1df2a4341', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-10-23 08:05:29', 195);
+INSERT INTO `scheduler_job_log` VALUES ('89540133c242aed3379d3926f3831a7c', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-24 10:03:19', 75);
+INSERT INTO `scheduler_job_log` VALUES ('89fb16edbb27d6529dbd21929eeb8dbb', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-26 13:40:50', 77);
 INSERT INTO `scheduler_job_log` VALUES ('8a99130cdd0ac74d0540a1f052aa738f', '7a10407344e5c99a4423dca02c9e5b81', '2021-04-26 11:13:12', 208);
+INSERT INTO `scheduler_job_log` VALUES ('8d75d5731610cc1a97c4ba1e7adcf573', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-28 09:30:32', 23);
+INSERT INTO `scheduler_job_log` VALUES ('9477cead9940ab82df0343526ad40309', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-06 17:26:58', 164);
+INSERT INTO `scheduler_job_log` VALUES ('94dfd2d7f67600343505e1cd99ec98fc', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-08 01:02:49', 66);
+INSERT INTO `scheduler_job_log` VALUES ('956e741389a54e32706d4c246f0431dc', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-10-25 08:16:18', 38);
+INSERT INTO `scheduler_job_log` VALUES ('959a240a5c7908757e8b19d9ac31c2ee', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-28 12:17:49', 72);
+INSERT INTO `scheduler_job_log` VALUES ('9804cbf9c3e3645398560840aa0ee087', '2c83db466678081d2d65a99d2cc5c140', '2022-01-13 14:30:23', 132);
+INSERT INTO `scheduler_job_log` VALUES ('99dbf03e0d7366df8b864a1f32f687ff', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-09 06:08:59', 300);
+INSERT INTO `scheduler_job_log` VALUES ('9a6c8defdd9b04a3388a59e20eea4b6c', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-25 00:12:32', 598);
+INSERT INTO `scheduler_job_log` VALUES ('a19085378fd3c1c22cbc9c7fa0edb0c2', '7a10407344e5c99a4423dca02c9e5b81', '2021-10-25 08:16:18', 330);
+INSERT INTO `scheduler_job_log` VALUES ('a227687d39500e676d71d45baf2c4466', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-10 00:00:00', 118);
+INSERT INTO `scheduler_job_log` VALUES ('aa02f72dc075c099b28b44e8b10cf30a', '7a10407344e5c99a4423dca02c9e5b81', '2021-06-18 02:49:31', 162);
+INSERT INTO `scheduler_job_log` VALUES ('aa475db58d14ae5d16cb8ae5a60b7b7e', '7a10407344e5c99a4423dca02c9e5b81', '2021-10-22 10:30:59', 86);
+INSERT INTO `scheduler_job_log` VALUES ('ad48c73531d87e47c592143e1ac65b23', '2c83db466678081d2d65a99d2cc5c140', '2022-01-15 01:12:40', 113);
+INSERT INTO `scheduler_job_log` VALUES ('af3204b2789107f927d4659515551a95', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-08 02:52:56', 169);
+INSERT INTO `scheduler_job_log` VALUES ('b0c0c471b73b4f962eb5a6ef18667417', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-06-03 00:12:37', 119);
+INSERT INTO `scheduler_job_log` VALUES ('b387a08fd4d6a5fa09f72f15fa759cc8', '2c83db466678081d2d65a99d2cc5c140', '2021-06-26 07:45:32', 127);
+INSERT INTO `scheduler_job_log` VALUES ('b51560ada1b1e89c98ca9428cb08b67e', '2c83db466678081d2d65a99d2cc5c140', '2021-08-27 07:30:10', 106);
+INSERT INTO `scheduler_job_log` VALUES ('b51f966c778634d53f292be527d7e0ba', '7a10407344e5c99a4423dca02c9e5b81', '2021-05-14 00:03:16', 29);
+INSERT INTO `scheduler_job_log` VALUES ('b762d9b79b28d4ca6250c3641b848f15', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-22 00:08:24', 246);
+INSERT INTO `scheduler_job_log` VALUES ('b7fea46d0482951631d99a8754477005', '7a10407344e5c99a4423dca02c9e5b81', '2021-04-29 02:05:05', 78);
+INSERT INTO `scheduler_job_log` VALUES ('bf3b25424c6796c23f04fe2410e39ac6', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-12 07:46:04', 159);
+INSERT INTO `scheduler_job_log` VALUES ('bf6680167f69c9276a538dd0fbbf2924', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-13 14:30:23', 104);
+INSERT INTO `scheduler_job_log` VALUES ('c1500a373c25c78bb75175b44608e82e', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-07 00:09:49', 201);
+INSERT INTO `scheduler_job_log` VALUES ('c4961d24b2e49d1731cace464befa454', '2c83db466678081d2d65a99d2cc5c140', '2021-05-13 00:00:00', 77);
+INSERT INTO `scheduler_job_log` VALUES ('c5045977f48b977ded2bf3754e8d604f', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-11 00:00:00', 79);
+INSERT INTO `scheduler_job_log` VALUES ('c66595adee5e449bcdef18a98aaf9686', '2c83db466678081d2d65a99d2cc5c140', '2021-06-24 02:53:51', 122);
+INSERT INTO `scheduler_job_log` VALUES ('c9b99a91bcaa6f489c17283b4326ad4e', '7a10407344e5c99a4423dca02c9e5b81', '2021-08-28 01:47:41', 113);
+INSERT INTO `scheduler_job_log` VALUES ('cf92ec2f4e66c8302c74e072c1dc1c57', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-14 21:42:46', 120);
+INSERT INTO `scheduler_job_log` VALUES ('d01f3e68346e10db79764e9a020398b2', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-11 00:17:44', 63);
+INSERT INTO `scheduler_job_log` VALUES ('d3a587753d9a52ad78843e6f580763bb', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-09 01:32:15', 106);
+INSERT INTO `scheduler_job_log` VALUES ('d3ff82214ef0b97f1611f4d0b4507f10', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-13 01:27:21', 97);
+INSERT INTO `scheduler_job_log` VALUES ('d4548ce9b29e0a1bc2f2c80ff8bfadcb', '2c83db466678081d2d65a99d2cc5c140', '2021-06-03 00:12:37', 233);
+INSERT INTO `scheduler_job_log` VALUES ('d4d957842236fcbed36ad3933840f98f', '2c83db466678081d2d65a99d2cc5c140', '2021-07-19 10:37:50', 367);
+INSERT INTO `scheduler_job_log` VALUES ('d6da4b4ab5e7224b248c66b40bdfe8da', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-11-18 10:38:55', 112);
+INSERT INTO `scheduler_job_log` VALUES ('d748ea5a4ae2ed7e6c7645bd16f85d74', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-10-24 05:14:06', 159);
+INSERT INTO `scheduler_job_log` VALUES ('d7d1c28d0a958a3b48bba231f5045d58', '2c83db466678081d2d65a99d2cc5c140', '2021-07-08 02:52:56', 181);
+INSERT INTO `scheduler_job_log` VALUES ('d810ac1f3f30e0c3cb0a2b0bdc788238', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-24 10:31:48', 45);
+INSERT INTO `scheduler_job_log` VALUES ('d87a6679c67c75b71117308bf23e0e65', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-23 00:12:45', 42);
+INSERT INTO `scheduler_job_log` VALUES ('da8a24973c6a901dc7e5394507524972', '7a10407344e5c99a4423dca02c9e5b81', '2021-12-24 10:31:48', 105);
+INSERT INTO `scheduler_job_log` VALUES ('db34b218cb58e558969a3832aff4102f', '7a10407344e5c99a4423dca02c9e5b81', '2021-12-23 00:12:45', 62);
 INSERT INTO `scheduler_job_log` VALUES ('dde4c8cd9e6120fdbc2aa0cd021ae039', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-04-26 11:13:12', 163);
+INSERT INTO `scheduler_job_log` VALUES ('de1de1e7690f9dac22552f82a9e42613', '2c83db466678081d2d65a99d2cc5c140', '2021-07-16 00:00:00', 160);
+INSERT INTO `scheduler_job_log` VALUES ('e09f76c373d0b4d6c35c4ebc4a83d276', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-19 10:37:50', 300);
+INSERT INTO `scheduler_job_log` VALUES ('e100469a15b61bb5602ec4b9fa6e86ae', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-17 00:45:47', 63);
+INSERT INTO `scheduler_job_log` VALUES ('e10f16f77523eb0f064c1cf573d32866', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-03 00:02:21', 157);
+INSERT INTO `scheduler_job_log` VALUES ('e2d6fae8ee5834c804f7518db9429aa1', '7a10407344e5c99a4423dca02c9e5b81', '2021-05-13 00:00:00', 64);
+INSERT INTO `scheduler_job_log` VALUES ('e2ffe1461e52dfc1ffe7c415c511c61a', '2c83db466678081d2d65a99d2cc5c140', '2021-10-25 08:16:18', 300);
+INSERT INTO `scheduler_job_log` VALUES ('e4ee865ed382d0f47f02f28e9b2023e4', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-13 14:30:23', 62);
+INSERT INTO `scheduler_job_log` VALUES ('e8e2d5c80f12fa53e862d40c46445bb9', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-06 00:06:18', 80);
+INSERT INTO `scheduler_job_log` VALUES ('e948495d6581560bf063596516bbbe72', '2c83db466678081d2d65a99d2cc5c140', '2021-07-09 06:08:59', 314);
+INSERT INTO `scheduler_job_log` VALUES ('ebc9d7c61dd891b6041ce99ca8f0d7b7', '2c83db466678081d2d65a99d2cc5c140', '2021-07-20 07:53:26', 446);
+INSERT INTO `scheduler_job_log` VALUES ('efbb4254970250a3fe84cd70f91943b0', '7a10407344e5c99a4423dca02c9e5b81', '2021-05-12 15:45:22', 136);
+INSERT INTO `scheduler_job_log` VALUES ('f16a16317298d5ee42c9d14a71f12de4', '2c83db466678081d2d65a99d2cc5c140', '2021-07-14 21:42:46', 139);
+INSERT INTO `scheduler_job_log` VALUES ('f3b026260de993dd51639ad46badbff5', '2c83db466678081d2d65a99d2cc5c140', '2021-07-06 17:26:58', 195);
+INSERT INTO `scheduler_job_log` VALUES ('f5680a4ff56ebdb75a619b01e0d23aa6', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-22 00:12:18', 38);
+INSERT INTO `scheduler_job_log` VALUES ('f7aa45e7bae7d48f890329fa816f2d27', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-12-05 00:10:55', 73);
+INSERT INTO `scheduler_job_log` VALUES ('f99ca61ac9a76e7adffb7565ad7938ab', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-12 07:46:04', 91);
+INSERT INTO `scheduler_job_log` VALUES ('fcc46dd71825aaf962969b70b81ff6df', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-08-26 14:58:02', 37);
+INSERT INTO `scheduler_job_log` VALUES ('fd10f4fd15e87728e93d55547efbe172', '2c83db466678081d2d65a99d2cc5c140', '2021-11-18 10:38:55', 176);
+INSERT INTO `scheduler_job_log` VALUES ('fe550ed7501e3d44e5b2c528a349fd33', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-05-12 15:45:22', 90);
+INSERT INTO `scheduler_job_log` VALUES ('ff40fb0e958b658805e76cdff5dd1e2d', '7a10407344e5c99a4423dca02c9e5b81', '2021-08-27 07:30:10', 97);
 COMMIT;
 
 -- ----------------------------
@@ -562,7 +738,7 @@ CREATE TABLE `sys_config` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `sys_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'key',
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'value',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `remarks` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
@@ -591,6 +767,34 @@ INSERT INTO `sys_config` VALUES ('bec91595c56ef6d0d197b745ca6c855f', 'cleanExcep
 COMMIT;
 
 -- ----------------------------
+-- Table structure for sys_data_source
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_data_source`;
+CREATE TABLE `sys_data_source` (
+  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `name` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
+  `description` varchar(1024) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '描述',
+  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
+  `url` varchar(1024) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'url',
+  `username` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户名',
+  `password` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '密码',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `version` int(11) DEFAULT NULL COMMENT '乐观锁',
+  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据源';
+
+-- ----------------------------
+-- Records of sys_data_source
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_data_source` VALUES ('eebd53d0474bd9750adefea11bc53dd5', 'easy-frame-slave', NULL, NULL, 'jdbc:mysql://localhost:3306/easy-frame-slave?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true', 'root', 'tengchong', '2021-12-18 14:10:22', '1', '1', '2021-12-24 11:16:41', NULL, '1');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sys_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
@@ -599,10 +803,10 @@ CREATE TABLE `sys_dept` (
   `p_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '全称',
   `simple_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '简称',
-  `code` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '机构代码',
-  `type_code` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '机构类型代码',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '机构代码',
+  `type_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '机构类型代码',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `remarks` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   `order_no` int(11) DEFAULT NULL COMMENT '排序值',
   `version` int(11) DEFAULT NULL COMMENT '乐观锁保留字段',
   `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
@@ -616,7 +820,7 @@ CREATE TABLE `sys_dept` (
 -- Records of sys_dept
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_dept` VALUES ('1', '0', 'EF科技', 'EF', '', '1', '1', '', 1, 1, '', NULL, '1', '2020-12-10 17:07:02');
+INSERT INTO `sys_dept` VALUES ('1', '0', 'EF科技', 'EF', '', '1', '1', '', 1, 1, '', NULL, '1', '2021-11-18 14:53:18');
 INSERT INTO `sys_dept` VALUES ('1750cbea9db36f3ad6e6d995b2e4a0f9', '1', 'EF科技南京分公司', '南京', '', '1-1', '1', '', 1, NULL, '1', '2020-12-10 17:10:20', '1', '2020-12-11 18:08:33');
 INSERT INTO `sys_dept` VALUES ('6336975fdd306a7a35cbdad37ae4dd9f', '1750cbea9db36f3ad6e6d995b2e4a0f9', '实施部', '', '', '1-1-1', '1', '', 2, NULL, '1', '2020-12-10 17:10:41', '1', '2020-12-10 17:13:03');
 INSERT INTO `sys_dept` VALUES ('c830d4d5ebe7386ea64b1305569140a7', '1750cbea9db36f3ad6e6d995b2e4a0f9', '研发部', '', '', '1-1-1', '1', '', 1, NULL, '1', '2020-12-10 17:10:30', '1', '2020-12-10 17:12:58');
@@ -632,13 +836,13 @@ CREATE TABLE `sys_dept_type` (
   `p_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
   `code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '代码',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `remarks` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
   `order_no` int(5) DEFAULT NULL,
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL,
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='机构类型';
 
@@ -646,7 +850,7 @@ CREATE TABLE `sys_dept_type` (
 -- Records of sys_dept_type
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_dept_type` VALUES ('1', '0', '1', '总公司', '', '', NULL, '1', '2020-12-14 14:37:07', 7, '1');
+INSERT INTO `sys_dept_type` VALUES ('1', '0', '1', '总公司', '', '', NULL, '1', '2021-11-18 11:26:06', 8, '1');
 INSERT INTO `sys_dept_type` VALUES ('85ff5b68422f932ce40b1e607ae69b3b', '1', '2', '部门', '', '1', '2020-12-10 17:11:58', '1', '2020-12-10 17:11:58', 5, '1');
 INSERT INTO `sys_dept_type` VALUES ('90918a8e4ea8b8df43cb613016c80480', 'f61256accdb0db23118ee1538873579e', '1-1-1', '部门', '', '', '2020-12-10 15:50:52', '1', '2020-12-10 16:10:51', 6, '1');
 INSERT INTO `sys_dept_type` VALUES ('f61256accdb0db23118ee1538873579e', '1', '1-1', '分公司', '', '', '2020-12-10 15:49:55', '1', '2020-12-10 16:10:47', 4, '1');
@@ -667,13 +871,14 @@ CREATE TABLE `sys_dept_type_role` (
 -- Records of sys_dept_type_role
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_dept_type_role` VALUES ('1d241c529a7a87d318561dbeb65dc99a', '1', '920f6f953610571e740fc517e3c99899');
 INSERT INTO `sys_dept_type_role` VALUES ('1ef7bb857363c6a31e1748cf7f6bb960', 'f61256accdb0db23118ee1538873579e', '3');
-INSERT INTO `sys_dept_type_role` VALUES ('34b028ce6bcc850250ee2a1fb6fa6b79', '1', '4');
 INSERT INTO `sys_dept_type_role` VALUES ('48dbcd264a0f60e6f55cf6622ad607ef', '12460e7279fb86428a2e445a83ffab69', '4');
-INSERT INTO `sys_dept_type_role` VALUES ('8f8e1b927ac52aaf80d10e3cd0eaf93b', '1', '65bdd699e5b623c8efec4eb74639bafc');
-INSERT INTO `sys_dept_type_role` VALUES ('96f023d4ffef712cd137ff19bc04c932', '1', '0');
-INSERT INTO `sys_dept_type_role` VALUES ('daf51ff46dcf1d41e4c2bfb340502e8c', '1', '920f6f953610571e740fc517e3c99899');
-INSERT INTO `sys_dept_type_role` VALUES ('eeb6210df0a7a8498000b13d9b965fc7', '1', '3');
+INSERT INTO `sys_dept_type_role` VALUES ('8247cafeb9836dd498be0e82fc7f3a45', '1', '65bdd699e5b623c8efec4eb74639bafc');
+INSERT INTO `sys_dept_type_role` VALUES ('8627bc2c82077625d2fa72c76a2ec602', '1', '4');
+INSERT INTO `sys_dept_type_role` VALUES ('af6cd9002a56bdf24b7812cb068b0222', '1', '82f1605892e9341691ea4bb0350364fd');
+INSERT INTO `sys_dept_type_role` VALUES ('bcecc27b4a33226c8eaf0edcad88c990', '1', '0');
+INSERT INTO `sys_dept_type_role` VALUES ('ee56c4d9193059c65057932ce0db6754', '1', '3');
 COMMIT;
 
 -- ----------------------------
@@ -686,11 +891,11 @@ CREATE TABLE `sys_dict` (
   `p_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父code',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
   `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编码',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `dict_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '字典类型',
-  `css` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'class',
-  `icon` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标',
+  `remarks` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `dict_type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '字典类型',
+  `css` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'class',
+  `icon` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标',
   `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
@@ -736,8 +941,8 @@ INSERT INTO `sys_dict` VALUES ('1035', 6, NULL, '单选框', 'radio', NULL, '1',
 INSERT INTO `sys_dict` VALUES ('1036', 7, NULL, '多选框', 'checkbox', NULL, '1', 'elementType', NULL, NULL, '126', '2019-01-11 15:18:06', '126', '2019-01-11 13:15:18');
 INSERT INTO `sys_dict` VALUES ('1037', 8, NULL, '日期', 'date', NULL, '1', 'elementType', NULL, NULL, '126', '2019-01-11 15:18:06', '126', '2019-01-11 13:15:18');
 INSERT INTO `sys_dict` VALUES ('1038', 9, NULL, '日期时间', 'datetime', NULL, '1', 'elementType', NULL, NULL, '126', '2019-01-11 15:18:06', '126', '2019-01-11 13:15:18');
-INSERT INTO `sys_dict` VALUES ('1039', 2, NULL, '两列', '2', NULL, '1', 'grid', NULL, NULL, '126', '2019-01-11 15:18:06', '1', '2021-01-22 23:48:26');
-INSERT INTO `sys_dict` VALUES ('1040', 1, NULL, '一列', '1', NULL, '1', 'grid', NULL, NULL, '126', '2019-01-11 15:18:06', '1', '2021-01-22 23:48:08');
+INSERT INTO `sys_dict` VALUES ('1039', 2, NULL, '一行两列', '2', NULL, '1', 'grid', NULL, NULL, '126', '2019-01-11 15:18:06', '1', '2021-12-20 15:53:57');
+INSERT INTO `sys_dict` VALUES ('1040', 1, NULL, '一行一列', '1', NULL, '1', 'grid', NULL, NULL, '126', '2019-01-11 15:18:06', '1', '2021-12-20 15:53:45');
 INSERT INTO `sys_dict` VALUES ('1045', 1, '', '必填', 'required', '', '2', 'verification', '', NULL, '126', '2019-01-11 15:18:06', '126', '2019-01-12 21:09:37');
 INSERT INTO `sys_dict` VALUES ('1046', 2, NULL, '电子邮件', 'email', NULL, '1', 'verification', NULL, NULL, '126', '2019-01-11 15:18:06', '126', '2019-01-11 13:15:18');
 INSERT INTO `sys_dict` VALUES ('1047', 3, NULL, '网址', 'url', NULL, '1', 'verification', NULL, NULL, '126', '2019-01-11 15:18:06', '126', '2019-01-11 13:15:18');
@@ -772,26 +977,37 @@ INSERT INTO `sys_dict` VALUES ('1076', 2, NULL, '显示', '0', NULL, '1', 'hideM
 INSERT INTO `sys_dict` VALUES ('12f5cb3d041e411380669ab5925f82be', 5, NULL, '高', '5', NULL, '1', 'passwordStrength', 'blue', NULL, '1', '2020-12-22 14:07:52', '1', '2020-12-22 14:07:52');
 INSERT INTO `sys_dict` VALUES ('1760cfb5a2eea70a091a1f49801c16aa', 2, '', '用户审批', 'userTask', '', '1', 'activityType', 'orange', NULL, '126', '2020-05-07 20:01:47', '1', '2021-02-21 15:21:04');
 INSERT INTO `sys_dict` VALUES ('19428ffc5b02c47c2bb958eb293b72fa', 3, NULL, 'save', 'save', NULL, '1', 'genMethod', NULL, NULL, '1', '2021-01-22 10:43:14', '1', '2021-01-22 10:43:14');
+INSERT INTO `sys_dict` VALUES ('25145620da33d7828b7f12ab88dcf64d', 1, NULL, '页面', 'page', NULL, '1', 'cmsReleaseType', NULL, NULL, '1', '2021-12-08 10:21:58', '1', '2021-12-08 10:21:58');
 INSERT INTO `sys_dict` VALUES ('258aa110058920e3d25ab4a4f8c8606b', 1, NULL, 'model', 'model', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:45:27', '1', '2021-01-22 10:45:27');
 INSERT INTO `sys_dict` VALUES ('2b9c81faded52d3c3f4753741b201d14', 3, '', '病假', '3', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:15:39', '126', '2020-04-26 15:15:39');
+INSERT INTO `sys_dict` VALUES ('2c67e2515e5c4cd9640fb578ede02495', 3, NULL, '文章', 'article', NULL, '1', 'cmsReleaseType', NULL, NULL, '1', '2021-12-08 10:22:46', '1', '2021-12-08 10:22:46');
 INSERT INTO `sys_dict` VALUES ('2cb335b11141e600e4b6afbcfcb38a91', 1, NULL, '当前页面', '1', NULL, '1', 'target', NULL, NULL, '1', '2021-01-04 10:23:18', '1', '2021-01-04 10:23:18');
 INSERT INTO `sys_dict` VALUES ('2fa104fae1e7914ef3ec3c92b1e9435e', 3, NULL, 'mapping', 'mapping', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:45:43', '1', '2021-01-22 10:45:43');
 INSERT INTO `sys_dict` VALUES ('3028aa52cd73fcb37264b14b3c2e2908', 8, NULL, 'Input.vue', 'Input.vue', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:46:32', '1', '2021-01-22 10:46:32');
 INSERT INTO `sys_dict` VALUES ('397b3c02d8ea5e9e6b65316400312157', 2, '', '挂起', '2', '', '1', 'suspensionState', 'orange', NULL, '126', '2020-05-21 10:52:58', '126', '2020-05-22 13:26:14');
 INSERT INTO `sys_dict` VALUES ('39a161672dd6fa4178a329698c830e0b', 3, NULL, '中', '3', NULL, '1', 'passwordStrength', 'green', NULL, '1', '2020-12-22 14:07:31', '1', '2020-12-22 14:07:31');
+INSERT INTO `sys_dict` VALUES ('3f03e720aea2428e01787e067ea450bc', 2, NULL, '发布中', '1', NULL, '1', 'cmsReleaseStatus', 'cyan', NULL, '1', '2021-12-01 16:15:10', '1', '2021-12-01 16:57:35');
 INSERT INTO `sys_dict` VALUES ('40a7017e155919c64a51e6c151971753', 8, '', '丧假', '8', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:16:27', '126', '2020-04-26 15:16:27');
+INSERT INTO `sys_dict` VALUES ('435db13414527a124821bd4328b87251', 3, NULL, '视频', 'video', NULL, '1', 'cmsMediaType', NULL, NULL, '1', '2021-11-22 10:52:23', '1', '2021-11-22 10:52:23');
 INSERT INTO `sys_dict` VALUES ('438f09448b2ce4c6767245af8eb249ce', 4, NULL, '高', '4', NULL, '1', 'passwordStrength', 'cyan', NULL, '1', '2020-12-22 14:07:40', '1', '2020-12-22 14:07:40');
+INSERT INTO `sys_dict` VALUES ('4583396985c52c5b02b10f6db6a127c2', 5, NULL, '发布失败', '-2', NULL, '1', 'cmsReleaseStatus', 'red', NULL, '1', '2021-12-01 16:15:59', '1', '2021-12-08 10:31:34');
 INSERT INTO `sys_dict` VALUES ('458cfa6224c1bd02ec544402b9a746b4', 2, '', '事假', '2', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:15:32', '126', '2020-04-26 15:15:32');
 INSERT INTO `sys_dict` VALUES ('483277621a0e921fa0eed6c048096333', 3, '', '条件网关', 'exclusiveGateway', '', '1', 'activityType', 'orange', NULL, '126', '2020-05-07 20:00:20', '126', '2020-05-14 14:14:37');
+INSERT INTO `sys_dict` VALUES ('48e84b1c57b883ee54e80e44ab2c35ea', 2, NULL, '否', '2', NULL, '1', 'whether', 'red', NULL, '1', '2021-11-18 14:40:06', '1', '2021-11-18 14:40:06');
 INSERT INTO `sys_dict` VALUES ('4a05aea7b167e6d9cd0e74525579054d', 6, '', '陪产假', '6', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:16:00', '126', '2020-04-26 15:16:00');
 INSERT INTO `sys_dict` VALUES ('4adcad08e2df1a9b91c11ee6ab88af1b', 7, NULL, 'List.vue', 'List.vue', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:46:23', '1', '2021-01-22 10:46:23');
 INSERT INTO `sys_dict` VALUES ('4f96ea5fbc3529db7cf3f8a262dace6a', 5, NULL, '导出数据', 'exportData', NULL, '1', 'genMethod', NULL, NULL, '1', '2021-02-23 09:35:30', '1', '2021-02-23 09:35:30');
+INSERT INTO `sys_dict` VALUES ('60fdc971326940a631bb8aec29536685', 4, NULL, '已取消', '-1', NULL, '1', 'cmsReleaseStatus', 'red', NULL, '1', '2021-12-01 16:15:42', '1', '2021-12-01 16:15:42');
 INSERT INTO `sys_dict` VALUES ('62936bbf418a384f442a519b40e55e4f', 9, NULL, 'api.js', 'api.js', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:46:48', '1', '2021-01-22 10:46:48');
 INSERT INTO `sys_dict` VALUES ('64c22620aba0d2ad61346d8be1a3fb7d', 2, '', '已撤销', '-1', '', '1', 'taskStatus', 'orange', NULL, '126', '2020-05-22 21:46:51', '126', '2020-05-22 21:46:51');
+INSERT INTO `sys_dict` VALUES ('665c26f13ba2e173cd96f8340a7ceb5e', 1, NULL, '手动', '1', NULL, '1', 'cmsArticleReleaseType', 'blue', NULL, '1', '2021-11-19 15:30:42', '1', '2021-11-19 15:30:42');
 INSERT INTO `sys_dict` VALUES ('66b935e4c514ecd0c1e2572368f74161', 2, NULL, 'dao', 'dao', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:45:34', '1', '2021-01-22 10:45:34');
 INSERT INTO `sys_dict` VALUES ('684149de7513dbf9b34784a754bd923f', 2, NULL, '低', '2', NULL, '1', 'passwordStrength', 'orange', NULL, '1', '2020-12-22 14:07:12', '1', '2020-12-22 14:07:12');
+INSERT INTO `sys_dict` VALUES ('6a00cf2f4001d74b1b3a7ac0385a7f6a', 1, NULL, '是', '1', NULL, '1', 'whether', 'green', NULL, '1', '2021-11-18 14:39:53', '1', '2021-11-18 14:39:53');
 INSERT INTO `sys_dict` VALUES ('6b19039d2e3144bf3ab7ea4b87ca75c0', 1, NULL, 'true', 'true', NULL, '1', 'boolean', NULL, NULL, '1', '2021-01-14 13:55:29', '1', '2021-01-14 13:55:29');
 INSERT INTO `sys_dict` VALUES ('6b7e8cfb87c04ed395ec5ea64b9fa48d', 6, NULL, 'controller', 'controller', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:46:11', '1', '2021-01-22 10:46:11');
+INSERT INTO `sys_dict` VALUES ('72dff2db5a4785f5598187ca985241dc', 2, NULL, '音频', 'audio', NULL, '1', 'cmsMediaType', NULL, NULL, '1', '2021-11-22 10:52:12', '1', '2021-11-22 10:52:12');
+INSERT INTO `sys_dict` VALUES ('77bb9b37af3c8613622cad58b6304151', 2, NULL, '自动', '2', NULL, '1', 'cmsArticleReleaseType', 'green', NULL, '1', '2021-11-19 15:30:57', '1', '2021-11-19 15:30:57');
 INSERT INTO `sys_dict` VALUES ('782b05bc86650ebee8e0a63511117b81', 10, '', '流程结束', 'endEvent', '', '1', 'activityType', 'blue', NULL, '126', '2020-05-07 20:03:06', '126', '2020-05-14 14:12:17');
 INSERT INTO `sys_dict` VALUES ('81a9fe5b6ea8e48e9e277bbe002ed729', 4, '', '调休', '4', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:15:45', '126', '2020-04-26 15:15:45');
 INSERT INTO `sys_dict` VALUES ('82a5eff09f8c6d937fb6bfb13efed39b', 6, NULL, '导入数据', 'importData', NULL, '1', 'genMethod', NULL, NULL, '1', '2021-02-23 09:35:42', '1', '2021-02-23 09:35:42');
@@ -799,16 +1015,25 @@ INSERT INTO `sys_dict` VALUES ('901e8d61eeb73a96822997e15064776c', 1, NULL, '低
 INSERT INTO `sys_dict` VALUES ('9a072d4f0f483abc6b2621a8257ff65d', 4, NULL, 'service', 'service', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:45:51', '1', '2021-01-22 10:45:51');
 INSERT INTO `sys_dict` VALUES ('9d4641ff43b7b60a1a9d78f660926309', 9, '', '产检假', '9', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:16:36', '126', '2020-04-26 15:16:36');
 INSERT INTO `sys_dict` VALUES ('9e1a3416550ac3582ea0b28fe8f8d607', 2, NULL, 'false', 'false', NULL, '1', 'boolean', NULL, NULL, '1', '2021-01-14 13:55:37', '1', '2021-01-14 13:55:37');
+INSERT INTO `sys_dict` VALUES ('a0a1f7c3b2dc9c599baa79b5bde97321', 2, NULL, '已发布', '1', NULL, '1', 'cmsArticleStatus', 'green', NULL, '1', '2021-11-19 15:31:26', '1', '2021-11-19 15:31:26');
 INSERT INTO `sys_dict` VALUES ('a700a0725ed3818b5d5e06ebcbdbdc7a', 5, '', '产假', '5', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:15:52', '126', '2020-04-26 15:15:52');
+INSERT INTO `sys_dict` VALUES ('a94135a3521ecf3507b462a28a44aa83', 4, NULL, '文档', 'doc', NULL, '1', 'cmsMediaType', NULL, NULL, '1', '2021-11-22 10:52:31', '1', '2021-11-22 10:52:31');
 INSERT INTO `sys_dict` VALUES ('b88be5998e52644275e558cb27605e6d', 3, '', '已办结', '2', '', '1', 'taskStatus', 'green', NULL, '126', '2020-05-22 21:47:03', '126', '2020-05-22 21:47:03');
 INSERT INTO `sys_dict` VALUES ('b8de17a629fc368aa9d5060b6961b93d', 8, '', '流程发起', 'startEvent', '', '1', 'activityType', 'green', '', '126', '2020-05-07 20:01:33', '1', '2020-12-08 17:20:22');
 INSERT INTO `sys_dict` VALUES ('bc64972ab051639909c486eee09284ae', 1, NULL, 'add', 'add', NULL, '1', 'genMethod', NULL, NULL, '1', '2021-01-22 10:42:55', '1', '2021-01-22 10:42:55');
+INSERT INTO `sys_dict` VALUES ('c2408b1dc5d8bf627f0f4fd611a725f1', 1, NULL, '图片', 'image', NULL, '1', 'cmsMediaType', NULL, NULL, '1', '2021-11-22 10:51:58', '1', '2021-11-22 10:51:58');
+INSERT INTO `sys_dict` VALUES ('c89b35e88b0bb6d5bc4a07231d8a46b6', 1, NULL, '待发布', '0', NULL, '1', 'cmsReleaseStatus', 'orange', NULL, '1', '2021-12-01 16:15:01', '1', '2021-12-01 16:16:13');
 INSERT INTO `sys_dict` VALUES ('ca12852b5dc75f5c18eff0cf9fbfaea8', 7, '', '婚假', '7', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:16:08', '126', '2020-04-26 15:16:08');
+INSERT INTO `sys_dict` VALUES ('cc74089891bda57d92ad8ee76cdcd071', 3, NULL, '已完成', '2', NULL, '1', 'cmsReleaseStatus', 'green', NULL, '1', '2021-12-01 16:15:30', '1', '2021-12-01 16:57:41');
 INSERT INTO `sys_dict` VALUES ('d06fe9ab7a91394f2884e549e76d1f0b', 2, NULL, 'remove', 'remove', NULL, '1', 'genMethod', NULL, NULL, '1', '2021-01-22 10:43:07', '1', '2021-01-22 10:43:07');
+INSERT INTO `sys_dict` VALUES ('d5d331b8c4f32c0f1b92eb4b2b1ffcd6', 5, NULL, '其他', 'other', NULL, '1', 'cmsMediaType', NULL, NULL, '1', '2021-11-22 10:52:40', '1', '2021-11-22 10:52:40');
+INSERT INTO `sys_dict` VALUES ('d807c53a3aaa8b2d5df8484093a78bf1', 3, NULL, '已撤销', '-1', NULL, '1', 'cmsArticleStatus', 'red', NULL, '1', '2021-11-19 15:31:36', '1', '2021-11-19 15:31:36');
 INSERT INTO `sys_dict` VALUES ('dcf701520b55e0381436c1fed7fe57cf', 1, '', '办理中', '1', '', '1', 'taskStatus', 'blue', NULL, '126', '2020-05-22 21:44:17', '126', '2020-05-22 21:44:17');
 INSERT INTO `sys_dict` VALUES ('e5a370445b0d81b6bde90ba1e7533039', 4, NULL, 'select', 'select', NULL, '1', 'genMethod', NULL, NULL, '1', '2021-01-22 10:43:21', '1', '2021-01-22 10:43:21');
+INSERT INTO `sys_dict` VALUES ('e6afb823cf7f1057dc5afc03a196480b', 2, NULL, '栏目', 'column', NULL, '1', 'cmsReleaseType', NULL, NULL, '1', '2021-12-08 10:22:35', '1', '2021-12-08 10:22:35');
 INSERT INTO `sys_dict` VALUES ('e71e1827d384550145ca83cd1140f3b0', 10, '', '特殊工伤假', '10', '', '1', 'leaveType', '', NULL, '126', '2020-04-26 15:16:44', '126', '2020-04-26 15:16:44');
 INSERT INTO `sys_dict` VALUES ('e75b3cf8a6ab33fe9c6e8a3c3fd50130', 2, NULL, '新建标签页', '2', NULL, '1', 'target', NULL, NULL, '1', '2021-01-04 10:23:31', '1', '2021-01-04 10:23:31');
+INSERT INTO `sys_dict` VALUES ('efd649d15808496398ac5386336ebb83', 1, NULL, '草稿', '0', NULL, '1', 'cmsArticleStatus', 'orange', NULL, '1', '2021-11-19 15:31:15', '1', '2021-11-19 15:31:15');
 INSERT INTO `sys_dict` VALUES ('f2fb2f1aa7d82d3869e7a3c69307f6c9', 5, NULL, 'serviceImpl', 'serviceImpl', NULL, '1', 'genFile', NULL, NULL, '1', '2021-01-22 10:45:59', '1', '2021-01-22 10:45:59');
 COMMIT;
 
@@ -819,8 +1044,8 @@ DROP TABLE IF EXISTS `sys_dict_type`;
 CREATE TABLE `sys_dict_type` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类别名称',
-  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '字典类别',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '字典类别',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='字典类别';
 
@@ -828,7 +1053,9 @@ CREATE TABLE `sys_dict_type` (
 -- Records of sys_dict_type
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_dict_type` VALUES ('0e60608a45136e49b5cca43c88fc43a0', 'CMS网站发布状态', 'cmsReleaseStatus', '1');
 INSERT INTO `sys_dict_type` VALUES ('1', '权限/菜单状态', 'permissionsStatus', '1');
+INSERT INTO `sys_dict_type` VALUES ('10205d68a481cf177cbdd44093944ba1', '是否', 'whether', '1');
 INSERT INTO `sys_dict_type` VALUES ('13', '代码生成-模块名称', 'module', '1');
 INSERT INTO `sys_dict_type` VALUES ('14', '代码生成-生成模板', 'generatorTemplate', '1');
 INSERT INTO `sys_dict_type` VALUES ('14b305d91fdb4244768204810366e631', '代码生成-生成方法', 'genMethod', '1');
@@ -847,6 +1074,7 @@ INSERT INTO `sys_dict_type` VALUES ('25', '任务状态', 'schedulerJobStatus', 
 INSERT INTO `sys_dict_type` VALUES ('26', '数据源', 'dataSource', '1');
 INSERT INTO `sys_dict_type` VALUES ('27', '消息类型', 'messageType', '1');
 INSERT INTO `sys_dict_type` VALUES ('28', '隐藏菜单', 'hideMenu', '1');
+INSERT INTO `sys_dict_type` VALUES ('2e6ff3d8d1a1a650efad4f55e0dec273', 'CMS文章发布类型', 'cmsArticleReleaseType', '1');
 INSERT INTO `sys_dict_type` VALUES ('7', '通用状态', 'commonStatus', '1');
 INSERT INTO `sys_dict_type` VALUES ('7ad24fca207295e81f5b501a11d00ea2', '打开方式', 'target', '1');
 INSERT INTO `sys_dict_type` VALUES ('8', '角色状态', 'roleStatus', '1');
@@ -854,8 +1082,11 @@ INSERT INTO `sys_dict_type` VALUES ('86d9858565d0664c3f7eaba933e1de3a', '密码�
 INSERT INTO `sys_dict_type` VALUES ('8b8e774ad38daa1cad3b0aa14217c735', '请假类型', 'leaveType', '1');
 INSERT INTO `sys_dict_type` VALUES ('9', '角色类型', 'roleType', '1');
 INSERT INTO `sys_dict_type` VALUES ('a088b7c12020ea213c103c938f0d33ec', '任务状态', 'taskStatus', '1');
+INSERT INTO `sys_dict_type` VALUES ('a48450f20e70c3709a2c41a77dec74fd', 'CMS文章状态', 'cmsArticleStatus', '1');
 INSERT INTO `sys_dict_type` VALUES ('a8ef4b74ef87817d67e5fcf91c985ea7', '代码生成-生成文件', 'genFile', '1');
 INSERT INTO `sys_dict_type` VALUES ('c079e48f535aa6478e64c861ec2fbc1a', '流程状态', 'suspensionState', '1');
+INSERT INTO `sys_dict_type` VALUES ('c8b27d7bc5ffbaa6d370f26f8c140a22', 'CMS媒体类型', 'cmsMediaType', '1');
+INSERT INTO `sys_dict_type` VALUES ('d87a727bf068c7927fcbe3528f9e8c26', 'CMS发布类型', 'cmsReleaseType', '1');
 INSERT INTO `sys_dict_type` VALUES ('dcc19ea57aa468ae96fd7f5f76f58e45', '活动类型', 'activityType', '1');
 INSERT INTO `sys_dict_type` VALUES ('ed2090fc0b2a27f70456eef5e4fafa25', '测试', 'test', '1');
 INSERT INTO `sys_dict_type` VALUES ('f645e5b01c77c004905673b97c091c93', 'boolean', 'boolean', '1');
@@ -4474,7 +4705,7 @@ CREATE TABLE `sys_download` (
   `length` bigint(20) DEFAULT NULL COMMENT '文件大小',
   `auth` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '授权（保留）',
   `code` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '权限代码（保留）',
-  `status` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '状态',
+  `status` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '状态',
   `version` int(11) DEFAULT NULL COMMENT '乐观锁',
   `create_user` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
@@ -4485,14 +4716,28 @@ CREATE TABLE `sys_download` (
 -- Records of sys_download
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_download` VALUES ('0e31d218aa264fa4afb202337381a34b', '导出示例', '/Users/tengchong/development/easy-admin/temporary/2021/2/4/46cfedc2-cdca-490b-925c-7f7aab0b2eeb.xlsx', 'general', '2021-02-05 10:00:55', 'xlsx', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:00:55');
-INSERT INTO `sys_download` VALUES ('5ba90bca83d0b2ce3c4eec08e237e087', '导出示例.xls', '/Users/tengchong/development/easy-admin/temporary/2021/2/4/9ef61abf-e989-4694-9745-3b43d40b614a.xls', 'general', '2021-02-05 10:05:18', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:05:18');
-INSERT INTO `sys_download` VALUES ('5e4615e3ef1ad789663102ad6e006238', '导出示例', '/Users/tengchong/development/easy-admin/temporary/2021/2/4/1d82ffc5-eb52-4251-853d-4017dcbb42b0.xls', 'general', '2021-02-05 10:03:05', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:03:05');
-INSERT INTO `sys_download` VALUES ('735ee01cef7026a10a3b4f93be919838', '导出示例', '/Users/tengchong/development/easy-admin/temporary/2021/2/4/2f081cc7-7bc9-4c48-be3b-289b4d4cda00.xls', 'general', '2021-02-05 10:04:50', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:04:50');
-INSERT INTO `sys_download` VALUES ('78f281a55f66b1893defdb86d644ac75', '导出示例', '/Users/tengchong/development/easy-admin/temporary/2021/2/4/dc5500e7-1c60-4713-9b5b-b2cc95507364.xls', 'general', '2021-02-05 10:03:31', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:03:31');
-INSERT INTO `sys_download` VALUES ('7b2e3763a32aab46c43b021c1220ac7d', '代码生成示例.xls', '/Users/tengchong/development/easy-admin/temporary/2021/2/23/aa28ea7d-72eb-4b09-877f-c9cd0aa2c096.xls', 'general', '2021-02-24 04:35:37', 'xls', 27648, NULL, NULL, NULL, NULL, '1', '2021-02-23 16:35:37');
-INSERT INTO `sys_download` VALUES ('904b8d79a043f01660f4b2f9ad4e173b', '导出示例', '/Users/tengchong/development/easy-admin/temporary/2021/2/4/bdf38b59-d1bb-4a9b-90bf-eb3f5d8e4c2a.xls', 'general', '2021-02-05 10:02:08', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:02:08');
-INSERT INTO `sys_download` VALUES ('c905fd15f33781cb7eb283d0f22da5ed', '导出示例', '/Users/tengchong/development/easy-admin/temporary/2021/2/4/d541330c-499d-48e6-997c-04287892df9c.xlsx', 'general', '2021-02-05 10:01:35', 'xlsx', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:01:35');
+INSERT INTO `sys_download` VALUES ('0e31d218aa264fa4afb202337381a34b', '导出示例', '/Users/tengchong/development/easy-restful/temporary/2021/2/4/46cfedc2-cdca-490b-925c-7f7aab0b2eeb.xlsx', 'general', '2021-02-05 10:00:55', 'xlsx', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:00:55');
+INSERT INTO `sys_download` VALUES ('265ae7faa6efe961fb00065f53aaf090', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/fa9aad4b-3d08-41b1-9bd1-ef9fd2e391a6.xlsx', 'general', '2021-07-08 01:55:19', 'xlsx', 4125, NULL, NULL, NULL, NULL, '1', '2021-07-07 13:55:19');
+INSERT INTO `sys_download` VALUES ('2793379204e9e565db292462c5f085eb', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/2913d3ba-b736-4e5f-815a-4b1ffdfddf5c.xlsx', 'general', '2021-07-08 01:53:02', 'xlsx', 4058, NULL, NULL, NULL, NULL, '1', '2021-07-07 13:53:02');
+INSERT INTO `sys_download` VALUES ('4ce6cfe66a3152e08d2d6049ee7221e1', '代码生成示例验证失败数据2021-07-08.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/8/50d42cbc-3bf0-4225-8dcd-9c80115d0ede.xlsx', 'general', '2021-07-09 03:16:07', 'xlsx', 4281, NULL, NULL, NULL, NULL, '1', '2021-07-08 15:16:07');
+INSERT INTO `sys_download` VALUES ('5ba90bca83d0b2ce3c4eec08e237e087', '导出示例.xls', '/Users/tengchong/development/easy-restful/temporary/2021/2/4/9ef61abf-e989-4694-9745-3b43d40b614a.xls', 'general', '2021-02-05 10:05:18', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:05:18');
+INSERT INTO `sys_download` VALUES ('5e4615e3ef1ad789663102ad6e006238', '导出示例', '/Users/tengchong/development/easy-restful/temporary/2021/2/4/1d82ffc5-eb52-4251-853d-4017dcbb42b0.xls', 'general', '2021-02-05 10:03:05', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:03:05');
+INSERT INTO `sys_download` VALUES ('735ee01cef7026a10a3b4f93be919838', '导出示例', '/Users/tengchong/development/easy-restful/temporary/2021/2/4/2f081cc7-7bc9-4c48-be3b-289b4d4cda00.xls', 'general', '2021-02-05 10:04:50', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:04:50');
+INSERT INTO `sys_download` VALUES ('78f281a55f66b1893defdb86d644ac75', '导出示例', '/Users/tengchong/development/easy-restful/temporary/2021/2/4/dc5500e7-1c60-4713-9b5b-b2cc95507364.xls', 'general', '2021-02-05 10:03:31', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:03:31');
+INSERT INTO `sys_download` VALUES ('7b2e3763a32aab46c43b021c1220ac7d', '代码生成示例.xls', '/Users/tengchong/development/easy-restful/temporary/2021/2/23/aa28ea7d-72eb-4b09-877f-c9cd0aa2c096.xls', 'general', '2021-02-24 04:35:37', 'xls', 27648, NULL, NULL, NULL, NULL, '1', '2021-02-23 16:35:37');
+INSERT INTO `sys_download` VALUES ('7c230cde57331f9ec590c7f1aa150b4b', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/bc0350be-ce08-46f0-95f1-ac764176b8a6.xlsx', 'general', '2021-07-08 01:38:30', 'xlsx', 4049, NULL, NULL, NULL, NULL, '1', '2021-07-07 13:38:30');
+INSERT INTO `sys_download` VALUES ('85f09a502955861600ab13a85430a4ce', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/ae139ff9-9547-4cc5-b4ba-740a381d0b87.xlsx', 'general', '2021-07-08 02:08:07', 'xlsx', 4157, NULL, NULL, NULL, NULL, '1', '2021-07-07 14:08:07');
+INSERT INTO `sys_download` VALUES ('904b8d79a043f01660f4b2f9ad4e173b', '导出示例', '/Users/tengchong/development/easy-restful/temporary/2021/2/4/bdf38b59-d1bb-4a9b-90bf-eb3f5d8e4c2a.xls', 'general', '2021-02-05 10:02:08', 'xls', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:02:08');
+INSERT INTO `sys_download` VALUES ('96c4bdd9b2a4c90e9482d233247db318', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/5c1b1578-6f03-4650-8b6a-fd46a0568197.xlsx', 'general', '2021-07-08 02:07:41', 'xlsx', 4158, NULL, NULL, NULL, NULL, '1', '2021-07-07 14:07:41');
+INSERT INTO `sys_download` VALUES ('96de5814d05862fa8fc397cc507d0378', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/01802b5a-b9cb-4bf3-8f33-6697a9717f1d.xlsx', 'general', '2021-07-08 03:21:46', 'xlsx', 4167, NULL, NULL, NULL, NULL, '1', '2021-07-07 15:21:46');
+INSERT INTO `sys_download` VALUES ('a7ac27200150f03d32352d85b9334ced', '代码生成示例验证失败数据2021-07-08.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/8/d68fe7ba-3fbd-4f63-9cdb-4d38fc082bd9.xlsx', 'general', '2021-07-09 03:05:58', 'xlsx', 4010, NULL, NULL, NULL, NULL, '1', '2021-07-08 15:05:58');
+INSERT INTO `sys_download` VALUES ('c4a84913a5f719c30b51ee1daa7efca4', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/913c78cb-db0c-4f71-b03f-301cadfcf423.xlsx', 'general', '2021-07-08 03:18:27', 'xlsx', 4157, NULL, NULL, NULL, NULL, '1', '2021-07-07 15:18:27');
+INSERT INTO `sys_download` VALUES ('c4e1fe871da7a02bf914d1b30618c772', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/e780464a-e089-4b24-97aa-7be455ceba05.xlsx', 'general', '2021-07-08 02:08:34', 'xlsx', 4157, NULL, NULL, NULL, NULL, '1', '2021-07-07 14:08:34');
+INSERT INTO `sys_download` VALUES ('c8738b02116bf034e87d6c432079cf04', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/2cccf641-007f-46e1-8593-dc712a46b9ae.xlsx', 'general', '2021-07-08 01:52:30', 'xlsx', 4058, NULL, NULL, NULL, NULL, '1', '2021-07-07 13:52:30');
+INSERT INTO `sys_download` VALUES ('c905fd15f33781cb7eb283d0f22da5ed', '导出示例', '/Users/tengchong/development/easy-restful/temporary/2021/2/4/d541330c-499d-48e6-997c-04287892df9c.xlsx', 'general', '2021-02-05 10:01:35', 'xlsx', 25088, NULL, NULL, NULL, NULL, '1', '2021-02-04 22:01:35');
+INSERT INTO `sys_download` VALUES ('ed42c0dc4af0a35e026a04ea03453247', '代码生成示例验证失败数据2021-07-08.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/8/96c36f6d-5026-4637-936f-234bedd5f3fa.xlsx', 'general', '2021-07-09 03:21:54', 'xlsx', 4307, NULL, NULL, NULL, NULL, '1', '2021-07-08 15:21:54');
+INSERT INTO `sys_download` VALUES ('f1434cd30e49217afbf9625524bafb1a', '代码生成示例.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/7/0cc8535b-82a3-423c-b218-179b3ab561e0.xlsx', 'general', '2021-07-08 01:51:34', 'xlsx', 4058, NULL, NULL, NULL, NULL, '1', '2021-07-07 13:51:34');
+INSERT INTO `sys_download` VALUES ('ff4b75e440dfd0710c4092fa14985339', '代码生成示例验证失败数据2021-07-08.xlsx', '/Users/tengchong/development/easy-restful/temporary/2021/7/8/bcf41abd-d25f-4b58-bb53-7da9c94548eb.xlsx', 'general', '2021-07-09 03:19:38', 'xlsx', 4297, NULL, NULL, NULL, NULL, '1', '2021-07-08 15:19:38');
 COMMIT;
 
 -- ----------------------------
@@ -4535,6 +4780,61 @@ CREATE TABLE `sys_file` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='文件 ';
 
 -- ----------------------------
+-- Records of sys_file
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_file` VALUES ('032f1da7efcd1c872bfe57d350777ad1', '6ae05e77c00625285571c477c3429b01', 'article-cover', NULL, 'a29d9da7-aecf-48ca-a0d5-d2dac414222f.png', '/Users/tengchong/development/easy-admin/formal/2021/12/17/a29d9da7-aecf-48ca-a0d5-d2dac414222f.png', 54446, NULL, NULL, NULL, NULL, '1', '2021-12-17 13:35:14', '1', '2021-12-17 13:35:14');
+INSERT INTO `sys_file` VALUES ('060e9b7ad9813fa131f0e2d84afd0d0c', '2ce4c0c6c75725298d53268b866728df', 'article-cover', NULL, '46468ef9-a351-4e86-8488-aba0da5f05d3.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/46468ef9-a351-4e86-8488-aba0da5f05d3.jpg', 100266, NULL, NULL, NULL, NULL, '1', '2021-12-16 16:04:37', '1', '2021-12-16 16:04:37');
+INSERT INTO `sys_file` VALUES ('0f9ba6921e1872502d8b08aa85618a4f', 'd2855c72bd0c3b42372e5d07dbf86093', 'article-cover', NULL, '86edd03d-30b1-43ec-b297-239645e42a26.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/24/86edd03d-30b1-43ec-b297-239645e42a26.jpg', 101620, NULL, NULL, NULL, NULL, '1', '2021-11-24 14:59:03', '1', '2021-11-24 14:59:03');
+INSERT INTO `sys_file` VALUES ('10e81c36916750540cc9732c1796274c', 'abfcab0689874fdb3ba4d26bb4759e24', 'media-file', 'SampleVideo_1280x720_5mb.mp4', '46e297b9-bfa2-4a51-a51e-b9fa75f56055.mp4', '/Users/tengchong/development/easy-admin/formal/2021/11/22/46e297b9-bfa2-4a51-a51e-b9fa75f56055.mp4', 5253880, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:42:16', '1', '2021-11-22 14:42:16');
+INSERT INTO `sys_file` VALUES ('1ccc1defda99ca9437ca262390ce44c8', '24fb92efdc1341c6363fd351c279ae61', 'article-cover', NULL, 'fc2995ef-33d4-4ff3-b08f-21cd8029f4f1.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/fc2995ef-33d4-4ff3-b08f-21cd8029f4f1.jpg', 147840, NULL, NULL, NULL, NULL, '1', '2021-12-16 16:14:53', '1', '2021-12-16 16:14:53');
+INSERT INTO `sys_file` VALUES ('20de89c34aa8af083f57e20af0c2e265', 'd4f3a19491d27fdcc49e5e245f4bf646', 'article-cover', NULL, '4144b9ed-35db-4669-aca4-7a6937b23f9b.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/24/4144b9ed-35db-4669-aca4-7a6937b23f9b.jpg', 84791, NULL, NULL, NULL, NULL, '1', '2021-11-24 14:58:06', '1', '2021-11-24 14:58:06');
+INSERT INTO `sys_file` VALUES ('232a2e6d4e3cea864aaa2d2f6d5b3bc6', 'd9ea68587cb934279c3ff5e81b3565b0', 'article-cover', NULL, 'f79f9260-c8c2-4c4a-8659-d2c85bdc226d.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/f79f9260-c8c2-4c4a-8659-d2c85bdc226d.jpg', 72320, NULL, NULL, NULL, NULL, '1', '2021-12-16 16:15:58', '1', '2021-12-16 16:15:58');
+INSERT INTO `sys_file` VALUES ('24910dede5ae8c103f54e952ce41e433', '1b61c6201d8f2a29309ccba38c8c5370', 'article-cover', NULL, '9908b817-ebad-464c-8192-689833d80a23.png', '/Users/tengchong/development/easy-admin/formal/2021/12/17/9908b817-ebad-464c-8192-689833d80a23.png', 39988, NULL, NULL, NULL, NULL, '1', '2021-12-17 13:33:07', '1', '2021-12-17 13:33:07');
+INSERT INTO `sys_file` VALUES ('2a7f30b575600ed796a3b2818fafd0bc', '6036680eec46573add06b71a034a322f', 'media-file', 'funny_lazy_cat-wallpaper-1680x1050.jpg', 'a2b9bffe-c9a4-44c0-a24d-8581908ee68c.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/a2b9bffe-c9a4-44c0-a24d-8581908ee68c.jpg', 381345, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:15:47', '1', '2021-11-22 14:15:47');
+INSERT INTO `sys_file` VALUES ('2fe28077b083072d7788934298990596', '957e312c1d5b9018881e71ba2df4ebb3', 'media-file', '摄图网_500229109.jpg', 'ff2864e0-f858-4e5f-8573-ec8bb8eea820.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/3/ff2864e0-f858-4e5f-8573-ec8bb8eea820.jpg', 3980000, NULL, NULL, NULL, NULL, '1', '2021-12-03 15:41:07', '1', '2021-12-03 15:41:07');
+INSERT INTO `sys_file` VALUES ('3d38f96227475d73626ecf7c241ec20c', '3b85dd63ad1b69275a1893645a1280d8', 'media-file', 'winter_big_problems-wallpaper-2560x1440.jpg', 'fa19ad1a-686f-4de9-aa18-e08da0801d41.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/12/fa19ad1a-686f-4de9-aa18-e08da0801d41.jpg', 914248, NULL, NULL, NULL, NULL, '1', '2021-12-12 17:02:20', '1', '2021-12-12 17:02:20');
+INSERT INTO `sys_file` VALUES ('3d5699cb2bb88605895fe52caf5c8da9', '8d78cfb6b14aff75105677df45fa3085', 'media-file', '11211271956054014479.jpg', '88f1e65a-6db7-4a58-a01b-665faf61eb82.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/88f1e65a-6db7-4a58-a01b-665faf61eb82.jpg', 17824, NULL, NULL, NULL, NULL, '1', '2021-12-16 16:04:26', '1', '2021-12-16 16:04:26');
+INSERT INTO `sys_file` VALUES ('469906ad4dfdb7029909f24069bec23b', '881b2e4ce432d59e1c5ded913479e201', 'article-cover', NULL, '4522e3f9-5133-464a-8215-6c4906e12f55.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/24/4522e3f9-5133-464a-8215-6c4906e12f55.jpg', 73638, NULL, NULL, NULL, NULL, '1', '2021-11-24 14:59:52', '1', '2021-11-24 14:59:52');
+INSERT INTO `sys_file` VALUES ('499bdf5f3002a85b0d71712e447aa234', '2b8540862d5868600f25400395875a47', 'media-file', '江西融媒体添加Kafka 2021111701.pdf', '7943a2bd-c679-4b9a-a108-5a920fa576a3.pdf', '/Users/tengchong/development/easy-admin/formal/2021/11/22/7943a2bd-c679-4b9a-a108-5a920fa576a3.pdf', 87264, NULL, NULL, NULL, NULL, '1', '2021-11-22 13:23:51', '1', '2021-11-22 13:23:51');
+INSERT INTO `sys_file` VALUES ('4aa61bfde046a6061069261b445044af', '60313960f273fb35f10f109e7d6a375f', 'media-file', 'milky_way_mountain_by_yakub_nihat-wallpaper-3840x1600.jpg', '4b3c24a8-58c4-4921-82ae-f169a0b62294.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/4b3c24a8-58c4-4921-82ae-f169a0b62294.jpg', 1530435, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:02:27', '1', '2021-11-22 14:02:27');
+INSERT INTO `sys_file` VALUES ('4fc9b82e0430178b295d5fd980f1d3c6', '6f8289516976ee4ae652f2d5d1d78201', 'media-file', 'kafka-clients-2.5.0.jar', '0a011035-3bd4-452c-a8d3-bc3ae324e8a2.jar', '/Users/tengchong/development/easy-admin/formal/2021/11/24/0a011035-3bd4-452c-a8d3-bc3ae324e8a2.jar', 3351023, NULL, NULL, NULL, NULL, '1', '2021-11-24 11:06:34', '1', '2021-11-24 11:06:34');
+INSERT INTO `sys_file` VALUES ('521f62294d1ecdd5f27da270256b81b6', '1dbb066183df00b9288e5ff6a00ee92c', 'media-file', 'bg-5.jpg', 'dfb92bb6-4162-407e-a0e8-18aefc9623d2.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/dfb92bb6-4162-407e-a0e8-18aefc9623d2.jpg', 388153, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:39:48', '1', '2021-11-22 14:39:48');
+INSERT INTO `sys_file` VALUES ('5bf19904d35aca69385d27dde35ec8e6', '06846ba1e576a99f465f76cca2e10099', 'media-file', 'aurora_borealis_atmosphere-wallpaper-1920x1200.jpg', '51c85ae1-6f4f-4b0c-ae86-ff8980401c52.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/51c85ae1-6f4f-4b0c-ae86-ff8980401c52.jpg', 515413, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:08:52', '1', '2021-11-22 14:08:52');
+INSERT INTO `sys_file` VALUES ('704ea06a41b0fcc4c2a3050d8ae275c4', '156c4e150c2ca382c2a42022d9f01d46', 'media-file', '联系我们.jpg', '31f75378-bf36-4537-8b62-4560dbc76cc7.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/2/31f75378-bf36-4537-8b62-4560dbc76cc7.jpg', 606440, NULL, NULL, NULL, NULL, '1', '2021-12-02 21:25:15', '1', '2021-12-02 21:25:15');
+INSERT INTO `sys_file` VALUES ('714f5218a4ed6012ee50c3f281e5cd93', 'a75782c4691388cbfe1fde2be8a98956', 'media-file', '28cd1c78667e0f54f50839cc3dfcb477.jpg', 'd555a0b7-1ede-4a3f-9161-3ae0e225888f.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/24/d555a0b7-1ede-4a3f-9161-3ae0e225888f.jpg', 17019, NULL, NULL, NULL, NULL, '1', '2021-11-24 20:45:56', '1', '2021-11-24 20:45:56');
+INSERT INTO `sys_file` VALUES ('76fb3d8f5e199ed9419e7f5f3e8c8111', 'eb6d9e56fd70051ce479afca94b1d361', 'article-cover', NULL, '090f3dc7-3d2d-4e17-8554-baef8ccf2600.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/090f3dc7-3d2d-4e17-8554-baef8ccf2600.jpg', 114428, NULL, NULL, NULL, NULL, '1', '2021-12-16 16:08:30', '1', '2021-12-16 16:08:30');
+INSERT INTO `sys_file` VALUES ('8368bd826d6e4d1aca4c02c3762d5b74', '8200094f916fac0e7d1647ebc3fc4ef8', 'article-cover', NULL, 'e135fde6-a93b-4d85-a2ae-69f804313686.png', '/Users/tengchong/development/easy-admin/formal/2021/12/17/e135fde6-a93b-4d85-a2ae-69f804313686.png', 20596, NULL, NULL, NULL, NULL, '1', '2021-12-17 15:09:09', '1', '2021-12-17 15:09:09');
+INSERT INTO `sys_file` VALUES ('980a11d3444e1d5d356516199e8cd82f', 'ae0fb935d2c107f22b372ddd32a89061', 'media-file', 'SampleVideo_1280x720_5mb.mp4', '183ff846-fd0f-4c98-a98d-d8fee37671dd.mp4', '/Users/tengchong/development/easy-admin/formal/2021/11/22/183ff846-fd0f-4c98-a98d-d8fee37671dd.mp4', 5253880, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:35:05', '1', '2021-11-22 14:35:05');
+INSERT INTO `sys_file` VALUES ('9c1ce66fec0c2b25ee90486a50a1fc43', '7b70600561de09eb9fbc8b93ce2d5ced', 'media-file', '营业执照.jpg', 'd11c4572-d052-4dcc-b471-e5ae3b9e97e8.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/d11c4572-d052-4dcc-b471-e5ae3b9e97e8.jpg', 5027060, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:04:03', '1', '2021-11-22 14:04:03');
+INSERT INTO `sys_file` VALUES ('9ce7be12b20e4e6a1644d47308fbf6ee', '827291a5cce838992eb997cf11a99022', 'article-cover', NULL, '995a6a78-5e8f-43af-8fc4-ac474549c59c.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/995a6a78-5e8f-43af-8fc4-ac474549c59c.jpg', 45767, NULL, NULL, NULL, NULL, '1', '2021-12-16 16:13:42', '1', '2021-12-16 16:13:42');
+INSERT INTO `sys_file` VALUES ('a3b8f323d3f3cdc3a59790231f4705f6', '85d366fe9e126b0bf627f0b934da34c6', 'media-file', '江西融媒体添加Kafka 2021111701.pdf', 'a19494f2-da23-4ed5-b545-a4ce47d61e9b.pdf', '/Users/tengchong/development/easy-admin/formal/2021/11/22/a19494f2-da23-4ed5-b545-a4ce47d61e9b.pdf', 87264, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:56:05', '1', '2021-11-22 14:56:05');
+INSERT INTO `sys_file` VALUES ('a718bb946c61380bffcbb3c8b118dca3', '773a057a5af2df137299df81eb57085b', 'article-cover', NULL, '08befb87-e005-4829-b2c8-46c62c89e251.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/24/08befb87-e005-4829-b2c8-46c62c89e251.jpg', 84184, NULL, NULL, NULL, NULL, '1', '2021-11-24 14:36:50', '1', '2021-11-24 14:36:50');
+INSERT INTO `sys_file` VALUES ('a7d6b5ce687cbe4fd50b51e943a191e5', 'c2732e389ab563e7b25a79b78030d510', 'media-file', '江西融媒体添加Kafka 2021111701.pdf', 'd21b450a-fb9e-48bc-a827-09de237d626b.pdf', '/Users/tengchong/development/easy-admin/formal/2021/11/22/d21b450a-fb9e-48bc-a827-09de237d626b.pdf', 87264, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:58:19', '1', '2021-11-22 14:58:19');
+INSERT INTO `sys_file` VALUES ('a96132a7c8fcd1da71e47b80d3db45c9', '74436d23c683e58bc8284a5681169dbd', 'media-file', 'best_beaches_in_the_world-wallpaper-1920x1200.jpg', 'c52f5132-f9a5-44d8-aca7-59af88fb8215.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/c52f5132-f9a5-44d8-aca7-59af88fb8215.jpg', 946465, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:00:13', '1', '2021-11-22 14:00:13');
+INSERT INTO `sys_file` VALUES ('aa3876960c7eabb6aa49ec8cc2a6a64e', '456fe0104f303c3bb8bf1cd6bd40345a', 'media-file', 'best_beaches_in_the_world-wallpaper-1920x1200.jpg', 'de5181b6-ed93-43cb-8d02-6077bbff93db.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/3/de5181b6-ed93-43cb-8d02-6077bbff93db.jpg', 946465, NULL, NULL, NULL, NULL, '1', '2021-12-03 15:43:51', '1', '2021-12-03 15:43:51');
+INSERT INTO `sys_file` VALUES ('ac01bbb0141a02a4e9ea4008b513a959', '5e4e11ad8fcb2967ea8d41f32adcad67', 'article-cover', NULL, '85c916ac-0f45-4653-8db5-d3b4f9b009f3.png', '/Users/tengchong/development/easy-admin/formal/2021/12/17/85c916ac-0f45-4653-8db5-d3b4f9b009f3.png', 72618, NULL, NULL, NULL, NULL, '1', '2021-12-17 14:27:42', '1', '2021-12-17 14:27:42');
+INSERT INTO `sys_file` VALUES ('b05ca0bcbbcf47f39363c0054fc32f4b', 'ad220bd2bfe093df1d2d7059372ef6ce', 'article-cover', NULL, '5a7d72a2-33ca-43d1-9c85-54583c644d08.png', '/Users/tengchong/development/easy-admin/formal/2021/12/17/5a7d72a2-33ca-43d1-9c85-54583c644d08.png', 44811, NULL, NULL, NULL, NULL, '1', '2021-12-17 13:36:23', '1', '2021-12-17 13:36:23');
+INSERT INTO `sys_file` VALUES ('b074b315919c8214cfd1f7b9fe8dc604', 'fd675d7e51018ff71cdcb327f6c114e5', 'media-file', 'best_beaches_in_the_world-wallpaper-1920x1200.jpg', 'c7df065c-c208-4610-ba93-d0615630bee3.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/c7df065c-c208-4610-ba93-d0615630bee3.jpg', 946465, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:10:21', '1', '2021-11-22 14:10:21');
+INSERT INTO `sys_file` VALUES ('b145c029ac79b27c76ed285b76d79dca', '6b8597b787c1d9a27088e5d8f9e14b25', 'media-file', 'milky_way_mountain_by_yakub_nihat-wallpaper-3840x1600.jpg', '9c17429a-3e18-4bc7-89e6-0b16a4c37b44.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/9c17429a-3e18-4bc7-89e6-0b16a4c37b44.jpg', 1530435, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:08:43', '1', '2021-11-22 14:08:43');
+INSERT INTO `sys_file` VALUES ('b27f6e5d51400ed0b6f5bd33d532d81c', 'f7c0bb128d44afa784b255e9a8774baa', 'media-file', '测试音频-1.MP3', '85539b4e-1595-44f8-bca7-ed13190dd091.MP3', '/Users/tengchong/development/easy-admin/formal/2021/11/22/85539b4e-1595-44f8-bca7-ed13190dd091.MP3', 42768, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:54:19', '1', '2021-11-22 14:54:19');
+INSERT INTO `sys_file` VALUES ('bcdae7e5bf171a035ca96c865ac0e6a5', 'ef2d1246487098a518ae65173040b2d6', 'media-file', 'SampleVideo_1280x720_5mb.mp4', '7eb8a2c5-01df-4dc8-be25-dd1878ace9ee.mp4', '/Users/tengchong/development/easy-admin/formal/2021/12/16/7eb8a2c5-01df-4dc8-be25-dd1878ace9ee.mp4', 5253880, NULL, NULL, NULL, NULL, '1', '2021-12-16 17:32:55', '1', '2021-12-16 17:32:55');
+INSERT INTO `sys_file` VALUES ('bdad2dc4aaebc300043225d43e609e08', '91ee2cda7ea4c376c0c3b5cd8aea8cb0', 'media-file', 'SampleVideo_1280x720_5mb.mp4', '48e049da-e0a5-43e5-916b-2e8d97d4b507.mp4', '/Users/tengchong/development/easy-admin/formal/2021/11/22/48e049da-e0a5-43e5-916b-2e8d97d4b507.mp4', 5253880, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:40:07', '1', '2021-11-22 14:40:07');
+INSERT INTO `sys_file` VALUES ('c166f16e32cf23aa767eb49eeaf2890f', 'bc6549fb203be088da3c9685b6611144', 'article-cover', NULL, 'd5acce0a-525f-428a-895d-de9dbe111471.png', '/Users/tengchong/development/easy-admin/formal/2021/12/17/d5acce0a-525f-428a-895d-de9dbe111471.png', 16623, NULL, NULL, NULL, NULL, '1', '2021-12-17 14:37:59', '1', '2021-12-17 14:37:59');
+INSERT INTO `sys_file` VALUES ('c3cddcc1ede3f2c4c0caf778392fcf46', 'd395e0d9326c01dcef750ad089ea5151', 'media-file', 'winter_big_problems-wallpaper-2560x1440.jpg', '70687e68-41f8-4d57-a5f3-a7af712bca42.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/3/70687e68-41f8-4d57-a5f3-a7af712bca42.jpg', 914248, NULL, NULL, NULL, NULL, '1', '2021-12-03 15:51:55', '1', '2021-12-03 15:51:55');
+INSERT INTO `sys_file` VALUES ('c67d96ff2bc8de8f2253df88d8bf7dc9', 'e83d46ecc616fd47a74dc0dddfbf3dfb', 'article-cover', NULL, 'c1ad0b0e-6e61-4b3c-abcc-474db1df051b.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/c1ad0b0e-6e61-4b3c-abcc-474db1df051b.jpg', 109622, NULL, NULL, NULL, NULL, '1', '2021-12-16 16:09:20', '1', '2021-12-16 16:09:20');
+INSERT INTO `sys_file` VALUES ('c8f19fbc692b59792f8b6612de5ae736', '2e4d78f6822cca0105698ae0cfc9dc72', 'media-file', 'aurora_borealis_atmosphere-wallpaper-1920x1200.jpg', 'a5fdcf2c-8f98-4057-86e4-1fe8708b5349.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/22/a5fdcf2c-8f98-4057-86e4-1fe8708b5349.jpg', 515413, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:06:03', '1', '2021-11-22 14:06:03');
+INSERT INTO `sys_file` VALUES ('cb3919e6bc7eaa66b2ab52bdcd34917d', '986976781c597539ce4960f06c5888fd', 'media-file', 'best_beaches_in_the_world-wallpaper-1920x1200.jpg', '6159e810-9e64-4d68-8d38-6a2ae710b7f5.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/3/6159e810-9e64-4d68-8d38-6a2ae710b7f5.jpg', 946465, NULL, NULL, NULL, NULL, '1', '2021-12-03 15:40:14', '1', '2021-12-03 15:40:14');
+INSERT INTO `sys_file` VALUES ('cf9e437a00ad72ee5da7a3bc0b5a5882', 'fac1444a33b44a34f42b2435f20c28a0', 'article-cover', NULL, '9af09b80-66ab-44ba-9868-fc498db9eed0.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/24/9af09b80-66ab-44ba-9868-fc498db9eed0.jpg', 64340, NULL, NULL, NULL, NULL, '1', '2021-11-24 15:01:50', '1', '2021-11-24 15:01:50');
+INSERT INTO `sys_file` VALUES ('d5ce0bf263f1fcb4b33a87ba22396a43', '4e91c625b975b92288c25869b9085496', 'media-file', '南京君度科技有限公司前端工程师笔试题-答案.pdf', '428b8cc2-7787-4a42-a092-d1bf1ee51c3c.pdf', '/Users/tengchong/development/easy-admin/formal/2021/11/22/428b8cc2-7787-4a42-a092-d1bf1ee51c3c.pdf', 308209, NULL, NULL, NULL, NULL, '1', '2021-11-22 13:23:51', '1', '2021-11-22 13:23:51');
+INSERT INTO `sys_file` VALUES ('ddb6e3e618b2d1ae1a8637d1b9cc0f6a', '87c16788b93aa89dab6f8f8e2d10c9d3', 'article-cover', NULL, '27f8a85a-369b-46e2-9734-e3ff31471857.jpg', '/Users/tengchong/development/easy-admin/formal/2021/11/24/27f8a85a-369b-46e2-9734-e3ff31471857.jpg', 74936, NULL, NULL, NULL, NULL, '1', '2021-11-24 14:34:30', '1', '2021-11-24 14:34:30');
+INSERT INTO `sys_file` VALUES ('eb2c938392ad7557dedc2ee86357063a', '1ce2fbc587f8f130b293f9bd41320a43', 'media-file', 'SampleVideo_1280x720_5mb.mp4', '799e588b-f442-41df-a9c6-c99c3b06ab6e.mp4', '/Users/tengchong/development/easy-admin/formal/2021/11/22/799e588b-f442-41df-a9c6-c99c3b06ab6e.mp4', 5253880, NULL, NULL, NULL, NULL, '1', '2021-11-22 14:43:31', '1', '2021-11-22 14:43:31');
+INSERT INTO `sys_file` VALUES ('f80ae367183f5f59e27e68b87eb2851a', '33001f4ef732eee174d117c01ac75f4e', 'article-cover', NULL, 'f78933a1-de1d-4515-bd5e-b2d29bbf3666.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/f78933a1-de1d-4515-bd5e-b2d29bbf3666.jpg', 108032, NULL, NULL, NULL, NULL, '1', '2021-12-16 17:36:49', '1', '2021-12-16 17:36:49');
+INSERT INTO `sys_file` VALUES ('feec881cea98e8346442f32b50618ee8', 'a6c75661a8b210ceb95945f8248e7fda', 'media-file', '测试20211111-2-审核记录.png', 'f804327a-edcd-4a90-a3f2-bec5b3ec12b5.png', '/Users/tengchong/development/easy-admin/formal/2021/11/22/f804327a-edcd-4a90-a3f2-bec5b3ec12b5.png', 19983, NULL, NULL, NULL, NULL, '1', '2021-11-22 13:23:51', '1', '2021-11-22 13:23:51');
+INSERT INTO `sys_file` VALUES ('ffa9823adc43f1c7275d8049f805673b', '19d9d1b226401f8d030afeba015f80e0', 'media-file', 'MAIN202112160828000100470639154.jpg', '0990bcb8-51ba-455c-b36c-7911d10943fd.jpg', '/Users/tengchong/development/easy-admin/formal/2021/12/16/0990bcb8-51ba-455c-b36c-7911d10943fd.jpg', 119126, NULL, NULL, NULL, NULL, '1', '2021-12-16 16:15:57', '1', '2021-12-16 16:15:57');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sys_import_excel_template
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_import_excel_template`;
@@ -4546,7 +4846,7 @@ CREATE TABLE `sys_import_excel_template` (
   `callback` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '回调',
   `import_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '模板代码',
   `permission_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '权限代码',
-  `remarks` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `remarks` varchar(1024) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   `data_source` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据源',
   `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
@@ -4591,12 +4891,12 @@ CREATE TABLE `sys_import_excel_template_details` (
 -- Records of sys_import_excel_template_details
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_import_excel_template_details` VALUES ('080c1300dfac53e7bacd4d182ccf6f19', 'aa09908efded36b3d1784486995b39d4', 'status', '状态', '2', 'int', 'sys_dict', 'name', 'code', 'commonStatus', 5, NULL, NULL, '1', '2021-02-25 09:35:01', '1', '2021-02-25 09:35:01');
-INSERT INTO `sys_import_excel_template_details` VALUES ('4b08fe9a8d475cc450ee951a245d726f', 'aa09908efded36b3d1784486995b39d4', 'phone', '手机号码', '20', 'varchar', NULL, NULL, NULL, NULL, 4, NULL, NULL, '1', '2021-02-25 09:35:01', '1', '2021-02-25 09:35:01');
-INSERT INTO `sys_import_excel_template_details` VALUES ('5d740c222d2a257c8b14fd541c869c7a', 'aa09908efded36b3d1784486995b39d4', 'address', '地址', '255', 'varchar', NULL, NULL, NULL, NULL, 6, NULL, NULL, '1', '2021-02-25 09:35:01', '1', '2021-02-25 09:35:01');
-INSERT INTO `sys_import_excel_template_details` VALUES ('a0bb313ca40ff7a2a418dc68ae3b09a9', 'aa09908efded36b3d1784486995b39d4', 'age', '年龄', '3', 'int', NULL, NULL, NULL, NULL, 3, NULL, NULL, '1', '2021-02-25 09:35:01', '1', '2021-02-25 09:35:01');
-INSERT INTO `sys_import_excel_template_details` VALUES ('c79ab80caf846ee3d326de7caf41f81b', 'aa09908efded36b3d1784486995b39d4', 'name', '姓名', '50', 'varchar', NULL, NULL, NULL, NULL, 1, NULL, NULL, '1', '2021-02-25 09:35:01', '1', '2021-02-25 09:35:01');
-INSERT INTO `sys_import_excel_template_details` VALUES ('f67c35aa89a30c0d3ecf0bba3b37bab2', 'aa09908efded36b3d1784486995b39d4', 'sex', '性别', '1', 'varchar', 'sys_dict', 'name', 'code', 'sex', 2, NULL, NULL, '1', '2021-02-25 09:35:01', '1', '2021-02-25 09:35:01');
+INSERT INTO `sys_import_excel_template_details` VALUES ('080c1300dfac53e7bacd4d182ccf6f19', 'aa09908efded36b3d1784486995b39d4', 'status', '状态', '2', 'int', 'sys_dict', 'name', 'code', 'commonStatus', 5, NULL, NULL, '1', '2021-07-08 14:59:47', '1', '2021-07-08 14:59:47');
+INSERT INTO `sys_import_excel_template_details` VALUES ('4b08fe9a8d475cc450ee951a245d726f', 'aa09908efded36b3d1784486995b39d4', 'phone', '手机号码', '20', 'varchar', NULL, NULL, NULL, NULL, 4, NULL, NULL, '1', '2021-07-08 14:59:47', '1', '2021-07-08 14:59:47');
+INSERT INTO `sys_import_excel_template_details` VALUES ('5d740c222d2a257c8b14fd541c869c7a', 'aa09908efded36b3d1784486995b39d4', 'address', '地址', '255', 'varchar', NULL, NULL, NULL, NULL, 6, NULL, NULL, '1', '2021-07-08 14:59:47', '1', '2021-07-08 14:59:47');
+INSERT INTO `sys_import_excel_template_details` VALUES ('a0bb313ca40ff7a2a418dc68ae3b09a9', 'aa09908efded36b3d1784486995b39d4', 'age', '年龄', '3', 'int', NULL, NULL, NULL, NULL, 3, NULL, NULL, '1', '2021-07-08 14:59:47', '1', '2021-07-08 14:59:47');
+INSERT INTO `sys_import_excel_template_details` VALUES ('c79ab80caf846ee3d326de7caf41f81b', 'aa09908efded36b3d1784486995b39d4', 'name', '姓名', '50', 'varchar', NULL, NULL, NULL, NULL, 1, 1, NULL, '1', '2021-07-08 14:59:47', '1', '2021-07-08 14:59:47');
+INSERT INTO `sys_import_excel_template_details` VALUES ('f67c35aa89a30c0d3ecf0bba3b37bab2', 'aa09908efded36b3d1784486995b39d4', 'sex', '性别', '1', 'varchar', 'sys_dict', 'name', 'code', 'sex', 2, 1, NULL, '1', '2021-07-08 14:59:47', '1', '2021-07-08 14:59:47');
 COMMIT;
 
 -- ----------------------------
@@ -4663,6 +4963,13 @@ CREATE TABLE `sys_import_excel_temporary` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='导入临时表';
 
 -- ----------------------------
+-- Records of sys_import_excel_temporary
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_import_excel_temporary` VALUES ('74fa1e814f484d9270e9818ac2ed63c5', 'aa09908efded36b3d1784486995b39d4', '1', '0', '性别不能为空;姓名不能为空;', NULL, NULL, NULL, '17366392808', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sys_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_log`;
@@ -4686,169 +4993,35 @@ CREATE TABLE `sys_log` (
 -- Records of sys_log
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_log` VALUES ('01862e2c1e0a5636e359c56bea674f0a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:30:56');
-INSERT INTO `sys_log` VALUES ('02cfc967316b228d0b8adc730bad4e17', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-15 13:13:28');
-INSERT INTO `sys_log` VALUES ('033ac1fe442321b9e5179c992ba943a3', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-02 16:26:00');
-INSERT INTO `sys_log` VALUES ('045d1fd132cf2aed7758e23b5a234958', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:23:45');
-INSERT INTO `sys_log` VALUES ('04c5212dbe4fabf24b940a69576905c4', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:21:07');
-INSERT INTO `sys_log` VALUES ('06236ed84b16ef907f2331943a99f4f7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:19:28');
-INSERT INTO `sys_log` VALUES ('06bd261a21b3589f50b4d8390ff89237', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:53:03');
-INSERT INTO `sys_log` VALUES ('0740695e253fc397bd33992d3288a02c', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:17:44');
-INSERT INTO `sys_log` VALUES ('0ad84862fb4912c63d7848ea3d46fa34', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-02 14:20:59');
-INSERT INTO `sys_log` VALUES ('0b7b4dbe8630abb61f55e20ab34a3d1b', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-06 16:12:39');
-INSERT INTO `sys_log` VALUES ('0c4b8048d825b2c97afef7dd7b3facef', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-02 13:56:38');
-INSERT INTO `sys_log` VALUES ('0c7e6a40144779dedecf6af8f5a37239', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-06 16:16:13');
-INSERT INTO `sys_log` VALUES ('0c828f6100788b05bb382f3fce1aeb9a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:34:20');
-INSERT INTO `sys_log` VALUES ('0d8e4615425e98aa62e9148e18263010', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:06:05');
-INSERT INTO `sys_log` VALUES ('0e73e039c6f602bd24d3ff14f8c08e66', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:10:03');
-INSERT INTO `sys_log` VALUES ('119b67e8524a00fc7641c86cb929ee3f', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:13:56');
-INSERT INTO `sys_log` VALUES ('12c10cbaabfce0d51c66f285965abdbe', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:17:32');
-INSERT INTO `sys_log` VALUES ('12e9bff1cc224bbe9552b3a8b2b81149', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:51:17');
-INSERT INTO `sys_log` VALUES ('143f1117889c99f65de6b89001ffcc5b', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:07:26');
-INSERT INTO `sys_log` VALUES ('175d1af3329d165cdf82ade2c7210dcb', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:11:23');
-INSERT INTO `sys_log` VALUES ('17ed1206cfa37e33df9ed78a01abf787', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:48:34');
-INSERT INTO `sys_log` VALUES ('19e02217af45f08deec67005ef4addf2', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:05:45');
-INSERT INTO `sys_log` VALUES ('1fb08ccada3d140857bfb6d77a180d96', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:33:43');
-INSERT INTO `sys_log` VALUES ('22f66dff254647a6a6ebdea1b7a84129', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:31:44');
-INSERT INTO `sys_log` VALUES ('237ae1a93eefc470fe4dfe9db5d6c01c', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-02 17:33:42');
-INSERT INTO `sys_log` VALUES ('23ab7a1d4b11b57aac9abc3918bd18d8', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:11:11');
-INSERT INTO `sys_log` VALUES ('263fe8a186a496fbf5ba23a08ca9ca2d', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:31:29');
-INSERT INTO `sys_log` VALUES ('26d42599c51a00dc43eb99380364bafc', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-06 16:10:44');
-INSERT INTO `sys_log` VALUES ('27993f6cddbe8b3798a203aaa540ddf8', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-15 13:41:47');
-INSERT INTO `sys_log` VALUES ('2911501a7e2045e04f566461debfdb31', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:43:24');
-INSERT INTO `sys_log` VALUES ('3341bcc8e80a7c6256f6ebd17b68d8d7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:02:32');
-INSERT INTO `sys_log` VALUES ('337b9f403137b4978dab0a6ba4e1004e', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:22:24');
-INSERT INTO `sys_log` VALUES ('35c936013a22f87cc1b9f04102abf784', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:45:20');
-INSERT INTO `sys_log` VALUES ('35d509d96b53af1b75d4afb0115bb101', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-06 16:10:48');
-INSERT INTO `sys_log` VALUES ('376f5e11e1c337deb6de0759c649d469', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:43:14');
-INSERT INTO `sys_log` VALUES ('392b85b3c050d178172ef44b1ae3f9f7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:35:42');
-INSERT INTO `sys_log` VALUES ('3b38c9c3b5f842d82c5e1c4d3ffac7c7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:32:56');
-INSERT INTO `sys_log` VALUES ('3dba04ed04a4ea0660b5ca808a1d4222', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:37:07');
-INSERT INTO `sys_log` VALUES ('3ea75bc70437d82285809154b92eac7d', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:40:42');
-INSERT INTO `sys_log` VALUES ('4119339d667bb25f9edd813b1bcafad7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:13:10');
-INSERT INTO `sys_log` VALUES ('411fb930b9b73fb5e78eac469d696440', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:27:40');
-INSERT INTO `sys_log` VALUES ('421dfadd096eceb4401ac9b2ef0d7bcb', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:40:43');
-INSERT INTO `sys_log` VALUES ('4411211ab5836e2f9d7687803fee9463', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-15 13:22:07');
-INSERT INTO `sys_log` VALUES ('4542012d27c2392db83325ba2927c0ea', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:19:03');
-INSERT INTO `sys_log` VALUES ('460b1081a9e36965b4b99f1b8524ec07', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:23:09');
-INSERT INTO `sys_log` VALUES ('481003972548a880b663ef714a3a8f1e', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:34:57');
-INSERT INTO `sys_log` VALUES ('48aecacc7dea20e5ba6f8c5af7d5807f', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-06 16:14:15');
-INSERT INTO `sys_log` VALUES ('48d6a4c68730c6274642484d73035c57', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-15 13:22:06');
-INSERT INTO `sys_log` VALUES ('4ba553c9e7afd30130de3e5110f5e9ce', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:36:06');
-INSERT INTO `sys_log` VALUES ('4e3256baffb82043f1f24ba6f56742f9', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:10:21');
-INSERT INTO `sys_log` VALUES ('503fe366f992bade9f01675ed3df6f65', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:20:52');
-INSERT INTO `sys_log` VALUES ('51212ce55862af5688ca888aa9d93496', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:29:06');
-INSERT INTO `sys_log` VALUES ('5195e1a0608a08abc624bb4ae39308a8', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:32:29');
-INSERT INTO `sys_log` VALUES ('51cfdcf4f90416bd9e57fd92bb632ba3', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:36:51');
-INSERT INTO `sys_log` VALUES ('528784380922b965bf851ebffca584f4', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:40:07');
-INSERT INTO `sys_log` VALUES ('544da76337045aa7666c90419e433317', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:29:42');
-INSERT INTO `sys_log` VALUES ('54519fd5b75b2f3b82630c8ce48be67d', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:28:12');
-INSERT INTO `sys_log` VALUES ('5541276049b152de6c475f6d28757e12', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:30:15');
-INSERT INTO `sys_log` VALUES ('57aa2dd5fe427fddf389fc14cb931901', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:36:12');
-INSERT INTO `sys_log` VALUES ('5bcb7a8dbe87139d41d2e44bcbd3310a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:35:37');
-INSERT INTO `sys_log` VALUES ('5d07d86e4d9b478a5c3cdd0a47e1b2ae', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:20:59');
-INSERT INTO `sys_log` VALUES ('5ef6309d64abfc5300934f5c351b185a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:33:42');
-INSERT INTO `sys_log` VALUES ('635113c8efe7523efc2509a9a186a4a9', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:20:23');
-INSERT INTO `sys_log` VALUES ('642ab2b82ab9d0b1847e73c9cecdd299', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:41:17');
-INSERT INTO `sys_log` VALUES ('6444854732461d34743f1e03e7c58845', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:42:22');
-INSERT INTO `sys_log` VALUES ('65bb5e95dc595958108ef8767a8ab153', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:53:22');
-INSERT INTO `sys_log` VALUES ('65d59de14ca35cb1060397099b37a729', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:42:25');
-INSERT INTO `sys_log` VALUES ('676a4341ab8a359ab5144ab099717745', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:07:39');
-INSERT INTO `sys_log` VALUES ('68501b367b4112ec179e66fb14c4ceb8', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:15:26');
-INSERT INTO `sys_log` VALUES ('6b9798770125eca0e85dd5cc0ad38857', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 13:56:38');
-INSERT INTO `sys_log` VALUES ('6c129635d309bedbd60e3a93587b7208', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:35:08');
-INSERT INTO `sys_log` VALUES ('717b06aeb0040459ceb44b5bdb63b558', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:36:31');
-INSERT INTO `sys_log` VALUES ('739241d6930ee914c9cca2ecbbe52e79', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:10:32');
-INSERT INTO `sys_log` VALUES ('76dc7579725d382cde9acc611e2dfd7d', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-15 13:07:15');
-INSERT INTO `sys_log` VALUES ('79cbd798b97a9b81f17737ca09867dec', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:33:14');
-INSERT INTO `sys_log` VALUES ('7a63ab3321026fdac3b79cc616886c91', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:24:55');
-INSERT INTO `sys_log` VALUES ('7a74c356b938afec63f7fb68717f6f6e', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-15 13:07:35');
-INSERT INTO `sys_log` VALUES ('7bcc805f5d67058de5532f6373bdb18a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:41:47');
-INSERT INTO `sys_log` VALUES ('7c5639a58ad37dda2b4358952264d04c', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:40:10');
-INSERT INTO `sys_log` VALUES ('7f2c9fc945182ac6a91e60c0b27ed634', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-15 13:35:48');
-INSERT INTO `sys_log` VALUES ('81cf24ac4bc45a0b83e64b980ce10e44', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:01:39');
-INSERT INTO `sys_log` VALUES ('82abe3ec12e1b488532a96df1d0029c0', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-02 15:30:45');
-INSERT INTO `sys_log` VALUES ('82f0b73760a078fab4f2519115cf1950', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:00:46');
-INSERT INTO `sys_log` VALUES ('85d93e8cec42fe79161493d1b6dff32a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:32:24');
-INSERT INTO `sys_log` VALUES ('8895dc4c91313799dcdf7b0379fb4dae', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:32:29');
-INSERT INTO `sys_log` VALUES ('8a418ef94d5950c27a8e6466aaf934e4', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:34:20');
-INSERT INTO `sys_log` VALUES ('8a8ffc97aa10657172698a39f41d65df', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:36:37');
-INSERT INTO `sys_log` VALUES ('8a909f79dd25ec20fe89119ad44f12fc', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:29:55');
-INSERT INTO `sys_log` VALUES ('8db624cdc708e8c75a5ee6a48cf2942a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:38:18');
-INSERT INTO `sys_log` VALUES ('90b4cf26ca5f34634645c15ba21fc7c7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:31:17');
-INSERT INTO `sys_log` VALUES ('91a939037923e93d32954bf18ded0eea', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:35:47');
-INSERT INTO `sys_log` VALUES ('9ca2bbcf3ebd7118bbc9d4aded2b1209', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-02 17:33:40');
-INSERT INTO `sys_log` VALUES ('9cb78372b7a7e493b9ddf58e71fa179c', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:20:56');
-INSERT INTO `sys_log` VALUES ('9d9571032e23c339f2150f27fd228ef2', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:32:48');
-INSERT INTO `sys_log` VALUES ('9e78dbc0e4d56117201e8e4dad484477', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:01:34');
-INSERT INTO `sys_log` VALUES ('9ecde8b9225e69f15708c4db4d061d52', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:11:57');
-INSERT INTO `sys_log` VALUES ('9f426428b0863a2589c6bccf8a0f5a60', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-06 16:11:07');
-INSERT INTO `sys_log` VALUES ('a06628310bb46e7e61516edb3f7f1c37', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:42:03');
-INSERT INTO `sys_log` VALUES ('a1171d35c3f385a09bed18f647bcfa7a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:06:21');
-INSERT INTO `sys_log` VALUES ('a57f8ba9740aff39d272a9ada2da3c73', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:35:26');
-INSERT INTO `sys_log` VALUES ('a74a03a1cd73b905751df85900f4eaae', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:37:36');
-INSERT INTO `sys_log` VALUES ('a912add4cf64d42808fad6e927d2f4d1', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-02 17:50:09');
-INSERT INTO `sys_log` VALUES ('a9cf1d3c2b2313bb235d609226b8a7a5', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:39:50');
-INSERT INTO `sys_log` VALUES ('aad4931796e2a7ef04bdf95f356f9552', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:35:49');
-INSERT INTO `sys_log` VALUES ('ad7ecfb1c4c32747b0b385818ed5d4c6', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:38:07');
-INSERT INTO `sys_log` VALUES ('adfafed51f27c275bfc3077c02383aa7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:29:01');
-INSERT INTO `sys_log` VALUES ('b168bceabb1e4c1ae79d24cf8ad79239', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:42:34');
-INSERT INTO `sys_log` VALUES ('b511292475ab1fef73c25d1d3701cb02', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:50:10');
-INSERT INTO `sys_log` VALUES ('b52510c882a6d00ec9afb8eec4e5ee55', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:40:20');
-INSERT INTO `sys_log` VALUES ('b56a80b4aa59d80ad479326152bf9e5c', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:43:27');
-INSERT INTO `sys_log` VALUES ('b5a978718317f419de308fd11ba46e53', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:43:18');
-INSERT INTO `sys_log` VALUES ('b859fc2551cf208dd21f37f0a3cab11a', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-02 14:20:58');
-INSERT INTO `sys_log` VALUES ('b9e188ad0e44af42c0742340348f8513', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-06 16:28:05');
-INSERT INTO `sys_log` VALUES ('ba654dadbaf8fd10521fbfa75af0f548', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:31:14');
-INSERT INTO `sys_log` VALUES ('bbacff5f4127f3c23c7cc41faa2d42ff', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-06 16:28:05');
-INSERT INTO `sys_log` VALUES ('bc4005268cebd0d291f9755f7cdfda44', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:31:01');
-INSERT INTO `sys_log` VALUES ('bc7cc19499f5ad8e787542921963b6a6', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:30:10');
-INSERT INTO `sys_log` VALUES ('bdb3ca94f300420ebd3b962d082996be', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:17:41');
-INSERT INTO `sys_log` VALUES ('c00d87f87473816d203b6a5754e96783', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-15 13:13:29');
-INSERT INTO `sys_log` VALUES ('c2296939376099a03f717accf67a452a', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-06 16:10:47');
-INSERT INTO `sys_log` VALUES ('c590a99560390cbed7daffad52ac9cae', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:07:34');
-INSERT INTO `sys_log` VALUES ('c7f37c26fe7e185e3f7954120bdf8875', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:30:47');
-INSERT INTO `sys_log` VALUES ('c93c72a661a207a1db67e8af2745b2f3', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:40:04');
-INSERT INTO `sys_log` VALUES ('ca100f644b9df61c0e7263001aaaa788', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:33:47');
-INSERT INTO `sys_log` VALUES ('ca7ac1649fa6e94adecdf6db803e39a5', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:40:55');
-INSERT INTO `sys_log` VALUES ('cbed094c3809dee59fd932e1efe41614', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:03:00');
-INSERT INTO `sys_log` VALUES ('ce7d7d1dcbc6788f765da6bcc40c28c5', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:36:10');
-INSERT INTO `sys_log` VALUES ('d3b904bd6b0bd7d9bb5d8312f2d193f7', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-15 13:41:46');
-INSERT INTO `sys_log` VALUES ('d57ddee293ee29cb517ab22c2609c791', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:50:50');
-INSERT INTO `sys_log` VALUES ('d760751f6bfffd2a9c2b1197f3ef79dd', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:39:24');
-INSERT INTO `sys_log` VALUES ('d7afb471ed4e73357ae3e576c7f94f57', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-16 14:53:54');
-INSERT INTO `sys_log` VALUES ('d87a265979834582f7693ce39396dc4b', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:41:30');
-INSERT INTO `sys_log` VALUES ('d9b2444e51a791da4bfc525cfa852c62', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:15:06');
-INSERT INTO `sys_log` VALUES ('dae97953d95324fa3cd7b73ff66f1b1a', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:37:09');
-INSERT INTO `sys_log` VALUES ('db1c982b6c1c3a58db0a78f5ea29bb6d', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:20:48');
-INSERT INTO `sys_log` VALUES ('db49b103a1f04180aefd24bb436fc3a2', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:16:25');
-INSERT INTO `sys_log` VALUES ('db6e8aabc31f2c25819f5e1ad0e6e3d0', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:22:07');
-INSERT INTO `sys_log` VALUES ('dbb08b0266ab430322c6e23154fe2e04', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:34:10');
-INSERT INTO `sys_log` VALUES ('dea65bbac6be923c10a3539c05860648', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-02 16:26:01');
-INSERT INTO `sys_log` VALUES ('e105de60c45adaee6d29cce0481bd55b', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:33:10');
-INSERT INTO `sys_log` VALUES ('e15c3013170ed5a2c73f6d38aac3f0cf', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:23:19');
-INSERT INTO `sys_log` VALUES ('e4b1134533546c366c7cf372921065cc', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:35:40');
-INSERT INTO `sys_log` VALUES ('e7e1b474f69cf36491e130855eff42c7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:18:32');
-INSERT INTO `sys_log` VALUES ('e89ef8a5f6b2aa7d2a20592a41880937', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:37:00');
-INSERT INTO `sys_log` VALUES ('e9e6aff85448a42fa5188b5eba116a11', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:26:01');
-INSERT INTO `sys_log` VALUES ('eb609d1f2d44c1c7de5df251d80a4c2e', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:40:33');
-INSERT INTO `sys_log` VALUES ('eb7fc3f98540b1057ec99fd703cdbe66', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:22:37');
-INSERT INTO `sys_log` VALUES ('ec1278e48c51111d56b9d49dc7db82f0', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:40:55');
-INSERT INTO `sys_log` VALUES ('ecf1574584d3b1126edda6ec3bfec495', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:29:34');
-INSERT INTO `sys_log` VALUES ('ed197afdfdf4408fbad2f9934b01b831', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 15:06:23');
-INSERT INTO `sys_log` VALUES ('edbf33052d820204103fbd3b4d4a9c42', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-02 17:50:10');
-INSERT INTO `sys_log` VALUES ('ee3a9592198596e1dc13d3bba8da5c71', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:13:29');
-INSERT INTO `sys_log` VALUES ('f25adfc076266df4226ddd32ea130593', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:18:04');
-INSERT INTO `sys_log` VALUES ('f435bb300cc50796bd9c9c7dae8db9a8', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:21:19');
-INSERT INTO `sys_log` VALUES ('f49e005381888e4a8e82676ee69ab0e4', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:04:26');
-INSERT INTO `sys_log` VALUES ('f548625f30eb44e54fd03014958483ce', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:13:33');
-INSERT INTO `sys_log` VALUES ('f64efde018343e0ce00e613845116d39', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-15 13:35:48');
-INSERT INTO `sys_log` VALUES ('f8949551593ca2100c6a0f60054dee41', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 16:54:45');
-INSERT INTO `sys_log` VALUES ('f8d7aaff3e5ba199b1cba382136600c4', 'sys', '退出登录', '127.0.0.1', 'http://127.0.0.1/logout', '/logout', 'com.easy.admin.auth.controller.AuthController', 'logout', '[]', NULL, NULL, '2021-04-06 16:28:03');
-INSERT INTO `sys_log` VALUES ('fa9b00441152fba45add9fd48bd05a7f', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 17:42:44');
-INSERT INTO `sys_log` VALUES ('fd6d0e4dd2da37efacefbacc8f7d5d9b', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-04-02 15:30:46');
-INSERT INTO `sys_log` VALUES ('fdca24469b7cf7c13a96efe9a93a0a8d', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-02 14:01:51');
-INSERT INTO `sys_log` VALUES ('fe2ecac3060d37edda68c190ecc9e8f5', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-04-15 13:07:35');
+INSERT INTO `sys_log` VALUES ('060e2fb8c867b53fb9f08e13026558c6', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 13:37:01');
+INSERT INTO `sys_log` VALUES ('07a391f69baba1089dfcccddeda4cc67', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-13 14:30:34');
+INSERT INTO `sys_log` VALUES ('096592108d74cdaa531888ab40e42449', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 17:04:37');
+INSERT INTO `sys_log` VALUES ('1482892873497059329', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-17 09:49:46');
+INSERT INTO `sys_log` VALUES ('1482892873799049217', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-17 09:49:47');
+INSERT INTO `sys_log` VALUES ('1c0d6e0e2d192006cb7460bd335d50e1', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:03:43');
+INSERT INTO `sys_log` VALUES ('22672f6bf847e2db99ffcda42af0de6b', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-13 14:30:34');
+INSERT INTO `sys_log` VALUES ('26962c181eb2584d29641ecb1bc95f85', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-12-24 10:31:53');
+INSERT INTO `sys_log` VALUES ('2a0e05007b684f2f54a12f96f013ea3c', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 10:55:41');
+INSERT INTO `sys_log` VALUES ('36fd2d5f5d66c4cc96a835529ab032fd', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 11:11:49');
+INSERT INTO `sys_log` VALUES ('3b970d35341cab830abac7f6894e5af7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 13:38:06');
+INSERT INTO `sys_log` VALUES ('44b32cd738d84e33f3bf5368e951c467', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:02:50');
+INSERT INTO `sys_log` VALUES ('459ed7709565a14223f4875981ba24f1', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-14 14:51:42');
+INSERT INTO `sys_log` VALUES ('4d27c13bbc8bbea90529d92afe1d0343', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-15 13:38:06');
+INSERT INTO `sys_log` VALUES ('5a3e27434b397a2f360a122cf34959a1', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:02:36');
+INSERT INTO `sys_log` VALUES ('749da94aab43a7c342871898bd9f38ef', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:04:37');
+INSERT INTO `sys_log` VALUES ('87015e80c1cef9d2ac895257e028377e', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:07:07');
+INSERT INTO `sys_log` VALUES ('9659750fd3686a26c569acacbe70dd46', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 11:22:09');
+INSERT INTO `sys_log` VALUES ('a04a226d084e6c83ff4d3473dd277d34', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 16:56:30');
+INSERT INTO `sys_log` VALUES ('a0fef3bdddf2edfc79bb8499cfbebdc0', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 16:58:22');
+INSERT INTO `sys_log` VALUES ('a63908bed13889defb80c76fed3fbd46', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 16:54:38');
+INSERT INTO `sys_log` VALUES ('a8e271d0fed5d4a0052ecde2ea7feb5e', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 16:55:15');
+INSERT INTO `sys_log` VALUES ('bddc3ccd87b4979eed491ee9123892d3', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-14 14:51:42');
+INSERT INTO `sys_log` VALUES ('c22fd14e406e22d73aa0f1ee88949ce7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 10:32:21');
+INSERT INTO `sys_log` VALUES ('d946fda764b67d1ab36908e9cee105a6', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:03:23');
+INSERT INTO `sys_log` VALUES ('d94c6c3630865ebd6eb5d27aa1d5e68a', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-15 17:04:36');
+INSERT INTO `sys_log` VALUES ('e326f6ee0fee445f1bdf993ecff39e4f', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-13 14:30:28');
+INSERT INTO `sys_log` VALUES ('e4306ccb321fb875ca556dd5e1f74640', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 10:31:53');
+INSERT INTO `sys_log` VALUES ('e9c0a99b58b80b7133e4b5e2e27e447a', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-12-24 11:11:49');
 COMMIT;
 
 -- ----------------------------
@@ -4889,7 +5062,7 @@ CREATE TABLE `sys_message` (
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '标题',
   `subtitle` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '副标题(保留字段)',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '内容',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
   `send_date` datetime DEFAULT NULL COMMENT '发送时间',
   `icon` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标(保留字段)',
   `important` int(2) DEFAULT NULL COMMENT '重要',
@@ -4926,7 +5099,7 @@ CREATE TABLE `sys_message_details` (
   `message_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '消息id',
   `receiver_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '接收人',
   `read_date` datetime DEFAULT NULL COMMENT '阅读时间',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
   `star` int(1) DEFAULT NULL COMMENT '是否被标记※',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='消息详情 ';
@@ -4936,8 +5109,8 @@ CREATE TABLE `sys_message_details` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_message_details` VALUES ('0fc5370e36ed6f9ba85ffa4c90a2716a', '5cf8b79df98a26c5a5567c34b28ddb10', '1', NULL, '0', 0);
-INSERT INTO `sys_message_details` VALUES ('391eaf3764c9803e9119c536f31dc988', '0989b413891ccca33d490b8c23d5264a', '1', '2021-02-01 17:51:54', '1', 0);
-INSERT INTO `sys_message_details` VALUES ('3d397fd11375254c61282c72e6f162ce', '8180f7b750bde6d9a3e8e10958eadb57', '1', '2021-01-04 10:13:35', '1', 1);
+INSERT INTO `sys_message_details` VALUES ('391eaf3764c9803e9119c536f31dc988', '0989b413891ccca33d490b8c23d5264a', '1', '2022-01-15 17:03:43', '1', 0);
+INSERT INTO `sys_message_details` VALUES ('3d397fd11375254c61282c72e6f162ce', '8180f7b750bde6d9a3e8e10958eadb57', '1', '2022-01-15 17:03:38', '1', 1);
 INSERT INTO `sys_message_details` VALUES ('5a3d734e02e0b4791193f625c73a7717', 'f91280d1203082db48a8f011ee0deef5', '1', '2021-01-07 22:52:53', '1', 0);
 INSERT INTO `sys_message_details` VALUES ('5a6c9966b6981b3061d5d186c2c90e79', 'db71bc2907551aafb53467ec429337c6', '1', NULL, '0', 0);
 INSERT INTO `sys_message_details` VALUES ('68ab802ef775e35623a4744b0a8ce25b', '243caf60ff241322124f91cf55cb6ccc', '1', NULL, '0', 0);
@@ -4980,23 +5153,28 @@ BEGIN;
 INSERT INTO `sys_permissions` VALUES ('006606eb1a80f98445844312e8c69d70', '6aa7ed074b144ab2c2d31a41c2ac4fc0', NULL, 'Data Display', 'pic-left', NULL, NULL, 5, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 14:17:16', '1', '2021-04-02 14:17:16');
 INSERT INTO `sys_permissions` VALUES ('03ad13494a492eee81d8d7d1e2d95d14', '7da1f5456b340b1fc94e8bb8e8ae5e8f', 'activiti:historic:select:my', '我发起的', 'solution', '/activiti/history/task-instance/my', '/activiti/history/taskInstance/My', 5, 1, '0', '1', '1', '我发起的办理中+已办结的任务', NULL, '126', '2020-05-14 13:37:17', '1', '2021-01-26 15:31:43');
 INSERT INTO `sys_permissions` VALUES ('0ad4783abe1e84e630c630ed78d7ec53', '6aa7ed074b144ab2c2d31a41c2ac4fc0', NULL, 'Data Entry', 'edit', NULL, NULL, 4, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 14:16:27', '1', '2021-04-02 14:16:36');
+INSERT INTO `sys_permissions` VALUES ('0c5ea7d50665e6a89050c15a446f964e', '39731ea992cfa03ce527ad0724b067fc', 'sample:slave:general:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-12-20 14:00:00', '1', '2021-12-20 14:00:00');
 INSERT INTO `sys_permissions` VALUES ('0c77991b94e723d454898e53e6708b41', '6aa7ed074b144ab2c2d31a41c2ac4fc0', NULL, 'Layout', 'layout', NULL, NULL, 3, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 14:13:59', '1', '2021-04-02 14:16:31');
 INSERT INTO `sys_permissions` VALUES ('0f5f756d9f287ea1e8172bb2e6e170d8', '76180395fab6dbdab6f6c050169c5f97', NULL, '任务办理', NULL, '/activiti/task/input/:id', '/activiti/task/Input', 1, 1, '1', '1', '1', NULL, NULL, '1', '2021-01-19 15:18:36', '1', '2021-01-19 15:30:08');
 INSERT INTO `sys_permissions` VALUES ('128152f2dc1b2a37ddfebaa4b175446a', 'dfcbf9982ac55701115056a7e09e3cd0', NULL, '开发中', 'codepen', '/global/under-development', '/global/UnderDevelopment', 43, 1, '0', '1', '1', NULL, NULL, '1', '2021-01-25 16:38:22', '1', '2021-02-25 09:41:29');
 INSERT INTO `sys_permissions` VALUES ('14', '164', 'sys:role:select', '角色管理', 'team', '/sys/role', '/sys/role/View', 9, 1, '0', '1', '1', '', NULL, '', '2018-11-01 09:36:22', '1', '2021-02-02 13:44:46');
-INSERT INTO `sys_permissions` VALUES ('149', '0', '', '代码生成', 'codepen', '/generator', '/generator/View', 39, 1, '0', '1', '1', '', NULL, '', '2019-01-10 17:14:02', '1', '2021-04-02 14:11:12');
+INSERT INTO `sys_permissions` VALUES ('142a67a353c42c94e2d9cb638eb1a0b0', 'e58e18f8a48808a3824fef6d2efad912', 'cms:article:status', '更改状态', NULL, '', NULL, 4, 2, '0', '1', '1', '', NULL, '1', '2021-11-22 15:32:09', '1', '2021-11-22 15:32:19');
+INSERT INTO `sys_permissions` VALUES ('149', '7cf67f104844dc024465b8bf13e5c789', '', '代码生成', 'codepen', '/tools/generator', '/tools/generator/View', 1, 1, '0', '1', '1', '', NULL, '', '2019-01-10 17:14:02', '1', '2021-12-22 10:02:15');
 INSERT INTO `sys_permissions` VALUES ('15', '5', 'druid', '数据监控', NULL, 'http://127.0.0.1/druid', NULL, 30, 1, '0', '2', '1', '', NULL, '1', '2018-11-01 09:40:36', '1', '2021-01-04 10:49:45');
 INSERT INTO `sys_permissions` VALUES ('150', '16', 'sys:redis:remove', '删除', NULL, '', NULL, 4, 2, '0', '1', '1', '', NULL, '126', '2019-01-26 14:27:38', '126', '2019-01-26 14:27:51');
+INSERT INTO `sys_permissions` VALUES ('150178d7eecb8c4aa8312ba2492ca050', '434c35c3fc3e06e132a44f78b0e7e118', 'cms:column:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-18 13:58:11', '1', '2021-11-18 13:58:11');
 INSERT INTO `sys_permissions` VALUES ('151', '16', 'sys:redis:save', '保存', NULL, '', NULL, 3, 2, '0', '1', '1', '', NULL, '126', '2019-01-26 14:27:38', '126', '2019-01-26 14:27:46');
 INSERT INTO `sys_permissions` VALUES ('152', '19', 'sys:online:force', '踢出', NULL, '', NULL, 1, 2, '0', '1', '2', '', NULL, '126', '2019-01-27 12:38:49', '1', '2021-01-21 16:27:45');
 INSERT INTO `sys_permissions` VALUES ('157', '4', 'sys:config:select', '系统参数', '', '/sys/config/list', '/sys/config/List', 21, 1, '0', '1', '1', '', NULL, '', '2019-02-26 22:29:36', '1', '2020-12-09 22:00:35');
 INSERT INTO `sys_permissions` VALUES ('158', '157', 'sys:config:save', '保存', '', '', '', 3, 1, '1', '1', '1', '', NULL, '', '2019-02-26 22:29:36', '1', '2020-12-09 22:58:50');
 INSERT INTO `sys_permissions` VALUES ('159', '157', 'sys:config:remove', '删除', NULL, NULL, NULL, 2, 2, '0', '1', '1', NULL, NULL, '126', '2019-02-26 22:29:36', '1', '2020-12-09 22:57:41');
 INSERT INTO `sys_permissions` VALUES ('16', '5', 'sys:redis:select', '缓存监控', NULL, '/sys/redis/view', '/sys/redis/View', 31, 1, '0', '1', '1', '', NULL, '1', '2018-11-01 09:40:51', '1', '2021-01-04 16:49:28');
-INSERT INTO `sys_permissions` VALUES ('164', '0', '', '系统管理', 'setting', NULL, NULL, 44, 1, '0', '1', '1', '', NULL, '126', '2019-04-07 17:45:38', '1', '2021-04-02 14:11:12');
+INSERT INTO `sys_permissions` VALUES ('164', '0', '', '系统管理', 'setting', NULL, NULL, 46, 1, '0', '1', '1', '', NULL, '126', '2019-04-07 17:45:38', '1', '2021-12-22 10:00:00');
 INSERT INTO `sys_permissions` VALUES ('17', '5', 'sys:status:select', '服务器状态', NULL, '/sys/status/view', '/sys/status/View', 32, 1, '0', '1', '1', '', NULL, '1', '2018-11-01 09:41:01', '1', '2021-01-04 11:07:07');
+INSERT INTO `sys_permissions` VALUES ('170736698031e1469d4a1d5e96cd4243', '434c35c3fc3e06e132a44f78b0e7e118', 'cms:column:move', '拖动', NULL, '', NULL, 4, 2, '0', '1', '1', '', NULL, '1', '2021-11-18 14:36:18', '1', '2021-11-18 14:36:32');
 INSERT INTO `sys_permissions` VALUES ('17dcc367a2c812c36b0d3e2710a567cd', '228', 'sample:work:flow:select', '流程示例', 'gateway', '/sample/work-flow/list', '/sample/work-flow/List', 3, 1, '0', '1', '1', '', NULL, '126', '2020-04-26 15:07:59', '1', '2021-02-01 16:52:35');
 INSERT INTO `sys_permissions` VALUES ('19', '5', 'sys:online:select', '在线用户', NULL, '/sys/online', NULL, 34, 1, '0', '1', '2', '', NULL, '1', '2018-11-01 09:41:42', '1', '2021-01-21 16:27:39');
+INSERT INTO `sys_permissions` VALUES ('1ef90655abbfff35b4503a88f4500f3a', '0', NULL, '网站管理', 'global', NULL, NULL, 39, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-18 11:22:03', '1', '2021-11-18 11:22:08');
 INSERT INTO `sys_permissions` VALUES ('20', '164', 'sys:dept:select', '部门管理', 'solution', '/sys/dept', '/sys/dept/View', 10, 1, '0', '1', '1', '', NULL, '', '2018-11-01 09:41:59', '1', '2021-02-02 13:44:46');
 INSERT INTO `sys_permissions` VALUES ('21', '164', 'sys:user:select', '用户管理', 'user', '/sys/user', '/sys/user/View', 11, 1, '0', '1', '1', '', NULL, '', '2018-11-01 09:42:04', '1', '2021-02-02 13:44:46');
 INSERT INTO `sys_permissions` VALUES ('218', '5', 'sys:exception:select', '异常日志', NULL, '/sys/exception', '/sys/exception/List', 38, 1, '0', '1', '1', '', NULL, '126', '2019-04-08 11:59:16', '1', '2020-12-17 22:33:45');
@@ -5007,9 +5185,9 @@ INSERT INTO `sys_permissions` VALUES ('222', '220', 'sample:general:remove', '�
 INSERT INTO `sys_permissions` VALUES ('224', '4', 'sys:import:excel:template:select', '导入模板', '', '/sys/import-excel-template/list', '/sys/import-excel-template/List', 7, 1, '0', '1', '1', '', NULL, '', '2019-04-10 15:55:00', '1', '2021-02-03 13:33:10');
 INSERT INTO `sys_permissions` VALUES ('225', '224', 'sys:import:excel:template:save', '保存', '', '', '', 4, 2, '0', '1', '1', '', NULL, '', '2019-04-10 15:55:00', '1', '2020-11-19 10:20:10');
 INSERT INTO `sys_permissions` VALUES ('226', '224', 'sys:import:excel:template:remove', '删除', '', '', '', 5, 2, '0', '1', '1', '', NULL, '', '2019-04-10 15:55:00', '1', '2020-11-19 10:13:51');
-INSERT INTO `sys_permissions` VALUES ('228', '0', '', '功能示例', 'appstore', '', '', 41, 1, '0', '1', '1', '', NULL, '', '2019-04-16 21:56:25', '1', '2021-04-02 14:11:12');
-INSERT INTO `sys_permissions` VALUES ('231', '0ad4783abe1e84e630c630ed78d7ec53', '', '文件上传', '', '', '', 3, 1, '0', '1', '1', '', NULL, '', '2019-04-16 21:57:29', '1', '2021-04-02 16:25:45');
-INSERT INTO `sys_permissions` VALUES ('234', '0', '', '系统功能', 'gold', '', '', 45, 1, '1', '1', '1', '', NULL, '', '2019-04-21 15:10:10', '1', '2021-04-02 14:11:12');
+INSERT INTO `sys_permissions` VALUES ('228', '0', '', '功能示例', 'appstore', '', '', 44, 1, '0', '1', '1', '', NULL, '', '2019-04-16 21:56:25', '1', '2021-12-22 10:00:00');
+INSERT INTO `sys_permissions` VALUES ('231', '0ad4783abe1e84e630c630ed78d7ec53', '', '文件上传', '', '/sample/components/data-entry/upload', '/sample/components/data-entry/Upload', 3, 1, '0', '1', '1', '', NULL, '', '2019-04-16 21:57:29', '1', '2021-07-15 16:02:35');
+INSERT INTO `sys_permissions` VALUES ('234', '0', '', '系统功能', 'gold', '', '', 47, 1, '1', '1', '1', '', NULL, '', '2019-04-21 15:10:10', '1', '2021-12-22 10:00:00');
 INSERT INTO `sys_permissions` VALUES ('235', '234', 'import:data', '数据导入', 'upload', '/sys/import-excel-data/input', '/sys/import-excel-data/Input', 14, 1, '1', '1', '1', '', NULL, '', '2019-04-21 15:10:26', '1', '2021-02-04 16:09:49');
 INSERT INTO `sys_permissions` VALUES ('236', '164', 'scheduler:job:select', '定时任务 ', 'clock-circle', '/scheduler/job/list', '/scheduler/job/List', 15, 1, '0', '1', '1', '', NULL, '126', '2019-05-11 17:49:15', '1', '2021-02-01 23:40:59');
 INSERT INTO `sys_permissions` VALUES ('237', '236', 'scheduler:job:save', '保存', NULL, NULL, NULL, 2, 2, '0', '1', '1', NULL, NULL, '126', '2019-05-11 17:49:15', '126', '2019-05-11 17:49:15');
@@ -5022,12 +5200,21 @@ INSERT INTO `sys_permissions` VALUES ('24850d7f708a4c3514f1d3c61a2d1bb6', '6aa7e
 INSERT INTO `sys_permissions` VALUES ('258f7c40fca863460ba002f2fb759734', 'dfcbf9982ac55701115056a7e09e3cd0', NULL, '图表', 'bar-chart', NULL, NULL, 18, 1, '0', '1', '1', NULL, NULL, '1', '2021-02-22 16:11:36', '1', '2021-02-25 09:41:29');
 INSERT INTO `sys_permissions` VALUES ('2b33f190aa0543c8e1acfddbf224361f', '006606eb1a80f98445844312e8c69d70', NULL, 'NumberInfo', NULL, '/sample/components/data-display/numberInfo', '/sample/components/data-display/NumberInfo', 2, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-15 13:21:50', '1', '2021-04-15 13:21:50');
 INSERT INTO `sys_permissions` VALUES ('2fb368f87b018eb6858abc8703945623', '17dcc367a2c812c36b0d3e2710a567cd', NULL, '详情', '', '/sample/work-flow/input', '/sample/work-flow/Input', 3, 1, '1', NULL, '1', '', NULL, '1', '2021-01-16 10:47:02', '1', '2021-01-16 10:47:31');
+INSERT INTO `sys_permissions` VALUES ('306994778c19b648dfde51acee6ec24a', '90201ca3ab25e2204e3c250b5cd399ac', 'sys:data:source:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-12-18 13:39:33', '1', '2021-12-18 13:39:33');
 INSERT INTO `sys_permissions` VALUES ('32', '7', 'sys:dict:type:select', '字典类型管理', '', '/sys/dict/type/list', '/sys/dict/type/List', 13, 1, '1', '1', '1', '', NULL, '', '2018-11-04 01:37:10', '1', '2020-12-09 22:56:07');
+INSERT INTO `sys_permissions` VALUES ('3273e1c9ff7485e4a09c67410641ce29', '39731ea992cfa03ce527ad0724b067fc', 'sample:slave:general:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-12-20 14:00:01', '1', '2021-12-20 14:00:01');
+INSERT INTO `sys_permissions` VALUES ('3461d1e74115a0e7e13970dbf4a4affc', 'dfa9c32f1e6aa6141417713289541f31', 'cms:site:user:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-18 13:52:29', '1', '2021-11-18 13:52:29');
+INSERT INTO `sys_permissions` VALUES ('3624d07e7c958b60f4a23a59d8a5db77', 'dfa9c32f1e6aa6141417713289541f31', 'cms:site:user:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-18 13:52:29', '1', '2021-11-18 13:52:29');
 INSERT INTO `sys_permissions` VALUES ('3907ba1a0c6196d98314434c6fd44f00', '0ad4783abe1e84e630c630ed78d7ec53', NULL, '用户选择', NULL, '/sample/components/data-entry/user-search-select', '/sample/components/data-entry/UserSearchSelect', 2, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 15:30:27', '1', '2021-04-02 16:25:45');
+INSERT INTO `sys_permissions` VALUES ('39731ea992cfa03ce527ad0724b067fc', '228', 'sample:slave:general:select', '从库示例', 'hdd', '/sample/slave/general/list', '/sample/slave/general/List', 10, 1, '0', '1', '1', NULL, NULL, '1', '2021-12-20 14:00:00', '1', '2021-12-20 14:08:03');
 INSERT INTO `sys_permissions` VALUES ('39c5c5bcdd9a15110e2c3e4014dd1531', '164', '', '流程管理', 'branches', NULL, NULL, 12, 1, '0', '1', '1', '', NULL, '126', '2019-07-03 09:43:27', '1', '2021-02-01 23:40:59');
 INSERT INTO `sys_permissions` VALUES ('3b79694872fa73ff05699bde511b238f', '7da1f5456b340b1fc94e8bb8e8ae5e8f', 'activiti:historic:select:participate', '我办理的', 'file-protect', '/activiti/history/task-instance/participate', '/activiti/history/taskInstance/Participate', 7, 1, '0', '1', '1', '用户参与过的任务都可以看到', NULL, '126', '2020-05-07 16:28:02', '1', '2021-01-26 15:31:51');
+INSERT INTO `sys_permissions` VALUES ('3bfaf265880f952d176911aa2b717b4b', 'f034db63a9263cefd9b30884c103491d', 'cms:column:user:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-19 14:07:08', '1', '2021-11-19 14:07:08');
 INSERT INTO `sys_permissions` VALUES ('3e76a9e2bcab94d347203a178765e621', '0', NULL, '个人中心', 'user', '/sys/personal/center', '/sys/personal/center/View', 30, 1, '0', '1', '1', NULL, NULL, '1', '2020-12-18 14:20:30', '1', '2021-04-02 14:11:12');
 INSERT INTO `sys_permissions` VALUES ('4', '164', '', '系统设置', 'setting', '/sys', '', 20, 1, '0', '1', '1', '', NULL, '', '2018-10-31 20:02:03', '1', '2021-02-01 23:41:05');
+INSERT INTO `sys_permissions` VALUES ('434c35c3fc3e06e132a44f78b0e7e118', '1ef90655abbfff35b4503a88f4500f3a', 'cms:column:select', '栏目管理', 'bars', '/cms/column', '/cms/column/View', 2, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-18 13:58:11', '1', '2021-11-24 15:41:43');
+INSERT INTO `sys_permissions` VALUES ('4351ef5e9957e8e4a0e0dcf085bf3218', '1ef90655abbfff35b4503a88f4500f3a', 'cms:media:select', '资源管理', 'database', '/cms/media/list', '/cms/media/List', 6, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-21 14:03:24', '1', '2021-11-24 15:41:43');
+INSERT INTO `sys_permissions` VALUES ('49e82dc86c44c465011b6ccb7f1b1911', 'd537e36f7948edd2c1fd371578d3749f', 'cms:site:status', '更改状态', NULL, '', NULL, 5, 2, '0', '1', '1', '', NULL, '1', '2021-11-18 11:24:41', '1', '2021-11-18 11:25:18');
 INSERT INTO `sys_permissions` VALUES ('4aba9a2f7c81615c9ccdc07e980ccfe3', '17dcc367a2c812c36b0d3e2710a567cd', 'sample:work:flow:remove', '删除', NULL, NULL, NULL, 2, 2, '0', '1', '1', NULL, NULL, '126', '2020-04-26 15:07:59', '126', '2020-04-26 15:07:59');
 INSERT INTO `sys_permissions` VALUES ('4dd114436fd08e63cada54d6c32c1fe3', '157', '', '详情', '', '/sys/config/input', '/sys/config/Input', 4, 1, '1', '1', '1', '', NULL, '', '2020-12-09 22:57:57', '1', '2020-12-09 22:58:43');
 INSERT INTO `sys_permissions` VALUES ('5', '164', '', '系统监控', 'dashboard', NULL, NULL, 19, 1, '0', '1', '1', '', NULL, '1', '2018-10-31 20:03:35', '1', '2021-02-01 23:41:05');
@@ -5036,6 +5223,7 @@ INSERT INTO `sys_permissions` VALUES ('52', '32', 'sys:dict:type:remove', '删�
 INSERT INTO `sys_permissions` VALUES ('53', '32', 'sys:dict:type:save', '保存', '', '', '', 10, 2, '0', '1', '1', '', NULL, '', '2018-12-03 00:14:51', '1', '2020-12-09 22:59:26');
 INSERT INTO `sys_permissions` VALUES ('55', '7', 'sys:dict:remove', '删除', NULL, '', NULL, 6, 2, '0', '1', '1', '', NULL, '1', '2018-12-03 00:16:26', '1', '2020-12-09 22:56:12');
 INSERT INTO `sys_permissions` VALUES ('56', '7', 'sys:dict:save', '保存', '', '', '', 7, 1, '1', '1', '1', '', NULL, '', '2018-12-03 00:16:26', '1', '2020-12-09 22:56:24');
+INSERT INTO `sys_permissions` VALUES ('59f28fee0b781ada5722859993d3ed1c', '1ef90655abbfff35b4503a88f4500f3a', NULL, '网站发布', 'check', '/cms/release', '/cms/release/View', 7, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-29 09:53:05', '1', '2021-11-29 09:53:22');
 INSERT INTO `sys_permissions` VALUES ('5fd40d8344c4a5e71fe606364c8fb9d9', 'dfcbf9982ac55701115056a7e09e3cd0', '', '500', 'frown', '/global/500', '/global/500', 42, 1, '0', '1', '1', '', NULL, '126', '2019-08-20 21:27:55', '1', '2021-02-25 09:41:29');
 INSERT INTO `sys_permissions` VALUES ('6', '4', 'sys:permissions:select', '菜单管理', '', '/sys/permissions', '/sys/permissions/View', 22, 1, '0', '1', '1', '', NULL, '', '2018-11-01 04:51:56', '1', '2020-12-08 12:36:53');
 INSERT INTO `sys_permissions` VALUES ('60a83e7df038e40410526510e5a12cbc', '7', '', '详情', '', '/sys/dict/input', '/sys/dict/Input', 10, 1, '1', '1', '1', '', NULL, '', '2020-12-09 22:04:01', '1', '2020-12-09 22:56:24');
@@ -5046,9 +5234,13 @@ INSERT INTO `sys_permissions` VALUES ('645350c2c094dc8a7ccf71563a4f7cbb', 'dfcbf
 INSERT INTO `sys_permissions` VALUES ('65', '14', 'sys:role:save', '保存', '', '', '', 3, 2, '0', '1', '1', '', NULL, '', '2018-12-03 00:20:57', '1', '2020-12-09 22:59:40');
 INSERT INTO `sys_permissions` VALUES ('67', '21', 'sys:user:remove', '删除', NULL, '', NULL, 13, 2, '0', '1', '1', '', NULL, '1', '2018-12-03 00:21:48', '1', '2018-12-10 14:55:59');
 INSERT INTO `sys_permissions` VALUES ('68', '21', 'sys:user:save', '保存', NULL, '', NULL, 14, 2, '0', '1', '1', '', NULL, '1', '2018-12-03 00:21:48', '1', '2018-12-10 14:56:03');
-INSERT INTO `sys_permissions` VALUES ('6aa7ed074b144ab2c2d31a41c2ac4fc0', '0', NULL, '组件示例', 'appstore', NULL, NULL, 40, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 14:11:04', '1', '2021-04-02 14:11:35');
+INSERT INTO `sys_permissions` VALUES ('69df3ab67c7dc9fb593d0ec821856e6e', 'd537e36f7948edd2c1fd371578d3749f', 'cms:site:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-18 10:53:22', '1', '2021-11-18 10:53:22');
+INSERT INTO `sys_permissions` VALUES ('6aa7ed074b144ab2c2d31a41c2ac4fc0', '0', NULL, '组件示例', 'appstore', NULL, NULL, 43, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 14:11:04', '1', '2021-12-22 10:00:00');
+INSERT INTO `sys_permissions` VALUES ('6c93cf34d2a4edfcd9f82ac28c287400', 'f034db63a9263cefd9b30884c103491d', 'cms:column:user:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-19 14:07:08', '1', '2021-11-19 14:07:08');
 INSERT INTO `sys_permissions` VALUES ('7', '4', 'sys:dict:select', '字典管理', '', '/sys/dict/list', '/sys/dict/List', 23, 1, '0', '1', '1', '', NULL, '', '2018-11-01 08:42:06', '1', '2020-12-08 12:37:05');
 INSERT INTO `sys_permissions` VALUES ('70', '20', 'sys:dept:remove', '删除', NULL, '', NULL, 3, 2, '0', '1', '1', '', NULL, '1', '2018-12-03 00:21:51', '1', '2018-12-03 00:21:51');
+INSERT INTO `sys_permissions` VALUES ('70045424498772773ed0e6628cd98fd8', '1ef90655abbfff35b4503a88f4500f3a', NULL, '权限管理', 'key', NULL, NULL, 4, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-19 14:10:07', '1', '2021-11-24 15:41:43');
+INSERT INTO `sys_permissions` VALUES ('70665e95906f682b3c0199804aa87a17', '434c35c3fc3e06e132a44f78b0e7e118', 'cms:column:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-18 13:58:11', '1', '2021-11-18 13:58:11');
 INSERT INTO `sys_permissions` VALUES ('70cf9bdeb9024f91be95715d6ed2192a', 'dfcbf9982ac55701115056a7e09e3cd0', '', '404', 'meh', '/global/404', '/global/404', 41, 1, '0', '1', '1', '', NULL, '126', '2019-08-20 21:27:44', '1', '2021-02-25 09:41:29');
 INSERT INTO `sys_permissions` VALUES ('71', '20', 'sys:dept:save', '保存', NULL, '', NULL, 4, 2, '0', '1', '1', '', NULL, '1', '2018-12-03 00:21:51', '1', '2018-12-03 00:21:51');
 INSERT INTO `sys_permissions` VALUES ('72', '20', 'sys:dept:type:select', '部门类型管理', '', '/sys/dept/type', '/sys/dept/type/View', 14, 1, '1', '1', '1', '', NULL, '', '2018-12-03 00:22:12', '1', '2020-11-20 17:56:18');
@@ -5064,6 +5256,8 @@ INSERT INTO `sys_permissions` VALUES ('77ce77c2dd83b746657afbfb2acd21cd', '93d65
 INSERT INTO `sys_permissions` VALUES ('78', '21', 'sys:user:reset:password', '重置密码', NULL, '', NULL, 18, 2, '0', '1', '1', '', NULL, '1', '2018-12-10 14:55:47', '1', '2020-12-11 15:19:21');
 INSERT INTO `sys_permissions` VALUES ('79', '20', 'sys:dept:disable', '禁用', '', '', '', 12, 2, '0', '1', '1', '', NULL, '', '2018-12-10 14:58:09', '1', '2020-11-20 15:57:19');
 INSERT INTO `sys_permissions` VALUES ('792d3621d9d2f92acb7b9847dc0ef598', '5', 'sys:log:select', '访问日志', NULL, '/sys/log', '/sys/log/List', 40, 1, '0', '1', '1', '', NULL, '126', '2019-06-27 12:32:32', '1', '2020-12-18 11:23:44');
+INSERT INTO `sys_permissions` VALUES ('7cf67f104844dc024465b8bf13e5c789', '0', NULL, '开发工具', 'code', NULL, NULL, 40, 1, '0', '1', '1', NULL, NULL, '1', '2021-12-22 09:59:57', '1', '2021-12-22 10:00:00');
+INSERT INTO `sys_permissions` VALUES ('7d059f6a3c13daaddf5895ca6323c0d7', 'e58e18f8a48808a3824fef6d2efad912', NULL, '详情', NULL, '/cms/article/input', '/cms/article/Input', 2, 1, '1', '1', '1', NULL, NULL, '1', '2021-11-19 14:17:19', '1', '2021-11-19 14:55:22');
 INSERT INTO `sys_permissions` VALUES ('7da1f5456b340b1fc94e8bb8e8ae5e8f', '0', '', '我的任务', 'carry-out', NULL, NULL, 38, 1, '0', '1', '1', '', NULL, '126', '2020-03-27 15:56:17', '1', '2021-04-02 14:11:12');
 INSERT INTO `sys_permissions` VALUES ('7fc6d72df2216b9fecb29d6948d713f2', '0ad4783abe1e84e630c630ed78d7ec53', NULL, 'IconSelector', NULL, '/sample/components/data-entry/iconSelector', '/sample/components/data-entry/IconSelector', 5, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-15 13:13:13', '1', '2021-04-15 13:13:13');
 INSERT INTO `sys_permissions` VALUES ('80', '20', 'sys:dept:enable', '启用', '', '', '', 11, 2, '0', '1', '1', '', NULL, '', '2018-12-10 14:58:09', '1', '2020-11-20 15:57:16');
@@ -5076,32 +5270,53 @@ INSERT INTO `sys_permissions` VALUES ('84', '7', 'sys:dict:select:status', '更�
 INSERT INTO `sys_permissions` VALUES ('85', '6', 'sys:permissions:move', '拖动', NULL, '', NULL, 11, 2, '0', '1', '1', '', NULL, '1', '2018-12-13 15:59:38', '1', '2018-12-13 16:00:15');
 INSERT INTO `sys_permissions` VALUES ('87', '14', 'sys:role:move', '拖动', NULL, '', NULL, 7, 2, '0', '1', '1', '', NULL, '1', '2018-12-18 13:37:18', '1', '2018-12-18 13:37:28');
 INSERT INTO `sys_permissions` VALUES ('8c598d0f30dc9b39aa2ba61fbc8b6d55', '72', 'sys:dept:type:move', '拖动', '', '', '', 6, 1, '0', '1', '1', '', NULL, '1', '2020-11-24 16:04:14', '1', '2020-11-24 16:04:14');
+INSERT INTO `sys_permissions` VALUES ('8d3d56a47ac2761edee85b41624d37d2', 'c2adf619e4744b5869c2296c2fdeeefd', 'cms:page:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-24 15:40:23', '1', '2021-11-24 15:40:23');
 INSERT INTO `sys_permissions` VALUES ('8f8006a8fe45ec55809e35a9c80d5efa', '220', NULL, '详情', '', '/sample/general/input', '/sample/general/Input', 3, 1, '1', NULL, '1', '', NULL, '1', '2021-01-25 12:49:59', '1', '2021-01-25 12:50:26');
+INSERT INTO `sys_permissions` VALUES ('90201ca3ab25e2204e3c250b5cd399ac', '164', 'sys:data:source:select', '数据源管理', 'database', '/sys/data/source/list', '/sys/data/source/List', 21, 1, '0', '1', '1', NULL, NULL, '1', '2021-12-18 13:39:33', '1', '2021-12-18 13:42:48');
 INSERT INTO `sys_permissions` VALUES ('906d1078178cb203bb142f8cf22d4245', '236', NULL, '详情', '', '/scheduler/job/input', '/scheduler/job/Input', 4, 1, '1', '1', '1', '', NULL, '1', '2021-01-21 17:21:40', '1', '2021-01-21 17:22:17');
+INSERT INTO `sys_permissions` VALUES ('90fa42f9aff19e2ed40f084b3e8bd306', '39731ea992cfa03ce527ad0724b067fc', NULL, '详情', NULL, '/sample/slave/general/input', '/sample/slave/general/Input', 2, 1, '1', '1', '1', NULL, NULL, '1', '2021-12-20 14:00:00', '1', '2021-12-20 14:00:00');
 INSERT INTO `sys_permissions` VALUES ('93d659164c0cbb3716fcee100f029d5c', '39c5c5bcdd9a15110e2c3e4014dd1531', 'activiti:model:select', '模型管理', NULL, '/activiti/model/list', '/activiti/model/List', 1, 1, '0', '1', '1', '', NULL, '126', '2019-07-03 09:44:53', '1', '2021-01-05 23:29:05');
+INSERT INTO `sys_permissions` VALUES ('948f78628d82b531ccf89bd2134f161d', '4351ef5e9957e8e4a0e0dcf085bf3218', 'cms:media:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-21 14:03:24', '1', '2021-11-21 14:03:24');
 INSERT INTO `sys_permissions` VALUES ('a3322940c314d1b6d9ba1d494740971e', 'e7f55c6889bd826d6a62885ef2ffdb1d', 'activiti:process:suspend', '挂起', NULL, '', NULL, 6, 2, '0', '1', '1', '', NULL, '126', '2020-05-21 10:36:59', '126', '2020-05-21 10:37:24');
 INSERT INTO `sys_permissions` VALUES ('a45fe4e97ec13806b1b764bf45a6907e', '7', 'sys:dict:generate', '更新字典资源', '', '', '', 12, 2, '0', '1', '1', '', NULL, '1', '2020-12-09 15:26:41', '1', '2020-12-09 22:56:07');
 INSERT INTO `sys_permissions` VALUES ('a49b5f6745d8d1516c451ab651994241', '224', NULL, '详情', '', '/sys/import-excel-template/input', '/sys/import-excel-template/Input', 6, 1, '1', '1', '1', '', NULL, '1', '2021-02-03 13:33:47', '1', '2021-02-03 13:36:45');
+INSERT INTO `sys_permissions` VALUES ('a4b6491f59661569ae67102ef61bb919', '90201ca3ab25e2204e3c250b5cd399ac', NULL, '详情', NULL, '/sys/data/source/input', '/sys/data/source/Input', 2, 1, '1', '1', '1', NULL, NULL, '1', '2021-12-18 13:39:33', '1', '2021-12-18 13:39:33');
+INSERT INTO `sys_permissions` VALUES ('a72468406c6d3ae16ec96a4d888127cd', 'd537e36f7948edd2c1fd371578d3749f', 'cms:site:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-18 10:53:22', '1', '2021-11-18 10:53:22');
 INSERT INTO `sys_permissions` VALUES ('a90369995b54a72ef84b8c50ca87f185', '0ad4783abe1e84e630c630ed78d7ec53', '', 'Cron', NULL, '/sample/components/data-entry/cron', '/sample/components/data-entry/Cron', 6, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-15 13:41:36', '1', '2021-04-15 13:41:36');
+INSERT INTO `sys_permissions` VALUES ('a95f4a835e7ca0277a77223572d3c29f', '220', 'sample:general:import:data', '导入', NULL, NULL, NULL, 4, 2, '0', '1', '1', NULL, NULL, '1', '2021-07-07 17:36:59', '1', '2021-07-08 14:10:35');
 INSERT INTO `sys_permissions` VALUES ('ae53867719661453637074b18dd7f5ab', '17dcc367a2c812c36b0d3e2710a567cd', 'sample:work:flow:save', '保存', '', '', '', 1, 2, '0', '1', '1', '', NULL, '', '2020-04-26 15:07:59', '1', '2020-11-19 10:18:11');
+INSERT INTO `sys_permissions` VALUES ('b0277e71073cb2851cf6f78a33ab36c3', 'c2adf619e4744b5869c2296c2fdeeefd', 'cms:page:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-24 15:40:23', '1', '2021-11-24 15:40:23');
+INSERT INTO `sys_permissions` VALUES ('b433703f1fd8a556d2dd6fdb58914339', 'd537e36f7948edd2c1fd371578d3749f', 'cms:site:move', '拖动', NULL, '', NULL, 4, 2, '0', '1', '1', '', NULL, '1', '2021-11-18 11:23:47', '1', '2021-11-18 11:25:12');
+INSERT INTO `sys_permissions` VALUES ('b4aea4615759e8a6633c567cac8d2e35', '4351ef5e9957e8e4a0e0dcf085bf3218', 'cms:media:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-21 14:03:24', '1', '2021-11-21 14:03:24');
 INSERT INTO `sys_permissions` VALUES ('b60d19ba001712231b5c0fc49d057cf3', '258f7c40fca863460ba002f2fb759734', NULL, '柱状图', NULL, '/sample/charts/bar', '/sample/charts/Bar', 1, 1, '0', '1', '1', NULL, NULL, '1', '2021-02-22 16:12:15', '1', '2021-02-22 16:12:15');
+INSERT INTO `sys_permissions` VALUES ('b935992acbd820a41c41484e6b342634', '59f28fee0b781ada5722859993d3ed1c', 'cms:release:queue:select', '发布详情', NULL, '/cms/release/queue/list', '/cms/release/queue/List', 1, 1, '1', '1', '1', NULL, NULL, '1', '2021-12-08 10:00:30', '1', '2021-12-08 10:07:52');
 INSERT INTO `sys_permissions` VALUES ('c25cf52649878c66073c4ac0d691e86b', '7da1f5456b340b1fc94e8bb8e8ae5e8f', '', '待签任务', 'file-protect', '/activiti/task/waitingClaim', '/activiti/task/WaitingClaim', 3, 1, '0', '1', '1', '', NULL, '126', '2020-03-30 13:46:02', '1', '2021-01-26 15:30:30');
 INSERT INTO `sys_permissions` VALUES ('c27ed60160a14953aa9870e7ef30161d', '0ad4783abe1e84e630c630ed78d7ec53', NULL, '字典', NULL, '/sample/components/data-entry/dict', '/sample/components/data-entry/Dict', 1, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 16:25:30', '1', '2021-04-02 16:25:36');
+INSERT INTO `sys_permissions` VALUES ('c2adf619e4744b5869c2296c2fdeeefd', '1ef90655abbfff35b4503a88f4500f3a', 'cms:page:select', '页面管理', 'profile', '/cms/page/list', '/cms/page/List', 3, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-24 15:40:23', '1', '2021-11-24 15:41:43');
 INSERT INTO `sys_permissions` VALUES ('c300bc141a442467ba8321c9ba296845', '224', NULL, '导入规则', NULL, '/sys/import-excel-template-details/input', '/sys/import-excel-template-details/Input', 7, 1, '1', '1', '1', NULL, NULL, '1', '2021-02-03 14:43:56', '1', '2021-02-03 14:43:56');
 INSERT INTO `sys_permissions` VALUES ('c44e35a713e6e68ab1825ff0f6dd0a41', '792d3621d9d2f92acb7b9847dc0ef598', NULL, '详情', '', '/sys/log/input', '/sys/log/Input', 1, 1, '1', '1', '1', '', NULL, '1', '2020-12-18 11:23:52', '1', '2020-12-18 11:24:01');
 INSERT INTO `sys_permissions` VALUES ('c8309ab70e379fc180bfc0ea78b44660', '0ad4783abe1e84e630c630ed78d7ec53', NULL, 'LimitTextArea', NULL, '/sample/components/data-entry/limit-text-area', '/sample/components/data-entry/LimitTextArea', 4, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 17:49:55', '1', '2021-04-06 16:18:11');
 INSERT INTO `sys_permissions` VALUES ('c87e9bfb5e509135b4fb2516629e72cd', 'dfcbf9982ac55701115056a7e09e3cd0', '', '百度', 'api', '/sample/baidu/view', '/sample/baidu/View', 19, 1, '0', '1', '1', '', NULL, '', '2020-06-29 21:17:43', '1', '2021-02-25 09:41:29');
 INSERT INTO `sys_permissions` VALUES ('cbdd956e2a348039fe01d76c2e6d4e91', '93d659164c0cbb3716fcee100f029d5c', 'activiti:model:save', '保存/修改', '', '', '', 1, 2, '0', '1', '1', '', NULL, '', '2019-07-03 09:52:52', '1', '2021-01-05 17:35:12');
+INSERT INTO `sys_permissions` VALUES ('ccd5c77412e5c8de82f61920174841b6', '434c35c3fc3e06e132a44f78b0e7e118', 'cms:column:status', '更改状态', NULL, '', NULL, 5, 2, '0', '1', '1', '', NULL, '1', '2021-11-18 14:36:24', '1', '2021-11-18 14:36:37');
 INSERT INTO `sys_permissions` VALUES ('ccfeae90e4d3391ad54451fa2b4c1cd4', '218', NULL, '详情', '', '/sys/exception/input', '/sys/exception/Input', 2, 1, '1', '1', '1', '', NULL, '1', '2020-12-17 22:34:07', '1', '2020-12-17 22:34:22');
 INSERT INTO `sys_permissions` VALUES ('d457a36b43fd8e9ad6461c9d42d3a098', 'e7f55c6889bd826d6a62885ef2ffdb1d', 'activiti:process:activation', '激活', NULL, '', NULL, 7, 2, '0', '1', '1', '', NULL, '126', '2020-05-21 10:37:21', '126', '2020-05-21 10:37:21');
-INSERT INTO `sys_permissions` VALUES ('dfcbf9982ac55701115056a7e09e3cd0', '0', '', '页面示例', 'file-text', '', '', 43, 1, '0', '1', '1', '', NULL, '', '2019-08-20 21:26:44', '1', '2021-04-02 14:11:12');
+INSERT INTO `sys_permissions` VALUES ('d537e36f7948edd2c1fd371578d3749f', '1ef90655abbfff35b4503a88f4500f3a', 'cms:site:select', '站点管理', 'global', '/cms/site', '/cms/site/View', 1, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-18 10:53:22', '1', '2021-11-24 15:41:43');
+INSERT INTO `sys_permissions` VALUES ('dfa9c32f1e6aa6141417713289541f31', '70045424498772773ed0e6628cd98fd8', 'cms:site:user:select', '站点权限', NULL, '/cms/site/user', '/cms/site/user/View', 1, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-18 13:52:29', '1', '2021-11-19 14:56:03');
+INSERT INTO `sys_permissions` VALUES ('dfcbf9982ac55701115056a7e09e3cd0', '0', '', '页面示例', 'file-text', '', '', 45, 1, '0', '1', '1', '', NULL, '', '2019-08-20 21:26:44', '1', '2021-12-22 10:00:00');
+INSERT INTO `sys_permissions` VALUES ('e4d1ddeb3c3dc7a292ce76770bfdcc7f', '90201ca3ab25e2204e3c250b5cd399ac', 'sys:data:source:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-12-18 13:39:33', '1', '2021-12-18 13:39:33');
+INSERT INTO `sys_permissions` VALUES ('e58e18f8a48808a3824fef6d2efad912', '1ef90655abbfff35b4503a88f4500f3a', 'cms:article:select', '文章管理', 'profile', '/cms/article/list', '/cms/article/List', 5, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-19 14:17:19', '1', '2021-11-24 15:41:43');
+INSERT INTO `sys_permissions` VALUES ('e5dc8061690a29ae6770c3c344465383', 'c2adf619e4744b5869c2296c2fdeeefd', NULL, '详情', NULL, '/cms/page/input', '/cms/page/Input', 2, 1, '1', '1', '1', NULL, NULL, '1', '2021-11-24 15:40:23', '1', '2021-11-24 15:40:23');
 INSERT INTO `sys_permissions` VALUES ('e6c67a0706a8ea62dac289f74b4a498e', '17dcc367a2c812c36b0d3e2710a567cd', NULL, '详情', NULL, '/sample/work-flow/info', '/sample/work-flow/Info', 4, 1, '1', '1', '1', NULL, NULL, '1', '2021-01-19 16:04:59', '1', '2021-01-19 16:05:01');
 INSERT INTO `sys_permissions` VALUES ('e7f55c6889bd826d6a62885ef2ffdb1d', '39c5c5bcdd9a15110e2c3e4014dd1531', 'activiti:process:select', '流程管理', NULL, '/activiti/process/list', '/activiti/process/List', 2, 1, '0', '1', '1', '', NULL, '126', '2019-07-03 09:45:12', '1', '2021-01-08 22:52:16');
 INSERT INTO `sys_permissions` VALUES ('eff43f39d4199f9352e6f150b53d3e22', '006606eb1a80f98445844312e8c69d70', NULL, 'Ellipsis', NULL, '/sample/components/data-display/ellipsis', '/sample/components/data-display/Ellipsis', 1, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 17:46:06', '1', '2021-04-02 17:46:06');
+INSERT INTO `sys_permissions` VALUES ('f034db63a9263cefd9b30884c103491d', '70045424498772773ed0e6628cd98fd8', 'cms:column:user:select', '栏目权限', NULL, '/cms/column/user', '/cms/column/user/View', 2, 1, '0', '1', '1', NULL, NULL, '1', '2021-11-19 14:07:08', '1', '2021-11-19 14:56:00');
 INSERT INTO `sys_permissions` VALUES ('f1d3af076c2810d690edefbdc3462c23', 'e7f55c6889bd826d6a62885ef2ffdb1d', 'activiti:process:remove', '删除', NULL, '', NULL, 4, 2, '0', '1', '1', '', NULL, '126', '2019-07-12 17:15:18', '126', '2020-03-30 15:24:07');
 INSERT INTO `sys_permissions` VALUES ('fad6510a4f85d5645a1fe7d7964587eb', '24850d7f708a4c3514f1d3c61a2d1bb6', NULL, 'Button', NULL, '/sample/components/general/button', '/sample/components/general/Button', 1, 1, '0', '1', '1', NULL, NULL, '1', '2021-04-02 14:19:53', '1', '2021-04-02 14:20:10');
 INSERT INTO `sys_permissions` VALUES ('fe84bcc6e4781447ea21573eb04bf0fb', '39c5c5bcdd9a15110e2c3e4014dd1531', 'activiti:historic:select:all', '流程跟踪', NULL, '/activiti/history-task-instance/all', '/activiti/history/taskInstance/All', 3, 1, '0', '1', '1', '查看所有任务，包含办理中和已办结，一般分配给管理员', NULL, '126', '2020-05-14 13:28:39', '1', '2021-01-19 14:10:22');
 INSERT INTO `sys_permissions` VALUES ('fee57187cae386f067db09aeb0b16b4a', '93d659164c0cbb3716fcee100f029d5c', 'activiti:model:deployment', '部署流程', NULL, '', NULL, 4, 2, '0', '1', '1', '', NULL, '126', '2019-07-11 21:55:01', '126', '2020-03-30 15:24:42');
+INSERT INTO `sys_permissions` VALUES ('ff25ce633431ec4c5d6a7dc333ab22bc', 'e58e18f8a48808a3824fef6d2efad912', 'cms:article:remove', '删除', NULL, NULL, NULL, 3, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-19 14:17:19', '1', '2021-11-19 14:17:19');
+INSERT INTO `sys_permissions` VALUES ('ff37eba32aaf21e139aa868dbc935b56', 'e58e18f8a48808a3824fef6d2efad912', 'cms:article:save', '保存/修改', NULL, NULL, NULL, 1, 2, '1', '1', '1', NULL, NULL, '1', '2021-11-19 14:17:19', '1', '2021-11-19 14:17:19');
 COMMIT;
 
 -- ----------------------------
@@ -5129,9 +5344,10 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES ('3', 191, '0', '系统管理员', '', 'sys:admin', '2018-11-26 23:14:42', '', '1', '2021-04-15 13:41:43', '1', NULL, '拥有至高无上的权利');
+INSERT INTO `sys_role` VALUES ('3', 206, '0', '系统管理员', '', 'sys:admin', '2018-11-26 23:14:42', '', '1', '2021-12-22 10:20:43', '1', NULL, '拥有至高无上的权利');
 INSERT INTO `sys_role` VALUES ('4', 177, '0', '演示', '', 'demo', '2018-11-27 07:48:43', '', '1', '2021-02-02 09:38:40', '1', NULL, '');
 INSERT INTO `sys_role` VALUES ('65bdd699e5b623c8efec4eb74639bafc', 178, '0', '人事', '', 'hr:audit', '2020-03-27 15:43:41', '', '1', '2021-02-02 09:38:53', '1', NULL, '');
+INSERT INTO `sys_role` VALUES ('82f1605892e9341691ea4bb0350364fd', 203, '0', '网站管理员', NULL, 'site:admin', '2021-11-18 11:25:47', '1', '1', '2021-12-08 10:08:07', '1', NULL, NULL);
 INSERT INTO `sys_role` VALUES ('920f6f953610571e740fc517e3c99899', 176, '0', '部门领导', '', 'dept:leader', '2020-03-27 15:43:24', '', '1', '2021-02-02 09:38:23', '1', NULL, '');
 COMMIT;
 
@@ -5150,201 +5366,242 @@ CREATE TABLE `sys_role_permissions` (
 -- Records of sys_role_permissions
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_permissions` VALUES ('3', '17dcc367a2c812c36b0d3e2710a567cd', '00c5f89aefcd354fdf3e58cdaabbf2e8');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '70cf9bdeb9024f91be95715d6ed2192a', '01a9d9ebee8abe0baa5a57fe7c257aa9');
-INSERT INTO `sys_role_permissions` VALUES ('3', '8f8006a8fe45ec55809e35a9c80d5efa', '022d20bb4c37c048b1f1af04a34ccf47');
-INSERT INTO `sys_role_permissions` VALUES ('3', '222', '03a7e47eb8015a9e28ab5cd7825e4875');
+INSERT INTO `sys_role_permissions` VALUES ('3', '5', '04116da2503dfe2075a224f88fb7e807');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '235', '045f21bdd55e769cf744830a361cf70d');
-INSERT INTO `sys_role_permissions` VALUES ('3', '164', '063089ba26a07e716c38f8436a68926b');
+INSERT INTO `sys_role_permissions` VALUES ('3', '74', '046ae8f7382eecd13c0178d2480514ef');
 INSERT INTO `sys_role_permissions` VALUES ('4', '720e77810ca8ea77ec7f7871985ea018', '068919611498db04a3f4d117341d343b');
-INSERT INTO `sys_role_permissions` VALUES ('3', '2b33f190aa0543c8e1acfddbf224361f', '06bf120b1fc8c50ad9e54c7871cfd3cf');
-INSERT INTO `sys_role_permissions` VALUES ('3', '128152f2dc1b2a37ddfebaa4b175446a', '070d73052ded37e0b1de5f9c0446aa91');
-INSERT INTO `sys_role_permissions` VALUES ('3', '77', '08ef6c027ebf756287c8f4f8afd14898');
+INSERT INTO `sys_role_permissions` VALUES ('3', '221', '0899655402c70396f24c3ebc3fb8ea20');
+INSERT INTO `sys_role_permissions` VALUES ('3', '79', '091337ab75dbe001bdb0b2eaeeb5b87e');
+INSERT INTO `sys_role_permissions` VALUES ('3', '4', '0964aec293e5aeda48f6b9295789df31');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '242', '098edf70a5c5b5a0b6d8af39b9f5ec1d');
+INSERT INTO `sys_role_permissions` VALUES ('3', '90201ca3ab25e2204e3c250b5cd399ac', '099912a4f5f177c292c7eb3c7a34f2d2');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '4351ef5e9957e8e4a0e0dcf085bf3218', '0afdccce1e125fa36228cfa62083186e');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '7da1f5456b340b1fc94e8bb8e8ae5e8f', '0b490c13907619fe97c9e5eb008a651f');
-INSERT INTO `sys_role_permissions` VALUES ('3', '20', '0e13f3094122695e60060e5e3c2844b0');
-INSERT INTO `sys_role_permissions` VALUES ('3', '238', '0ea895c0f7504dc8ddd567579b8deeef');
-INSERT INTO `sys_role_permissions` VALUES ('3', '231', '1098ed4cc88d0848cf786d308991d3b2');
-INSERT INTO `sys_role_permissions` VALUES ('3', '70', '120c0654b070e069aa5b5041801273e9');
+INSERT INTO `sys_role_permissions` VALUES ('3', '3b79694872fa73ff05699bde511b238f', '0c34175b7c1a1bd788f6ba180fac7a99');
+INSERT INTO `sys_role_permissions` VALUES ('3', '0ad4783abe1e84e630c630ed78d7ec53', '0e2ae5aa0983bed40f8333f8503b1b56');
+INSERT INTO `sys_role_permissions` VALUES ('3', '52', '0e39557c2109b3739b7c0d38e98cac55');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'dfa9c32f1e6aa6141417713289541f31', '10154efd1eebff1e2763efcb9d3e0573');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '70665e95906f682b3c0199804aa87a17', '10b5e96420593fd23d0109db3d8a6e84');
 INSERT INTO `sys_role_permissions` VALUES ('4', '241', '133f4a7cf4cca102ccf9a7222b5c6fe8');
-INSERT INTO `sys_role_permissions` VALUES ('3', '906d1078178cb203bb142f8cf22d4245', '185bf044fe9f8f90640a5b6b2888f2f0');
-INSERT INTO `sys_role_permissions` VALUES ('3', '68', '19ac0b37d6d174ecde4d5bab276b2a92');
+INSERT INTO `sys_role_permissions` VALUES ('3', '7fc6d72df2216b9fecb29d6948d713f2', '1349fc90a5bcf056ad4c33a147698e88');
+INSERT INTO `sys_role_permissions` VALUES ('3', '71', '148d6dccc21d055e466753acd882abd4');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'f034db63a9263cefd9b30884c103491d', '18a315c3d137b99d190f79b283bf064a');
+INSERT INTO `sys_role_permissions` VALUES ('3', '235', '1979b7e83650346663e9abff01d011eb');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '128152f2dc1b2a37ddfebaa4b175446a', '19b95b3ab8ccf094657331a7a2d8d08a');
 INSERT INTO `sys_role_permissions` VALUES ('4', 'c25cf52649878c66073c4ac0d691e86b', '1a469211891fc4bb9e458961fc39ccf2');
-INSERT INTO `sys_role_permissions` VALUES ('3', '53', '1a5dd6a69588c7fc0169593d83f27e12');
+INSERT INTO `sys_role_permissions` VALUES ('3', '6aa7ed074b144ab2c2d31a41c2ac4fc0', '1a500bc2a78138a06da0d8ae784071a7');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', 'e6c67a0706a8ea62dac289f74b4a498e', '1ac0b497d47d60d6bb54d94fcccf48a2');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'd457a36b43fd8e9ad6461c9d42d3a098', '1b637df6ec6648aea2a2be09efb251d7');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'f1d3af076c2810d690edefbdc3462c23', '1d7d27bfc401049fc1c18949b6a5f54c');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'c87e9bfb5e509135b4fb2516629e72cd', '1da312f4fa045a7e95f6c5f4d77edbc8');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'a49b5f6745d8d1516c451ab651994241', '1e1e7752f66bfb3bcaba9c63f522e4bb');
-INSERT INTO `sys_role_permissions` VALUES ('3', '81', '1e59ad0aa71053bd98733e07ae19b959');
+INSERT INTO `sys_role_permissions` VALUES ('3', '7', '1add1f5a7007572f3b5b5566319f0410');
+INSERT INTO `sys_role_permissions` VALUES ('3', '53', '1b4c34afff85111c128edcae1d6ac101');
+INSERT INTO `sys_role_permissions` VALUES ('3', '76', '1c9dbd64d9a06b3497c4f20c396fd8eb');
+INSERT INTO `sys_role_permissions` VALUES ('3', '84', '1f800f5c61feb48ec84e6be9e9ac4b25');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '6c93cf34d2a4edfcd9f82ac28c287400', '1fa239d0355ff50d2b58e92ee553a368');
+INSERT INTO `sys_role_permissions` VALUES ('3', '67', '2274c978d658d66d1fbcb28611965dc8');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '150178d7eecb8c4aa8312ba2492ca050', '22889b3a4d297a9f04e1adbbef379a05');
+INSERT INTO `sys_role_permissions` VALUES ('3', '734dacc38f293883683b68c6d3e5b56e', '2382287eeebcf5253c9c5526e3968b85');
+INSERT INTO `sys_role_permissions` VALUES ('3', '218', '238b9e21b4b27126af676cc6acc2822c');
 INSERT INTO `sys_role_permissions` VALUES ('4', '243', '23ab991ba78ad7e4ca811fbbd9f6720f');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'dfcbf9982ac55701115056a7e09e3cd0', '2485accc0c681c6cb8f867b058e246bd');
-INSERT INTO `sys_role_permissions` VALUES ('3', '159', '24cda044ec34dbfe1dbfecf711e1078c');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'b60d19ba001712231b5c0fc49d057cf3', '274b3c57c653e13c8aed3e13196a6829');
-INSERT INTO `sys_role_permissions` VALUES ('3', '4aba9a2f7c81615c9ccdc07e980ccfe3', '277e7ef327a9c23248b13e9b45586eef');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'c8309ab70e379fc180bfc0ea78b44660', '27fe43c12e3ec33e9b3f8b1908bddef2');
-INSERT INTO `sys_role_permissions` VALUES ('3', '0', '287536a7746c823ac7d8bb90d1007944');
-INSERT INTO `sys_role_permissions` VALUES ('3', '645350c2c094dc8a7ccf71563a4f7cbb', '2943e9d9983322bd09068c3bb91c3979');
-INSERT INTO `sys_role_permissions` VALUES ('3', '240', '2bb3318a6631a80747fe2fd4020dcdbd');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'e5dc8061690a29ae6770c3c344465383', '24804da4814ae6a540eb9aaa7fa59556');
+INSERT INTO `sys_role_permissions` VALUES ('3', '4aba9a2f7c81615c9ccdc07e980ccfe3', '2490a7b73c16a2740fc062e6382fe018');
+INSERT INTO `sys_role_permissions` VALUES ('3', '03ad13494a492eee81d8d7d1e2d95d14', '2633e9330114325d92da613c01a627aa');
+INSERT INTO `sys_role_permissions` VALUES ('3', '240', '2731a4f09159bfe8c934cf5f407f6756');
+INSERT INTO `sys_role_permissions` VALUES ('3', '0c5ea7d50665e6a89050c15a446f964e', '287c62d1753762fc1342b783ebcbdb3c');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '3624d07e7c958b60f4a23a59d8a5db77', '2bf874c62a08bbcf86bed1d98172e034');
+INSERT INTO `sys_role_permissions` VALUES ('3', '222', '2c476f8367cd4f5401aba490f1218f0c');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '03ad13494a492eee81d8d7d1e2d95d14', '2d16ba330520f04bf82f945e3d2a0772');
-INSERT INTO `sys_role_permissions` VALUES ('3', '220', '2fbb99f0058fa3c0b6c7c0317981ca90');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'c8309ab70e379fc180bfc0ea78b44660', '2e35b213a2a34259546c0bd2962cf43d');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'b0277e71073cb2851cf6f78a33ab36c3', '2eb701a1553300c64282dee71d725fc7');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'ff25ce633431ec4c5d6a7dc333ab22bc', '3032fdfd0abd73e800d699f50cf01271');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', 'c25cf52649878c66073c4ac0d691e86b', '311b3bdf40fe8dda1d8e840745686710');
-INSERT INTO `sys_role_permissions` VALUES ('3', '55', '31f4288ba9d1f2714e4d26eb5eda3524');
-INSERT INTO `sys_role_permissions` VALUES ('3', '149', '3201807cc9f9138503a1e3ab0451f0ad');
-INSERT INTO `sys_role_permissions` VALUES ('3', '64', '33b7eec1867598db2f96d9d2db0605a7');
-INSERT INTO `sys_role_permissions` VALUES ('3', '84', '35878d3b628fba09ac1eac35d8190531');
-INSERT INTO `sys_role_permissions` VALUES ('3', '60a83e7df038e40410526510e5a12cbc', '37a84e594023822943d41596e3aec474');
+INSERT INTO `sys_role_permissions` VALUES ('3', '24850d7f708a4c3514f1d3c61a2d1bb6', '31245dd60b49caae53a7fc8281d566f8');
+INSERT INTO `sys_role_permissions` VALUES ('3', '906d1078178cb203bb142f8cf22d4245', '31511ae5154292e6c9cfba29e4a7bd76');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'e4d1ddeb3c3dc7a292ce76770bfdcc7f', '3212503b77436191891c8a106e917572');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'd457a36b43fd8e9ad6461c9d42d3a098', '32f0f5906fca54c274b4b183c710c0fb');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'eff43f39d4199f9352e6f150b53d3e22', '33365cd7af9889ef8e0aa499fc26ad5a');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '3bfaf265880f952d176911aa2b717b4b', '335cb3633c52144275119c8ec140d313');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '69df3ab67c7dc9fb593d0ec821856e6e', '33971b91dfee868e106d289d7afb1f15');
+INSERT INTO `sys_role_permissions` VALUES ('3', '241', '379c49c26697690d0f6c6adb7f068647');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '830d7d2e1b48277a90308d83193092c4', '3a39299d3f37d55743dd6230380b3aa0');
-INSERT INTO `sys_role_permissions` VALUES ('3', '87', '3be16400392a196d9b7d2131b5c072ba');
+INSERT INTO `sys_role_permissions` VALUES ('3', '159', '3a869f4c45178659ce7550863f087d2f');
 INSERT INTO `sys_role_permissions` VALUES ('4', '235', '3d1e70a69260b55fc4f19ad90ab43e9a');
-INSERT INTO `sys_role_permissions` VALUES ('3', '3907ba1a0c6196d98314434c6fd44f00', '3d316ff83608b17ee6f9f15a85ea8ad9');
-INSERT INTO `sys_role_permissions` VALUES ('3', '258f7c40fca863460ba002f2fb759734', '3d984832d99f28c5d54f216413267e2b');
-INSERT INTO `sys_role_permissions` VALUES ('3', '85', '3e940ff6014fa5c7fed2a76cb04c0601');
+INSERT INTO `sys_role_permissions` VALUES ('3', '72', '3d38d5eb1445b457d902109a1fdb57f7');
+INSERT INTO `sys_role_permissions` VALUES ('3', '5fd40d8344c4a5e71fe606364c8fb9d9', '3dfa2e3c9aa2170462740018f7ed4c16');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '242', '3ebea7089b03db9869547915cd5cb1ee');
-INSERT INTO `sys_role_permissions` VALUES ('3', '3e76a9e2bcab94d347203a178765e621', '3fdd458650fccf26fcdffc3a70b35837');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'c44e35a713e6e68ab1825ff0f6dd0a41', '41a7111767756e878005bfad8a0774e1');
+INSERT INTO `sys_role_permissions` VALUES ('3', '75', '3ff074f1a3e9f38913f894acf4152bdb');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '3e76a9e2bcab94d347203a178765e621', '42da02ddfb3366160cba8a251bae5679');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', 'c25cf52649878c66073c4ac0d691e86b', '4324081686f92546320772006fb1e180');
-INSERT INTO `sys_role_permissions` VALUES ('3', '32', '4388d64a0da3a8031016af66ad8b028c');
 INSERT INTO `sys_role_permissions` VALUES ('4', '76180395fab6dbdab6f6c050169c5f97', '44ca27d30ea131a2b4578e43ff6b865e');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '03ad13494a492eee81d8d7d1e2d95d14', '46c4fa8a4d04201e4fa838e63a7a3c5b');
-INSERT INTO `sys_role_permissions` VALUES ('3', '52', '46dad5ef122d72c2716498b24abfc5bc');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'fe84bcc6e4781447ea21573eb04bf0fb', '48dc075ddcd9b99e9f8a3cc2680d7151');
-INSERT INTO `sys_role_permissions` VALUES ('3', '79', '49b77d3a43a8cb9250e7b25b9d575bd8');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'e6c67a0706a8ea62dac289f74b4a498e', '4a91819858591acb4071bd022657479a');
-INSERT INTO `sys_role_permissions` VALUES ('3', '62', '4af2c47ffce92a2a31bd7d2cb2fbea84');
-INSERT INTO `sys_role_permissions` VALUES ('3', '4dd114436fd08e63cada54d6c32c1fe3', '4b0776a203091d8f9ff03ac64eddc967');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '142a67a353c42c94e2d9cb638eb1a0b0', '47cbe70e963b5ca89e1c14416493c666');
+INSERT INTO `sys_role_permissions` VALUES ('3', '149', '47e8327b0e455619e39b4b4368bef7e0');
+INSERT INTO `sys_role_permissions` VALUES ('3', '151', '4a4b5297cc78fc9d5ba9289f2859dce4');
+INSERT INTO `sys_role_permissions` VALUES ('3', '32', '4b54deb7a1e41d5815fea80343b3f954');
+INSERT INTO `sys_role_permissions` VALUES ('3', '645350c2c094dc8a7ccf71563a4f7cbb', '4ba69f02c1b28da10ad37be1af06ff3d');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '8d3d56a47ac2761edee85b41624d37d2', '4c0f1d71a55f2292a34f22afec6946e5');
+INSERT INTO `sys_role_permissions` VALUES ('3', '128152f2dc1b2a37ddfebaa4b175446a', '4c5521a4f4ec821be19f02ab3cb1fd6c');
+INSERT INTO `sys_role_permissions` VALUES ('3', '77ce77c2dd83b746657afbfb2acd21cd', '4c59a2f326321c7050883f9bff422198');
 INSERT INTO `sys_role_permissions` VALUES ('4', '228', '4d8d49109f5bc7b88bfdc08dcba097a8');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'c2adf619e4744b5869c2296c2fdeeefd', '4d9f92bd415de0a88f9a1202a60053ce');
+INSERT INTO `sys_role_permissions` VALUES ('3', '830d7d2e1b48277a90308d83193092c4', '4e5c29ceabba81bc4611e15a6ca9b4c4');
 INSERT INTO `sys_role_permissions` VALUES ('4', '3e76a9e2bcab94d347203a178765e621', '4ee55b87355c94d4973fa2c4ae830126');
-INSERT INTO `sys_role_permissions` VALUES ('3', '7fc6d72df2216b9fecb29d6948d713f2', '4fd270c401fd7de99e6062ba41fa374c');
+INSERT INTO `sys_role_permissions` VALUES ('3', '60a83e7df038e40410526510e5a12cbc', '4f6b137e97d32209a6de6617f8e67e69');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '8f8006a8fe45ec55809e35a9c80d5efa', '52260db2481c1e38ad656785bc35744d');
-INSERT INTO `sys_role_permissions` VALUES ('3', '74', '52869ee7a86500f2ab1c2b0dd6784665');
+INSERT INTO `sys_role_permissions` VALUES ('3', '237', '5290a66e019ebc0c6d5fa2ef1f22636a');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'fee57187cae386f067db09aeb0b16b4a', '5433a31478cf49179364a45c0bbdd56f');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '170736698031e1469d4a1d5e96cd4243', '547711b7922c9957be866f3446fb3173');
 INSERT INTO `sys_role_permissions` VALUES ('4', 'ae53867719661453637074b18dd7f5ab', '54f501cb450737e9989da50705e60c2c');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'fee57187cae386f067db09aeb0b16b4a', '54fce9795e44e1abbde35e0b22ef9a54');
-INSERT INTO `sys_role_permissions` VALUES ('3', '226', '55f262542be4d19a6d3c760d02a1f0ae');
-INSERT INTO `sys_role_permissions` VALUES ('3', '006606eb1a80f98445844312e8c69d70', '56758fc2cdb6d8541081fc0da1759d30');
+INSERT INTO `sys_role_permissions` VALUES ('3', '224', '56049daf4d0fcfc73a3714f392afb94e');
+INSERT INTO `sys_role_permissions` VALUES ('3', '8f8006a8fe45ec55809e35a9c80d5efa', '56249cdb74751a445dfb89117003eec6');
 INSERT INTO `sys_role_permissions` VALUES ('4', '221', '5693a9e51c7f9669d95be9ec2e7b0dc7');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '243', '56ea47a2ba06beae44417970cd436f71');
-INSERT INTO `sys_role_permissions` VALUES ('3', '3b79694872fa73ff05699bde511b238f', '57ce87b8efe875689cc2fbbcce0bac4f');
-INSERT INTO `sys_role_permissions` VALUES ('3', '17', '608a6b5ff1b542cfc97dc96978abceba');
-INSERT INTO `sys_role_permissions` VALUES ('3', '67', '61c3fb90d1703b543bdea9094ddefa26');
+INSERT INTO `sys_role_permissions` VALUES ('3', '3273e1c9ff7485e4a09c67410641ce29', '572fcc07ff70de72ae581913132233db');
+INSERT INTO `sys_role_permissions` VALUES ('3', '90fa42f9aff19e2ed40f084b3e8bd306', '57c8e1c29691224a7b02fe0222c27898');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'ff37eba32aaf21e139aa868dbc935b56', '5897ac87c04ff9536575ce4eaba0969e');
+INSERT INTO `sys_role_permissions` VALUES ('3', '006606eb1a80f98445844312e8c69d70', '5af110491dcacc8c30c1fd3bfc0c0644');
+INSERT INTO `sys_role_permissions` VALUES ('3', '70cf9bdeb9024f91be95715d6ed2192a', '5bb78e9158ca9c557a63542990c3f3fe');
+INSERT INTO `sys_role_permissions` VALUES ('3', '61', '5d616260a4f0a33b89dfc691115e7337');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '76180395fab6dbdab6f6c050169c5f97', '63bec182e2347c19a4517b397dc570f8');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'cbdd956e2a348039fe01d76c2e6d4e91', '6437fee7f06671103b1dc5db2b62cdaa');
-INSERT INTO `sys_role_permissions` VALUES ('3', '5fd40d8344c4a5e71fe606364c8fb9d9', '6654681bda2a3ee6090b5984e8dfed8e');
-INSERT INTO `sys_role_permissions` VALUES ('3', '0f5f756d9f287ea1e8172bb2e6e170d8', '6785e16ff9eab1e10200db2c5508bd14');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'e7f55c6889bd826d6a62885ef2ffdb1d', '6a3dc990975ef1e80ee66769ac2dcdcb');
-INSERT INTO `sys_role_permissions` VALUES ('3', '71', '6a4726261c63d2d827cdb2bc5b195eac');
-INSERT INTO `sys_role_permissions` VALUES ('3', '7da1f5456b340b1fc94e8bb8e8ae5e8f', '6c278a15b188923968a1b58153fffcdf');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'c44e35a713e6e68ab1825ff0f6dd0a41', '645910f867e721ba97ee529cb437a056');
+INSERT INTO `sys_role_permissions` VALUES ('3', '228', '66216ad1204f1644960fd6f045a30f1b');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '70045424498772773ed0e6628cd98fd8', '6673b973980f40fb640dc7c8654f3490');
+INSERT INTO `sys_role_permissions` VALUES ('3', '21', '6907fe66f7d25bb9c758b00935285aa3');
+INSERT INTO `sys_role_permissions` VALUES ('3', '0c77991b94e723d454898e53e6708b41', '6aecd2a08cb8c3455a8ed42027209ecc');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', 'ae53867719661453637074b18dd7f5ab', '6c4670ebaf61ebe565c558bb16ed15cb');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '3b79694872fa73ff05699bde511b238f', '6c6ff4cc63bd0d57ba6526143efa0031');
-INSERT INTO `sys_role_permissions` VALUES ('3', '5', '6d964d8021e4ce66c8b1c70a4ac877b1');
-INSERT INTO `sys_role_permissions` VALUES ('3', '76', '7070e71426c0e9ad08c27f82aa6caf22');
+INSERT INTO `sys_role_permissions` VALUES ('3', '51d7635a9faf42627e5b0c33715a8fcc', '6d82a30ddc18463e66f33809b51b9fea');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'd537e36f7948edd2c1fd371578d3749f', '713511fdf24ebcb835756ab13c655a5a');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '17dcc367a2c812c36b0d3e2710a567cd', '7143f911ee23751f8c6c87648027482c');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '3e76a9e2bcab94d347203a178765e621', '719a677bef4c3e711fae38fb83682f78');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '243', '729605458d04073b129298e774ad191f');
-INSERT INTO `sys_role_permissions` VALUES ('3', '720e77810ca8ea77ec7f7871985ea018', '739f33b4a15da2d44b5691e971f416ac');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '231', '7483e1c965733cdaf239be0bdf535458');
 INSERT INTO `sys_role_permissions` VALUES ('4', '2fb368f87b018eb6858abc8703945623', '756529e691f30aadf0313a1cd9185cf4');
-INSERT INTO `sys_role_permissions` VALUES ('3', '151', '75eadd52fbed86f8ecf25d09e9284b39');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'c300bc141a442467ba8321c9ba296845', '7684255f54f30188b0c73e006befddcf');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'b60d19ba001712231b5c0fc49d057cf3', '763f9efa630bbe79e141b676b10ea75f');
 INSERT INTO `sys_role_permissions` VALUES ('4', 'c87e9bfb5e509135b4fb2516629e72cd', '780dee904079646a800d276794348c72');
-INSERT INTO `sys_role_permissions` VALUES ('3', '6aa7ed074b144ab2c2d31a41c2ac4fc0', '7b44bba092fffcf28ba1eff6419004ef');
-INSERT INTO `sys_role_permissions` VALUES ('3', '56', '7cb63a7c8722bdf8ea10218c0fa5909c');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'e58e18f8a48808a3824fef6d2efad912', '7a2928a2ff669fe76713e5c9ec5cdd03');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'b433703f1fd8a556d2dd6fdb58914339', '7adb2b1fac5f7775b261ce1f5fb7d441');
+INSERT INTO `sys_role_permissions` VALUES ('3', '93d659164c0cbb3716fcee100f029d5c', '7c53549563d0e1c6e8a89b580b235168');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'a95f4a835e7ca0277a77223572d3c29f', '7c927718845f1726621aadfb14e93a2a');
 INSERT INTO `sys_role_permissions` VALUES ('4', '234', '7ce3f31ea6b92f92bd637ec6240ede2a');
-INSERT INTO `sys_role_permissions` VALUES ('3', '8c598d0f30dc9b39aa2ba61fbc8b6d55', '7da9c606862f48b5df7b43376da7626b');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'a3322940c314d1b6d9ba1d494740971e', '7f8a3a24792fe9a43773e7e9b042075e');
-INSERT INTO `sys_role_permissions` VALUES ('3', '243', '8270d36f3703031b87aa829c6e5f7061');
+INSERT INTO `sys_role_permissions` VALUES ('3', '65', '801de56256bac896a8b39d34a2d8f3ac');
+INSERT INTO `sys_role_permissions` VALUES ('3', '0f5f756d9f287ea1e8172bb2e6e170d8', '81ac72f2b7e93e7407d54bf62d52629e');
 INSERT INTO `sys_role_permissions` VALUES ('4', '3b79694872fa73ff05699bde511b238f', '82a19f33b6446b3084cd05cf1e0726d8');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '241', '8343a1899583f05512a346c904531a86');
-INSERT INTO `sys_role_permissions` VALUES ('3', '80', '83f43f5257e76c148f5eb00f59eef2d8');
+INSERT INTO `sys_role_permissions` VALUES ('3', '17', '835bb4e42a833ca1723dfe6e9a6e9c45');
+INSERT INTO `sys_role_permissions` VALUES ('3', '64', '8391bd242e0dfd555b259d1c460ae208');
+INSERT INTO `sys_role_permissions` VALUES ('3', '85', '85532ed2071460a1b577eee25bd45d92');
 INSERT INTO `sys_role_permissions` VALUES ('4', '17dcc367a2c812c36b0d3e2710a567cd', '855858ea9037c9aa24709596dce76cc0');
-INSERT INTO `sys_role_permissions` VALUES ('3', '150', '85c9108d558dc6226d3be6914209ab0e');
+INSERT INTO `sys_role_permissions` VALUES ('3', '804344d2acf844862d29e6c0438cb09b', '85975d89c98a698bca7a2cc1a59454cc');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', 'dfcbf9982ac55701115056a7e09e3cd0', '87512eb6d1cd52755e05c1579d91ea50');
-INSERT INTO `sys_role_permissions` VALUES ('3', '70cf9bdeb9024f91be95715d6ed2192a', '88da36ac32330c8d6b9599ac165333be');
-INSERT INTO `sys_role_permissions` VALUES ('3', '39c5c5bcdd9a15110e2c3e4014dd1531', '8b7baf30f7b694fe9a7c8ecc9ebb3768');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'c300bc141a442467ba8321c9ba296845', '8782c06919ac41f844e9862a278dcf94');
+INSERT INTO `sys_role_permissions` VALUES ('3', '15', '88d2c355a7750e538311f7fe1017a94e');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'b4aea4615759e8a6633c567cac8d2e35', '8960997033ab6ea04e0071a6bc5f3ede');
+INSERT INTO `sys_role_permissions` VALUES ('3', '258f7c40fca863460ba002f2fb759734', '8a5d2d67457c7cb3d7d930476b0ae6a5');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '1ef90655abbfff35b4503a88f4500f3a', '8b7fe36f230e2e36d6e5c673c29a1ac1');
+INSERT INTO `sys_role_permissions` VALUES ('3', '72707fe2c7d4dfd8e23a8e47d3e1169b', '8cdad45d19108cae28f784e2c756e305');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '241', '8cdd3f45935447d0b1b3513088e3d9ad');
-INSERT INTO `sys_role_permissions` VALUES ('3', '51d7635a9faf42627e5b0c33715a8fcc', '8e5a876f5c7de7ebeb5e4f7adc934917');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', 'c87e9bfb5e509135b4fb2516629e72cd', '9032d6d775e6b17ab988e4bb4878adc1');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'c25cf52649878c66073c4ac0d691e86b', '91554c6b3e98e8985ca86ac1d44cb1da');
+INSERT INTO `sys_role_permissions` VALUES ('3', '87', '90559f2f1d4a0e68a0eab879cc97fe99');
 INSERT INTO `sys_role_permissions` VALUES ('4', '4aba9a2f7c81615c9ccdc07e980ccfe3', '9156414790077cd3afa7fb5a17d7619a');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'a3322940c314d1b6d9ba1d494740971e', '91709067dc3a3eb00d0fe0541dcde0fb');
 INSERT INTO `sys_role_permissions` VALUES ('4', '242', '91e82e2bb8876fb5eb403a3a53edd5ea');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'ccd5c77412e5c8de82f61920174841b6', '91e9028a987aa4137d5eb561d963f309');
 INSERT INTO `sys_role_permissions` VALUES ('af56f74db7a90f428ff91235ba0340ab', '234', '92ce23d3c36ec76db18eccffaf939a27');
-INSERT INTO `sys_role_permissions` VALUES ('3', '0ad4783abe1e84e630c630ed78d7ec53', '9ab2656355e14ecd9281e2c25e346d59');
-INSERT INTO `sys_role_permissions` VALUES ('3', '7', '9dabc651b066986a89d9636b624d6465');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'f1d3af076c2810d690edefbdc3462c23', '936be6d7729ac742cb7a01affa3a3c3c');
+INSERT INTO `sys_role_permissions` VALUES ('3', '7cf67f104844dc024465b8bf13e5c789', '940b38f6944715c25025afab4e667a45');
+INSERT INTO `sys_role_permissions` VALUES ('3', '6', '94a638467751db7238f88c75b46896a4');
+INSERT INTO `sys_role_permissions` VALUES ('3', '80', '9716881abbe711416e01a0bf57edfe12');
+INSERT INTO `sys_role_permissions` VALUES ('3', '81', '972c02cb29f8026f2a2703110e73fdd8');
+INSERT INTO `sys_role_permissions` VALUES ('3', '720e77810ca8ea77ec7f7871985ea018', '973d31cd1a981a1e578704f63eec9824');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'a49b5f6745d8d1516c451ab651994241', '987c121db8718de765eae4d87e3edd3b');
+INSERT INTO `sys_role_permissions` VALUES ('3', '164', '9a69d9781477cfe29b55cc3b41eb615e');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'e6c67a0706a8ea62dac289f74b4a498e', '9bc3fcbc8fafa88cc91bb1d3056f6291');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '0f5f756d9f287ea1e8172bb2e6e170d8', '9e38a612822ffdd1081bbc93dea66884');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '2fb368f87b018eb6858abc8703945623', '9e6b3a650d7f29184990cdcec97b8b3a');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '645350c2c094dc8a7ccf71563a4f7cbb', '9e92187acde872a0b835caf9641d426b');
-INSERT INTO `sys_role_permissions` VALUES ('3', '77ce77c2dd83b746657afbfb2acd21cd', 'a2647c01267b9c0b11d266845549556b');
+INSERT INTO `sys_role_permissions` VALUES ('3', '68', 'a0f92f6a53515a7545d338b3b23e9d97');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'c27ed60160a14953aa9870e7ef30161d', 'a27e4e972b9e6df2aba2cb29ab95c725');
+INSERT INTO `sys_role_permissions` VALUES ('3', '231', 'a2c0a00152231c2c125716743dcf3d6b');
 INSERT INTO `sys_role_permissions` VALUES ('4', '8f8006a8fe45ec55809e35a9c80d5efa', 'a37dd3ab70524d3dfd00229bb1c0883b');
-INSERT INTO `sys_role_permissions` VALUES ('3', '157', 'a46c4efb956c5ee6054fa2ae686364f3');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'c27ed60160a14953aa9870e7ef30161d', 'a4c34d78b613c9540267eeab025f3b12');
+INSERT INTO `sys_role_permissions` VALUES ('3', '70', 'a42d685f15d947cec6b6f4983c933fa0');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '0f5f756d9f287ea1e8172bb2e6e170d8', 'a57b3cc8eee19fbe794d0c384c593764');
-INSERT INTO `sys_role_permissions` VALUES ('3', '14', 'a5de1e23cd550602c7c659cacabe5082');
-INSERT INTO `sys_role_permissions` VALUES ('3', '225', 'a6c29f29a3affcb44195ef9b775904f5');
-INSERT INTO `sys_role_permissions` VALUES ('3', '242', 'a7c3ca691c5696373d6ae2a889a1fa23');
-INSERT INTO `sys_role_permissions` VALUES ('3', '0c77991b94e723d454898e53e6708b41', 'a8099e280226c676d25d1382d6e3a07a');
+INSERT INTO `sys_role_permissions` VALUES ('3', '8c598d0f30dc9b39aa2ba61fbc8b6d55', 'a5fcd62f19f490217152c0ed911956bb');
+INSERT INTO `sys_role_permissions` VALUES ('3', '236', 'a7b255c197efe2e356150f63547f22c7');
+INSERT INTO `sys_role_permissions` VALUES ('3', '3907ba1a0c6196d98314434c6fd44f00', 'a8d7febf7ba879eaba2341b19ff86618');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '228', 'a8fa0944541f155d649e2dc4480d28e0');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'a90369995b54a72ef84b8c50ca87f185', 'a9eded475126fd38aa05f24825941926');
-INSERT INTO `sys_role_permissions` VALUES ('3', '830d7d2e1b48277a90308d83193092c4', 'ac2cd00970386175cc1f276a8902f7a2');
-INSERT INTO `sys_role_permissions` VALUES ('3', '76180395fab6dbdab6f6c050169c5f97', 'ac830395350db5ebcedf6b6f9a22dc05');
+INSERT INTO `sys_role_permissions` VALUES ('3', '158', 'a95825585a29958ef92fe898eeee038d');
+INSERT INTO `sys_role_permissions` VALUES ('3', '150', 'aa2f5a5360390c13defc2e47128f237c');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '235', 'ad1a601272b42f781f271f4bd654faf4');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'b935992acbd820a41c41484e6b342634', 'ad243370de3aab2501c1dbeab4e94891');
 INSERT INTO `sys_role_permissions` VALUES ('4', 'e6c67a0706a8ea62dac289f74b4a498e', 'adef0d8c855ad7fa81b20a3978b10539');
+INSERT INTO `sys_role_permissions` VALUES ('3', '157', 'ae93ee50aac70dba3b99c848452d1496');
 INSERT INTO `sys_role_permissions` VALUES ('4', '830d7d2e1b48277a90308d83193092c4', 'af09b369a5510a0f2462861faf78dec6');
-INSERT INTO `sys_role_permissions` VALUES ('3', '72707fe2c7d4dfd8e23a8e47d3e1169b', 'af3950f9032dbd197a64ce925773cbb2');
-INSERT INTO `sys_role_permissions` VALUES ('3', '237', 'af97c060c818e571418acdf2b91fa18b');
+INSERT INTO `sys_role_permissions` VALUES ('3', '39731ea992cfa03ce527ad0724b067fc', 'af4cf72594f61fe4babe8c39aac870c1');
 INSERT INTO `sys_role_permissions` VALUES ('4', '0f5f756d9f287ea1e8172bb2e6e170d8', 'afbf834d8e663f707699385932e0ed94');
-INSERT INTO `sys_role_permissions` VALUES ('3', '241', 'afd9694645b17937e810cbd527eda0f1');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'ccfeae90e4d3391ad54451fa2b4c1cd4', 'b0f4f536ec1b86f339a9ef09d6bf21c6');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'a45fe4e97ec13806b1b764bf45a6907e', 'b0ffb733b0024d5a9fda4d2c34fc6998');
-INSERT INTO `sys_role_permissions` VALUES ('3', '93d659164c0cbb3716fcee100f029d5c', 'b22260f03c2a6d83fa5075ad291b316b');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '222', 'b2b60519183e9d06adff77e63587831a');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '59f28fee0b781ada5722859993d3ed1c', 'b3d006567e73eb9ebf7553154fa0dca2');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'a45fe4e97ec13806b1b764bf45a6907e', 'b455871c05013c7dba9de698a78992f7');
 INSERT INTO `sys_role_permissions` VALUES ('4', '231', 'b697be2b1babc428494d4a17c4f8f486');
-INSERT INTO `sys_role_permissions` VALUES ('3', '72', 'b6b2708490de0bbdb60f660e9e6a058b');
-INSERT INTO `sys_role_permissions` VALUES ('3', '734dacc38f293883683b68c6d3e5b56e', 'bc038409838b490ea035d61c20240c26');
+INSERT INTO `sys_role_permissions` VALUES ('3', '3e76a9e2bcab94d347203a178765e621', 'b7b035f621c34266f2b073cf38b48805');
+INSERT INTO `sys_role_permissions` VALUES ('3', '2b33f190aa0543c8e1acfddbf224361f', 'b80251892a03aac6d1fca775f52e718a');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'a4b6491f59661569ae67102ef61bb919', 'b8283bd0d1f271175e9993eeb9e81248');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'c25cf52649878c66073c4ac0d691e86b', 'bab83b403fe849a6591b2909553385e6');
+INSERT INTO `sys_role_permissions` VALUES ('3', '14', 'bb476717191a2974db7e05b207a01fa0');
+INSERT INTO `sys_role_permissions` VALUES ('3', '7da1f5456b340b1fc94e8bb8e8ae5e8f', 'bcab40388f8de3f591fdea175bb126ef');
+INSERT INTO `sys_role_permissions` VALUES ('3', '78', 'bcfc5126022f913bd1380f8396dc91f9');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '7d059f6a3c13daaddf5895ca6323c0d7', 'be64f884249efcda9b8b9a9e4caf66a2');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '220', 'becacb4df2811f80bfa54c77ca4f6a5e');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', 'a72468406c6d3ae16ec96a4d888127cd', 'c01575f2fbca5c80d488b8c347bff065');
 INSERT INTO `sys_role_permissions` VALUES ('4', '220', 'c08b99e40c217c091154b1ff9e3e1dc7');
-INSERT INTO `sys_role_permissions` VALUES ('3', '16', 'c0fd56c52cc6ef02db186bb064cd9e49');
-INSERT INTO `sys_role_permissions` VALUES ('3', '221', 'c295efe23642568bd4f21f0cb139ba2d');
-INSERT INTO `sys_role_permissions` VALUES ('3', '15', 'c2a96f4b89f3fd263f89bb32debe6207');
-INSERT INTO `sys_role_permissions` VALUES ('3', '235', 'c373b43f22013cf9cb7d640777e9b392');
-INSERT INTO `sys_role_permissions` VALUES ('3', '234', 'c52a4ddbf40297d593dc0a2fb3b799b7');
+INSERT INTO `sys_role_permissions` VALUES ('3', '234', 'c2f2190fc5b85a1cff1a5c5b0e5c7b5f');
+INSERT INTO `sys_role_permissions` VALUES ('3', '17dcc367a2c812c36b0d3e2710a567cd', 'c3230edb8b071c08a69925b8bf3cf289');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '3461d1e74115a0e7e13970dbf4a4affc', 'c594b4e5defafe63c8e2cddfa0bff610');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'ccfeae90e4d3391ad54451fa2b4c1cd4', 'c649555be2d9a3c267e2d2d99a7405e9');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '7da1f5456b340b1fc94e8bb8e8ae5e8f', 'c65bac5ee03f1356d2e31eb8a663c87f');
+INSERT INTO `sys_role_permissions` VALUES ('3', '83', 'c7d34c670c37ab7984a42e3da0d75098');
+INSERT INTO `sys_role_permissions` VALUES ('3', '4dd114436fd08e63cada54d6c32c1fe3', 'c8269e1887f0363c74055aa8df720c76');
+INSERT INTO `sys_role_permissions` VALUES ('3', '20', 'c8f0c781985fc6ae1a20f4568859f007');
+INSERT INTO `sys_role_permissions` VALUES ('3', '55', 'c9b2c7d266bd0f25f3b6726a7951ba29');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'cbdd956e2a348039fe01d76c2e6d4e91', 'ca0508e5776d5f43394f2153ee804ec7');
+INSERT INTO `sys_role_permissions` VALUES ('3', '225', 'cb87d254b1cd87b18df9735566d0289f');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '434c35c3fc3e06e132a44f78b0e7e118', 'cc0c4a1f2a5ca9a2798cc6f648bc1a45');
+INSERT INTO `sys_role_permissions` VALUES ('3', '219', 'cd701d45115c4fc2e0649b5d672d4a2d');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '234', 'cd7b2f5cb712a9643612841908324f47');
-INSERT INTO `sys_role_permissions` VALUES ('3', '228', 'cf1e4effe946e5dfa2cb7025c351c7dc');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'eff43f39d4199f9352e6f150b53d3e22', 'd2141d4a4beeeaa04f8bbfc6d8175ab7');
-INSERT INTO `sys_role_permissions` VALUES ('3', '158', 'd30240e0a7eeb7007f815ae2c0ae1dce');
-INSERT INTO `sys_role_permissions` VALUES ('3', '82', 'd3455ddf4e527059e2a6bc95867ee892');
+INSERT INTO `sys_role_permissions` VALUES ('3', '243', 'cdfe3421656ac1f87868c1a5db2ee2f3');
+INSERT INTO `sys_role_permissions` VALUES ('3', '77', 'ce0dd263235fa7f41de132b7fdee1164');
+INSERT INTO `sys_role_permissions` VALUES ('3', '220', 'd28f2cfc462fba74aa452e026930d90d');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '720e77810ca8ea77ec7f7871985ea018', 'd3b841a9f079243e58fb19ea95d4e405');
-INSERT INTO `sys_role_permissions` VALUES ('3', '4', 'd688f62a0e5d2aa116cad71c633a756e');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'fad6510a4f85d5645a1fe7d7964587eb', 'd81868b7cd30124b1d43b708fec4c62c');
+INSERT INTO `sys_role_permissions` VALUES ('3', '2fb368f87b018eb6858abc8703945623', 'd54837ae9929d41c8fd000b4e1496b26');
+INSERT INTO `sys_role_permissions` VALUES ('3', '76180395fab6dbdab6f6c050169c5f97', 'd861cdd02644fbaa115bcee112a69bce');
 INSERT INTO `sys_role_permissions` VALUES ('4', '222', 'd89d807cc1e16ee3b2f07d88f81f738c');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '221', 'd921459367e1bcebac137a7dc520a0b6');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '3b79694872fa73ff05699bde511b238f', 'd9f7a808590d9220a61962e6aed911be');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'fe84bcc6e4781447ea21573eb04bf0fb', 'da68e796b9e71a970212a3af8adb901e');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '76180395fab6dbdab6f6c050169c5f97', 'db2b99ccbb8da8c519cb91ed4eff3b0a');
-INSERT INTO `sys_role_permissions` VALUES ('3', '75', 'dc4439381e4c33bb2b41816684bc19ba');
-INSERT INTO `sys_role_permissions` VALUES ('3', '792d3621d9d2f92acb7b9847dc0ef598', 'dd2473c3a7e826a663f6f215aa5837f3');
-INSERT INTO `sys_role_permissions` VALUES ('3', '83', 'dda6614e794d087dfd9397b211eda131');
+INSERT INTO `sys_role_permissions` VALUES ('3', '56', 'db4532b6522fa3c0fcb40c514b1c3471');
+INSERT INTO `sys_role_permissions` VALUES ('3', '39c5c5bcdd9a15110e2c3e4014dd1531', 'dc89205395ae38e7bb27d58a0f5a24bb');
+INSERT INTO `sys_role_permissions` VALUES ('3', '306994778c19b648dfde51acee6ec24a', 'e0720da94302c7138815c27672f7bf7e');
 INSERT INTO `sys_role_permissions` VALUES ('4', '7da1f5456b340b1fc94e8bb8e8ae5e8f', 'e0e42e155ac059b3018744220754ab2d');
-INSERT INTO `sys_role_permissions` VALUES ('3', '218', 'e0fafc90780b54fea8330ecd5cc25253');
-INSERT INTO `sys_role_permissions` VALUES ('3', '03ad13494a492eee81d8d7d1e2d95d14', 'e11b6bce722e0020c97bc016090ec36e');
-INSERT INTO `sys_role_permissions` VALUES ('3', '21', 'e2cd9961b62cc55d73be4b69188d4bd5');
-INSERT INTO `sys_role_permissions` VALUES ('3', '804344d2acf844862d29e6c0438cb09b', 'e4dc5a8cfc7976caa1c637138f457af6');
-INSERT INTO `sys_role_permissions` VALUES ('3', '61', 'e903a0e123b0d291692e302ce68463b5');
-INSERT INTO `sys_role_permissions` VALUES ('3', '236', 'ea07bc00d1c0016a1dbdfc9e32a84785');
-INSERT INTO `sys_role_permissions` VALUES ('3', '78', 'ed9bc15bfedbc34c5d02ebc8f6f28aa8');
-INSERT INTO `sys_role_permissions` VALUES ('3', '65', 'ee87c400294430d8e30b61cfbcd1ca29');
-INSERT INTO `sys_role_permissions` VALUES ('3', 'ae53867719661453637074b18dd7f5ab', 'eec5ea387d584c45f69f19d3490eaf32');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '948f78628d82b531ccf89bd2134f161d', 'e700f374064239a820e37ed7fc144292');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'dfcbf9982ac55701115056a7e09e3cd0', 'e79641b4aae7ef02db1e80446495e6aa');
+INSERT INTO `sys_role_permissions` VALUES ('3', '792d3621d9d2f92acb7b9847dc0ef598', 'ea38400479044ee04aa7f81d4bc71625');
+INSERT INTO `sys_role_permissions` VALUES ('3', '242', 'ea8cf9581eee5df1eeddf77e54014f7d');
+INSERT INTO `sys_role_permissions` VALUES ('82f1605892e9341691ea4bb0350364fd', '49e82dc86c44c465011b6ccb7f1b1911', 'ea9c8e7c3eecf27f9ac0dca52b4e7f1f');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'c87e9bfb5e509135b4fb2516629e72cd', 'eb516430ee29fce1cb33ec81fc40bf95');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'e7f55c6889bd826d6a62885ef2ffdb1d', 'ed2e175ec5de56affe7b911173757324');
+INSERT INTO `sys_role_permissions` VALUES ('3', '238', 'ed998affe0b32c2555c94cba9a9b4ad5');
+INSERT INTO `sys_role_permissions` VALUES ('3', '226', 'eefb156aa0ced51a9ff94019957547ae');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '5fd40d8344c4a5e71fe606364c8fb9d9', 'ef0c34851f10918f0763f645b63c6d24');
-INSERT INTO `sys_role_permissions` VALUES ('3', '2fb368f87b018eb6858abc8703945623', 'f0dde92a153875291397194a251c9b87');
-INSERT INTO `sys_role_permissions` VALUES ('3', '219', 'f217e1f3e4578a70eefcd3e572d79305');
-INSERT INTO `sys_role_permissions` VALUES ('3', '24850d7f708a4c3514f1d3c61a2d1bb6', 'f30591284a0c92f43154148a915f8a18');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'a90369995b54a72ef84b8c50ca87f185', 'f0a414570ccfcbb1f7758972eacdfc18');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '830d7d2e1b48277a90308d83193092c4', 'f591b803999bc156c33dcf4cc94ab80b');
+INSERT INTO `sys_role_permissions` VALUES ('3', '16', 'f82424ba9ab59f54fee1f92f52df9ac5');
 INSERT INTO `sys_role_permissions` VALUES ('65bdd699e5b623c8efec4eb74639bafc', '234', 'f89e91d963f57ee0a9da1211a353df9e');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'fad6510a4f85d5645a1fe7d7964587eb', 'f9214b05aae1361342a9a665426541cc');
 INSERT INTO `sys_role_permissions` VALUES ('4', '03ad13494a492eee81d8d7d1e2d95d14', 'fb56efaa8b556ed23bfb7d811dfd5304');
-INSERT INTO `sys_role_permissions` VALUES ('3', '6', 'fbcb4e1f88f66d5c965fc62843a1d5be');
-INSERT INTO `sys_role_permissions` VALUES ('3', '224', 'fccb1b63fa992f6b3554ccb4d92c573b');
+INSERT INTO `sys_role_permissions` VALUES ('3', '62', 'fd38ef0e37e905faef766b6c8175d0f6');
 INSERT INTO `sys_role_permissions` VALUES ('920f6f953610571e740fc517e3c99899', '4aba9a2f7c81615c9ccdc07e980ccfe3', 'fd9dcc7e117dc89a287ec519f7b7c24d');
+INSERT INTO `sys_role_permissions` VALUES ('3', '82', 'fde2653c88f344d91845355cff394a8e');
+INSERT INTO `sys_role_permissions` VALUES ('3', 'ae53867719661453637074b18dd7f5ab', 'fe2675ae62d2b92c4a7d026006522d11');
 COMMIT;
 
 -- ----------------------------
@@ -5381,9 +5638,9 @@ CREATE TABLE `sys_user` (
 BEGIN;
 INSERT INTO `sys_user` VALUES ('068cf9e66de5d067627d08519681895a', '1750cbea9db36f3ad6e6d995b2e4a0f9', 'EF科技南京分公司', 'nanjing-admin', '9745daec482ea4fcb46ff92e6a621b04', '1', 'umq6los8z8', '1', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, '1', '2020-12-14 15:32:37', '1', '2020-12-14 15:32:37');
 INSERT INTO `sys_user` VALUES ('0d77057dcae2af878ee7bb336bb2f254', '1', '世冬萱', 'shidongxuan', '7d9d91e4ee6fbf45991146edbc532d15', NULL, 'm7ijb3ptic', '2', NULL, NULL, '2003-02-01', NULL, '1', NULL, NULL, NULL, '1', '2021-02-02 09:34:32', '1', '2021-02-02 09:34:32');
-INSERT INTO `sys_user` VALUES ('1', '1', '系统管理员', 'admin', 'fe0910dd87ae121058852c2efe7756db', '2', '32o5g80pks', '1', '26172583@qq.com', '17366392809', '1990-11-25', '/static/formal/2020/12/19/e4027bb6-063b-4e56-9038-589f50dd9a08.jpg', '1', NULL, '2021-04-15 13:41:47', NULL, '1', '2020-12-11 10:54:00', '1', '2021-01-14 13:49:42');
+INSERT INTO `sys_user` VALUES ('1', '1', '系统管理员', 'admin', 'fe0910dd87ae121058852c2efe7756db', '2', '32o5g80pks', '1', '26172583@qq.com', '17366392809', '1990-11-25', '/static/formal/2021/11/9/22445e50-49a5-4f17-bb89-50aeef0e6cfd.jpg', '1', NULL, '2022-01-17 09:49:46', NULL, '1', '2020-12-11 10:54:00', '1', '2021-11-18 11:26:14');
 INSERT INTO `sys_user` VALUES ('5630e03759279b4975d2a02dca9ffe8a', '1', '王怡慧', 'wangyihui', '846971c1737871a0011b2f657f8b07ac', '2', 'khob1dft0z', '2', NULL, NULL, '2000-02-01', NULL, '1', NULL, NULL, NULL, '1', '2021-02-02 09:32:17', '1', '2021-02-03 00:01:58');
-INSERT INTO `sys_user` VALUES ('cf26892b40eff71b7bef0f750e2a958d', '1', '楚逸', 'hr', 'd91b6959ba841dfdac1eb204babfbf83', NULL, 'w5ud39hvwr', '1', NULL, NULL, '1990-02-01', NULL, '1', NULL, '2021-02-02 23:55:20', NULL, '1', '2021-01-19 14:47:10', '1', '2021-02-02 09:37:08');
+INSERT INTO `sys_user` VALUES ('cf26892b40eff71b7bef0f750e2a958d', '1', '楚逸', 'hr', 'd91b6959ba841dfdac1eb204babfbf83', NULL, 'w5ud39hvwr', '1', NULL, NULL, '1990-02-01', NULL, '1', NULL, '2021-08-26 16:02:26', NULL, '1', '2021-01-19 14:47:10', '1', '2021-02-02 09:37:08');
 INSERT INTO `sys_user` VALUES ('eaa694bb8af207ef668c2a7312b12128', '1', '折庆生', 'zheqingsheng', 'ffb91071ccfbc38d24be0cbad57f7b03', NULL, 'ljaxptzf2y', '1', NULL, NULL, '2002-02-02', NULL, '1', NULL, '2021-02-02 10:32:12', NULL, '1', '2021-02-02 09:35:06', '1', '2021-02-02 09:35:06');
 COMMIT;
 
@@ -5404,26 +5661,12 @@ CREATE TABLE `sys_user_role` (
 BEGIN;
 INSERT INTO `sys_user_role` VALUES ('2323e6c33e8901dcd21c1ae5f24ec706', '068cf9e66de5d067627d08519681895a', '3');
 INSERT INTO `sys_user_role` VALUES ('2561246a85ad1215b30135e2f49cdb5a', '0d77057dcae2af878ee7bb336bb2f254', '920f6f953610571e740fc517e3c99899');
-INSERT INTO `sys_user_role` VALUES ('7809aef64ca8aeb1351b8174a708ea0b', '1', '3');
+INSERT INTO `sys_user_role` VALUES ('2cb16a9ac7b6b4a58a308f2b86f331b2', '1', '3');
+INSERT INTO `sys_user_role` VALUES ('64475465f8c236ef3665a8b6d63329c9', '1', '82f1605892e9341691ea4bb0350364fd');
 INSERT INTO `sys_user_role` VALUES ('84060fa391a981d10ba171eac5a0f7f3', 'eaa694bb8af207ef668c2a7312b12128', '4');
 INSERT INTO `sys_user_role` VALUES ('ae53c17178daf3ab6332df8087878053', '5630e03759279b4975d2a02dca9ffe8a', '4');
 INSERT INTO `sys_user_role` VALUES ('c323d1895561fe54bdacec1a29935c75', 'cf26892b40eff71b7bef0f750e2a958d', '65bdd699e5b623c8efec4eb74639bafc');
 INSERT INTO `sys_user_role` VALUES ('e8a02e7bfaa3780e18b58b9334a83e7f', '5630e03759279b4975d2a02dca9ffe8a', '920f6f953610571e740fc517e3c99899');
 COMMIT;
-
--- ----------------------------
--- Table structure for sys_user_setting
--- ----------------------------
-DROP TABLE IF EXISTS `sys_user_setting`;
-CREATE TABLE `sys_user_setting` (
-  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户id',
-  `tip_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '提示类型',
-  `themes` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '主题',
-  `fixed_footer` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '固定footer',
-  `allow_aside_minimizing` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '默认收起菜单',
-  `fixed_header` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '固定头部',
-  `page_loader` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '页面loader',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户偏好设置';
 
 SET FOREIGN_KEY_CHECKS = 1;
