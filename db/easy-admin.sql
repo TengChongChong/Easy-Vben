@@ -788,13 +788,6 @@ CREATE TABLE `sys_data_source` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据源';
 
 -- ----------------------------
--- Records of sys_data_source
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_data_source` VALUES ('eebd53d0474bd9750adefea11bc53dd5', 'easy-frame-slave', NULL, NULL, 'jdbc:mysql://localhost:3306/easy-frame-slave?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true', 'root', 'tengchong', '2021-12-18 14:10:22', '1', '1', '2021-12-24 11:16:41', NULL, '1');
-COMMIT;
-
--- ----------------------------
 -- Table structure for sys_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
