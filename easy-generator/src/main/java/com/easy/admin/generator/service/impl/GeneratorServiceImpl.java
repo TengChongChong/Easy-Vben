@@ -71,7 +71,7 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     @Override
     public boolean generate(Generator object) {
-        if (object != null) {
+        if (object == null) {
             throw new RuntimeException("参数获取失败");
         }
         if (!ProfilesActiveStatus.DEV.getProfilesActive().equals(projectProperties.getProfilesActive())) {
