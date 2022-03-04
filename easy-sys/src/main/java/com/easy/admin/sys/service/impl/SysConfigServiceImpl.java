@@ -13,7 +13,6 @@ import com.easy.admin.sys.common.constant.DataTypeConst;
 import com.easy.admin.sys.dao.SysConfigMapper;
 import com.easy.admin.sys.model.SysConfig;
 import com.easy.admin.sys.service.SysConfigService;
-import com.easy.admin.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,7 +105,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
                 break;
         }
         // 验证长度
-        if(object.getValue().length() > 150){
+        if (object.getValue().length() > 150) {
             throw new EasyException("value长度超过限制，最多150个字符");
         }
 
@@ -117,24 +116,36 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         if (count(queryWrapper) > 0) {
             throw new EasyException("key[" + object.getSysKey() + "]已存在");
         }
-        updateCache(object);
-        return (SysConfig) ToolUtil.checkResult(saveOrUpdate(object), object);
+        // 删除redis中的key
+        removeCache(object.getSysKey());
+        boolean isSuccess = saveOrUpdate(object);
+        if (isSuccess) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // ignore
+            }
+            // 再次删除redis中的key，防止读写高并发产生的脏数据
+            removeCache(object.getSysKey());
+        }
+        return object;
     }
 
     @Override
     public SysConfig getByKey(String key) {
-        if (StrUtil.isNotBlank(key)) {
-            SysConfig config = (SysConfig) RedisUtil.get(getRedisKey(key));
-            if (config == null) {
-                QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
-                queryWrapper.select("sys_key,value,type");
-                queryWrapper.eq("sys_key", key);
-                config = getOne(queryWrapper);
-                updateCache(config);
-            }
-            return config;
+        if (StrUtil.isBlank(key)) {
+            return null;
         }
-        return null;
+
+        SysConfig config = (SysConfig) RedisUtil.get(getRedisKey(key));
+        if (config == null) {
+            QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("sys_key,value,type");
+            queryWrapper.eq("sys_key", key);
+            config = getOne(queryWrapper);
+            updateCache(config);
+        }
+        return config;
     }
 
     @Override
@@ -162,6 +173,15 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         if (config != null) {
             RedisUtil.set(getRedisKey(config.getSysKey()), config, 0);
         }
+    }
+
+    /**
+     * 向缓存中删除系统参数
+     *
+     * @param key 系统参数 key
+     */
+    private void removeCache(String key) {
+        RedisUtil.del(getRedisKey(key));
     }
 
     /**
