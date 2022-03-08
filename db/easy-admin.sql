@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 25/01/2022 17:29:03
+ Date: 08/03/2022 09:23:38
 */
 
 SET NAMES utf8mb4;
@@ -529,9 +529,9 @@ CREATE TABLE `scheduler_job` (
 BEGIN;
 INSERT INTO `scheduler_job` VALUES ('1', '示例任务1', '0/5 * * * * ? *', 'sampleJob', 'sampleJob1', 2, NULL, NULL, '126', '2019-05-12 09:36:10', '1', '2021-01-21 17:43:40', 'sample-job', '2021-01-21 22:02:15');
 INSERT INTO `scheduler_job` VALUES ('2', '示例任务2', '0/10 * * * * ? *', 'sampleJob', 'sampleJob2', 2, NULL, NULL, '126', '2019-05-13 21:03:42', '126', '2019-05-13 21:03:42', 'sample-job-2', '2021-01-21 22:02:10');
-INSERT INTO `scheduler_job` VALUES ('2c83db466678081d2d65a99d2cc5c140', '清理异常日志表里的数据', '0 0 0 1/1 * ? *', 'cleanExceptionLog', 'clean', 1, NULL, NULL, '126', '2019-06-27 09:27:28', '126', '2019-06-27 09:29:24', 'CleanExceptionLog', '2022-01-23 00:13:33');
-INSERT INTO `scheduler_job` VALUES ('7a10407344e5c99a4423dca02c9e5b81', '清理访问日志表里的数据', '0 0 0 1/1 * ? *', 'cleanSysLog', 'clean', 1, NULL, NULL, '126', '2019-06-27 14:16:16', '126', '2019-11-05 21:00:05', 'CleanSysLog', '2022-01-23 00:13:33');
-INSERT INTO `scheduler_job` VALUES ('d82d3da7ab2ad39a2b2065f950d68f5b', '清理临时目录文件', '0 0 0 1/1 * ? *', 'cleanTemporaryFile', 'clean', 1, NULL, NULL, '126', '2019-06-26 20:38:01', '126', '2019-06-26 21:26:44', 'CleanTemporaryFile', '2022-01-23 00:13:33');
+INSERT INTO `scheduler_job` VALUES ('2c83db466678081d2d65a99d2cc5c140', '清理异常日志表里的数据', '0 0 0 1/1 * ? *', 'cleanExceptionLog', 'clean', 1, NULL, NULL, '126', '2019-06-27 09:27:28', '126', '2019-06-27 09:29:24', 'CleanExceptionLog', '2022-03-08 09:16:58');
+INSERT INTO `scheduler_job` VALUES ('7a10407344e5c99a4423dca02c9e5b81', '清理访问日志表里的数据', '0 0 0 1/1 * ? *', 'cleanSysLog', 'clean', 1, NULL, NULL, '126', '2019-06-27 14:16:16', '126', '2019-11-05 21:00:05', 'CleanSysLog', '2022-03-08 09:16:58');
+INSERT INTO `scheduler_job` VALUES ('d82d3da7ab2ad39a2b2065f950d68f5b', '清理临时目录文件', '0 0 0 1/1 * ? *', 'cleanTemporaryFile', 'clean', 1, NULL, NULL, '126', '2019-06-26 20:38:01', '126', '2019-06-26 21:26:44', 'CleanTemporaryFile', '2022-03-08 09:16:58');
 COMMIT;
 
 -- ----------------------------
@@ -573,8 +573,70 @@ INSERT INTO `scheduler_job_log` VALUES ('1484776122318176258', '2c83db466678081d
 INSERT INTO `scheduler_job_log` VALUES ('1484922189714145282', '2c83db466678081d2d65a99d2cc5c140', '2022-01-23 00:13:33', 68);
 INSERT INTO `scheduler_job_log` VALUES ('1484922189718339586', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-23 00:13:33', 51);
 INSERT INTO `scheduler_job_log` VALUES ('1484922189718339587', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-23 00:13:33', 62);
+INSERT INTO `scheduler_job_log` VALUES ('1486174589884080129', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-26 11:10:09', 42);
+INSERT INTO `scheduler_job_log` VALUES ('1486174589926023169', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-26 11:10:09', 93);
+INSERT INTO `scheduler_job_log` VALUES ('1486174589926023170', '2c83db466678081d2d65a99d2cc5c140', '2022-01-26 11:10:09', 112);
+INSERT INTO `scheduler_job_log` VALUES ('1486413118182649858', '2c83db466678081d2d65a99d2cc5c140', '2022-01-27 02:57:58', 222);
+INSERT INTO `scheduler_job_log` VALUES ('1486415629484421121', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-27 03:07:57', 6);
+INSERT INTO `scheduler_job_log` VALUES ('1486415629513781250', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-27 03:07:57', 25);
+INSERT INTO `scheduler_job_log` VALUES ('1486736962575527937', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-28 00:24:49', 24);
+INSERT INTO `scheduler_job_log` VALUES ('1486736962617470977', '2c83db466678081d2d65a99d2cc5c140', '2022-01-28 00:24:49', 56);
+INSERT INTO `scheduler_job_log` VALUES ('1486736962634248194', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-28 00:24:49', 51);
+INSERT INTO `scheduler_job_log` VALUES ('1487222568401367041', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-29 08:34:26', 12);
+INSERT INTO `scheduler_job_log` VALUES ('1487222568481058817', '2c83db466678081d2d65a99d2cc5c140', '2022-01-29 08:34:26', 69);
+INSERT INTO `scheduler_job_log` VALUES ('1487222568523001857', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-29 08:34:26', 69);
+INSERT INTO `scheduler_job_log` VALUES ('1487514902691180545', '2c83db466678081d2d65a99d2cc5c140', '2022-01-30 03:56:04', 55);
+INSERT INTO `scheduler_job_log` VALUES ('1487514902720540674', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-30 03:56:04', 48);
+INSERT INTO `scheduler_job_log` VALUES ('1487514902745706497', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-30 03:56:04', 22);
+INSERT INTO `scheduler_job_log` VALUES ('1488081624854818817', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-01-31 17:28:01', 18);
+INSERT INTO `scheduler_job_log` VALUES ('1488081624892567553', '7a10407344e5c99a4423dca02c9e5b81', '2022-01-31 17:28:01', 20);
+INSERT INTO `scheduler_job_log` VALUES ('1488081624930316289', '2c83db466678081d2d65a99d2cc5c140', '2022-01-31 17:28:01', 61);
+INSERT INTO `scheduler_job_log` VALUES ('1488189063570780162', '2c83db466678081d2d65a99d2cc5c140', '2022-02-01 00:34:57', 40);
+INSERT INTO `scheduler_job_log` VALUES ('1488189064984260610', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-01 00:34:57', 16);
+INSERT INTO `scheduler_job_log` VALUES ('1488189065076535297', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-01 00:34:57', 11);
+INSERT INTO `scheduler_job_log` VALUES ('1489191129202159617', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-03 18:56:48', 21);
+INSERT INTO `scheduler_job_log` VALUES ('1489191129214742530', '2c83db466678081d2d65a99d2cc5c140', '2022-02-03 18:56:48', 32);
+INSERT INTO `scheduler_job_log` VALUES ('1489191129252491265', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-03 18:56:48', 11);
+INSERT INTO `scheduler_job_log` VALUES ('1489271096753647617', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-04 00:14:33', 33);
+INSERT INTO `scheduler_job_log` VALUES ('1489271096766230529', '2c83db466678081d2d65a99d2cc5c140', '2022-02-04 00:14:33', 53);
+INSERT INTO `scheduler_job_log` VALUES ('1489271096917225474', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-04 00:14:33', 85);
 INSERT INTO `scheduler_job_log` VALUES ('148e38359e167ba7888f49649c7ccb6f', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-07-19 10:37:50', 249);
+INSERT INTO `scheduler_job_log` VALUES ('1491580387334311937', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-10 09:10:51', 52);
+INSERT INTO `scheduler_job_log` VALUES ('1491804151837908994', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-11 00:00:00', 359);
+INSERT INTO `scheduler_job_log` VALUES ('1491804151850491906', '2c83db466678081d2d65a99d2cc5c140', '2022-02-11 00:00:00', 386);
+INSERT INTO `scheduler_job_log` VALUES ('1491804151850491907', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-11 00:00:00', 234);
+INSERT INTO `scheduler_job_log` VALUES ('1496299681720922113', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-23 09:43:39', 120);
+INSERT INTO `scheduler_job_log` VALUES ('1496299681720922114', '2c83db466678081d2d65a99d2cc5c140', '2022-02-23 09:43:38', 143);
+INSERT INTO `scheduler_job_log` VALUES ('1496299681762865153', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-23 09:43:39', 185);
+INSERT INTO `scheduler_job_log` VALUES ('1496526708667412482', '2c83db466678081d2d65a99d2cc5c140', '2022-02-24 00:45:46', 205);
+INSERT INTO `scheduler_job_log` VALUES ('1496526708679995394', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-24 00:45:46', 152);
+INSERT INTO `scheduler_job_log` VALUES ('1496526708679995395', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-24 00:45:46', 199);
+INSERT INTO `scheduler_job_log` VALUES ('1497015898496643074', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-25 09:09:38', 31);
+INSERT INTO `scheduler_job_log` VALUES ('1497260645911977985', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-26 01:22:10', 303);
+INSERT INTO `scheduler_job_log` VALUES ('1497260645911977986', '2c83db466678081d2d65a99d2cc5c140', '2022-02-26 01:22:10', 419);
+INSERT INTO `scheduler_job_log` VALUES ('1497260645911977987', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-26 01:22:10', 404);
+INSERT INTO `scheduler_job_log` VALUES ('1497624917598887938', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-27 01:29:39', 150);
+INSERT INTO `scheduler_job_log` VALUES ('1497624917603082241', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-27 01:29:39', 60);
+INSERT INTO `scheduler_job_log` VALUES ('1497624917804408834', '2c83db466678081d2d65a99d2cc5c140', '2022-02-27 01:29:39', 229);
+INSERT INTO `scheduler_job_log` VALUES ('1498097057951473665', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-02-28 08:45:47', 13);
+INSERT INTO `scheduler_job_log` VALUES ('1498097058010193921', '7a10407344e5c99a4423dca02c9e5b81', '2022-02-28 08:45:47', 30);
+INSERT INTO `scheduler_job_log` VALUES ('1498097058022776833', '2c83db466678081d2d65a99d2cc5c140', '2022-02-28 08:45:47', 53);
+INSERT INTO `scheduler_job_log` VALUES ('1498361483183087617', '7a10407344e5c99a4423dca02c9e5b81', '2022-03-01 02:16:30', 43);
+INSERT INTO `scheduler_job_log` VALUES ('1498361483183087618', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-03-01 02:16:30', 30);
+INSERT INTO `scheduler_job_log` VALUES ('1498361483262779393', '2c83db466678081d2d65a99d2cc5c140', '2022-03-01 02:16:30', 76);
+INSERT INTO `scheduler_job_log` VALUES ('1498692944545275905', '7a10407344e5c99a4423dca02c9e5b81', '2022-03-02 00:13:37', 33);
+INSERT INTO `scheduler_job_log` VALUES ('1498692944545275906', '2c83db466678081d2d65a99d2cc5c140', '2022-03-02 00:13:37', 41);
+INSERT INTO `scheduler_job_log` VALUES ('1498692944545275907', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-03-02 00:13:37', 26);
+INSERT INTO `scheduler_job_log` VALUES ('1499192657681965058', '7a10407344e5c99a4423dca02c9e5b81', '2022-03-03 09:19:18', 58);
+INSERT INTO `scheduler_job_log` VALUES ('1499192657681965059', '2c83db466678081d2d65a99d2cc5c140', '2022-03-03 09:19:18', 101);
+INSERT INTO `scheduler_job_log` VALUES ('1499192657681965060', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-03-03 09:19:18', 30);
 INSERT INTO `scheduler_job_log` VALUES ('14bafaa3aa5200b0f10d333373f833b9', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-20 07:53:26', 399);
+INSERT INTO `scheduler_job_log` VALUES ('1500641873545457665', '7a10407344e5c99a4423dca02c9e5b81', '2022-03-07 09:17:58', 74);
+INSERT INTO `scheduler_job_log` VALUES ('1500641873545457666', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-03-07 09:17:58', 44);
+INSERT INTO `scheduler_job_log` VALUES ('1500641873545457667', '2c83db466678081d2d65a99d2cc5c140', '2022-03-07 09:17:58', 96);
+INSERT INTO `scheduler_job_log` VALUES ('1501004009761263617', '7a10407344e5c99a4423dca02c9e5b81', '2022-03-08 09:16:58', 82);
+INSERT INTO `scheduler_job_log` VALUES ('1501004009761263618', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2022-03-08 09:16:58', 48);
+INSERT INTO `scheduler_job_log` VALUES ('1501004009761263619', '2c83db466678081d2d65a99d2cc5c140', '2022-03-08 09:16:58', 115);
 INSERT INTO `scheduler_job_log` VALUES ('1513fa8a600a14bb00ba23b6d50ec032', '2c83db466678081d2d65a99d2cc5c140', '2021-12-23 00:12:45', 72);
 INSERT INTO `scheduler_job_log` VALUES ('16faa052970806bed5df545f53cfa3dc', 'd82d3da7ab2ad39a2b2065f950d68f5b', '2021-04-28 21:43:42', 144);
 INSERT INTO `scheduler_job_log` VALUES ('177bb935facc8f6bef45e83a529c824f', '7a10407344e5c99a4423dca02c9e5b81', '2021-07-16 00:00:00', 85);
@@ -762,7 +824,7 @@ INSERT INTO `sys_config` VALUES ('4', 'loginLockLength', '300', '尝试登录次
 INSERT INTO `sys_config` VALUES ('48bc9672ea38980c5031b86c73938690', 'cleanSysLog', '30', '清理多少天前访问日志 单位: 天', 'number', '2019-06-27 14:14:45', '126', '2019-06-27 14:14:45', '126');
 INSERT INTO `sys_config` VALUES ('5', 'loginVerificationCode', 'false', '是否开启验证码', 'boolean', '2019-03-03 16:07:38', '126', '2021-02-03 10:59:42', '1');
 INSERT INTO `sys_config` VALUES ('76474672180a3f83b87923c5bc9a86f9', 'messageCheckInterval', '60', '新消息检查间隔时长 单位：秒', 'number', '2019-06-18 22:34:10', '126', '2019-06-25 20:43:14', '126');
-INSERT INTO `sys_config` VALUES ('9f20b7a0eb3757ed8c2b98af3148cc3b', 'messageExpire', '600', '短信验证码有效期 单位：秒', 'number', '2020-12-23 14:22:29', '1', '2021-01-14 13:45:51', '1');
+INSERT INTO `sys_config` VALUES ('9f20b7a0eb3757ed8c2b98af3148cc3b', 'messageExpire', '600', '短信验证码有效期 单位：秒', 'number', '2020-12-23 14:22:29', '1', '2022-03-07 14:02:44', '1');
 INSERT INTO `sys_config` VALUES ('bec91595c56ef6d0d197b745ca6c855f', 'cleanExceptionLog', '7', '清理多少天前异常日志 单位: 天', 'number', '2019-06-27 09:21:12', '126', '2020-12-23 10:07:27', '1');
 COMMIT;
 
@@ -4986,35 +5048,23 @@ CREATE TABLE `sys_log` (
 -- Records of sys_log
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_log` VALUES ('060e2fb8c867b53fb9f08e13026558c6', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 13:37:01');
-INSERT INTO `sys_log` VALUES ('07a391f69baba1089dfcccddeda4cc67', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-13 14:30:34');
-INSERT INTO `sys_log` VALUES ('096592108d74cdaa531888ab40e42449', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 17:04:37');
-INSERT INTO `sys_log` VALUES ('1482892873497059329', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-17 09:49:46');
-INSERT INTO `sys_log` VALUES ('1482892873799049217', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-17 09:49:47');
-INSERT INTO `sys_log` VALUES ('1c0d6e0e2d192006cb7460bd335d50e1', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:03:43');
-INSERT INTO `sys_log` VALUES ('22672f6bf847e2db99ffcda42af0de6b', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-13 14:30:34');
-INSERT INTO `sys_log` VALUES ('26962c181eb2584d29641ecb1bc95f85', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-12-24 10:31:53');
-INSERT INTO `sys_log` VALUES ('2a0e05007b684f2f54a12f96f013ea3c', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 10:55:41');
-INSERT INTO `sys_log` VALUES ('36fd2d5f5d66c4cc96a835529ab032fd', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 11:11:49');
-INSERT INTO `sys_log` VALUES ('3b970d35341cab830abac7f6894e5af7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 13:38:06');
-INSERT INTO `sys_log` VALUES ('44b32cd738d84e33f3bf5368e951c467', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:02:50');
-INSERT INTO `sys_log` VALUES ('459ed7709565a14223f4875981ba24f1', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-14 14:51:42');
-INSERT INTO `sys_log` VALUES ('4d27c13bbc8bbea90529d92afe1d0343', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-15 13:38:06');
-INSERT INTO `sys_log` VALUES ('5a3e27434b397a2f360a122cf34959a1', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:02:36');
-INSERT INTO `sys_log` VALUES ('749da94aab43a7c342871898bd9f38ef', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:04:37');
-INSERT INTO `sys_log` VALUES ('87015e80c1cef9d2ac895257e028377e', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:07:07');
-INSERT INTO `sys_log` VALUES ('9659750fd3686a26c569acacbe70dd46', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 11:22:09');
-INSERT INTO `sys_log` VALUES ('a04a226d084e6c83ff4d3473dd277d34', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 16:56:30');
-INSERT INTO `sys_log` VALUES ('a0fef3bdddf2edfc79bb8499cfbebdc0', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 16:58:22');
-INSERT INTO `sys_log` VALUES ('a63908bed13889defb80c76fed3fbd46', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 16:54:38');
-INSERT INTO `sys_log` VALUES ('a8e271d0fed5d4a0052ecde2ea7feb5e', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 16:55:15');
-INSERT INTO `sys_log` VALUES ('bddc3ccd87b4979eed491ee9123892d3', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-14 14:51:42');
-INSERT INTO `sys_log` VALUES ('c22fd14e406e22d73aa0f1ee88949ce7', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 10:32:21');
-INSERT INTO `sys_log` VALUES ('d946fda764b67d1ab36908e9cee105a6', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-15 14:03:23');
-INSERT INTO `sys_log` VALUES ('d94c6c3630865ebd6eb5d27aa1d5e68a', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-01-15 17:04:36');
-INSERT INTO `sys_log` VALUES ('e326f6ee0fee445f1bdf993ecff39e4f', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-01-13 14:30:28');
-INSERT INTO `sys_log` VALUES ('e4306ccb321fb875ca556dd5e1f74640', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2021-12-24 10:31:53');
-INSERT INTO `sys_log` VALUES ('e9c0a99b58b80b7133e4b5e2e27e447a', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2021-12-24 11:11:49');
+INSERT INTO `sys_log` VALUES ('1496689819055648770', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-02-24 11:33:55');
+INSERT INTO `sys_log` VALUES ('1496689819806429186', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:33:55');
+INSERT INTO `sys_log` VALUES ('1496689997888188418', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:34:37');
+INSERT INTO `sys_log` VALUES ('1496690246690107393', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:35:37');
+INSERT INTO `sys_log` VALUES ('1496690446968123393', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:36:24');
+INSERT INTO `sys_log` VALUES ('1496690687259799553', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:37:22');
+INSERT INTO `sys_log` VALUES ('1496691051971309569', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:38:49');
+INSERT INTO `sys_log` VALUES ('1496691860620537858', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:42:01');
+INSERT INTO `sys_log` VALUES ('1496692038672936962', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:42:44');
+INSERT INTO `sys_log` VALUES ('1496692060936302593', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:42:49');
+INSERT INTO `sys_log` VALUES ('1496692274787086337', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 11:43:40');
+INSERT INTO `sys_log` VALUES ('1496715497436180482', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 13:15:57');
+INSERT INTO `sys_log` VALUES ('1496715562246565890', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 13:16:12');
+INSERT INTO `sys_log` VALUES ('1496716871737634818', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 13:21:25');
+INSERT INTO `sys_log` VALUES ('1496717055615922177', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-02-24 13:22:08');
+INSERT INTO `sys_log` VALUES ('1500706450484260866', 'sys', '用户登录', '127.0.0.1', 'http://127.0.0.1/auth/login', '/auth/login', 'com.easy.admin.auth.controller.AuthController', 'login', '[LoginVO{username=\'admin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=null, codeId=\'null\', verificationCode=\'null\'}]', NULL, '1', '2022-03-07 13:34:34');
+INSERT INTO `sys_log` VALUES ('1500706451092434945', 'sys', '获取当前登录用户', '127.0.0.1', 'http://127.0.0.1/auth/sys/user/current', '/auth/sys/user/current', 'com.easy.admin.sys.controller.SysUserController', 'getCurrent', '[]', NULL, '1', '2022-03-07 13:34:34');
 COMMIT;
 
 -- ----------------------------
@@ -5102,7 +5152,7 @@ CREATE TABLE `sys_message_details` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_message_details` VALUES ('0fc5370e36ed6f9ba85ffa4c90a2716a', '5cf8b79df98a26c5a5567c34b28ddb10', '1', NULL, '0', 0);
-INSERT INTO `sys_message_details` VALUES ('391eaf3764c9803e9119c536f31dc988', '0989b413891ccca33d490b8c23d5264a', '1', '2022-01-15 17:03:43', '1', 0);
+INSERT INTO `sys_message_details` VALUES ('391eaf3764c9803e9119c536f31dc988', '0989b413891ccca33d490b8c23d5264a', '1', '2022-02-24 13:24:28', '1', 0);
 INSERT INTO `sys_message_details` VALUES ('3d397fd11375254c61282c72e6f162ce', '8180f7b750bde6d9a3e8e10958eadb57', '1', '2022-01-15 17:03:38', '1', 1);
 INSERT INTO `sys_message_details` VALUES ('5a3d734e02e0b4791193f625c73a7717', 'f91280d1203082db48a8f011ee0deef5', '1', '2021-01-07 22:52:53', '1', 0);
 INSERT INTO `sys_message_details` VALUES ('5a6c9966b6981b3061d5d186c2c90e79', 'db71bc2907551aafb53467ec429337c6', '1', NULL, '0', 0);
@@ -5631,7 +5681,7 @@ CREATE TABLE `sys_user` (
 BEGIN;
 INSERT INTO `sys_user` VALUES ('068cf9e66de5d067627d08519681895a', '1750cbea9db36f3ad6e6d995b2e4a0f9', 'EF科技南京分公司', 'nanjing-admin', '9745daec482ea4fcb46ff92e6a621b04', '1', 'umq6los8z8', '1', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, '1', '2020-12-14 15:32:37', '1', '2020-12-14 15:32:37');
 INSERT INTO `sys_user` VALUES ('0d77057dcae2af878ee7bb336bb2f254', '1', '世冬萱', 'shidongxuan', '7d9d91e4ee6fbf45991146edbc532d15', NULL, 'm7ijb3ptic', '2', NULL, NULL, '2003-02-01', NULL, '1', NULL, NULL, NULL, '1', '2021-02-02 09:34:32', '1', '2021-02-02 09:34:32');
-INSERT INTO `sys_user` VALUES ('1', '1', '系统管理员', 'admin', 'fe0910dd87ae121058852c2efe7756db', '2', '32o5g80pks', '1', '26172583@qq.com', '17366392809', '1990-11-25', '/static/formal/2021/11/9/22445e50-49a5-4f17-bb89-50aeef0e6cfd.jpg', '1', NULL, '2022-01-17 09:49:46', NULL, '1', '2020-12-11 10:54:00', '1', '2021-11-18 11:26:14');
+INSERT INTO `sys_user` VALUES ('1', '1', '系统管理员', 'admin', 'fe0910dd87ae121058852c2efe7756db', '2', '32o5g80pks', '1', '26172583@qq.com', '17366392809', '1990-11-25', '/static/formal/2021/11/9/22445e50-49a5-4f17-bb89-50aeef0e6cfd.jpg', '1', NULL, '2022-03-07 13:34:34', NULL, '1', '2020-12-11 10:54:00', '1', '2021-11-18 11:26:14');
 INSERT INTO `sys_user` VALUES ('5630e03759279b4975d2a02dca9ffe8a', '1', '王怡慧', 'wangyihui', '846971c1737871a0011b2f657f8b07ac', '2', 'khob1dft0z', '2', NULL, NULL, '2000-02-01', NULL, '1', NULL, NULL, NULL, '1', '2021-02-02 09:32:17', '1', '2021-02-03 00:01:58');
 INSERT INTO `sys_user` VALUES ('cf26892b40eff71b7bef0f750e2a958d', '1', '楚逸', 'hr', 'd91b6959ba841dfdac1eb204babfbf83', NULL, 'w5ud39hvwr', '1', NULL, NULL, '1990-02-01', NULL, '1', NULL, '2021-08-26 16:02:26', NULL, '1', '2021-01-19 14:47:10', '1', '2021-02-02 09:37:08');
 INSERT INTO `sys_user` VALUES ('eaa694bb8af207ef668c2a7312b12128', '1', '折庆生', 'zheqingsheng', 'ffb91071ccfbc38d24be0cbad57f7b03', NULL, 'ljaxptzf2y', '1', NULL, NULL, '2002-02-02', NULL, '1', NULL, '2021-02-02 10:32:12', NULL, '1', '2021-02-02 09:35:06', '1', '2021-02-02 09:35:06');
