@@ -8,7 +8,6 @@ import com.easy.admin.core.annotation.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/es/cms/article")
 public class ElasticsearchCmsArticleController {
 
     @Autowired
@@ -31,7 +29,7 @@ public class ElasticsearchCmsArticleController {
      * @param siteId 站点id
      * @return true/false
      */
-    @PostMapping("/auth/es/cms/article/rebuild/index")
+    @PostMapping("/es/cms/article/rebuild/index")
     public boolean rebuildIndex(String siteId) {
         return service.rebuildIndex(siteId);
     }

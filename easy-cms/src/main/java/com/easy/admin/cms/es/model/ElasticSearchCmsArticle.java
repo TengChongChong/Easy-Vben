@@ -1,6 +1,9 @@
 package com.easy.admin.cms.es.model;
 
 import com.easy.admin.cms.model.CmsArticle;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.Date;
 
@@ -12,42 +15,52 @@ import java.util.Date;
  */
 public class ElasticSearchCmsArticle {
 
+    @Id
     private String id;
     /**
      * 站点id
      */
+    @Field(type=FieldType.Keyword)
     private String siteId;
     /**
      * 栏目id
      */
+    @Field(type=FieldType.Keyword)
     private String columnId;
     /**
      * 标题
      */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String title;
     /**
      * 内容
      */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String content;
     /**
      * 作者
      */
+    @Field(type=FieldType.Keyword)
     private String author;
     /**
      * 发布时间
      */
+    @Field(type=FieldType.Date)
     private Date releaseDate;
     /**
      * 访问地址
      */
+    @Field(type=FieldType.Keyword)
     private String url;
     /**
      * 封面路径
      */
+    @Field(type=FieldType.Keyword)
     private String coverPath;
     /**
      * 栏目名称
      */
+    @Field(type=FieldType.Keyword)
     private String columnName;
 
     public ElasticSearchCmsArticle() {

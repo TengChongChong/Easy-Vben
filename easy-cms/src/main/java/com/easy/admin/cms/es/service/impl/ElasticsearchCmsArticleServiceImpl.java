@@ -48,6 +48,7 @@ public class ElasticsearchCmsArticleServiceImpl implements ElasticsearchCmsArtic
     @Autowired
     private CmsArticleMapper cmsArticleMapper;
 
+
     @Override
     public boolean deleteIndex(String siteId) {
         getIndexOperations(siteId).delete();
@@ -56,14 +57,14 @@ public class ElasticsearchCmsArticleServiceImpl implements ElasticsearchCmsArtic
 
     @Override
     public boolean rebuildIndex(String siteId) {
-        String indexName = getIndexName(siteId);
-        IndexOperations indexOperations = getIndexOperations(indexName);
+        IndexOperations indexOperations = getIndexOperations(siteId);
 
         // 删除索引
         indexOperations.delete();
 
         // 重新生成索引
-        indexOperations.create();
+        boolean isSuccess = indexOperations.create();
+        indexOperations.putMapping(indexOperations.createMapping(ElasticSearchCmsArticle.class));
 
         QueryWrapper<CmsArticle> cmsArticleQueryWrapper = new QueryWrapper<>();
         cmsArticleQueryWrapper.eq("t.site_id", siteId);
@@ -89,7 +90,7 @@ public class ElasticsearchCmsArticleServiceImpl implements ElasticsearchCmsArtic
             elasticsearchRestTemplate.bulkIndex(indexQueries, getIndexCoordinates(siteId));
         }
 
-        return true;
+        return isSuccess;
     }
 
     @Override
