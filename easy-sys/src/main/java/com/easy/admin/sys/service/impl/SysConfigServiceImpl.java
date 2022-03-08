@@ -12,7 +12,9 @@ import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.DataTypeConst;
 import com.easy.admin.sys.dao.SysConfigMapper;
 import com.easy.admin.sys.model.SysConfig;
+import com.easy.admin.sys.service.AsyncService;
 import com.easy.admin.sys.service.SysConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,9 @@ import java.util.List;
  */
 @Service
 public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig> implements SysConfigService {
+
+    @Autowired
+    private AsyncService asyncService;
 
     /**
      * 列表
@@ -117,16 +122,11 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             throw new EasyException("key[" + object.getSysKey() + "]已存在");
         }
         // 删除redis中的key
-        removeCache(object.getSysKey());
+        RedisUtil.del(getRedisKey(object.getSysKey()));
         boolean isSuccess = saveOrUpdate(object);
         if (isSuccess) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // ignore
-            }
-            // 再次删除redis中的key，防止读写高并发产生的脏数据
-            removeCache(object.getSysKey());
+            // 再次删除redis中的key，防止高并发读写产生的脏数据
+            asyncService.removeRedis(object.getSysKey(), 1000);
         }
         return object;
     }
@@ -173,15 +173,6 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         if (config != null) {
             RedisUtil.set(getRedisKey(config.getSysKey()), config, 0);
         }
-    }
-
-    /**
-     * 向缓存中删除系统参数
-     *
-     * @param key 系统参数 key
-     */
-    private void removeCache(String key) {
-        RedisUtil.del(getRedisKey(key));
     }
 
     /**
