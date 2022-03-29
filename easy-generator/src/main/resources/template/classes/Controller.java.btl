@@ -27,15 +27,15 @@ public class ${config.modelName}Controller {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param ${strUtil.lowerFirst(config.modelName)} 查询条件
      * @return Page<${config.modelName}>
      */
     @GetMapping()
     <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
     @RequiresPermissions("${config.permissionsCode}:select")
     <% } %>
-    public Page<${config.modelName}> select(${config.modelName} object, Page<${config.modelName}> page){
-        return service.select(object, page);
+    public Page<${config.modelName}> select(${config.modelName} ${strUtil.lowerFirst(config.modelName)}, Page<${config.modelName}> page){
+        return service.select(${strUtil.lowerFirst(config.modelName)}, page);
     }
 
     /**
@@ -88,15 +88,15 @@ public class ${config.modelName}Controller {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param ${strUtil.lowerFirst(config.modelName)} 表单内容
      * @return ${config.modelName}
      */
     @PostMapping()
     <% if(config.permissionsCode != null && config.permissionsCode != '') { %>
     @RequiresPermissions("${config.permissionsCode}:save")
     <% } %>
-    public ${config.modelName} saveData(@Valid @RequestBody ${config.modelName} object){
-        return service.saveData(object);
+    public ${config.modelName} saveData(@Valid @RequestBody ${config.modelName} ${strUtil.lowerFirst(config.modelName)}){
+        return service.saveData(${strUtil.lowerFirst(config.modelName)});
     }
     <% } %>
 
@@ -104,13 +104,13 @@ public class ${config.modelName}Controller {
     /**
      * 导出数据
      *
-     * @param object 查询条件
+     * @param ${strUtil.lowerFirst(config.modelName)} 查询条件
      * @return 文件下载id
      */
     @GetMapping("export/data")
     @RequiresPermissions("${config.permissionsCode}:select")
-    public String exportData(SampleGeneral object){
-        return service.exportData(object);
+    public String exportData(SampleGeneral ${strUtil.lowerFirst(config.modelName)}){
+        return service.exportData(${strUtil.lowerFirst(config.modelName)});
     }
     <% } %>
 }

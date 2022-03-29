@@ -15,11 +15,11 @@ public interface ${config.modelName}Service {
     <% if(config.isGeneratorMethodsSelect){ %>
     /**
      * 列表
-     * @param object 查询条件
+     * @param ${strUtil.lowerFirst(config.modelName)} 查询条件
      * @param page   分页
      * @return Page<${config.modelName}>
      */
-    Page<${config.modelName}> select(${config.modelName} object, Page<${config.modelName}> page);
+    Page<${config.modelName}> select(${config.modelName} ${strUtil.lowerFirst(config.modelName)}, Page<${config.modelName}> page);
 
     /**
      * 详情
@@ -53,19 +53,19 @@ public interface ${config.modelName}Service {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param ${strUtil.lowerFirst(config.modelName)} 表单内容
      * @return ${config.modelName}
      */
-    ${config.modelName} saveData(${config.modelName} object);
+    ${config.modelName} saveData(${config.modelName} ${strUtil.lowerFirst(config.modelName)});
     <% } %>
 
     <% if(config.isGeneratorMethodsExport){ %>
     /**
      * 导出数据
      *
-     * @param object 查询条件
+     * @param ${strUtil.lowerFirst(config.modelName)} 查询条件
      * @return 文件下载id
      */
-    String exportData(${config.modelName} object);
+    String exportData(${config.modelName} ${strUtil.lowerFirst(config.modelName)});
     <% } %>
 }

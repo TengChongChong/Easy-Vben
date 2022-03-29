@@ -25,29 +25,29 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
     <% if(config.isGeneratorMethodsSelect){ %>
     /**
      * 列表
-     * @param object 查询条
+     * @param ${strUtil.lowerFirst(config.modelName)} 查询条件
      * @param page   分页
      * @return Page<${config.modelName}>
      */
     @Override
-    public Page<${config.modelName}> select(${config.modelName} object, Page<${config.modelName}> page) {
+    public Page<${config.modelName}> select(${config.modelName} ${strUtil.lowerFirst(config.modelName)}, Page<${config.modelName}> page) {
         QueryWrapper<${config.modelName}> queryWrapper = new QueryWrapper<>();
-        if(object != null){
+        if(${strUtil.lowerFirst(config.modelName)} != null){
             // 查询条件
             <% if(config.queryItems != null) { %>
             <% for(fieldSet in config.queryItems){ %>
             // ${fieldSet.label}
-            if (Validator.isNotEmpty(object.get${strUtil.upperFirst(fieldSet.propertyName)}())) {
+            if (Validator.isNotEmpty(${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}())) {
                 <% if('gte' == fieldSet.matchingMode) { %>
-                queryWrapper.ge("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.ge("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } else if('lte' == fieldSet.matchingMode) {%>
-                queryWrapper.le("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.le("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } else if('left_like' == fieldSet.matchingMode) {%>
-                queryWrapper.likeLeft("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.likeLeft("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } else if('right_like' == fieldSet.matchingMode) {%>
-                queryWrapper.likeRight("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.likeRight("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } else {%>
-                queryWrapper.${fieldSet.matchingMode}("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.${fieldSet.matchingMode}("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } %>
             }
             <% } %>
@@ -78,9 +78,9 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
      */
     @Override
     public ${config.modelName} add() {
-        ${config.modelName} object = new ${config.modelName}();
+        ${config.modelName} ${strUtil.lowerFirst(config.modelName)} = new ${config.modelName}();
         // 设置默认值
-        return object;
+        return ${strUtil.lowerFirst(config.modelName)};
     }
     <% } %>
     <% if(config.isGeneratorMethodsRemove){ %>
@@ -104,17 +104,17 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param ${strUtil.lowerFirst(config.modelName)} 表单内容
      * @return ${config.modelName}
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public ${config.modelName} saveData(${config.modelName} object) {
-        ToolUtil.checkParams(object);
-        if (Validator.isEmpty(object.getId())) {
+    public ${config.modelName} saveData(${config.modelName} ${strUtil.lowerFirst(config.modelName)}) {
+        ToolUtil.checkParams(${strUtil.lowerFirst(config.modelName)});
+        if (Validator.isEmpty(${strUtil.lowerFirst(config.modelName)}.getId())) {
             // 新增,设置默认值
         }
-        return (${config.modelName}) ToolUtil.checkResult(saveOrUpdate(object), object);
+        return (${config.modelName}) ToolUtil.checkResult(saveOrUpdate(${strUtil.lowerFirst(config.modelName)}), ${strUtil.lowerFirst(config.modelName)});
     }
     <% } %>
 
@@ -159,24 +159,24 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
 
     <% if(config.isGeneratorMethodsExport){ %>
     @Override
-    public String exportData(${config.modelName} object) {
+    public String exportData(${config.modelName} ${strUtil.lowerFirst(config.modelName)}) {
         QueryWrapper<${config.modelName}> queryWrapper = new QueryWrapper<>();
-        if(object != null){
+        if(${strUtil.lowerFirst(config.modelName)} != null){
             // 查询条件
             <% if(config.queryItems != null) { %>
             <% for(fieldSet in config.queryItems){ %>
             // ${fieldSet.label}
-            if (Validator.isNotEmpty(object.get${strUtil.upperFirst(fieldSet.propertyName)}())) {
+            if (Validator.isNotEmpty(${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}())) {
                 <% if('gte' == fieldSet.matchingMode) { %>
-                queryWrapper.ge("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.ge("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } else if('lte' == fieldSet.matchingMode) {%>
-                queryWrapper.le("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.le("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } else if('left_like' == fieldSet.matchingMode) {%>
-                queryWrapper.likeLeft("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.likeLeft("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } else if('right_like' == fieldSet.matchingMode) {%>
-                queryWrapper.likeRight("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.likeRight("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } else {%>
-                queryWrapper.${fieldSet.matchingMode}("t.${fieldSet.columnName}", object.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.${fieldSet.matchingMode}("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
                 <% } %>
             }
             <% } %>
