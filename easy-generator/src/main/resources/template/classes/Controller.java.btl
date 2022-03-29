@@ -109,7 +109,7 @@ public class ${config.modelName}Controller {
      */
     @GetMapping("export/data")
     @RequiresPermissions("${config.permissionsCode}:select")
-    public String exportData(SampleGeneral ${strUtil.lowerFirst(config.modelName)}){
+    public String exportData(${config.modelName} ${strUtil.lowerFirst(config.modelName)}){
         return service.exportData(${strUtil.lowerFirst(config.modelName)});
     }
     <% } %>
