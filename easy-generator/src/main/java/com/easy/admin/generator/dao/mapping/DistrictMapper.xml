@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.generator.dao.DistrictMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.generator.model.District">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="parent_id" property="parentId" />
+        <result column="initial" property="initial" />
+        <result column="initials" property="initials" />
+        <result column="pinyin" property="pinyin" />
+        <result column="extra" property="extra" />
+        <result column="suffix" property="suffix" />
+        <result column="code" property="code" />
+        <result column="area_code" property="areaCode" />
+        <result column="order" property="order" />
+    </resultMap>
+    <select id="select" resultType="com.easy.admin.generator.model.District">
+        select t.id, t.name, t.parent_id, t.initial, t.initials, t.pinyin, t.extra, t.suffix, t.code, t.area_code
+        from district t
+        order by t.parent_id, t.`order`
+    </select>
+    <select id="selectCascaderDistrict" resultType="com.easy.admin.generator.model.CascaderDistrict">
+        select t.id, t.parent_id, t.code as value, concat(t.name, ifnull(t.extra, ''), ifnull(t.suffix, '')) as label
+        from district t
+        order by t.parent_id, t.`order`;
+    </select>
+</mapper>
