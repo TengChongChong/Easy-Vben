@@ -1,6 +1,7 @@
 package com.easy.admin.config.shiro.filter;
 
-import com.easy.admin.auth.constant.SessionConst;
+import com.easy.admin.auth.common.constant.SessionConst;
+import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.core.util.Response;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
@@ -34,7 +35,10 @@ public class CheckSessionFilter extends AccessControlFilter {
      */
     private static final String REQUET_TYPE = "OPTIONS";
 
-    private static final String CODE = "00401";
+    /**
+     * 会话失效errorCode
+     */
+    private static final String CODE = "00401-1";
 
     /**
      * 表示是否允许访问;
@@ -72,7 +76,7 @@ public class CheckSessionFilter extends AccessControlFilter {
             if (session.getAttribute(SessionConst.FORCE_LOGOUT) != null && (boolean) session.getAttribute(SessionConst.FORCE_LOGOUT)) {
                 logger.debug("管理员踢出会话[{}]", session.getId());
                 RedisUtil.del(RedisPrefix.SHIRO_SESSION + session.getId());
-                responseJson(subject, servletResponse, "你被管理员强制退出");
+                responseJson(subject, servletResponse, GlobalException.SESSION_FORCE_LOGOUT);
                 return false;
             }
 
@@ -80,19 +84,19 @@ public class CheckSessionFilter extends AccessControlFilter {
             if (session.getAttribute(SessionConst.LOGIN_ELSEWHERE) != null && (boolean) session.getAttribute(SessionConst.LOGIN_ELSEWHERE)) {
                 logger.debug("用户在其他地方登录会话[{}]被踢出", session.getId());
                 RedisUtil.del(RedisPrefix.SHIRO_SESSION + session.getId());
-                responseJson(subject, servletResponse, "你的账号在其他地方登录，你被强制退出");
+                responseJson(subject, servletResponse, GlobalException.SESSION_LOGIN_ELSEWHERE);
                 return false;
             }
             return true;
         }
-        responseJson(subject, servletResponse, "会话已过期，请重新登录");
+        responseJson(subject, servletResponse, GlobalException.SESSION_INVALID);
         return false;
     }
 
-    private void responseJson(Subject subject, ServletResponse servletResponse, String message) {
+    private void responseJson(Subject subject, ServletResponse servletResponse, GlobalException exception) {
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        Response.response(response, CheckSessionFilter.CODE, message);
+        Response.response(response, CheckSessionFilter.CODE, exception.getMessage());
         subject.logout();
     }
 }

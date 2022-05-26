@@ -6,7 +6,6 @@ import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.service.SysDictService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/dict")
+@RequestMapping("/api/auth/sys/dict")
 public class SysDictController extends BaseController {
 
     @Autowired
@@ -34,7 +33,7 @@ public class SysDictController extends BaseController {
      * @return Page<SysDict>
      */
     @GetMapping
-    @RequiresPermissions("sys:dict:select")
+//    @RequiresPermissions("sys:dict:select")
     public Page<SysDict> select(SysDict object, Page<SysDict> page) {
         return service.select(object, page);
     }
@@ -45,23 +44,23 @@ public class SysDictController extends BaseController {
      * @param dictType 字典类型
      * @return List<Select>
      */
-    @GetMapping("dict-type/{dictType}")
-    @RequiresPermissions("sys:dict:select")
-    public List<Select> selectByDictType(@PathVariable("dictType") String dictType) {
+    @GetMapping("dict-type")
+//    @RequiresPermissions("sys:dict:select")
+    public List<Select> selectByDictType(@RequestParam(value = "dictType", required = false) String dictType) {
         return service.selectByDictType(dictType);
     }
 
     /**
      * 新增
      *
-     * @param pId      上级 id
+     * @param parentId 上级 id
      * @param dictType 字典类型
      * @return SysDict
      */
     @GetMapping({"/add/{id}", "/add"})
-    public SysDict add(@PathVariable(value = "id", required = false) String pId,
+    public SysDict add(@PathVariable(value = "id", required = false) String parentId,
                        @RequestParam(value = "dictType", required = false) String dictType) {
-        return service.add(pId, dictType);
+        return service.add(parentId, dictType);
     }
 
     /**
@@ -71,7 +70,7 @@ public class SysDictController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("sys:dict:remove")
+//    @RequiresPermissions("sys:dict:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -83,7 +82,7 @@ public class SysDictController extends BaseController {
      * @return SysDict
      */
     @PostMapping
-    @RequiresPermissions("sys:dict:save")
+//    @RequiresPermissions("sys:dict:save")
     public SysDict save(@RequestBody @Valid SysDict object) {
         return service.saveData(object);
     }
@@ -100,14 +99,21 @@ public class SysDictController extends BaseController {
     }
 
     /**
-     * 将数据库中字典数据生成成js文件
+     * 查询所有字典，前端需缓存此数据，仅在页面首次加载时获取
      *
-     * @return true/false
+     * @return List<SysDict>
      */
-    @PostMapping("generate/dict/data")
-    @RequiresPermissions("sys:dict:generate")
-    public boolean generateDictData() {
-        return service.generateDictData();
+    @GetMapping("all")
+    public List<SysDict> selectAll() {
+        return service.selectAll();
+    }
+
+    /**
+     * 刷新缓存数据
+     */
+    @PostMapping("refresh")
+    public boolean refresh() {
+        return service.refresh();
     }
 
 }

@@ -1,10 +1,7 @@
 package com.easy.admin.sys.service.impl;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -12,7 +9,9 @@ import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.sys.common.constant.SysConst;
+import com.easy.admin.common.core.exception.GlobalException;
+import com.easy.admin.common.redis.constant.RedisPrefix;
+import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.dao.SysDictMapper;
 import com.easy.admin.sys.dao.SysDictTypeMapper;
 import com.easy.admin.sys.model.SysDict;
@@ -22,11 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.util.*;
 
 /**
@@ -38,10 +32,8 @@ import java.util.*;
 @Service
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
 
-
     @Autowired
     private SysDictTypeMapper dictTypeMapper;
-
 
     @Override
     public Page<SysDict> select(SysDict sysDict, Page<SysDict> page) {
@@ -54,7 +46,11 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
                 queryWrapper.eq("t.dict_type", sysDict.getDictType());
             }
             if (Validator.isNotEmpty(sysDict.getStatus())) {
-                queryWrapper.eq("t.status", sysDict.getStatus());
+                if (sysDict.getStatus().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.status", sysDict.getStatus().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.status", sysDict.getStatus());
+                }
             }
             if (Validator.isNotEmpty(sysDict.getCode())) {
                 queryWrapper.like("t.code", sysDict.getCode());
@@ -67,7 +63,9 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
     @Override
     public List<Select> selectByDictType(String dictType) {
-        ToolUtil.checkParams(dictType);
+        if (StrUtil.isBlank(dictType)) {
+            return Collections.emptyList();
+        }
         return baseMapper.selectByDictType(dictType, CommonStatus.ENABLE.getCode());
     }
 
@@ -97,13 +95,13 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     }
 
     @Override
-    public SysDict add(String pId, String dictType) {
+    public SysDict add(String parentId, String dictType) {
         SysDict object = new SysDict();
         object.setStatus(CommonStatus.ENABLE.getCode());
         object.setDictType(dictType);
-        if (pId != null) {
-            SysDict parentDict = baseMapper.selectById(pId);
-            object.setpCode(parentDict.getCode());
+        if (parentId != null) {
+            SysDict parentDict = baseMapper.selectById(parentId);
+            object.setParentCode(parentDict.getCode());
             // 如果点击的是新增下级字典,字典类型默认为父字典的字典类型
             object.setDictType(parentDict.getDictType());
         }
@@ -119,29 +117,38 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
-        return removeByIds(idList);
+        boolean isSuccess = removeByIds(idList);
+        if (isSuccess) {
+            RedisUtil.del(RedisPrefix.SYS_DICT);
+        }
+        return isSuccess;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysDict saveData(SysDict object) {
-        ToolUtil.checkParams(object);
+    public SysDict saveData(SysDict sysDict) {
+        ToolUtil.checkParams(sysDict);
         // 同一类型下字典编码不能重复
         QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("dict_type", object.getDictType());
-        queryWrapper.eq("code", object.getCode());
-        if (object.getId() != null) {
-            queryWrapper.ne("id", object.getId());
+        queryWrapper.eq("dict_type", sysDict.getDictType());
+        queryWrapper.eq("code", sysDict.getCode());
+        if (sysDict.getId() != null) {
+            queryWrapper.ne("id", sysDict.getId());
         }
         int count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
-            throw new EasyException("字典类型 " + object.getDictType() + " 中已存在编码为 " + object.getCode() + " 的字典，请修改后重试");
+            throw new EasyException("字典类型 " + sysDict.getDictType() + " 中已存在编码为 " + sysDict.getCode() + " 的字典，请修改后重试");
         }
-        if (object.getOrderNo() == null) {
-            object.setOrderNo(baseMapper.getMaxOrderNo(object.getDictType()) + 1);
+        if (sysDict.getOrderNo() == null) {
+            sysDict.setOrderNo(baseMapper.getMaxOrderNo(sysDict.getDictType()) + 1);
         }
 
-        return (SysDict) ToolUtil.checkResult(saveOrUpdate(object), object);
+        boolean isSuccess = saveOrUpdate(sysDict);
+        if (!isSuccess) {
+            throw new EasyException(GlobalException.LOCK_ERROR);
+        }
+        refresh();
+        return sysDict;
     }
 
     @Override
@@ -149,61 +156,17 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         return dictTypeMapper.selectType(CommonStatus.ENABLE.getCode());
     }
 
-    @Override
-    public boolean generateDictData() {
-        String dir = SysConst.projectProperties.getFileUploadPath() + CommonConst.STATIC_DATA_PATH + File.separator + "js" + File.separator + "sys-dict.js";
-        File file = FileUtil.touch(dir);
-        RandomAccessFile write;
-        FileChannel channel;
-        FileLock lock = null;
-        try {
-            write = new RandomAccessFile(file, "rws");
-            channel = write.getChannel();
-            try {
-                lock = channel.lock();
-            } catch (IOException e) {
-                // 文件被其他线程锁定
-            }
-            if(lock != null){
-                String content = getDictContent();
-                //替换原有文件内容
-                write.setLength(0);
-                if (StrUtil.isNotBlank(content)) {
-                    write.write(content.getBytes());
-                }
-                lock.release();
-            }
-            channel.close();
-            write.close();
-        } catch (IOException e) {
-            // 忽略，上方已验证文件是否存在
-        }
-        return true;
-    }
-
     /**
      * 获取字典内容
      */
-    private String getDictContent() {
-        List<SysDict> sysDictionaries = baseMapper.generateDictData(CommonStatus.ENABLE.getCode());
-        if (Validator.isNotEmpty(sysDictionaries)) {
-            JSONObject sysDictData = new JSONObject();
-            String previousDictType = null;
-            JSONArray temp = null;
-            for (SysDict sysDict : sysDictionaries) {
-                if (!sysDict.getDictType().equals(previousDictType)) {
-                    if (temp != null) {
-                        sysDictData.set(previousDictType, temp);
-                    }
-                    temp = new JSONArray();
-                    previousDictType = sysDict.getDictType();
-                }
-                temp.add(sysDict);
-            }
-            sysDictData.set(previousDictType, temp);
-            return "const SYS_DICT = " + sysDictData.toJSONString(0);
+    public List<SysDict> selectAll() {
+        if (RedisUtil.hasKey(RedisPrefix.SYS_DICT)) {
+            return (List<SysDict>) RedisUtil.get(RedisPrefix.SYS_DICT);
+        } else {
+            List<SysDict> sysDictionaries = baseMapper.selectAll(CommonStatus.ENABLE.getCode());
+            RedisUtil.set(RedisPrefix.SYS_DICT, sysDictionaries);
+            return sysDictionaries;
         }
-        return null;
     }
 
     @Override
@@ -221,12 +184,18 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         }
 
         List<SysDict> dictList = list(queryWrapper);
-        if(dictList != null && !dictList.isEmpty()){
+        if (dictList != null && !dictList.isEmpty()) {
             dictList.forEach(dict -> {
                 dictionaries.get(dict.getDictType()).add(dict);
             });
         }
 
         return dictionaries;
+    }
+
+    @Override
+    public boolean refresh() {
+        RedisUtil.del(RedisPrefix.SYS_DICT);
+        return true;
     }
 }

@@ -14,6 +14,7 @@
         <result column="method_name" property="methodName" />
         <result column="params" property="params" />
         <result column="time_consuming" property="timeConsuming" />
+        <result column="tenant_id" property="tenantId" />
         <result column="operation_user" property="operationUser" />
         <result column="operation_date" property="operationDate" />
     </resultMap>

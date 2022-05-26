@@ -115,7 +115,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
         if (pageTreeList != null && pageTreeList.size() > 0) {
             for (Tree tree : pageTreeList) {
-                tree.setpId(basePageId);
+                tree.setParentId(basePageId);
                 tree.setType(CmsReleaseType.PAGE.getCode());
                 assets.add(tree);
             }
@@ -123,7 +123,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
         if (columnTreeList != null && columnTreeList.size() > 0) {
             for (Tree tree : columnTreeList) {
-                tree.setpId(TreeUtil.BASE_ID.equals(tree.getpId()) ? baseColumnId : tree.getpId());
+                tree.setParentId(TreeUtil.BASE_ID.equals(tree.getParentId()) ? baseColumnId : tree.getParentId());
                 tree.setType(CmsReleaseType.COLUMN.getCode());
                 assets.add(tree);
             }

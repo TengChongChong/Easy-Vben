@@ -8,11 +8,11 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.dao.SysImportExcelTemporaryMapper;
-import com.easy.admin.sys.model.SysImportExcelTemplateDetails;
+import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.model.SysImportExcelTemporary;
 import com.easy.admin.sys.model.SysImportSummary;
-import com.easy.admin.sys.model.SysUser;
-import com.easy.admin.sys.service.SysImportExcelTemplateDetailsService;
+import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
@@ -40,7 +40,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private SysImportExcelTemplateDetailsService importExcelTemplateDetailsService;
+    private SysImportExcelTemplateDetailService importExcelTemplateDetailsService;
 
     /**
      * 列表
@@ -58,7 +58,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
             throw new EasyException("未指定模板id");
         }
         // 查询导入规则,翻译转换后的字段(此处不翻译字典)
-        List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(object.getTemplateId());
+        List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(object.getTemplateId());
         String selectFields = ImportExportUtil.getSelectFields(configs, true);
         String leftJoinTables = ImportExportUtil.getLeftJoinTables(configs, true);
         // 查询条件
@@ -90,7 +90,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
         queryWrapper.eq("user_id", ShiroUtil.getCurrentUser().getId());
         SysImportExcelTemporary object = getOne(queryWrapper);
         // 查询导入规则,翻译转换后的字段(此处不翻译字典)
-        List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(object.getTemplateId());
+        List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(object.getTemplateId());
         String selectFields = ImportExportUtil.getSelectFields(configs, true);
         String leftJoinTables = ImportExportUtil.getLeftJoinTables(configs, true);
         return baseMapper.getOne(selectFields, leftJoinTables, id);
@@ -172,7 +172,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
     public SysImportExcelTemporary saveData(SysImportExcelTemporary object) {
         ToolUtil.checkParams(object);
         // 保存之前检查数据状态
-        List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(object.getTemplateId());
+        List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(object.getTemplateId());
         if (configs != null && !configs.isEmpty()) {
             Class temporaryClass = ImportExportUtil.getTemporaryClass();
             for (int i = 0; i < configs.size(); i++) {
@@ -219,7 +219,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
      * @param value  值
      * @param config 规则
      */
-    private void baseVerificationData(String value, SysImportExcelTemplateDetails config) {
+    private void baseVerificationData(String value, SysImportExcelTemplateDetail config) {
         StringBuilder verificationResults = new StringBuilder();
         // 非空
         if (Validator.isEmpty(value) && config.getRequired()) {
@@ -243,7 +243,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
      * @param config 规则
      * @return 替换值
      */
-    private String getReplaceTableFieldValue(String value, SysImportExcelTemplateDetails config) {
+    private String getReplaceTableFieldValue(String value, SysImportExcelTemplateDetail config) {
         String replaceValue;
         if (StrUtil.isNotBlank(value) &&
                 StrUtil.isNotBlank(config.getReplaceTable()) &&

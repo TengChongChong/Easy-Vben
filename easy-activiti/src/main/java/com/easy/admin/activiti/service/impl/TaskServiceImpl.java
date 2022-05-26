@@ -21,9 +21,9 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.core.mail.MailTemplate;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.model.SysMessage;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysMessageService;
-import com.easy.admin.sys.service.SysUserService;
+import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.util.ShiroUtil;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
@@ -84,7 +84,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
                     // 待签收
                     queryWrapper.isNull("art.assignee_")
                             .eq("ari.type_", "candidate")
-                            .and(i -> i.eq("ari.user_id_", currentUser.getId()).or().in("ari.group_id_", currentUser.getRoleIds().toArray()));
+                            .and(i -> i.eq("ari.user_id_", currentUser.getId()).or().in("ari.group_id_", ShiroUtil.getRoleIds(currentUser.getRoleList()).toArray()));
                 } else if (TaskStatusConst.CLAIMED.equals(task.getStatus())) {
                     // 待办任务：签收人或委托人为当前用户
                     queryWrapper.and(i -> i.eq("art.assignee_", currentUser.getId()).or().eq("art.owner_", currentUser.getId()));

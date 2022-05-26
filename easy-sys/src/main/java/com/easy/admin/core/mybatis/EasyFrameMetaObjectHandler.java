@@ -1,7 +1,7 @@
 package com.easy.admin.core.mybatis;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.util.ShiroUtil;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -37,9 +37,9 @@ public class EasyFrameMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         SysUser sysUser = null;
-        try{
+        try {
             sysUser = ShiroUtil.getCurrentUser();
-        }catch (Exception e){
+        } catch (Exception e) {
             // 如果获取不到用户则不设置用户类默认值
         }
         if (sysUser != null) {

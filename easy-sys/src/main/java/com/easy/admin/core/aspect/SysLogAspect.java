@@ -2,7 +2,7 @@ package com.easy.admin.core.aspect;
 
 import com.easy.admin.common.core.util.WebUtils;
 import com.easy.admin.sys.model.SysLog;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysLogService;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.http.IpUtil;

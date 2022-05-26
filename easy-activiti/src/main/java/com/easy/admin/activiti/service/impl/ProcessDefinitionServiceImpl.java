@@ -12,8 +12,9 @@ import com.easy.admin.activiti.model.ProcessDefinitionVO;
 import com.easy.admin.activiti.service.ProcessDefinitionService;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.sys.model.SysUser;
-import com.easy.admin.sys.service.SysRoleService;
+import com.easy.admin.auth.model.SysRole;
+import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.util.ShiroUtil;
 import org.activiti.engine.FormService;
 import org.activiti.engine.IdentityService;
@@ -148,6 +149,8 @@ public class ProcessDefinitionServiceImpl extends ServiceImpl<ProcessDefinitionM
      * @return 流程参数
      */
     private Map<String, Object> setUserInfo(Map<String, Object> variables, SysUser currentUser) {
+        List<String> roleCodeList = ShiroUtil.getRoleCodes(currentUser.getRoleList());
+
         // 流程发起人ID
         variables.put(VariableConst.APPLY_USER_ID, currentUser.getId());
         // 流程发起人昵称
@@ -161,14 +164,14 @@ public class ProcessDefinitionServiceImpl extends ServiceImpl<ProcessDefinitionM
         // 流程发起人所在部门名称
         variables.put(VariableConst.DEPT_NAME, currentUser.getDept().getName());
         // 流程发起人所属角色 eg: role1,role2,role3
-        variables.put(VariableConst.USER_ROLE_CODES, ArrayUtil.join(currentUser.getRoles().toArray(), CommonConst.SPLIT));
+        variables.put(VariableConst.USER_ROLE_CODES, ArrayUtil.join(roleCodeList.toArray(), CommonConst.SPLIT));
         // 设置角色快速判断参数，如isRole1、isRole2等，如果角色标识使用:隔开，则改为驼峰命名 eg: sys:admin => isSysAdmin
-        for (String role : currentUser.getRoles()) {
-            variables.put(convertRoleCode(role), CommonConst.TRUE);
+        for (SysRole role : currentUser.getRoleList()) {
+            variables.put(convertRoleCode(role.getCode()), CommonConst.TRUE);
         }
         // 将此用户没有的角色也设置参数，防止使用时参数不存在
         List<String> allRoleCode = sysRoleService.selectAllRoleCodes();
-        String[] currentUserRoleCodes = ArrayUtil.toArray(currentUser.getRoles(), String.class);
+        String[] currentUserRoleCodes = ArrayUtil.toArray(roleCodeList, String.class);
         for (String role : allRoleCode) {
             if (!ArrayUtil.contains(currentUserRoleCodes, role)) {
                 variables.put(convertRoleCode(role), CommonConst.FALSE);

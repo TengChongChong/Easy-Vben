@@ -1,6 +1,7 @@
 package com.easy.admin.sys.service;
 
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.sys.model.SysDictType;
 
 import java.util.List;
@@ -24,9 +25,24 @@ public interface SysDictTypeService {
     /**
      * 查询所有
      *
-     * @return List<SysDictType>
+     * @return List<Select>
      */
-    List<SysDictType> selectAll();
+    List<Select> selectAll();
+
+    /**
+     * 详情
+     *
+     * @param id 字典id
+     * @return SysDict
+     */
+    SysDictType get(String id);
+
+    /**
+     * 新增
+     *
+     * @return SysDictType
+     */
+    SysDictType add();
 
     /**
      * 删除

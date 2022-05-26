@@ -7,6 +7,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.SpringContextHolder;
 import com.easy.admin.exception.BusinessException;
@@ -55,7 +56,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      * 导入规则
      */
     @Autowired
-    private SysImportExcelTemplateDetailsService importExcelTemplateDetailsService;
+    private SysImportExcelTemplateDetailService importExcelTemplateDetailsService;
 
     /**
      * 临时表
@@ -99,7 +100,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
             throw new EasyException("无权访问导入" + importExcelTemplate.getName());
         }
         // 检查导入规则
-        List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
+        List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
         if (configs == null || configs.isEmpty()) {
             // 无导入规则
             logger.debug("模板[{}]未配置导入规则", importExcelTemplate.getImportCode());
@@ -152,8 +153,8 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      * @param templateId 模板id
      * @param userId     用户id
      */
-    private void checkOnly(List<SysImportExcelTemplateDetails> configs, String templateId, String userId) {
-        for (SysImportExcelTemplateDetails config : configs) {
+    private void checkOnly(List<SysImportExcelTemplateDetail> configs, String templateId, String userId) {
+        for (SysImportExcelTemplateDetail config : configs) {
             if (config.getOnly() != null && config.getOnly()) {
                 importExcelTemporaryService.updateDuplicateData("field" + config.getOrderNo(), templateId, userId);
             }
@@ -213,7 +214,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      * @param configs 导入规则
      * @return true/false
      */
-    private boolean checkTemplate(List<Object> heads, List<SysImportExcelTemplateDetails> configs) {
+    private boolean checkTemplate(List<Object> heads, List<SysImportExcelTemplateDetail> configs) {
         if (heads != null && heads.size() == configs.size()) {
             int length = heads.size();
             for (int i = 0; i < length; i++) {
@@ -237,7 +238,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      */
     private boolean insertData(SysUser sysUser,
                                SysImportExcelTemplate importExcelTemplate,
-                               List<SysImportExcelTemplateDetails> configs,
+                               List<SysImportExcelTemplateDetail> configs,
                                List<List<Object>> rows) {
         List<SysImportExcelTemporary> temporaries = new ArrayList<>();
         // 查询所有本次导入所需的字典
@@ -273,9 +274,9 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      * @param configs 导入规则
      * @return list
      */
-    private List<String> getDictType(List<SysImportExcelTemplateDetails> configs) {
+    private List<String> getDictType(List<SysImportExcelTemplateDetail> configs) {
         List<String> dictTypes = new ArrayList<>();
-        for (SysImportExcelTemplateDetails detail : configs) {
+        for (SysImportExcelTemplateDetail detail : configs) {
             if ("sys_dict".equals(detail.getReplaceTable())) {
                 dictTypes.add(detail.getReplaceTableDictType());
             }
@@ -295,7 +296,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      */
     private SysImportExcelTemporary getTemporaryInfo(SysUser sysUser,
                                                      SysImportExcelTemplate importExcelTemplate,
-                                                     List<SysImportExcelTemplateDetails> configs,
+                                                     List<SysImportExcelTemplateDetail> configs,
                                                      List<Object> data,
                                                      Map<String, String> cacheMap) {
         try {
@@ -358,7 +359,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      * @param cacheMap 缓存
      * @return 转换后数据
      */
-    private String replaceData(String data, SysImportExcelTemplateDetails config, Map<String, String> cacheMap) {
+    private String replaceData(String data, SysImportExcelTemplateDetail config, Map<String, String> cacheMap) {
         // 转换后的值
         String value;
         if (StrUtil.isNotBlank(config.getReplaceTable())) {
@@ -426,7 +427,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         // 查询字段
         List<String> selectFields = new ArrayList<>();
         // 导入规则
-        List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
+        List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
         if (configs != null && !configs.isEmpty()) {
             for (int i = 0; i < configs.size(); i++) {
                 insertFields.add(configs.get(i).getFieldName());
@@ -461,7 +462,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         ToolUtil.checkParams(templateId);
         SysImportExcelTemplate importExcelTemplate = importExcelTemplateService.get(templateId);
         // 导入规则
-        List<SysImportExcelTemplateDetails> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
+        List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
         if (configs == null || configs.isEmpty()) {
             throw new EasyException("模板[" + importExcelTemplate.getImportCode() + "]未配置导入规则");
         }
@@ -479,7 +480,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         List<List<Object>> rows = ImportExportUtil.toExportData(temporaryList, configs, true);
 
         List<String> dictTypes = new ArrayList<>();
-        for (SysImportExcelTemplateDetails detail : configs) {
+        for (SysImportExcelTemplateDetail detail : configs) {
             if(ImportConst.SYS_DICT.equals(detail.getReplaceTable())){
                 // 收集所需的字典类别数据
                 dictTypes.add(detail.getReplaceTableDictType());
@@ -491,7 +492,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
             dictionaries = sysDictService.selectDictionaries(ArrayUtil.toArray(dictTypes, String.class));
         }
 
-        SysImportExcelTemplateDetails detail = new SysImportExcelTemplateDetails();
+        SysImportExcelTemplateDetail detail = new SysImportExcelTemplateDetail();
         detail.setTitle("验证结果");
         detail.setFieldLength("128");
         configs.add(detail);

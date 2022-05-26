@@ -34,7 +34,7 @@ public class SessionManager extends DefaultWebSessionManager {
     /**
      * 定义的请求头中使用的标记key，用来传递 token
      */
-    private static final String AUTH_TOKEN = "Access-Token";
+    private static final String AUTH_TOKEN = "Authorization";
 
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
 

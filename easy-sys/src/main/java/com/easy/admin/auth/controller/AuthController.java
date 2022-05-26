@@ -36,7 +36,7 @@ public class AuthController {
      * @param loginVO loginVO
      * @return token
      */
-    @PostMapping(value = "/auth/login")
+    @PostMapping(value = "/api/login")
     @SysLog(modular = "sys", method = "用户登录")
     public String login(@RequestBody @Valid LoginVO loginVO) {
         Subject subject = service.login(loginVO);
@@ -46,7 +46,7 @@ public class AuthController {
     /**
      * 退出
      */
-    @PostMapping("/logout")
+    @PostMapping("/api/logout")
     public void logout() {
         SecurityUtils.getSubject().logout();
     }
@@ -57,7 +57,7 @@ public class AuthController {
      * @param response response
      * @param codeId   验证码id
      */
-    @GetMapping("/get/verification/code/{codeId}")
+    @GetMapping("/api/get/verification/code/{codeId}")
     public void getVerificationCode(HttpServletResponse response, @PathVariable("codeId") String codeId) throws IOException {
         // 定义图形验证码的长、宽、验证码字符数、干扰元素个数
         LineCaptcha captcha = CaptchaUtil.createLineCaptcha(100, 30, 4, 8);

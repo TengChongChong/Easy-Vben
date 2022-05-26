@@ -15,7 +15,6 @@ import java.util.Date;
  */
 @TableName("sys_log")
 public class SysLog extends Model<SysLog> implements Serializable{
-    private static final long serialVersionUID = 1L;
 
     /**
      * id
@@ -68,7 +67,10 @@ public class SysLog extends Model<SysLog> implements Serializable{
      * 由于需要在方法return去拦截,所以暂时作为保留字段
      */
     private Long timeConsuming;
-
+    /**
+     * 租户id
+     */
+    private String tenantId;
     /**
      * 操作人
      */
@@ -164,5 +166,13 @@ public class SysLog extends Model<SysLog> implements Serializable{
 
     public void setOperationDate(Date operationDate) {
         this.operationDate = operationDate;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 }

@@ -17,7 +17,6 @@ import java.util.Date;
  */
  @TableName("sys_import_excel_template")
 public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
-    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id")
     private String id;

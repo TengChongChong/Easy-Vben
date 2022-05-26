@@ -1,10 +1,8 @@
 package com.easy.admin.sys.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,54 +21,69 @@ public class SysDict extends Model<SysDict> {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String id;
-    /**
-     * 排序值
-     */
-    private Integer orderNo;
-    /**
-     * 父code
-     */
-    private String pCode;
-    /**
-     * 编码
-     */
-    @NotBlank(message = "编码不能为空")
-    private String code;
     /**
      * 名称
      */
     @NotBlank(message = "名称不能为空")
     private String name;
     /**
-     * 图标
+     * 编码
      */
-    private String icon;
+    @NotBlank(message = "编码不能为空")
+    private String code;
     /**
-     * 备注
+     * 父code
      */
-    private String remarks;
-    /**
-     * 状态
-     */
-    @NotNull(message = "状态不能为空")
-    private String status;
+    private String parentCode;
     /**
      * 字典类型
      */
     @NotBlank(message = "类型不能为空")
     private String dictType;
     /**
-     * css
+     * 图标
      */
-    private String css;
+    private String icon;
+    /**
+     * 显示方式
+     */
+    private String displayType;
+
+    /**
+     * 状态
+     */
+    @NotNull(message = "状态不能为空")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String status;
+    /**
+     * 备注
+     */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String remarks;
+    /**
+     * 排序值
+     */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer orderNo;
+    /**
+     * 乐观锁
+     */
+    @Version
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer version;
     @TableField(fill = FieldFill.INSERT)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date createDate;
     @TableField(fill = FieldFill.INSERT)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String createUser;
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String editUser;
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date editDate;
 
     //
@@ -78,11 +91,13 @@ public class SysDict extends Model<SysDict> {
      * 父字典名称
      */
     @TableField(exist=false)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String parentName;
     /**
      * 字典类型名称
      */
     @TableField(exist=false)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String dictTypeName;
 
     @Override
@@ -96,22 +111,6 @@ public class SysDict extends Model<SysDict> {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Integer getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Integer orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public String getpCode() {
-        return pCode;
-    }
-
-    public void setpCode(String pCode) {
-        this.pCode = pCode;
     }
 
     public String getName() {
@@ -130,12 +129,28 @@ public class SysDict extends Model<SysDict> {
         this.code = code;
     }
 
-    public String getRemarks() {
-        return remarks;
+    public String getParentCode() {
+        return parentCode;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    public String getDictType() {
+        return dictType;
+    }
+
+    public void setDictType(String dictType) {
+        this.dictType = dictType;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getStatus() {
@@ -144,6 +159,22 @@ public class SysDict extends Model<SysDict> {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
     }
 
     public Date getCreateDate() {
@@ -178,36 +209,12 @@ public class SysDict extends Model<SysDict> {
         this.editDate = editDate;
     }
 
-    public String getCss() {
-        return css;
-    }
-
-    public void setCss(String css) {
-        this.css = css;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
     public String getParentName() {
         return parentName;
     }
 
     public void setParentName(String parentName) {
         this.parentName = parentName;
-    }
-
-    public String getDictType() {
-        return dictType;
-    }
-
-    public void setDictType(String dictType) {
-        this.dictType = dictType;
     }
 
     public String getDictTypeName() {
@@ -218,23 +225,19 @@ public class SysDict extends Model<SysDict> {
         this.dictTypeName = dictTypeName;
     }
 
-    @Override
-    public String toString() {
-        return "SysDict{" +
-                "id=" + id +
-                ", orderNo=" + orderNo +
-                ", pCode=" + pCode +
-                ", name='" + name + '\'' +
-                ", code='" + code + '\'' +
-                ", icon='" + icon + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", status=" + status +
-                ", dictType='" + dictType + '\'' +
-                ", createDate=" + createDate +
-                ", createUser=" + createUser +
-                ", editUser=" + editUser +
-                ", editDate=" + editDate +
-                ", css='" + css + '\'' +
-                '}';
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getDisplayType() {
+        return displayType;
+    }
+
+    public void setDisplayType(String displayType) {
+        this.displayType = displayType;
     }
 }

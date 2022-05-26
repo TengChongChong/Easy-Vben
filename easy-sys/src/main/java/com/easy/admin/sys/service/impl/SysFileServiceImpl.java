@@ -24,9 +24,9 @@ import java.util.List;
 public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> implements SysFileService {
 
     @Override
-    public List<SysFile> select(String pId, String type) {
+    public List<SysFile> select(String parentId, String type) {
         QueryWrapper<SysFile> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("p_id", pId);
+        queryWrapper.eq("parent_id", parentId);
         if (StrUtil.isNotBlank(type)) {
             queryWrapper.eq("type", type);
         }
@@ -36,10 +36,10 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public boolean delete(String pId, String type) {
-        List<SysFile> sysFileList = select(pId, type);
+    public boolean delete(String parentId, String type) {
+        List<SysFile> sysFileList = select(parentId, type);
         QueryWrapper<SysFile> remove = new QueryWrapper<>();
-        remove.eq("p_id", pId);
+        remove.eq("parent_id", parentId);
         if(StrUtil.isNotBlank(type)){
             remove.eq("type", type);
         }
@@ -56,8 +56,8 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     }
 
     @Override
-    public boolean delete(String pId) {
-        return delete(pId, null);
+    public boolean delete(String parentId) {
+        return delete(parentId, null);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -96,9 +96,9 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     }
 
     @Override
-    public SysFile saveData(String pId, String type, String path, String displayName) {
+    public SysFile saveData(String parentId, String type, String path, String displayName) {
         SysFile sysFile = new SysFile();
-        sysFile.setpId(pId);
+        sysFile.setParentId(parentId);
         sysFile.setType(type);
         sysFile.setPath(path);
         sysFile.setDisplayName(displayName);
@@ -106,7 +106,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     }
 
     @Override
-    public SysFile saveData(String pId, String type, String path) {
-        return saveData(pId, type, path, null);
+    public SysFile saveData(String parentId, String type, String path) {
+        return saveData(parentId, type, path, null);
     }
 }

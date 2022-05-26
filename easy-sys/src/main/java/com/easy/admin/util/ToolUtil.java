@@ -56,7 +56,7 @@ public class ToolUtil {
         if (isSuccess) {
             return object;
         } else {
-            throw new EasyException(GlobalException.UNKNOWN_ERROR);
+            throw new EasyException(GlobalException.LOCK_ERROR);
         }
     }
 

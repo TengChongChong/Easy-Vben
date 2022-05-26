@@ -43,7 +43,6 @@
         <druid.version>1.1.10</druid.version>
         <mysql-connector-java.version>8.0.22</mysql-connector-java.version>
         <dynamic-datasource.version>3.5.0</dynamic-datasource.version>
-        <fastjson.version>1.2.75</fastjson.version>
         <swagger.fox.version>2.9.2</swagger.fox.version>
         <swagger.core.version>1.5.24</swagger.core.version>
         <jjwt.version>0.9.1</jjwt.version>

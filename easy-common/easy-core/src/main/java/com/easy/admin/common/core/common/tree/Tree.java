@@ -11,14 +11,19 @@ import com.easy.admin.common.core.constant.CommonConst;
 public class Tree {
 
     /**
-     * 整个树范围内的所有节点的 key 值不能重复！
+     * 整个树范围内的所有节点的 key 值不能重复
      */
     private String id;
 
     /**
      * 父id
      */
-    private String pId;
+    private String parentId;
+
+    /**
+     * key
+     */
+    private String key;
 
     /**
      * 标题
@@ -76,15 +81,15 @@ public class Tree {
         this.title = title;
     }
 
-    public Tree(String id, String pId, String title) {
+    public Tree(String id, String parentId, String title) {
         this.id = id;
-        this.pId = pId;
+        this.parentId = parentId;
         this.title = title;
     }
 
-    public Tree(String id, String pId, String title, String type) {
+    public Tree(String id, String parentId, String title, String type) {
         this.id = id;
-        this.pId = pId;
+        this.parentId = parentId;
         this.title = title;
         this.type = type;
     }
@@ -97,12 +102,20 @@ public class Tree {
         this.id = id;
     }
 
-    public String getpId() {
-        return pId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getTitle() {

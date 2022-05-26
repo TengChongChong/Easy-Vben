@@ -14,28 +14,28 @@ public interface SysFileService {
     /**
      * 查询文件
      *
-     * @param pId  父id
+     * @param parentId  父id
      * @param type 类型
      * @return List<SysFile>
      */
-    List<SysFile> select(String pId, String type);
+    List<SysFile> select(String parentId, String type);
 
     /**
      * 删除
      *
-     * @param pId  父id
+     * @param parentId  父id
      * @param type 类型
      * @return true/false
      */
-    boolean delete(String pId, String type);
+    boolean delete(String parentId, String type);
 
     /**
      * 删除
      *
-     * @param pId  父id
+     * @param parentId  父id
      * @return true/false
      */
-    boolean delete(String pId);
+    boolean delete(String parentId);
 
 
     /**
@@ -57,20 +57,20 @@ public interface SysFileService {
     /**
      * 保存
      *
-     * @param pId         数据id
+     * @param parentId         数据id
      * @param type        类型
      * @param path        路径
      * @param displayName 显示名称
      * @return SysFile
      */
-    SysFile saveData(String pId, String type, String path, String displayName);
+    SysFile saveData(String parentId, String type, String path, String displayName);
     /**
      * 保存
      *
-     * @param pId         数据id
+     * @param parentId         数据id
      * @param type        类型
      * @param path        路径
      * @return SysFile
      */
-    SysFile saveData(String pId, String type, String path);
+    SysFile saveData(String parentId, String type, String path);
 }

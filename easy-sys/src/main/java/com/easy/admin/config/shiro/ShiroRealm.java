@@ -1,7 +1,7 @@
 package com.easy.admin.config.shiro;
 
 import com.easy.admin.config.shiro.service.ShiroService;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.util.ShiroUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -67,11 +67,12 @@ public class ShiroRealm extends AuthorizingRealm {
         SysUser sysUser = shiroService.queryUserPermissions(currentUser);
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+
         // 赋予权限
-         simpleAuthorizationInfo.addStringPermissions(sysUser.getPermissionList());
+        simpleAuthorizationInfo.addStringPermissions(ShiroUtil.getPermissionCodes(sysUser.getPermissionList()));
         // 赋予角色
-         simpleAuthorizationInfo.addRoles(sysUser.getRoles());
-         ShiroUtil.setCurrentUser(sysUser);
+        simpleAuthorizationInfo.addRoles(ShiroUtil.getRoleCodes(sysUser.getRoleList()));
+        ShiroUtil.setCurrentUser(sysUser);
         return simpleAuthorizationInfo;
     }
 }

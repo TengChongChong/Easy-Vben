@@ -1,12 +1,12 @@
 package com.easy.admin.sys.model;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 字典类型
@@ -16,7 +16,6 @@ import java.io.Serializable;
  */
 @TableName("sys_dict_type")
 public class SysDictType extends Model<SysDictType> {
-    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id")
     private String id;
@@ -35,7 +34,23 @@ public class SysDictType extends Model<SysDictType> {
      */
     @NotNull(message = "状态不能为空")
     private String status;
-
+    /**
+     * 是否系统
+     */
+    private String sys;
+    /**
+     * 乐观锁
+     */
+    @Version
+    private Integer version;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createDate;
+    @TableField(fill = FieldFill.INSERT)
+    private String createUser;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String editUser;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date editDate;
     //
 
     public String getId() {
@@ -70,8 +85,72 @@ public class SysDictType extends Model<SysDictType> {
         this.status = status;
     }
 
+    public String getSys() {
+        return sys;
+    }
+
+    public void setSys(String sys) {
+        this.sys = sys;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(String editUser) {
+        this.editUser = editUser;
+    }
+
+    public Date getEditDate() {
+        return editDate;
+    }
+
+    public void setEditDate(Date editDate) {
+        this.editDate = editDate;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "SysDictType{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", status='" + status + '\'' +
+                ", sys='" + sys + '\'' +
+                ", version=" + version +
+                ", createDate=" + createDate +
+                ", createUser='" + createUser + '\'' +
+                ", editUser='" + editUser + '\'' +
+                ", editDate=" + editDate +
+                '}';
     }
 }

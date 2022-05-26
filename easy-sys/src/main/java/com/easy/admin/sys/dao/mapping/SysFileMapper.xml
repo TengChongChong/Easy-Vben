@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysFile">
         <result column="id" property="id" />
-        <result column="p_id" property="pId" />
+        <result column="parent_id" property="parentId" />
         <result column="type" property="type" />
         <result column="display_name" property="displayName" />
         <result column="name" property="name" />
@@ -22,7 +22,7 @@
     </resultMap>
 
     <select id="select" resultType="com.easy.admin.sys.model.SysFile">
-        select id, p_id, type, display_name, name, path, size, order_no, remarks, status, version, create_user, create_date, edit_user, edit_date
+        select id, parent_id, type, display_name, name, path, size, order_no, remarks, status, version, create_user, create_date, edit_user, edit_date
         from sys_file t
         <where>
             ${ew.sqlSegment}

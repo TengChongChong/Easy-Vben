@@ -10,8 +10,8 @@ import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.dao.SysMessageMapper;
 import com.easy.admin.sys.model.SysMessage;
-import com.easy.admin.sys.model.SysUser;
-import com.easy.admin.sys.service.SysMessageDetailsService;
+import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.sys.service.SysMessageService;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
@@ -33,7 +33,7 @@ import java.util.List;
 public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMessage> implements SysMessageService {
 
     @Autowired
-    private SysMessageDetailsService sysMessageDetailsService;
+    private SysMessageDetailService sysMessageDetailsService;
 
     /**
      * 列表

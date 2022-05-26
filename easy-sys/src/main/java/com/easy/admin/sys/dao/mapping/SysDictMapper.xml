@@ -3,43 +3,42 @@
 <mapper namespace="com.easy.admin.sys.dao.SysDictMapper">
     <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysDict">
         <id column="id" property="id"/>
-        <result column="order_no" property="orderNo"/>
-        <result column="p_code" property="pCode"/>
         <result column="name" property="name"/>
         <result column="code" property="code"/>
-        <result column="icon" property="icon"/>
-        <result column="remarks" property="remarks"/>
-        <result column="css" property="css"/>
-        <result column="status" property="status"/>
+        <result column="parent_code" property="parentCode"/>
         <result column="dict_type" property="dictType"/>
+        <result column="icon" property="icon"/>
+        <result column="display_type" property="displayType"/>
+        <result column="status" property="status"/>
+        <result column="remarks" property="remarks"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="version" property="version"/>
         <result column="create_date" property="createDate"/>
         <result column="create_user" property="createUser"/>
         <result column="edit_user" property="editUser"/>
         <result column="edit_date" property="editDate"/>
     </resultMap>
-    <resultMap id="select" type="com.easy.admin.common.core.common.select.Select">
-        <result column="value" property="value"/>
-        <result column="text" property="text"/>
-    </resultMap>
 
-    <select id="selectByDictType" resultMap="select">
-        select code as value,name as text from sys_dict
+    <select id="selectByDictType" resultType="com.easy.admin.common.core.common.select.Select">
+        select code as value, name as label from sys_dict
         where dict_type = #{dictType} and status = #{status} order by id
     </select>
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0) from sys_dict t where t.dict_type = #{dictType}
     </select>
     <select id="select" resultType="com.easy.admin.sys.model.SysDict">
-        select t.id,t.order_no,t.p_code,t.name,t.code,t.status,t.css,t.dict_type, dt.name as dict_type_name,ud.name as parent_name
+        select t.id, t.order_no, t.parent_code, t.name, t.code, t.icon, t.display_type, t.status, t.dict_type,
+               dt.name as dict_type_name, ud.name as parent_name, su.nickname as editUser, t.edit_date
         from sys_dict t
+          left join sys_user su on su.id = t.edit_user
           left join sys_dict_type dt on t.dict_type = dt.type
-          left join sys_dict ud on ud.id = t.p_code and t.dict_type = ud.dict_type
+          left join sys_dict ud on ud.id = t.parent_code and t.dict_type = ud.dict_type
         <where>
             ${ew.sqlSegment}
         </where>
     </select>
-    <select id="generateDictData" resultType="com.easy.admin.sys.model.SysDict">
-        select code,p_code,name,dict_type,css,icon,remarks from sys_dict t
+    <select id="selectAll" resultType="com.easy.admin.sys.model.SysDict">
+        select t.code, t.parent_code, t.name, t.dict_type, t.icon, t.display_type from sys_dict t
         where t.status = #{status} order by dict_type, order_no
     </select>
 </mapper>

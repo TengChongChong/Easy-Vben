@@ -32,7 +32,7 @@
     <select id="selectReceive" resultType="com.easy.admin.sys.model.SysMessage">
         select d.id, d.star, m.id as messageId, m.title, m.type, m.create_date, m.send_date, d.read_date,
         m.important, u.nickname, u.avatar
-        from sys_message_details d
+        from sys_message_detail d
         left join sys_message m on m.id = d.message_id
         left join sys_user u on u.id = m.create_user
         <where>
@@ -41,7 +41,7 @@
     </select>
     <select id="selectUnreadCount" resultType="java.lang.Integer">
         select count(1)
-        from sys_message_details d
+        from sys_message_detail d
         left join sys_message m on m.id = d.message_id
         <where>
             ${ew.sqlSegment}

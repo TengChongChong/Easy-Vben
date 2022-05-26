@@ -1,9 +1,6 @@
 package com.easy.admin.sys.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
@@ -75,6 +72,7 @@ public class SysDataSource extends Model<SysDataSource> {
     /**
      * 乐观锁
      */
+    @Version
     private Integer version;
     /**
      * 状态

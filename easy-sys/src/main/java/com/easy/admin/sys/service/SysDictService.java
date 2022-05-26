@@ -59,11 +59,11 @@ public interface SysDictService {
     /**
      * 新增
      *
-     * @param pId      上级id
+     * @param parentId      上级id
      * @param dictType 字典类型
      * @return SysDict
      */
-    SysDict add(String pId, String dictType);
+    SysDict add(String parentId, String dictType);
 
     /**
      * 删除
@@ -89,11 +89,11 @@ public interface SysDictService {
     List<Select> selectDictType();
 
     /**
-     * 将数据库中字典数据生成成js文件
+     * 查询所有字典
      *
-     * @return true/false
+     * @return List<SysDict>
      */
-    boolean generateDictData();
+    List<SysDict> selectAll();
 
     /**
      * 根据字典类型获取字典Map
@@ -103,4 +103,10 @@ public interface SysDictService {
      */
     Map<String, List<SysDict>> selectDictionaries(String[] dictTypes);
 
+    /**
+     * 刷新缓存数据
+     *
+     * @return true/false
+     */
+    boolean refresh();
 }

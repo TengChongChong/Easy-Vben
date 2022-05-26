@@ -1,11 +1,11 @@
 package com.easy.admin.config.shiro.check;
 
-import com.easy.admin.auth.constant.SessionConst;
+import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.shiro.service.ShiroService;
 import com.easy.admin.sys.common.constant.SysConst;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.file.FileUtil;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -31,7 +31,7 @@ public class RetryLimitCredentialsMatcher extends SimpleCredentialsMatcher {
         String loginCountKey = "login_count_";
         RedisUtil.del(RedisPrefix.ACCOUNT + loginCountKey + sysUser.getUsername());
         RedisUtil.del(RedisPrefix.ACCOUNT + loginCountKey + sysUser.getEmail());
-        RedisUtil.del(RedisPrefix.ACCOUNT + loginCountKey + sysUser.getPhone());
+        RedisUtil.del(RedisPrefix.ACCOUNT + loginCountKey + sysUser.getPhoneNumber());
         RedisUtil.del(RedisPrefix.SESSION + loginCountKey + ShiroUtil.getSession().getId().toString());
         // 更新最后登录时间
         shiroService.updateUserLastLoginDate(sysUser.getId());

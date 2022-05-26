@@ -2,7 +2,7 @@ package com.easy.admin.config.shiro.cache;
 
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.model.RedisProperties;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.subject.SimplePrincipalCollection;

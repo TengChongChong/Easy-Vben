@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.auth.dao.SysDeptTypeRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.easy.admin.auth.model.SysDeptTypeRole">
+        <result column="id" property="id"/>
+        <result column="dept_type_id" property="deptTypeId"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+    <select id="selectRoleByDept" resultType="com.easy.admin.auth.model.SysRole">
+      select r.id,r.name,r.parent_id from sys_role r
+        left join sys_role pr on pr.id = r.parent_id
+        left join sys_dept_type_role tr on tr.role_id = r.id
+      where tr.dept_type_id = (
+        select dt.id from sys_dept d
+          left join sys_dept_type dt on dt.code = d.type_code
+        where d.id = #{deptId}
+      )
+      order by pr.order_no,r.order_no
+    </select>
+
+</mapper>

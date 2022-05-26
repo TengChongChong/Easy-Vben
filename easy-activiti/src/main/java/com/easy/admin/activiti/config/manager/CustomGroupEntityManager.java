@@ -2,7 +2,7 @@ package com.easy.admin.activiti.config.manager;
 
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.activiti.config.util.ActivitiUserUtil;
-import com.easy.admin.sys.service.SysRoleService;
+import com.easy.admin.auth.service.SysRoleService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.GroupQueryImpl;
 import org.activiti.engine.impl.Page;

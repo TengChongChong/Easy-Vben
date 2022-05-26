@@ -32,6 +32,11 @@ public class RedisPrefix {
      * 系统参数
      */
     public static final String SYS_CONFIG = "sys:config:";
+
+    /**
+     * 系统字典
+     */
+    public static final String SYS_DICT = "sys:dict";
     /**
      * 找回密码验证码
      */

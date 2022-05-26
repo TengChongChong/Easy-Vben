@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysMessageDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysMessageDetail">
+        <id column="id" property="id" />
+        <result column="message_id" property="messageId" />
+        <result column="receiver_user" property="receiverUser" />
+        <result column="read_date" property="readDate" />
+        <result column="status" property="status" />
+        <result column="star" property="star" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <select id="selectReceiverUser" resultType="java.lang.String">
+        select d.receiver_user from sys_message_detail d where d.message_id = #{messageId}
+    </select>
+
+</mapper>

@@ -1,9 +1,6 @@
 package com.easy.admin.sys.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -17,7 +14,6 @@ import java.util.Date;
  */
 @TableName("sys_download")
 public class SysDownload extends Model<SysDownload> implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     /**
      * id
@@ -73,7 +69,13 @@ public class SysDownload extends Model<SysDownload> implements Serializable {
     /**
      * 乐观锁
      */
+    @Version
     private Integer version;
+
+    /**
+     * 租户id
+     */
+    private String tenantId;
 
     /**
      * 创建人
@@ -205,5 +207,13 @@ public class SysDownload extends Model<SysDownload> implements Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 }

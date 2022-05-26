@@ -8,14 +8,14 @@ package com.easy.admin.common.core.common.select;
  */
 public class Select {
     private String value;
-    private String text;
+    private String label;
 
     public Select() {
     }
 
-    public Select(String value, String text) {
+    public Select(String value, String label) {
         this.value = value;
-        this.text = text;
+        this.label = label;
     }
 
     public String getValue() {
@@ -26,11 +26,11 @@ public class Select {
         this.value = value;
     }
 
-    public String getText() {
-        return text;
+    public String getLabel() {
+        return label;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

@@ -1,9 +1,6 @@
 package com.easy.admin.sys.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
@@ -36,15 +33,26 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     private String value;
 
     /**
+     * 类型
+     */
+    @NotBlank(message = "类型不能为空")
+    private String type;
+
+    /**
+     * 是否系统
+     */
+    private String sys;
+
+    /**
      * 备注
      */
     private String remarks;
 
     /**
-     * 类型
+     * 乐观锁
      */
-    @NotBlank(message = "类型不能为空")
-    private String type;
+    @Version
+    private Integer version;
 
     /**
      * 创建时间
@@ -79,6 +87,7 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     public void setId(String id) {
         this.id = id;
     }
+
     public String getSysKey() {
         return sysKey;
     }
@@ -86,6 +95,7 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     public void setSysKey(String sysKey) {
         this.sysKey = sysKey;
     }
+
     public String getValue() {
         return value;
     }
@@ -93,13 +103,7 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     public void setValue(String value) {
         this.value = value;
     }
-    public String getRemarks() {
-        return remarks;
-    }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
     public String getType() {
         return type;
     }
@@ -107,6 +111,31 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getSys() {
+        return sys;
+    }
+
+    public void setSys(String sys) {
+        this.sys = sys;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -114,6 +143,7 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
     public String getCreateUser() {
         return createUser;
     }
@@ -121,6 +151,7 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
     public Date getEditDate() {
         return editDate;
     }
@@ -128,6 +159,7 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     public void setEditDate(Date editDate) {
         this.editDate = editDate;
     }
+
     public String getEditUser() {
         return editUser;
     }

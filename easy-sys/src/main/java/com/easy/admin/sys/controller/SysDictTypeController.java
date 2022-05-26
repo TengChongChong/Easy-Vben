@@ -2,10 +2,10 @@ package com.easy.admin.sys.controller;
 
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysDictType;
 import com.easy.admin.sys.service.SysDictTypeService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/dict/type")
+@RequestMapping("/api/auth/sys/dict/type")
 public class SysDictTypeController extends BaseController {
 
     @Autowired
@@ -33,7 +33,7 @@ public class SysDictTypeController extends BaseController {
      * @return Page<SysDictType>
      */
     @GetMapping
-    @RequiresPermissions("sys:dict:type:select")
+//    @RequiresPermissions("sys:dict:type:select")
     public Page<SysDictType> select(SysDictType object, Page<SysDictType> page) {
         return service.select(object, page);
     }
@@ -41,12 +41,33 @@ public class SysDictTypeController extends BaseController {
     /**
      * 查询所有
      *
-     * @return List<SysDictType>
+     * @return List<Select>
      */
     @GetMapping("all")
-    @RequiresPermissions("sys:dict:type:select")
-    public List<SysDictType> selectAll() {
+//    @RequiresPermissions("sys:dict:type:select")
+    public List<Select> selectAll() {
         return service.selectAll();
+    }
+
+    /**
+     * 详情
+     *
+     * @param id 字典id
+     * @return SysDictType
+     */
+    @GetMapping("{id}")
+    public SysDictType get(@PathVariable("id") String id) {
+        return service.get(id);
+    }
+
+    /**
+     * 新增
+     *
+     * @return SysDictType
+     */
+    @GetMapping("add")
+    public SysDictType add() {
+        return service.add();
     }
 
     /**
@@ -56,7 +77,7 @@ public class SysDictTypeController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("sys:dict:type:remove")
+//    @RequiresPermissions("sys:dict:type:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -68,7 +89,7 @@ public class SysDictTypeController extends BaseController {
      * @return SysDictType
      */
     @PostMapping
-    @RequiresPermissions("sys:dict:type:save")
+//    @RequiresPermissions("sys:dict:type:save")
     public SysDictType save(@RequestBody @Valid SysDictType object) {
         return service.saveData(object);
     }

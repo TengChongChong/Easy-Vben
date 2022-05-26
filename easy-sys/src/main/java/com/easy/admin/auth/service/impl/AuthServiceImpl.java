@@ -1,6 +1,6 @@
 package com.easy.admin.auth.service.impl;
 
-import com.easy.admin.auth.constant.SessionConst;
+import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.service.AuthService;
 import com.easy.admin.common.core.util.WebUtils;
 import com.easy.admin.sys.model.LoginVO;

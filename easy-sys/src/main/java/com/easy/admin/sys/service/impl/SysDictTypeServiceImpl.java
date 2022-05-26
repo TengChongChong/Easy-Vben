@@ -4,9 +4,11 @@ import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.dao.SysDictTypeMapper;
 import com.easy.admin.sys.model.SysDictType;
 import com.easy.admin.sys.service.SysDictTypeService;
@@ -31,23 +33,39 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
         QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
         if (sysDictType != null) {
             if (Validator.isNotEmpty(sysDictType.getName())) {
-                queryWrapper.like("name", sysDictType.getName());
+                queryWrapper.like("t.name", sysDictType.getName());
             }
             if (Validator.isNotEmpty(sysDictType.getType())) {
-                queryWrapper.like("type", sysDictType.getType());
+                queryWrapper.like("t.type", sysDictType.getType());
+            }
+            if (Validator.isNotEmpty(sysDictType.getSys())) {
+                queryWrapper.eq("t.sys", sysDictType.getSys());
             }
             if (Validator.isNotEmpty(sysDictType.getStatus())) {
-                queryWrapper.eq("status", sysDictType.getStatus());
+                queryWrapper.eq("t.status", sysDictType.getStatus());
             }
         }
-        return page(page, queryWrapper);
+        page.setDefaultDesc("t.create_date");
+        page.setRecords(baseMapper.select(page, queryWrapper));
+        return page;
     }
 
     @Override
-    public List<SysDictType> selectAll() {
-        QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("status", CommonStatus.ENABLE.getCode());
-        return baseMapper.selectList(queryWrapper);
+    public List<Select> selectAll() {
+        return baseMapper.selectType(CommonStatus.ENABLE.getCode());
+    }
+
+    @Override
+    public SysDictType get(String id) {
+        return getById(id);
+    }
+
+    @Override
+    public SysDictType add() {
+        SysDictType sysDictType = new SysDictType();
+        sysDictType.setSys(WhetherConst.NO);
+        sysDictType.setStatus(CommonStatus.ENABLE.getCode());
+        return sysDictType;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -65,23 +83,16 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysDictType saveData(SysDictType object) {
-        ToolUtil.checkParams(object);
-        if (Validator.isEmpty(object.getName())) {
-            throw new EasyException("字典类型不能为空");
-        }
-        if (Validator.isEmpty(object.getType())) {
-            throw new EasyException("字典类型名称不能为空");
-        }
+    public SysDictType saveData(SysDictType sysDictType) {
         QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("type", object.getType());
-        if (Validator.isNotEmpty(object.getId())) {
-            queryWrapper.ne("id", object.getId());
+        queryWrapper.eq("type", sysDictType.getType());
+        if (Validator.isNotEmpty(sysDictType.getId())) {
+            queryWrapper.ne("id", sysDictType.getId());
         }
         int count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
-            throw new EasyException("字典类型代码 " + object.getType() + " 已存在");
+            throw new EasyException("字典类型代码 " + sysDictType.getType() + " 已存在");
         }
-        return (SysDictType) ToolUtil.checkResult(saveOrUpdate(object), object);
+        return (SysDictType) ToolUtil.checkResult(saveOrUpdate(sysDictType), sysDictType);
     }
 }

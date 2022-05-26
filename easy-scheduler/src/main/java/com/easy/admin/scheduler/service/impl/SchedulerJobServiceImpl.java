@@ -16,7 +16,7 @@ import com.easy.admin.scheduler.model.SchedulerJobLog;
 import com.easy.admin.scheduler.service.QuartzService;
 import com.easy.admin.scheduler.service.SchedulerJobLogService;
 import com.easy.admin.scheduler.service.SchedulerJobService;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
 import org.quartz.SchedulerException;

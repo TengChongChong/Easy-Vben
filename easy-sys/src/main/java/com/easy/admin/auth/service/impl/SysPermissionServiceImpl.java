@@ -1,0 +1,168 @@
+package com.easy.admin.auth.service.impl;
+
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.common.type.PermissionType;
+import com.easy.admin.auth.dao.SysPermissionMapper;
+import com.easy.admin.auth.model.SysPermission;
+import com.easy.admin.auth.service.SysPermissionService;
+import com.easy.admin.auth.service.SysRolePermissionService;
+import com.easy.admin.common.core.common.status.CommonStatus;
+import com.easy.admin.common.core.common.tree.Tree;
+import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.exception.GlobalException;
+import com.easy.admin.sys.common.constant.OpenModeConst;
+import com.easy.admin.sys.common.constant.WhetherConst;
+import com.easy.admin.util.ToolUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 权限/菜单
+ *
+ * @author TengChongChong
+ * @date 2018/10/31
+ */
+@Service
+public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements SysPermissionService {
+
+    @Autowired
+    private SysRolePermissionService sysRolePermissionsService;
+
+    @Override
+    public List<SysPermission> select(SysPermission sysPermission) {
+        QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
+        if (sysPermission != null) {
+            if (Validator.isNotEmpty(sysPermission.getTitle())) {
+                queryWrapper.like("t.title", sysPermission.getTitle());
+            }
+            // 状态
+            if (Validator.isNotEmpty(sysPermission.getStatus())) {
+                if (sysPermission.getStatus().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.status", sysPermission.getStatus().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.status", sysPermission.getStatus());
+                }
+            }
+            // 类型
+            if (Validator.isNotEmpty(sysPermission.getType())) {
+                if (sysPermission.getType().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.type", sysPermission.getType().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.type", sysPermission.getType());
+                }
+            }
+            // 外链
+            if (Validator.isNotEmpty(sysPermission.getExternal())) {
+                if (sysPermission.getExternal().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.external", sysPermission.getExternal().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.external", sysPermission.getExternal());
+                }
+            }
+            // 显示
+            if (Validator.isNotEmpty(sysPermission.getDisplay())) {
+                if (sysPermission.getDisplay().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.display", sysPermission.getDisplay().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.display", sysPermission.getDisplay());
+                }
+            }
+            if (Validator.isNotEmpty(sysPermission.getPath())) {
+                queryWrapper.like("t.path", sysPermission.getPath());
+            }
+        }
+
+        return baseMapper.select(queryWrapper);
+    }
+
+    @Override
+    public List<Tree> selectAll() {
+        return baseMapper.selectAll(CommonStatus.ENABLE.getCode());
+    }
+
+    @Override
+    public SysPermission get(String id) {
+        return baseMapper.get(id);
+    }
+
+    @Override
+    public SysPermission add(String parentId) {
+        SysPermission sysPermissions = new SysPermission();
+        sysPermissions.setParentId(parentId);
+        sysPermissions.setStatus(CommonStatus.ENABLE.getCode());
+        sysPermissions.setDisplay(WhetherConst.YES);
+        sysPermissions.setExternal(WhetherConst.NO);
+        sysPermissions.setType(PermissionType.CATALOGUE.getCode());
+        sysPermissions.setOpenMode(OpenModeConst.DEFAULT);
+        if(StrUtil.isNotBlank(parentId)){
+            SysPermission parentSysPermissions = baseMapper.get(parentId);
+            if (parentSysPermissions != null) {
+                sysPermissions.setParentName(parentSysPermissions.getName());
+            } else {
+                throw new EasyException("获取父权限信息失败，请重试");
+            }
+        }
+        return sysPermissions;
+    }
+
+    @Transactional(rollbackFor = RuntimeException.class)
+    @Override
+    public boolean remove(String ids) {
+        ToolUtil.checkParams(ids);
+        // 检查是否有子权限
+        QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
+        int count = count(queryWrapper);
+        if (count > 0) {
+            throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
+        }
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
+        boolean isSuccess = removeByIds(idList);
+        if (isSuccess) {
+            // 同时删除已分配的权限
+            sysRolePermissionsService.removeRolePermissions(ids);
+        }
+        return isSuccess;
+    }
+
+    @Override
+    public boolean setStatus(String ids, String status) {
+        ToolUtil.checkParams(ids);
+        ToolUtil.checkParams(status);
+        List<SysPermission> permissionsList = new ArrayList<>();
+        SysPermission sysPermissions;
+        for (String id : ids.split(CommonConst.SPLIT)) {
+            sysPermissions = new SysPermission();
+            sysPermissions.setId(id);
+            sysPermissions.setStatus(status);
+            permissionsList.add(sysPermissions);
+        }
+        return ToolUtil.checkResult(updateBatchById(permissionsList));
+    }
+
+    @Transactional(rollbackFor = RuntimeException.class)
+    @Override
+    public SysPermission saveData(SysPermission sysPermission) {
+        ToolUtil.checkParams(sysPermission);
+
+        if (StrUtil.isBlank(sysPermission.getId()) && sysPermission.getOrderNo() == null) {
+            sysPermission.setOrderNo(baseMapper.getMaxOrderNo(sysPermission.getParentId()) + 1);
+        }
+
+        return (SysPermission) ToolUtil.checkResult(saveOrUpdate(sysPermission), sysPermission);
+    }
+
+    @Override
+    public boolean saveOrder(List<SysPermission> sysPermissionList) {
+        return saveOrUpdateBatch(sysPermissionList);
+    }
+}

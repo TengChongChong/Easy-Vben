@@ -16,7 +16,6 @@ import java.util.Date;
  */
 @TableName("sys_exception")
 public class SysException extends Model<SysException> implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id")
     private String id;

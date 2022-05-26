@@ -20,7 +20,7 @@ public interface SysDictMapper extends BaseMapper<SysDict> {
      *
      * @param page 分页
      * @param queryWrapper 查询条件
-     * @return
+     * @return List<SysDict>
      */
     List<SysDict> select(Page<SysDict> page, @Param("ew") QueryWrapper<SysDict> queryWrapper);
 
@@ -29,25 +29,23 @@ public interface SysDictMapper extends BaseMapper<SysDict> {
      *
      * @param dictType 字典类型
      * @param status 状态
-     * @return
+     * @return List<Select>
      */
     List<Select> selectByDictType(@Param("dictType") String dictType, @Param("status") String status);
 
     /**
      * 获取指定字典类型最大排序值
      *
-     * @param dictType
-     * @return
+     * @param dictType 字典类型
+     * @return 排序值
      */
     int getMaxOrderNo(@Param("dictType") String dictType);
 
-
     /**
      * 查询所有字典
-     * 用户生成静态数据
      *
      * @param status 状态
-     * @return
+     * @return List<SysDict>
      */
-    List<SysDict> generateDictData(@Param("status") String status);
+    List<SysDict> selectAll(@Param("status") String status);
 }

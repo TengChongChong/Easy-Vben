@@ -168,8 +168,8 @@ public class SysDownloadServiceImpl extends ServiceImpl<SysDownloadMapper, SysDo
     }
 
     @Override
-    public ResponseEntity<FileSystemResource> downloadSysFileById(String pId, String type, String displayName, HttpServletRequest request) throws UnsupportedEncodingException {
-        List<SysFile> sysFileList = sysFileService.select(pId, type);
+    public ResponseEntity<FileSystemResource> downloadSysFileById(String parentId, String type, String displayName, HttpServletRequest request) throws UnsupportedEncodingException {
+        List<SysFile> sysFileList = sysFileService.select(parentId, type);
         if (sysFileList == null || sysFileList.size() == 0) {
             throw new EasyException("获取文件数据失败");
         }

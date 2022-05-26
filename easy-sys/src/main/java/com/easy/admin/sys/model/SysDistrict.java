@@ -14,7 +14,6 @@ import java.io.Serializable;
  */
 @TableName("sys_district")
 public class SysDistrict extends Model<SysDictType> {
-    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id")
     private String id;
@@ -26,7 +25,7 @@ public class SysDistrict extends Model<SysDictType> {
     /**
      * 父 ID
      */
-    private String pId;
+    private String parentId;
     /**
      * 拼音首字母
      */
@@ -73,9 +72,9 @@ public class SysDistrict extends Model<SysDictType> {
         this.orderNo = orderNo;
     }
 
-    public SysDistrict(String id, String pId, Integer orderNo) {
+    public SysDistrict(String id, String parentId, Integer orderNo) {
         this.id = id;
-        this.pId = pId;
+        this.parentId = parentId;
         this.orderNo = orderNo;
     }
 
@@ -100,12 +99,12 @@ public class SysDistrict extends Model<SysDictType> {
         this.name = name;
     }
 
-    public String getpId() {
-        return pId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getInitial() {
@@ -170,22 +169,5 @@ public class SysDistrict extends Model<SysDictType> {
 
     public void setOrderNo(Integer orderNo) {
         this.orderNo = orderNo;
-    }
-
-    @Override
-    public String toString() {
-        return "SysDistrict{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", pId=" + pId +
-                ", initial='" + initial + '\'' +
-                ", initials='" + initials + '\'' +
-                ", pinyin='" + pinyin + '\'' +
-                ", extra='" + extra + '\'' +
-                ", suffix='" + suffix + '\'' +
-                ", code='" + code + '\'' +
-                ", areaCode='" + areaCode + '\'' +
-                ", orderNo=" + orderNo +
-                '}';
     }
 }

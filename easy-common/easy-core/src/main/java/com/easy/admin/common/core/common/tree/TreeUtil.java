@@ -24,7 +24,7 @@ public class TreeUtil {
         Tree tree = new Tree();
         tree.setTitle("./");
         tree.setId(BASE_ID);
-        tree.setpId("#");
+        tree.setParentId("#");
         tree.setIcon(CommonConst.DEFAULT_FOLDER_ICON);
         return tree;
     }

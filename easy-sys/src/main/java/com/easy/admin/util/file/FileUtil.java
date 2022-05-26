@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.common.constant.SysConst;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

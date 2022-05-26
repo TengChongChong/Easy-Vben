@@ -22,7 +22,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.model.SysFile;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysFileService;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;

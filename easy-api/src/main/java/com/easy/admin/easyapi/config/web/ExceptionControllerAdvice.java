@@ -5,7 +5,7 @@ import com.easy.admin.common.core.common.status.ResultCode;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.Response;
 import com.easy.admin.sys.model.SysException;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysExceptionService;
 import com.easy.admin.util.ShiroUtil;
 import org.apache.shiro.authc.AuthenticationException;
@@ -82,7 +82,7 @@ public class ExceptionControllerAdvice {
             return Response.failError(null, easyException.getCode(), easyException.getMessage(), easyException.getShowType());
         } else {
             logger.error("登录异常:" + e.getMessage());
-            return Response.failError(e.getMessage(), Response.SILENT);
+            return Response.failError(e.getMessage(), Response.SHOW_TYPE_WARNING);
         }
     }
 
@@ -115,7 +115,7 @@ public class ExceptionControllerAdvice {
             if (!errors.isEmpty()) {
                 // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
                 FieldError fieldError = (FieldError) errors.get(0);
-                return Response.failError(fieldError.getDefaultMessage());
+                return Response.failError(ResultCode.BAD_REQUEST.getCode(), fieldError.getDefaultMessage());
             }
         }
         return Response.failError(ResultCode.BAD_REQUEST.getCode(), "参数效验异常[" + e.getMessage() + "]");

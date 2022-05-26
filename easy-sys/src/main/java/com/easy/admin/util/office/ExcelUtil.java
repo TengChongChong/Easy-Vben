@@ -11,7 +11,7 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.model.SysDownload;
-import com.easy.admin.sys.model.SysImportExcelTemplateDetails;
+import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.service.SysDownloadService;
 import com.easy.admin.util.file.FileUtil;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -118,7 +118,7 @@ public class ExcelUtil {
      * @param dictionaries 字典
      * @return path
      */
-    public static String writFile(String name, List<SysImportExcelTemplateDetails> details, Map<String, List<SysDict>> dictionaries) {
+    public static String writFile(String name, List<SysImportExcelTemplateDetail> details, Map<String, List<SysDict>> dictionaries) {
         return writFile(name, details, dictionaries, null);
     }
     /**
@@ -130,7 +130,7 @@ public class ExcelUtil {
      * @param body 数据
      * @return path
      */
-    public static String writFile(String name, List<SysImportExcelTemplateDetails> details, Map<String, List<SysDict>> dictionaries, List<List<Object>> body) {
+    public static String writFile(String name, List<SysImportExcelTemplateDetail> details, Map<String, List<SysDict>> dictionaries, List<List<Object>> body) {
         String path = FileUtil.getTemporaryPath() + IdUtil.randomUUID() + EXCEL_SUFFIX_XLSX;
         BigExcelWriter writer = cn.hutool.poi.excel.ExcelUtil.getBigWriter(path, name);
         // 设置默认行高
@@ -185,7 +185,7 @@ public class ExcelUtil {
      * @param details 配置项
      * @param writer  ExcelWriter
      */
-    public static void setSelect(List<SysImportExcelTemplateDetails> details, Map<String, List<SysDict>> dictionaries, ExcelWriter writer) {
+    public static void setSelect(List<SysImportExcelTemplateDetail> details, Map<String, List<SysDict>> dictionaries, ExcelWriter writer) {
         for (int i = 0; i < details.size(); i++) {
             if (StrUtil.isNotBlank(details.get(i).getReplaceTable()) && ImportConst.SYS_DICT.equals(details.get(i).getReplaceTable())) {
                 List<String> selects = new ArrayList<>();

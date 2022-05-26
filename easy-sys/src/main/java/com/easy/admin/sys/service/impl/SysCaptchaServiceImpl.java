@@ -5,7 +5,7 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.SysConfigConst;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysCaptchaService;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.SysConfigUtil;

@@ -31,6 +31,6 @@
         select arp.* from act_re_procdef arp where arp.id_ = #{id}
     </select>
     <select id="selectProcessForSelect" resultType="com.easy.admin.common.core.common.select.Select">
-        select arp.id_ as value, concat(arp.name_, ' v' , arp.version_) as text from act_re_procdef arp order by arp.key_
+        select arp.id_ as value, concat(arp.name_, ' v' , arp.version_) as label from act_re_procdef arp order by arp.key_
     </select>
 </mapper>

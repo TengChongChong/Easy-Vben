@@ -1,13 +1,19 @@
 package com.easy.admin.util;
 
-import com.easy.admin.auth.constant.SessionConst;
-import com.easy.admin.sys.model.SysUser;
+import cn.hutool.core.util.StrUtil;
+import com.easy.admin.auth.common.constant.SessionConst;
+import com.easy.admin.auth.model.SysPermission;
+import com.easy.admin.auth.model.SysRole;
+import com.easy.admin.auth.model.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Shiro工具类
@@ -124,4 +130,50 @@ public class ShiroUtil {
         removeAttribute(SessionConst.USER_SESSION_KEY);
     }
 
+
+    /**
+     * 获取角色标识
+     *
+     * @param roleList 权限list
+     * @return 权限标识
+     */
+    public static List<String> getRoleCodes(List<SysRole> roleList) {
+        List<String> roleCodes = new ArrayList<>();
+        for (SysRole role : roleList) {
+            if (StrUtil.isNotBlank(role.getCode())) {
+                roleCodes.add(role.getCode());
+            }
+        }
+        return roleCodes;
+    }
+
+    /**
+     * 获取角色Id
+     *
+     * @param roleList 权限list
+     * @return 权限标识
+     */
+    public static List<String> getRoleIds(List<SysRole> roleList) {
+        List<String> roleIds = new ArrayList<>();
+        for (SysRole role : roleList) {
+            roleIds.add(role.getId());
+        }
+        return roleIds;
+    }
+
+    /**
+     * 获取权限标识
+     *
+     * @param permissionList 权限list
+     * @return 权限标识
+     */
+    public static List<String> getPermissionCodes(List<SysPermission> permissionList) {
+        List<String> permissionCodes = new ArrayList<>();
+        for (SysPermission permission : permissionList) {
+            if (StrUtil.isNotBlank(permission.getCode())) {
+                permissionCodes.add(permission.getCode());
+            }
+        }
+        return permissionCodes;
+    }
 }

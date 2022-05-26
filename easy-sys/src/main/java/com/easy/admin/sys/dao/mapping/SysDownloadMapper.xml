@@ -14,6 +14,7 @@
         <result column="auth" property="auth" />
         <result column="code" property="code" />
         <result column="status" property="status" />
+        <result column="tenant_id" property="tenantId" />
         <result column="version" property="version" />
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />

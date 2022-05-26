@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.auth.dao.SysPermissionMapper">
+    <resultMap id="BaseResultMap" type="com.easy.admin.auth.model.SysPermission">
+        <id column="id" property="id"/>
+        <id column="parent_id" property="parentId"/>
+        <result column="type" property="type"/>
+        <result column="title" property="title"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="icon" property="icon"/>
+        <result column="path" property="path"/>
+        <result column="component" property="component"/>
+        <result column="external" property="external"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="display" property="display"/>
+        <result column="open_mode" property="openMode"/>
+        <result column="status" property="status"/>
+        <result column="remarks" property="remarks"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_date" property="createDate"/>
+        <result column="edit_user" property="editUser"/>
+        <result column="edit_date" property="editDate"/>
+        <result column="version" property="version"/>
+    </resultMap>
+    <select id="select" resultType="com.easy.admin.auth.model.SysPermission">
+        select t.id, t.parent_id, t.type, t.title, t.name, t.code, t.icon, t.order_no, t.path, t.component, t.external, t.display,
+               t.open_mode, t.status, su.nickname as edit_user
+        from sys_permission t
+            left join sys_user su on su.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
+        order by t.order_no
+    </select>
+    <select id="get" resultType="com.easy.admin.auth.model.SysPermission">
+        select t.id, t.parent_id, t.type, t.title, t.name, t.code, t.icon, t.order_no, t.path, t.component, t.external, t.display,
+               t.open_mode, t.status, t.remarks, t.version, p.name as parent_name
+        from sys_permission t
+            left join sys_permission p on p.id = t.parent_id
+        where t.id = #{id}
+    </select>
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(t.order_no), 0)
+        from sys_permission t
+        where t.parent_id = #{parentId}
+    </select>
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.parent_id, t.id as `key`, t.type, t.icon, t.display, t.title
+        from sys_permission t
+        where t.status = #{status}
+        order by t.order_no
+    </select>
+</mapper>

@@ -39,7 +39,7 @@ public class SysDownloadController {
     /**
      * 下载SysFile数据中文件
      *
-     * @param pId         数据id
+     * @param parentId         数据id
      * @param type        类型
      * @param displayName 显示名称
      * @return ResponseEntity
@@ -47,11 +47,11 @@ public class SysDownloadController {
     @RequestMapping("/download/sys/file")
     @ResponseBody
     public ResponseEntity<FileSystemResource> downloadSysFileById(
-            @RequestParam("pId") String pId,
+            @RequestParam("parentId") String parentId,
             @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "displayName", required = false) String displayName,
             HttpServletRequest request
     ) throws UnsupportedEncodingException {
-        return service.downloadSysFileById(pId, type, displayName, request);
+        return service.downloadSysFileById(parentId, type, displayName, request);
     }
 }

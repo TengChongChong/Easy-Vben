@@ -134,12 +134,7 @@ public class Page<T> implements IPage<T> {
     }
 
     @Override
-    @JsonIgnore
     public List<T> getRecords() {
-        return this.records;
-    }
-
-    public List<T> getData() {
         return this.records;
     }
 

@@ -10,27 +10,18 @@ import com.easy.admin.common.core.common.status.ResultCode;
  * @date 2019-08-30
  */
 public enum GlobalException implements EasyServiceException {
-
-    // 请求参数有误
-    BAD_REQUEST(ResultCode.BAD_REQUEST.getCode(),"请求参数有误"),
-    // 会话信息已过期
-    USERNAME_NOT_FOUND(ResultCode.UNAUTHORIZED.getCode(), "用户名或密码错误"),
     // 会话信息已过期
     SESSION_INVALID(ResultCode.UNAUTHORIZED.getCode(), "会话信息已过期"),
     // 用户在其他地方登录
-    SESSION_LOGIN_ELSEWHERE(ResultCode.UNAUTHORIZED.getCode(), "用户在其他地方登录，你被迫退出"),
+    SESSION_LOGIN_ELSEWHERE(ResultCode.UNAUTHORIZED.getCode(), "你的账号在其他地方登录，你被强制退出"),
     // 被管理员强制踢出
     SESSION_FORCE_LOGOUT(ResultCode.UNAUTHORIZED.getCode(), "被管理员强制退出"),
-    // 你无权限访问此资源
-    FORBIDDEN(ResultCode.FORBIDDEN.getCode(), "你无权限访问此资源"),
-    // 你访问的资源不存在
-    HTTP_NOT_FOUND(ResultCode.NOT_FOUND.getCode(), "你访问的资源不存在"),
     // 要删除的信息包含子节点
     EXIST_CHILD(ResultCode.INTERNAL_SERVER.getCode(), "要删除的信息包含子节点，请移除子节点后重试"),
-    // 无效的日期格式
-    INVALID_DATE_FORMAT(ResultCode.BAD_REQUEST.getCode(), "无效的日期格式"),
     // 获取数据失败
     FAILED_TO_GET_DATA(ResultCode.INTERNAL_SERVER.getCode(), "获取数据失败，请重试"),
+    // 乐观锁
+    LOCK_ERROR(ResultCode.INTERNAL_SERVER.getCode(), "当前编辑数据已被他人修改，请重新点击修改按钮获取最新数据"),
     // 未知错误
     UNKNOWN_ERROR(ResultCode.INTERNAL_SERVER.getCode(), "未知错误，请联系管理员");
     /**

@@ -1,6 +1,6 @@
 project:
     # 项目访问url,如不使用邮件功能可不配置
-    url: http://127.0.0.1:80
+    url: http://127.0.0.1
     # 前端访问url
     front-end-url: http://localhost:8000
     login:
@@ -12,9 +12,9 @@ project:
             # 开启记住我功能,敏感操作仍要客户登录 比如 支付/删除/审核
             security: true
     # 文件上传路径(不要写以~开头的路径会导致无法访问)
-    file-upload-path: /Users/tengchong/development/easy-admin
-    # 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 30分钟
-    session-validation-interval: 1800
+    file-upload-path: /Users/tengchong/development/easy-vben
+    # 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话
+    session-validation-interval: 86400
 server:
     # 端口号
     port: 80
@@ -32,7 +32,7 @@ spring:
     # Redis
     redis:
         # 数据库索引（默认为0）
-        database: 10
+        database: 9
         # 服务器地址
         host: 127.0.0.1
         # 服务器连接端口
@@ -57,7 +57,7 @@ spring:
         dynamic:
             datasource:
                 master:
-                    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:easy-admin}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
+                    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
                     username: ${DB_USERNAME:root}
                     password: ${DB_PASSWORD:tengchong}
 async:

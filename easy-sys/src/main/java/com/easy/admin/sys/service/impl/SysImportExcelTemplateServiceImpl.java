@@ -11,7 +11,7 @@ import com.easy.admin.sys.dao.SysImportExcelTemplateMapper;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.model.SysDownload;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
-import com.easy.admin.sys.model.SysImportExcelTemplateDetails;
+import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.service.*;
 import com.easy.admin.util.ToolUtil;
 import com.easy.admin.util.office.ExcelUtil;
@@ -35,7 +35,7 @@ import java.util.Map;
 public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExcelTemplateMapper, SysImportExcelTemplate> implements SysImportExcelTemplateService {
 
     @Autowired
-    private SysImportExcelTemplateDetailsService templateDetailsService;
+    private SysImportExcelTemplateDetailService templateDetailsService;
 
     @Autowired
     private SysImportExcelTemporaryService temporaryService;
@@ -166,9 +166,9 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
         if (sysImportExcelTemplate == null) {
             throw new EasyException("模板信息不存在");
         }
-        List<SysImportExcelTemplateDetails> details = templateDetailsService.selectDetails(sysImportExcelTemplate.getId());
+        List<SysImportExcelTemplateDetail> details = templateDetailsService.selectDetails(sysImportExcelTemplate.getId());
         List<String> dictTypes = new ArrayList<>();
-        for (SysImportExcelTemplateDetails detail : details) {
+        for (SysImportExcelTemplateDetail detail : details) {
             if(ImportConst.SYS_DICT.equals(detail.getReplaceTable())){
                 // 收集所需的字典类别数据
                 dictTypes.add(detail.getReplaceTableDictType());

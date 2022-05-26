@@ -1,10 +1,7 @@
 package com.easy.admin.sys.model;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.admin.util.file.FileUtil;
 
@@ -29,7 +26,7 @@ public class SysFile extends Model<SysFile> {
     /**
      * 父id
      */
-    private String pId;
+    private String parentId;
 
     /**
      * 类型
@@ -74,6 +71,7 @@ public class SysFile extends Model<SysFile> {
     /**
      * 乐观锁
      */
+    @Version
     private Integer version;
 
     /**
@@ -107,12 +105,6 @@ public class SysFile extends Model<SysFile> {
     @TableField(exist = false)
     private String url;
 
-    /**
-     * 所属栏目
-     */
-    @TableField(exist = false)
-    private String columnId;
-
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -125,13 +117,15 @@ public class SysFile extends Model<SysFile> {
     public void setId(String id) {
         this.id = id;
     }
-    public String getpId() {
-        return pId;
+
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
+
     public String getType() {
         return type;
     }
@@ -230,13 +224,5 @@ public class SysFile extends Model<SysFile> {
             return null;
         }
         return FileUtil.getUrl(this.path);
-    }
-
-    public String getColumnId() {
-        return columnId;
-    }
-
-    public void setColumnId(String columnId) {
-        this.columnId = columnId;
     }
 }

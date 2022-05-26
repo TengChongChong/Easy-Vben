@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.common.constant.ImportConst;
-import com.easy.admin.sys.model.SysImportExcelTemplateDetails;
+import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.model.SysImportExcelTemporary;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +32,7 @@ public class ImportExportUtil {
      * @return 数组
      */
     public static List<List<Object>> toExportData(List<SysImportExcelTemporary> temporaries,
-                                                  List<SysImportExcelTemplateDetails> configs,
+                                                  List<SysImportExcelTemplateDetail> configs,
                                                   boolean containVerificationResults) {
         List<List<Object>> rows = new ArrayList<>();
         if (temporaries != null && !temporaries.isEmpty() &&
@@ -89,9 +89,9 @@ public class ImportExportUtil {
      * @param containVerificationResults 是否包含验证结果列
      * @return 标题集合
      */
-    public static List<String> getTitles(List<SysImportExcelTemplateDetails> configs, boolean containVerificationResults) {
+    public static List<String> getTitles(List<SysImportExcelTemplateDetail> configs, boolean containVerificationResults) {
         List<String> titles = new ArrayList<>();
-        for (SysImportExcelTemplateDetails detail : configs) {
+        for (SysImportExcelTemplateDetail detail : configs) {
             titles.add(detail.getTitle());
         }
         if (containVerificationResults) {
@@ -106,7 +106,7 @@ public class ImportExportUtil {
      * @param configs 导入规则
      * @return 标题数组
      */
-    public static String[] getTitles(List<SysImportExcelTemplateDetails> configs) {
+    public static String[] getTitles(List<SysImportExcelTemplateDetail> configs) {
         return getTitles(configs, false).toArray(new String[]{});
     }
 
@@ -119,7 +119,7 @@ public class ImportExportUtil {
      * @param containVerificationResults 包含验证结果
      */
     private static List<Object> callingGetMethodToArray(SysImportExcelTemporary temporary,
-                                                        List<SysImportExcelTemplateDetails> configs,
+                                                        List<SysImportExcelTemplateDetail> configs,
                                                         Class temporaryClass, boolean containVerificationResults) {
         List<Object> row = new ArrayList<>();
         Method method = null;
@@ -186,7 +186,7 @@ public class ImportExportUtil {
      * @param config 导入规则
      * @return 转换后的类型, 如果转换失败则用string类型
      */
-    public static Object transformationData(String data, SysImportExcelTemplateDetails config) {
+    public static Object transformationData(String data, SysImportExcelTemplateDetail config) {
         Object obj = null;
         try {
             if (ImportExportUtil.isDate(config.getFieldType())) {
@@ -218,7 +218,7 @@ public class ImportExportUtil {
      * @param ignoreDict 是否忽略字典翻译
      * @return sql
      */
-    public static String getSelectFields(List<SysImportExcelTemplateDetails> configs, boolean ignoreDict){
+    public static String getSelectFields(List<SysImportExcelTemplateDetail> configs, boolean ignoreDict){
         StringBuilder selectFields = new StringBuilder();
         for (int i = 0; i < configs.size(); i++) {
             // 如果指定了忽略字典并且替换表是sys_dict,则当做常规处理
@@ -248,7 +248,7 @@ public class ImportExportUtil {
      * @param ignoreDict 是否忽略字典翻译
      * @return sql
      */
-    public static String getLeftJoinTables(List<SysImportExcelTemplateDetails> configs, boolean ignoreDict){
+    public static String getLeftJoinTables(List<SysImportExcelTemplateDetail> configs, boolean ignoreDict){
         StringBuilder leftJoinTables = new StringBuilder();
         for (int i = 0; i < configs.size(); i++) {
             boolean ignore = ignoreDict && ImportConst.SYS_DICT.equals(configs.get(i).getReplaceTable());
@@ -280,7 +280,7 @@ public class ImportExportUtil {
      * @param data   单元格中内容
      * @param config 单元格导入规则
      */
-    public static void verificationData(String data, SysImportExcelTemplateDetails config) {
+    public static void verificationData(String data, SysImportExcelTemplateDetail config) {
         if(StrUtil.isNotBlank(data)){
             if (ImportExportUtil.isDate(config.getFieldType())) {
                 try {
@@ -318,7 +318,7 @@ public class ImportExportUtil {
      * @param data   单元格数据
      * @param config 单元格导入规则
      */
-    private static void verificationLength(String data, SysImportExcelTemplateDetails config) {
+    private static void verificationLength(String data, SysImportExcelTemplateDetail config) {
         if (StrUtil.isNotBlank(config.getFieldLength()) && !ImportConst.FIELD_LENGRH_ARBITRARILY.equals(config.getFieldLength()) && config.getFieldLength().contains(CommonConst.SPLIT)) {
             // 小数格式,检查小数点前后是否超出限制
             int integerLength = Integer.parseInt(config.getFieldLength().split(CommonConst.SPLIT)[0]);

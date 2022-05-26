@@ -6,7 +6,7 @@ import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysMessage;
-import com.easy.admin.sys.service.SysMessageDetailsService;
+import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.sys.service.SysMessageService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class SysMessageController extends BaseController {
     private SysMessageService service;
 
     @Autowired
-    private SysMessageDetailsService sysMessageDetailsService;
+    private SysMessageDetailService sysMessageDetailsService;
 
     /**
      * 列表

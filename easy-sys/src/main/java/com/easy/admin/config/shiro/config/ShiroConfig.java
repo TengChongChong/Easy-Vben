@@ -54,10 +54,10 @@ public class ShiroConfig {
     private final Integer loginRememberInvalidateTime = 259200;
 
     /**
-     * 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 30分钟
+     * 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话
      */
     @Value("${project.session-validation-interval}")
-    private final Integer sessionValidationInterval = 60 * 30;
+    private final Integer sessionValidationInterval = 86400;
 
     @Bean
     public MethodInvokingFactoryBean methodInvokingFactoryBean(SecurityManager securityManager) {
@@ -98,10 +98,7 @@ public class ShiroConfig {
          * user   表示用户不一定已通过认证,只要曾被Shiro记住过登录状态的用户就可以正常发起请求,比如rememberMe
          */
         // 检查会话
-        filterChainDefinitionMap.put("/auth/login", "anon");
-        filterChainDefinitionMap.put("/auth/**", "checkSession");
-        filterChainDefinitionMap.put("/", "checkSession");
-        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/api/auth/**", "checkSession");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

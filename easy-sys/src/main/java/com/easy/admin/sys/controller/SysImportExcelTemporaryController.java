@@ -5,7 +5,7 @@ import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysImportExcelTemporary;
-import com.easy.admin.sys.service.SysImportExcelTemplateDetailsService;
+import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class SysImportExcelTemporaryController extends BaseController {
     @Autowired
     private SysImportExcelTemporaryService service;
     @Autowired
-    private SysImportExcelTemplateDetailsService detailsService;
+    private SysImportExcelTemplateDetailService detailsService;
 
     /**
      * 列表

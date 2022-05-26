@@ -8,7 +8,7 @@ import com.easy.admin.activiti.dao.HistoryTaskInstanceMapper;
 import com.easy.admin.activiti.model.HistoryTaskInstance;
 import com.easy.admin.activiti.service.HistoryTaskInstanceService;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.util.ShiroUtil;
 import org.springframework.stereotype.Service;
 

@@ -18,25 +18,18 @@ import java.io.Serializable;
  */
 public class Response implements Serializable {
     /**
-     * 静默
+     * 错误级别 - info
      */
-    public static final int SILENT = 0;
+    public static final int SHOW_TYPE_INFO = 1;
     /**
-     * Notification 通知提醒框 - info
+     * 错误级别 - warning
      */
-    public static final int NOTIFICATION_INFO = 1;
+    public static final int SHOW_TYPE_WARNING = 2;
     /**
-     * Notification 通知提醒框 - warning
+     * 错误级别 - error
      */
-    public static final int NOTIFICATION_WARNING = 2;
-    /**
-     * Notification 通知提醒框 - error
-     */
-    public static final int NOTIFICATION_ERROR = 3;
-    /**
-     * Error Page
-     */
-    public static final int PAGE = 9;
+    public static final int SHOW_TYPE_ERROR = 3;
+
     /**
      * 默认错误码
      */
@@ -66,7 +59,7 @@ public class Response implements Serializable {
     private String errorMessage;
 
     /**
-     * 错误显示方式：0 静默 ； 1 notification.info; 2 notification.warning; 3 notification.error; 9 page
+     * 错误级别
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer showType;
@@ -110,46 +103,13 @@ public class Response implements Serializable {
     }
 
     /**
-     * 失败提示 - 静默
-     *
-     * @param errorMessage 错误信息
-     * @return Response
-     */
-    public static Response failSilent(String errorMessage) {
-        return fail(null, ERROR_CODE, errorMessage, SILENT);
-    }
-
-    /**
-     * 失败提示 - 静默
-     *
-     * @param errorCode    错误码
-     * @param errorMessage 错误信息
-     * @return Response
-     */
-    public static Response failSilent(String errorCode, String errorMessage) {
-        return fail(null, errorCode, errorMessage, SILENT);
-    }
-
-    /**
-     * 失败提示 - 静默
-     *
-     * @param data         响应数据
-     * @param errorCode    错误码
-     * @param errorMessage 错误信息
-     * @return Response
-     */
-    public static Response failSilent(Object data, String errorCode, String errorMessage) {
-        return fail(data, errorCode, errorMessage, SILENT);
-    }
-
-    /**
      * 失败提示 - Notification 通知提醒框 - warning
      *
      * @param errorMessage 错误信息
      * @return Response
      */
     public static Response failWarning(String errorMessage) {
-        return fail(null, ERROR_CODE, errorMessage, NOTIFICATION_WARNING);
+        return fail(null, ERROR_CODE, errorMessage, SHOW_TYPE_WARNING);
     }
 
     /**
@@ -160,7 +120,7 @@ public class Response implements Serializable {
      * @return Response
      */
     public static Response failWarning(String errorCode, String errorMessage) {
-        return fail(null, errorCode, errorMessage, NOTIFICATION_WARNING);
+        return fail(null, errorCode, errorMessage, SHOW_TYPE_WARNING);
     }
 
     /**
@@ -172,7 +132,7 @@ public class Response implements Serializable {
      * @return Response
      */
     public static Response failWarning(Object data, String errorCode, String errorMessage) {
-        return fail(data, errorCode, errorMessage, NOTIFICATION_WARNING);
+        return fail(data, errorCode, errorMessage, SHOW_TYPE_WARNING);
     }
 
     /**
@@ -182,7 +142,7 @@ public class Response implements Serializable {
      * @return Response
      */
     public static Response failError(String errorMessage) {
-        return fail(null, ERROR_CODE, errorMessage, NOTIFICATION_ERROR);
+        return fail(null, ERROR_CODE, errorMessage, SHOW_TYPE_ERROR);
     }
 
     /**
@@ -204,7 +164,7 @@ public class Response implements Serializable {
      * @return Response
      */
     public static Response failError(String errorCode, String errorMessage) {
-        return fail(null, errorCode, errorMessage, NOTIFICATION_ERROR);
+        return fail(null, errorCode, errorMessage, SHOW_TYPE_ERROR);
     }
 
     /**
@@ -216,7 +176,7 @@ public class Response implements Serializable {
      * @return Response
      */
     public static Response failError(Object data, String errorCode, String errorMessage) {
-        return fail(data, errorCode, errorMessage, NOTIFICATION_ERROR);
+        return fail(data, errorCode, errorMessage, SHOW_TYPE_ERROR);
     }
 
     /**
@@ -231,40 +191,6 @@ public class Response implements Serializable {
     public static Response failError(Object data, String errorCode, String errorMessage, Integer showType) {
         return fail(data, errorCode, errorMessage, showType);
     }
-
-    /**
-     * 失败提示 - Error Page
-     *
-     * @param errorMessage 错误信息
-     * @return Response
-     */
-    public static Response failPage(String errorMessage) {
-        return fail(null, ERROR_CODE, errorMessage, PAGE);
-    }
-
-    /**
-     * 失败提示 - Error Page
-     *
-     * @param errorCode    错误码
-     * @param errorMessage 错误信息
-     * @return Response
-     */
-    public static Response failPage(String errorCode, String errorMessage) {
-        return fail(null, errorCode, errorMessage, PAGE);
-    }
-
-    /**
-     * 失败提示 - Error Page
-     *
-     * @param data         响应数据
-     * @param errorCode    错误码
-     * @param errorMessage 错误信息
-     * @return Response
-     */
-    public static Response failPage(Object data, String errorCode, String errorMessage) {
-        return fail(data, errorCode, errorMessage, PAGE);
-    }
-
 
     /**
      * 失败提示

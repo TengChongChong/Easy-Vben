@@ -1,6 +1,6 @@
 package com.easy.admin.config.shiro.service;
 
-import com.easy.admin.sys.model.SysUser;
+import com.easy.admin.auth.model.SysUser;
 import org.apache.shiro.session.Session;
 
 import java.util.List;

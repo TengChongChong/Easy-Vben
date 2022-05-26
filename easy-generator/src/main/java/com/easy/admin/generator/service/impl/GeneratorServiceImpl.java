@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.easy.admin.common.core.common.select.Select;
+import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.config.properties.ProjectProperties;
 import com.easy.admin.generator.constant.GeneratorConst;
@@ -22,15 +23,15 @@ import com.easy.admin.generator.engine.TemplateEngine;
 import com.easy.admin.generator.model.FieldSet;
 import com.easy.admin.generator.model.Generator;
 import com.easy.admin.generator.service.GeneratorService;
-import com.easy.admin.sys.common.status.PermissionsStatus;
+import com.easy.admin.sys.common.constant.OpenModeConst;
 import com.easy.admin.sys.common.status.ProfilesActiveStatus;
-import com.easy.admin.sys.common.type.PermissionsType;
+import com.easy.admin.auth.common.type.PermissionType;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
-import com.easy.admin.sys.model.SysImportExcelTemplateDetails;
-import com.easy.admin.sys.model.SysPermissions;
-import com.easy.admin.sys.service.SysImportExcelTemplateDetailsService;
+import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
+import com.easy.admin.auth.model.SysPermission;
+import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
-import com.easy.admin.sys.service.SysPermissionsService;
+import com.easy.admin.auth.service.SysPermissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +54,14 @@ import java.util.List;
 @Service
 public class GeneratorServiceImpl implements GeneratorService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private SysPermissionsService sysPermissionsService;
+    private SysPermissionService sysPermissionsService;
     @Autowired
     private SysImportExcelTemplateService sysImportExcelTemplateService;
     @Autowired
-    private SysImportExcelTemplateDetailsService sysImportExcelTemplateDetailsService;
+    private SysImportExcelTemplateDetailService sysImportExcelTemplateDetailsService;
 
     @Autowired
     private DynamicRoutingDataSource dynamicRoutingDataSource;
@@ -87,69 +88,66 @@ public class GeneratorServiceImpl implements GeneratorService {
         // 检查是否需要添加菜单
         if (StrUtil.isNotBlank(object.getMenuName())) {
             // 菜单名称不为空
-            // 检查菜单名称是否存在
-            if (!sysPermissionsService.checkMenuIsHaving(object.getMenuName())) {
-                // 菜单不存在
-                SysPermissions basePermission = getNewMenu(
-                        object.getMenuName(),
-                        PermissionsType.MENU.getCode(),
-                        "0",
-                        object.getPermissionsCode() + ":select",
-                        object.getControllerMapping().replace("/auth/", "/") + "/list",
-                        object.getViewPath().replace("/views", "") + "/List"
-                );
-                basePermission.setpId("0");
-                basePermission.setType(PermissionsType.MENU.getCode());
-                sysPermissionsService.saveData(basePermission);
-                if (StrUtil.isNotBlank(object.getPermissionsCode())) {
-                    // 如果权限标识不为空,保存方法权限
-                    if (object.isGeneratorMethodsSave()) {
-                        SysPermissions savePermission = getNewMenu(
-                                "保存/修改",
-                                PermissionsType.PERMISSIONS.getCode(),
-                                "1",
-                                object.getPermissionsCode() + ":save",
-                                null,
-                                null
-                        );
-                        savePermission.setpId(basePermission.getId());
-                        sysPermissionsService.saveData(savePermission);
-                        savePermission = getNewMenu(
-                                "详情",
-                                PermissionsType.MENU.getCode(),
-                                "1",
-                                null,
-                                object.getControllerMapping().replace("/auth/", "/") + "/input",
-                                object.getViewPath().replace("/views", "") + "/Input"
-                        );
-                        savePermission.setpId(basePermission.getId());
-                        sysPermissionsService.saveData(savePermission);
+            // 菜单不存在
+            SysPermission basePermission = getNewMenu(
+                    object.getMenuName(),
+                    PermissionType.MENU.getCode(),
+                    "0",
+                    object.getPermissionsCode() + ":select",
+                    object.getControllerMapping().replace("/auth/", "/") + "/list",
+                    object.getViewPath().replace("/views", "") + "/List"
+            );
+            basePermission.setParentId("0");
+            basePermission.setType(PermissionType.MENU.getCode());
+            sysPermissionsService.saveData(basePermission);
+            if (StrUtil.isNotBlank(object.getPermissionsCode())) {
+                // 如果权限标识不为空,保存方法权限
+                if (object.isGeneratorMethodsSave()) {
+                    SysPermission savePermission = getNewMenu(
+                            "保存/修改",
+                            PermissionType.BUTTON.getCode(),
+                            "1",
+                            object.getPermissionsCode() + ":save",
+                            null,
+                            null
+                    );
+                    savePermission.setParentId(basePermission.getId());
+                    sysPermissionsService.saveData(savePermission);
+                    savePermission = getNewMenu(
+                            "详情",
+                            PermissionType.MENU.getCode(),
+                            "1",
+                            null,
+                            object.getControllerMapping().replace("/auth/", "/") + "/input",
+                            object.getViewPath().replace("/views", "") + "/Input"
+                    );
+                    savePermission.setParentId(basePermission.getId());
+                    sysPermissionsService.saveData(savePermission);
 
-                    }
-                    if (object.isGeneratorMethodsRemove()) {
-                        SysPermissions savePermission = getNewMenu(
-                                "删除",
-                                PermissionsType.PERMISSIONS.getCode(),
-                                "1",
-                                object.getPermissionsCode() + ":remove",
-                                null,
-                                null
-                        );
-                        savePermission.setpId(basePermission.getId());
-                        sysPermissionsService.saveData(savePermission);
-                    }
-                    if (object.isGeneratorMethodsImport() && sysImportExcelTemplate != null && StrUtil.isNotBlank(sysImportExcelTemplate.getId())) {
-                        SysPermissions savePermission = getNewMenu(
-                                "导入数据",
-                                PermissionsType.PERMISSIONS.getCode(),
-                                "1",
-                                sysImportExcelTemplate.getPermissionCode(),
-                                null,
-                                null
-                        );
-                        savePermission.setpId(basePermission.getId());
-                        sysPermissionsService.saveData(savePermission);
-                    }
+                }
+                if (object.isGeneratorMethodsRemove()) {
+                    SysPermission savePermission = getNewMenu(
+                            "删除",
+                            PermissionType.BUTTON.getCode(),
+                            "1",
+                            object.getPermissionsCode() + ":remove",
+                            null,
+                            null
+                    );
+                    savePermission.setParentId(basePermission.getId());
+                    sysPermissionsService.saveData(savePermission);
+                }
+                if (object.isGeneratorMethodsImport() && sysImportExcelTemplate != null && StrUtil.isNotBlank(sysImportExcelTemplate.getId())) {
+                    SysPermission savePermission = getNewMenu(
+                            "导入数据",
+                            PermissionType.BUTTON.getCode(),
+                            "1",
+                            sysImportExcelTemplate.getPermissionCode(),
+                            null,
+                            null
+                    );
+                    savePermission.setParentId(basePermission.getId());
+                    sysPermissionsService.saveData(savePermission);
                 }
             }
         }
@@ -174,10 +172,10 @@ public class GeneratorServiceImpl implements GeneratorService {
         try {
             sysImportExcelTemplate = sysImportExcelTemplateService.saveData(sysImportExcelTemplate);
             // 保存导入规则
-            List<SysImportExcelTemplateDetails> sysImportExcelTemplateDetails = new ArrayList<>();
+            List<SysImportExcelTemplateDetail> sysImportExcelTemplateDetails = new ArrayList<>();
             int index = 1;
             for (FieldSet item : object.getImportItems()) {
-                SysImportExcelTemplateDetails importExcelTemplateDetails = new SysImportExcelTemplateDetails();
+                SysImportExcelTemplateDetail importExcelTemplateDetails = new SysImportExcelTemplateDetail();
                 importExcelTemplateDetails.setTemplateId(sysImportExcelTemplate.getId());
                 importExcelTemplateDetails.setTitle(item.getTitle());
                 importExcelTemplateDetails.setFieldName(item.getColumnName());
@@ -204,23 +202,23 @@ public class GeneratorServiceImpl implements GeneratorService {
      *
      * @param name      名称
      * @param type      类型
-     * @param hide      是否隐藏
+     * @param display   是否显示
      * @param code      权限标识
      * @param path      访问地址
      * @param component 页面地址
      * @return SysPermissions
      */
-    private SysPermissions getNewMenu(String name, String type, String hide, String code, String path, String component) {
-        SysPermissions sysPermissions = new SysPermissions();
+    private SysPermission getNewMenu(String name, String type, String display, String code, String path, String component) {
+        SysPermission sysPermissions = new SysPermission();
         sysPermissions.setName(name);
         sysPermissions.setCode(code);
         sysPermissions.setPath(path);
         sysPermissions.setComponent(component);
         sysPermissions.setType(type);
-        sysPermissions.setStatus(PermissionsStatus.ENABLE.getCode());
-        sysPermissions.setHide(hide);
+        sysPermissions.setStatus(CommonStatus.ENABLE.getCode());
+        sysPermissions.setDisplay(display);
         // 打开方式
-        sysPermissions.setTarget("1");
+        sysPermissions.setOpenMode(OpenModeConst.DEFAULT);
         return sysPermissions;
     }
 
