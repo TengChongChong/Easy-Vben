@@ -43,7 +43,8 @@
     </update>
     <select id="select" resultMap="BaseResultMap">
         select t.id, t.dept_id, t.post_id, t.nickname, t.username, t.sex, t.email, t.phone_number, t.birthday, t.avatar, t.status, t.source,
-               t.last_login_date, t.tenant_id, t.create_user, t.create_date, t.edit_user, t.edit_date from sys_user t
+               t.last_login_date, t.tenant_id, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from sys_user t
         <where>
             ${ew.sqlSegment}
         </where>
@@ -57,9 +58,8 @@
         </where>
     </select>
     <select id="selectInfo" resultType="com.easy.admin.auth.model.SysUser">
-        select t.id, t.dept_id, t.post_id, t.nickname, t.username, t.sex, t.email, t.phone_number, t.birthday, t.avatar, t.status, t.source, t.tenant_id
+        select t.id, t.dept_id, t.post_id, t.nickname, t.username, t.sex, t.email, t.phone_number, t.birthday, t.avatar, t.version, t.status, t.source, t.tenant_id
         from sys_user t
-        left join sys_dept sd on sd.id = t.dept_id
         where t.id = #{id}
     </select>
     <select id="selectRoles" resultType="java.lang.String">

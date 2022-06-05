@@ -9,21 +9,22 @@ import java.util.List;
  * @date 2018/11/27
  */
 public interface SysRolePermissionService {
+
+
     /**
      * 保存角色权限
      *
      * @param roleId      角色id
      * @param permissions 权限ids
-     * @return boolean
+     * @return true/false
      */
     boolean saveRolePermissions(String roleId, List<String> permissions);
 
     /**
      * 删除角色中的权限
      *
-     * @param permissions 权限ids 1,2,3,4
-     * @return
+     * @param permissionIds 权限ids 1,2,3,4
+     * @return true/false
      */
-    boolean removeRolePermissions(String permissions);
-
+    boolean removeRolePermissions(String permissionIds);
 }

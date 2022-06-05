@@ -77,9 +77,9 @@ public interface SysUserService {
      * 重置密码
      *
      * @param ids 用户ids
-     * @return true/false
+     * @return 重置后密码
      */
-    boolean resetPassword(String ids);
+    String resetPassword(String ids);
 
     /**
      * 重置密码
@@ -91,20 +91,13 @@ public interface SysUserService {
     boolean resetPassword(String username, String password);
 
     /**
-     * 禁用用户
+     * 设置状态
      *
-     * @param ids 用户ids
+     * @param ids    id
+     * @param status 状态
      * @return true/false
      */
-    boolean disableUser(String ids);
-
-    /**
-     * 启用用户
-     *
-     * @param ids 用户ids
-     * @return true/false
-     */
-    boolean enableUser(String ids);
+    boolean setStatus(String ids, String status);
 
     /**
      * 根据用户名查询用户

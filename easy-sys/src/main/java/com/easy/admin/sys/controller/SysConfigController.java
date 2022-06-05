@@ -33,7 +33,7 @@ public class SysConfigController extends BaseController {
      * @param object 查询条件
      * @param page   Page<SysConfig>
      */
-    @GetMapping("/auth/sys/config")
+    @GetMapping("/api/auth/sys/config")
     @RequiresPermissions("sys:config:select")
     public Page<SysConfig> select(SysConfig object, Page<SysConfig> page) {
         return service.select(object, page);
@@ -45,7 +45,7 @@ public class SysConfigController extends BaseController {
      * @param id id
      * @return SysConfig
      */
-    @GetMapping("/auth/sys/config/{id}")
+    @GetMapping("/api/auth/sys/config/{id}")
     @RequiresPermissions("sys:config:select")
     public SysConfig get(@PathVariable("id") String id) {
         return service.get(id);
@@ -57,7 +57,7 @@ public class SysConfigController extends BaseController {
      * @param key key
      * @return SysConfig
      */
-    @GetMapping("/sys/config/key/{key}")
+    @GetMapping("/api/sys/config/key/{key}")
     public SysConfig getByKey(@PathVariable("key") String key) {
         return service.getByKey(key);
     }
@@ -68,7 +68,7 @@ public class SysConfigController extends BaseController {
      * @param ids 数据ids
      * @return true/false
      */
-    @DeleteMapping("/auth/sys/config/{ids}")
+    @DeleteMapping("/api/auth/sys/config/{ids}")
     @RequiresPermissions("sys:config:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
@@ -80,7 +80,7 @@ public class SysConfigController extends BaseController {
      * @param object 表单内容
      * @return SysConfig
      */
-    @PostMapping("/auth/sys/config")
+    @PostMapping("/api/auth/sys/config")
     @RequiresPermissions("sys:config:save")
     public SysConfig save(@RequestBody @Valid SysConfig object) {
         return service.saveData(object);
@@ -91,7 +91,7 @@ public class SysConfigController extends BaseController {
      *
      * @return true/false
      */
-    @PostMapping("/auth/sys/config/refresh/cache")
+    @PostMapping("/api/auth/sys/config/refresh")
     @RequiresPermissions("sys:config:save")
     public boolean refreshCache() {
         return service.refreshCache();

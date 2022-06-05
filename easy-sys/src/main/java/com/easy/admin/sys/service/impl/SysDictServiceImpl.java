@@ -42,6 +42,9 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
             if (Validator.isNotEmpty(sysDict.getName())) {
                 queryWrapper.like("t.name", sysDict.getName());
             }
+            if (Validator.isNotEmpty(sysDict.getCode())) {
+                queryWrapper.like("t.code", sysDict.getCode());
+            }
             if (Validator.isNotEmpty(sysDict.getDictType())) {
                 queryWrapper.eq("t.dict_type", sysDict.getDictType());
             }
@@ -51,9 +54,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
                 } else {
                     queryWrapper.eq("t.status", sysDict.getStatus());
                 }
-            }
-            if (Validator.isNotEmpty(sysDict.getCode())) {
-                queryWrapper.like("t.code", sysDict.getCode());
             }
         }
         page.setDefaultAsc("t.dict_type, t.order_no");

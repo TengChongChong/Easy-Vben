@@ -25,12 +25,6 @@ public class SysRole extends Model<SysRole> {
     private String id;
 
     /**
-     * 父id
-     */
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String parentId;
-
-    /**
      * 角色名称
      */
     @NotBlank(message = "名称不能为空")
@@ -96,32 +90,11 @@ public class SysRole extends Model<SysRole> {
 
     //
     /**
-     * 父角色名称
-     */
-    @TableField(exist=false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String parentName;
-
-    /**
      * 权限ids
      */
     @TableField(exist=false)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> permissionIds;
-
-    public SysRole() {
-    }
-
-    public SysRole(String id, Integer orderNo) {
-        this.id = id;
-        this.orderNo = orderNo;
-    }
-
-    public SysRole(String id, String parentId, Integer orderNo) {
-        this.id = id;
-        this.parentId = parentId;
-        this.orderNo = orderNo;
-    }
 
     public String getId() {
         return id;
@@ -129,14 +102,6 @@ public class SysRole extends Model<SysRole> {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
     }
 
     public String getName() {
@@ -233,14 +198,6 @@ public class SysRole extends Model<SysRole> {
 
     public void setEditDate(Date editDate) {
         this.editDate = editDate;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
     }
 
     public List<String> getPermissionIds() {

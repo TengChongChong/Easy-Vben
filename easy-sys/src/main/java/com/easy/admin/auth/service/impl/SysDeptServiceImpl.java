@@ -4,19 +4,15 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.common.core.common.select.Select;
-import com.easy.admin.common.core.common.status.CommonStatus;
-import com.easy.admin.common.core.common.tree.Tree;
-import com.easy.admin.common.core.common.tree.TreeUtil;
-import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.auth.dao.SysDeptMapper;
 import com.easy.admin.auth.model.SysDept;
 import com.easy.admin.auth.service.SysDeptService;
-import com.easy.admin.auth.service.SysDeptTypeService;
 import com.easy.admin.auth.service.SysUserService;
+import com.easy.admin.common.core.common.status.CommonStatus;
+import com.easy.admin.common.core.common.tree.Tree;
+import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,44 +32,15 @@ import java.util.List;
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 
     @Autowired
-    private SysDeptTypeService sysDeptTypeService;
-
-    @Autowired
     private SysUserService sysUserService;
 
     @Override
-    public List<Tree> selectByParentId(String parentId) {
-        List<Tree> trees;
-        // 第一次请求,返回项目名称 + 一级节点 数据
-        if (StrUtil.isBlank(parentId)) {
-            trees = new ArrayList<>();
-            // 根节点
-            Tree tree = TreeUtil.getBaseNode();
-            List<Tree> treeList = baseMapper.selectByParentId(TreeUtil.BASE_ID);
-            if (treeList.size() > 0) {
-                tree.setIsLeaf(false);
-                trees.addAll(treeList);
-            } else {
-                tree.setIsLeaf(true);
-            }
-            trees.add(tree);
-        } else {
-            trees = baseMapper.selectByParentId(parentId);
-        }
-        return trees;
+    public List<Tree> selectAll() {
+        return baseMapper.selectAll(CommonStatus.ENABLE.getCode());
     }
 
     @Override
-    public List<Tree> selectByTitle(String title) {
-        if (Validator.isNotEmpty(title)) {
-            return baseMapper.selectByTitle("%" + title + "%");
-        } else {
-            throw new EasyException("请输入关键字后重试");
-        }
-    }
-
-    @Override
-    public Page<SysDept> select(SysDept sysDept, Page<SysDept> page) {
+    public List<SysDept> select(SysDept sysDept) {
         QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
         if (sysDept != null) {
             if (Validator.isNotEmpty(sysDept.getName())) {
@@ -88,12 +55,8 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             if (Validator.isNotEmpty(sysDept.getCode())) {
                 queryWrapper.like("t.code", sysDept.getCode());
             }
-            if (Validator.isNotEmpty(sysDept.getParentName())) {
-                queryWrapper.like("p.name", sysDept.getParentName());
-            }
         }
-        page.setRecords(baseMapper.select(page, queryWrapper));
-        return page;
+        return baseMapper.select(queryWrapper);
     }
 
     @Override
@@ -103,34 +66,20 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
-    public String getName(String id) {
-        QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id", id);
-        queryWrapper.select("name");
-        SysDept dept = baseMapper.selectOne(queryWrapper);
-        return dept != null ? dept.getName() : "";
-    }
-
-    @Override
-    public SysDept add(String parentId, String deptType) {
-        if (Validator.isNotEmpty(parentId) || Validator.isNotEmpty(deptType)) {
-            SysDept object = new SysDept();
-            if (Validator.isNotEmpty(parentId)) {
-                SysDept parentDept = getById(parentId);
-                if (parentDept != null) {
-                    object.setParentId(parentId);
-                    object.setParentName(parentDept.getName());
-                    object.setOrderNo(baseMapper.getMaxOrderNo(object.getParentId()) + 1);
-                }
+    public SysDept add(String parentId, String typeCode) {
+        SysDept object = new SysDept();
+        if (Validator.isNotEmpty(parentId)) {
+            SysDept parentDept = getById(parentId);
+            if (parentDept != null) {
+                object.setParentId(parentId);
+                object.setOrderNo(baseMapper.getMaxOrderNo(object.getParentId()) + 1);
             }
-            if (Validator.isNotEmpty(deptType)) {
-                object.setTypeCode(deptType);
-            }
-            object.setStatus(CommonStatus.ENABLE.getCode());
-            return object;
-        } else {
-            throw new EasyException("获取部门信息失败");
         }
+        if (Validator.isNotEmpty(typeCode)) {
+            object.setTypeCode(typeCode);
+        }
+        object.setStatus(CommonStatus.ENABLE.getCode());
+        return object;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -160,7 +109,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         if (Validator.isNotEmpty(object.getCode())) {
             QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("code", object.getCode());
-            if (object.getId() != null) {
+            if (StrUtil.isNotBlank(object.getId())) {
                 queryWrapper.ne("id", object.getId());
             }
             int count = baseMapper.selectCount(queryWrapper);
@@ -168,13 +117,18 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 throw new EasyException("已存在编码为[" + object.getCode() + "]的部门，请修改后重试");
             }
         }
-        if (StrUtil.isBlank(object.getParentId())) {
-            object.setParentId(TreeUtil.BASE_ID);
+        if(StrUtil.isNotBlank(object.getParentId()) && object.getParentId().equals(object.getId())){
+            throw new EasyException("上级部门不能为自己");
         }
         if (object.getOrderNo() == null) {
             object.setOrderNo(baseMapper.getMaxOrderNo(object.getParentId()) + 1);
         }
         return (SysDept) ToolUtil.checkResult(saveOrUpdate(object), object);
+    }
+
+    @Override
+    public boolean saveOrder(List<SysDept> sysDeptList) {
+        return saveOrUpdateBatch(sysDeptList);
     }
 
     @Override
@@ -198,40 +152,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("type_code", oldCode);
         return update(sysDept, queryWrapper);
-    }
-
-    @Override
-    public List<Select> selectDeptTypeOption(String parentId, String deptType) {
-        List<Select> option = new ArrayList<>();
-        // 获取当前部门下级部门类型
-        if (Validator.isNotEmpty(parentId) && !parentId.equals(TreeUtil.BASE_ID)) {
-            SysDept sysDept = getById(parentId);
-            option = sysDeptTypeService.selectOptionByParentCode(sysDept.getTypeCode());
-        }
-        // 当前部门类型
-        if (Validator.isNotEmpty(deptType)) {
-            option = sysDeptTypeService.selectOptionBySameLevel(deptType);
-        }
-        return option;
-    }
-
-    @Override
-    public List<Select> selectUpDeptOption(String parentId, String deptType) {
-        List<Select> option = new ArrayList<>();
-        // 获取当前部门下级部门类型
-        if (!parentId.equals(TreeUtil.BASE_ID)) {
-            SysDept sysDept = getById(parentId);
-            if (Validator.isNotEmpty(deptType)) {
-
-            } else {
-                option = baseMapper.selectOptionByTypeCode(sysDept.getTypeCode());
-            }
-        }
-        // 当前部门类型
-        if (Validator.isNotEmpty(deptType)) {
-            option = baseMapper.selectOptionByParentTypeCode(deptType);
-        }
-        return option;
     }
 
     @Override

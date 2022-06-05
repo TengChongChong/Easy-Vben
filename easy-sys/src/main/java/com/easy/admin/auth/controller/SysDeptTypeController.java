@@ -1,11 +1,10 @@
 package com.easy.admin.auth.controller;
 
+import com.easy.admin.auth.model.SysDeptType;
+import com.easy.admin.auth.service.SysDeptTypeService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.core.annotation.ResponseResult;
-import com.easy.admin.sys.model.DragVO;
-import com.easy.admin.auth.model.SysDeptType;
-import com.easy.admin.auth.service.SysDeptTypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +20,23 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/dept/type")
+@RequestMapping("/api/auth/sys/dept/type")
 public class SysDeptTypeController extends BaseController {
 
     @Autowired
     private SysDeptTypeService service;
+
+    /**
+     * 查询数据
+     *
+     * @param sysDeptType 查询条件
+     * @return Page<SysDeptType>
+     */
+    @GetMapping()
+    @RequiresPermissions("sys:dept:type:select")
+    public List<SysDeptType> select(SysDeptType sysDeptType) {
+        return service.select(sysDeptType);
+    }
 
     /**
      * 新增
@@ -33,21 +44,9 @@ public class SysDeptTypeController extends BaseController {
      * @param parentId 上级部门类型 id
      * @return SysDeptType
      */
-    @GetMapping("add/{id}")
-    public SysDeptType add(@PathVariable("id") String parentId) {
+    @GetMapping({"add/{id}", "add"})
+    public SysDeptType add(@PathVariable(value = "id", required = false) String parentId) {
         return service.add(parentId);
-    }
-
-    /**
-     * 删除
-     *
-     * @param id 部门类型id
-     * @return true/false
-     */
-    @DeleteMapping("{id}")
-    @RequiresPermissions("sys:dept:type:remove")
-    public boolean remove(@PathVariable("id") String id) {
-        return service.remove(id);
     }
 
     /**
@@ -56,10 +55,10 @@ public class SysDeptTypeController extends BaseController {
      * @param ids 部门类型ids
      * @return true/false
      */
-    @DeleteMapping("batch/{id}")
+    @DeleteMapping("{id}")
     @RequiresPermissions("sys:dept:type:remove")
-    public boolean batchRemove(@PathVariable("id") String ids) {
-        return service.batchRemove(ids);
+    public boolean remove(@PathVariable("id") String ids) {
+        return service.remove(ids);
     }
 
     /**
@@ -69,7 +68,7 @@ public class SysDeptTypeController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("sys:dept:type:status")
+    @RequiresPermissions("sys:dept:type:save")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
@@ -98,18 +97,6 @@ public class SysDeptTypeController extends BaseController {
     }
 
     /**
-     * 根据parentId获取数据
-     *
-     * @param parentId 上级部门类型id
-     * @return List<Tree>
-     */
-    @GetMapping("parentId")
-    @RequiresPermissions("sys:dept:type:select")
-    public List<Tree> selectByParentId(@RequestParam(value = "parentId", required = false) String parentId) {
-        return service.selectByParentId(parentId);
-    }
-
-    /**
      * 获取全部数据
      *
      * @return List<Tree>
@@ -120,38 +107,16 @@ public class SysDeptTypeController extends BaseController {
         return service.selectAll();
     }
 
-    /**
-     * 搜索
-     *
-     * @param title 名称
-     * @return List<Tree>
-     */
-    @GetMapping("title")
-    @RequiresPermissions("sys:dept:type:select")
-    public List<Tree> selectByTitle(@RequestParam(name = "title", required = false) String title) {
-        return service.selectByTitle(title);
-    }
 
     /**
-     * 检查是否有子类型
+     * 保存排序
      *
-     * @param code 部门类型编码
+     * @param sysDeptTypeList 排序
      * @return true/false
      */
-    @GetMapping("check/has/child")
-    public boolean checkHasChild(@RequestParam("code") String code) {
-        return service.checkHasChild(code);
-    }
-
-    /**
-     * 拖动改变目录或顺序
-     *
-     * @param dragVO 拖动信息
-     * @return true/false
-     */
-    @PostMapping("move")
-    @RequiresPermissions("sys:dept:type:move")
-    public boolean move(@RequestBody DragVO dragVO) {
-        return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());
+    @PostMapping("order")
+    @RequiresPermissions("sys:dept:type:save")
+    public boolean saveOrder(@RequestBody List<SysDeptType> sysDeptTypeList){
+        return service.saveOrder(sysDeptTypeList);
     }
 }

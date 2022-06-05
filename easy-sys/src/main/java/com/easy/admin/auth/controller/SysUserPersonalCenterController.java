@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/user/personal/center")
+    @RequestMapping("/auth/sys/user/personal/center")
 public class SysUserPersonalCenterController extends BaseController {
     /**
      * 个人中心 service

@@ -7,7 +7,6 @@ import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysImportExcelTemporary;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +51,6 @@ public class SysImportExcelTemporaryController extends BaseController {
      * @return JSONObject
      */
     @GetMapping("{id}")
-    @RequiresPermissions("import:data")
     public JSONObject get(@PathVariable("id") String id) {
         JSONObject res = new JSONObject();
         SysImportExcelTemporary temporary = service.get(id);
@@ -68,7 +66,6 @@ public class SysImportExcelTemporaryController extends BaseController {
      * @return SysImportExcelTemporary
      */
     @PostMapping()
-    @RequiresPermissions("import:data")
     public SysImportExcelTemporary saveData(@RequestBody @Valid SysImportExcelTemporary object) {
         return service.saveData(object);
     }
@@ -80,7 +77,6 @@ public class SysImportExcelTemporaryController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("import:data")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }

@@ -1,10 +1,11 @@
 package com.easy.admin.auth.controller;
 
+import com.easy.admin.auth.model.SysPermission;
+import com.easy.admin.auth.service.SysPermissionService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.core.annotation.ResponseResult;
-import com.easy.admin.auth.model.SysPermission;
-import com.easy.admin.auth.service.SysPermissionService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class SysPermissionController extends BaseController {
      * @return List<JsTree>
      */
     @GetMapping()
-//    @RequiresPermissions("sys:permissions:select")
+    @RequiresPermissions("sys:permission:select")
     public List<SysPermission> select(SysPermission sysPermission) {
         return service.select(sysPermission);
     }
@@ -44,7 +45,7 @@ public class SysPermissionController extends BaseController {
      * @return List<JsTree>
      */
     @GetMapping("all")
-//    @RequiresPermissions("sys:permissions:select")
+    @RequiresPermissions("sys:permission:select")
     public List<Tree> selectAll() {
         return service.selectAll();
     }
@@ -67,7 +68,7 @@ public class SysPermissionController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{id}")
-//    @RequiresPermissions("sys:permissions:remove")
+    @RequiresPermissions("sys:permission:remove")
     public boolean remove(@PathVariable("id") String id) {
         return service.remove(id);
     }
@@ -80,7 +81,7 @@ public class SysPermissionController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-//    @RequiresPermissions("sys:permissions:status")
+    @RequiresPermissions("sys:permission:save")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
@@ -92,7 +93,7 @@ public class SysPermissionController extends BaseController {
      * @return SysPermissions
      */
     @PostMapping
-//    @RequiresPermissions("sys:permissions:save")
+    @RequiresPermissions("sys:permission:save")
     public SysPermission save(@RequestBody @Valid SysPermission object) {
         return service.saveData(object);
     }
@@ -104,7 +105,7 @@ public class SysPermissionController extends BaseController {
      * @return true/false
      */
     @PostMapping("order")
-//    @RequiresPermissions("sys:permissions:save")
+    @RequiresPermissions("sys:permission:save")
     public boolean saveOrder(@RequestBody List<SysPermission> sysPermissionList){
         return service.saveOrder(sysPermissionList);
     }

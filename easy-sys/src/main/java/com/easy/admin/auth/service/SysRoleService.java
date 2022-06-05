@@ -1,5 +1,6 @@
 package com.easy.admin.auth.service;
 
+import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.auth.model.SysRole;
 
@@ -14,12 +15,13 @@ import java.util.List;
 public interface SysRoleService {
 
     /**
-     * 根据父id获取数据
+     * 查询
      *
-     * @param parentId 父id
-     * @return List<JsTree>
+     * @param sysRole 查询条件
+     * @param page 分页
+     * @return Page<SysRole>
      */
-    List<Tree> selectByParentId(String parentId);
+    Page<SysRole> select(SysRole sysRole, Page<SysRole> page);
 
     /**
      * 获取所有数据
@@ -39,31 +41,22 @@ public interface SysRoleService {
     /**
      * 新增
      *
-     * @param parentId 上级id
      * @return SysRole
      */
-    SysRole add(String parentId);
+    SysRole add();
 
     /**
      * 删除
      *
-     * @param id 角色id
-     * @return true/false
-     */
-    boolean remove(String id);
-
-    /**
-     * 批量删除
-     *
      * @param ids String ids 示例 1,2,3,4
      * @return true/false
      */
-    boolean batchRemove(String ids);
+    boolean remove(String ids);
 
     /**
      * 设置状态
      *
-     * @param ids    角色id
+     * @param ids    id
      * @param status 状态
      * @return true/false
      */
@@ -76,26 +69,6 @@ public interface SysRoleService {
      * @return SysRole
      */
     SysRole saveData(SysRole object);
-
-    /**
-     * 拖动菜单/权限改变目录或顺序
-     *
-     * @param id          拖动的菜单/权限id
-     * @param parent      拖动后的父id
-     * @param oldParent   拖动前的id
-     * @param position    拖动前的下标
-     * @param oldPosition 拖动后的下标
-     * @return true/false
-     */
-    boolean move(String id, String parent, String oldParent, Integer position, Integer oldPosition);
-
-    /**
-     * 根据关键字搜索角色
-     *
-     * @param title 关键字
-     * @return List<JsTree>
-     */
-    List<Tree> selectByTitle(String title);
 
     /**
      * 根据用户id获取角色标识

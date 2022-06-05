@@ -3,14 +3,13 @@ package com.easy.admin.auth.service.impl;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.common.core.common.status.CommonStatus;
-import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.auth.common.type.PermissionType;
 import com.easy.admin.auth.dao.SysUserRoleMapper;
 import com.easy.admin.auth.model.SysPermission;
 import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.model.SysUserRole;
 import com.easy.admin.auth.service.SysUserRoleService;
+import com.easy.admin.common.core.common.status.CommonStatus;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,8 +57,8 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     }
 
     @Override
-    public List<SysPermission> selectMenusByUserId(String userId) {
-        return baseMapper.selectMenusByUserId(userId, CommonStatus.ENABLE.getCode(), PermissionType.MENU.getCode());
+    public List<SysPermission> selectPermissionByUserId(String userId) {
+        return baseMapper.selectPermissionByUserId(userId, CommonStatus.ENABLE.getCode());
     }
 
     @Override

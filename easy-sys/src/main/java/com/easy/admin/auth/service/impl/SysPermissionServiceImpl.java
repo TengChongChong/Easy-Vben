@@ -96,22 +96,15 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     public SysPermission add(String parentId) {
-        SysPermission sysPermissions = new SysPermission();
-        sysPermissions.setParentId(parentId);
-        sysPermissions.setStatus(CommonStatus.ENABLE.getCode());
-        sysPermissions.setDisplay(WhetherConst.YES);
-        sysPermissions.setExternal(WhetherConst.NO);
-        sysPermissions.setType(PermissionType.CATALOGUE.getCode());
-        sysPermissions.setOpenMode(OpenModeConst.DEFAULT);
-        if(StrUtil.isNotBlank(parentId)){
-            SysPermission parentSysPermissions = baseMapper.get(parentId);
-            if (parentSysPermissions != null) {
-                sysPermissions.setParentName(parentSysPermissions.getName());
-            } else {
-                throw new EasyException("获取父权限信息失败，请重试");
-            }
-        }
-        return sysPermissions;
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setParentId(parentId);
+        sysPermission.setStatus(CommonStatus.ENABLE.getCode());
+        sysPermission.setDisplay(WhetherConst.YES);
+        sysPermission.setExternal(WhetherConst.NO);
+        sysPermission.setType(PermissionType.CATALOGUE.getCode());
+        sysPermission.setOpenMode(OpenModeConst.DEFAULT);
+        sysPermission.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
+        return sysPermission;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -139,12 +132,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         ToolUtil.checkParams(ids);
         ToolUtil.checkParams(status);
         List<SysPermission> permissionsList = new ArrayList<>();
-        SysPermission sysPermissions;
+        SysPermission sysPermission;
         for (String id : ids.split(CommonConst.SPLIT)) {
-            sysPermissions = new SysPermission();
-            sysPermissions.setId(id);
-            sysPermissions.setStatus(status);
-            permissionsList.add(sysPermissions);
+            sysPermission = new SysPermission();
+            sysPermission.setId(id);
+            sysPermission.setStatus(status);
+            permissionsList.add(sysPermission);
         }
         return ToolUtil.checkResult(updateBatchById(permissionsList));
     }

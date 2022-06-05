@@ -1,11 +1,11 @@
 package com.easy.admin.auth.controller;
 
-import com.easy.admin.common.core.base.BaseController;
-import com.easy.admin.common.core.common.tree.Tree;
-import com.easy.admin.core.annotation.ResponseResult;
-import com.easy.admin.sys.model.DragVO;
 import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.service.SysRoleService;
+import com.easy.admin.common.core.base.BaseController;
+import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.tree.Tree;
+import com.easy.admin.core.annotation.ResponseResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,22 +21,23 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/role")
+@RequestMapping("/api/auth/sys/role")
 public class SysRoleController extends BaseController {
 
     @Autowired
     private SysRoleService service;
 
     /**
-     * 获取角色列表
+     * 查询数据
      *
-     * @param parentId 父角色id
-     * @return List<Tree>
+     * @param sysRole 查询条件
+     * @param page 分页
+     * @return Page<SysRole>
      */
-    @GetMapping("parentId")
+    @GetMapping()
     @RequiresPermissions("sys:role:select")
-    public List<Tree> selectByParentId(@RequestParam(value = "parentId", required = false) String parentId) {
-        return service.selectByParentId(parentId);
+    public Page<SysRole> select(SysRole sysRole, Page<SysRole> page) {
+        return service.select(sysRole, page);
     }
 
     /**
@@ -53,25 +54,13 @@ public class SysRoleController extends BaseController {
     /**
      * 新增
      *
-     * @param parentId 上级菜单/权限 id
      * @return SysRole
      */
-    @GetMapping("add/{id}")
-    public SysRole add(@PathVariable("id") String parentId) {
-        return service.add(parentId);
+    @GetMapping("add")
+    public SysRole add() {
+        return service.add();
     }
 
-    /**
-     * 删除权限/菜单
-     *
-     * @param id 角色id
-     * @return true/false
-     */
-    @DeleteMapping("{id}")
-    @RequiresPermissions("sys:role:remove")
-    public boolean remove(@PathVariable("id") String id) {
-        return service.remove(id);
-    }
 
     /**
      * 批量删除
@@ -79,10 +68,10 @@ public class SysRoleController extends BaseController {
      * @param ids 角色ids
      * @return true/false
      */
-    @DeleteMapping("batch/{id}")
+    @DeleteMapping("{id}")
     @RequiresPermissions("sys:role:remove")
-    public boolean batchRemove(@PathVariable("id") String ids) {
-        return service.batchRemove(ids);
+    public boolean remove(@PathVariable("id") String ids) {
+        return service.remove(ids);
     }
 
     /**
@@ -93,7 +82,7 @@ public class SysRoleController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("sys:role:status")
+    @RequiresPermissions("sys:role:save")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
@@ -119,30 +108,6 @@ public class SysRoleController extends BaseController {
     @GetMapping("{id}")
     public SysRole get(@PathVariable("id") String id) {
         return service.get(id);
-    }
-
-    /**
-     * 搜索
-     *
-     * @param title 标题
-     * @return List<Tree>
-     */
-    @GetMapping("title")
-    @RequiresPermissions("sys:role:select")
-    public List<Tree> selectByTitle(@RequestParam("title") String title) {
-        return service.selectByTitle(title);
-    }
-
-    /**
-     * 拖动改变目录或顺序
-     *
-     * @param dragVO 拖动信息
-     * @return true/false
-     */
-    @PostMapping("move")
-    @RequiresPermissions("sys:role:move")
-    public boolean move(@RequestBody DragVO dragVO) {
-        return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());
     }
 
     /**

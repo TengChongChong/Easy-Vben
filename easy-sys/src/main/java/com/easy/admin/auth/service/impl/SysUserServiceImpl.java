@@ -7,6 +7,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.common.constant.SessionConst;
+import com.easy.admin.auth.common.status.SysDeptStatus;
+import com.easy.admin.auth.common.status.SysUserStatus;
+import com.easy.admin.auth.dao.SysUserMapper;
+import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.service.SysDeptService;
+import com.easy.admin.auth.service.SysUserRoleService;
+import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
@@ -17,13 +24,6 @@ import com.easy.admin.config.shiro.service.ShiroService;
 import com.easy.admin.exception.BusinessException;
 import com.easy.admin.sys.common.constant.SexConst;
 import com.easy.admin.sys.common.constant.SysConst;
-import com.easy.admin.auth.common.status.SysDeptStatus;
-import com.easy.admin.auth.common.status.SysUserStatus;
-import com.easy.admin.auth.dao.SysUserMapper;
-import com.easy.admin.auth.model.SysUser;
-import com.easy.admin.auth.service.SysDeptService;
-import com.easy.admin.auth.service.SysUserRoleService;
-import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
@@ -54,7 +54,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     private SysDeptService sysDeptService;
 
-
     @Override
     public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
         if (sysUser == null || StrUtil.isBlank(sysUser.getDeptId())) {
@@ -64,28 +63,37 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         if (Validator.isNotEmpty(sysUser.getUsername())) {
-            queryWrapper.like("username", sysUser.getUsername());
+            queryWrapper.like("t.username", sysUser.getUsername());
         }
         if (Validator.isNotEmpty(sysUser.getNickname())) {
-            queryWrapper.like("nickname", sysUser.getNickname());
-        }
-        if (Validator.isNotEmpty(sysUser.getSex())) {
-            queryWrapper.eq("sex", sysUser.getSex());
-        }
-        if (Validator.isNotEmpty(sysUser.getStatus())) {
-            queryWrapper.eq("status", sysUser.getStatus());
+            queryWrapper.like("t.nickname", sysUser.getNickname());
         }
         if (Validator.isNotEmpty(sysUser.getPhoneNumber())) {
-            queryWrapper.like("phone_number", sysUser.getPhoneNumber());
+            queryWrapper.like("t.phone_number", sysUser.getPhoneNumber());
         }
         if (Validator.isNotEmpty(sysUser.getSource())) {
-            queryWrapper.eq("source", sysUser.getSource());
+            queryWrapper.eq("t.source", sysUser.getSource());
+        }
+        if (Validator.isNotEmpty(sysUser.getSex())) {
+            if (sysUser.getSex().contains(CommonConst.SPLIT)) {
+                queryWrapper.in("t.sex", sysUser.getSex().split(CommonConst.SPLIT));
+            } else {
+                queryWrapper.eq("t.sex", sysUser.getSex());
+            }
+        }
+        if (Validator.isNotEmpty(sysUser.getStatus())) {
+            if (sysUser.getStatus().contains(CommonConst.SPLIT)) {
+                queryWrapper.in("t.status", sysUser.getStatus().split(CommonConst.SPLIT));
+            } else {
+                queryWrapper.eq("t.status", sysUser.getStatus());
+            }
         }
         if (Validator.isNotEmpty(sysUser.getDeptId())) {
-            queryWrapper.eq("dept_id", sysUser.getDeptId());
+            queryWrapper.eq("t.dept_id", sysUser.getDeptId());
         }
-        page.setDefaultDesc("create_date");
-        return page(page, queryWrapper);
+        page.setDefaultDesc("t.create_date");
+        page.setRecords(baseMapper.select(page, queryWrapper));
+        return page;
     }
 
     @Override
@@ -96,7 +104,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (StrUtil.isBlank(range)) {
             range = "all";
         }
-        if("currentDept".equals(range)){
+        if ("currentDept".equals(range)) {
             deptId = ShiroUtil.getCurrentUser().getDeptId();
         }
 
@@ -155,17 +163,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public SysUser saveData(SysUser object, boolean updateAuthorization) {
         ToolUtil.checkParams(object);
         // 用户名不能重复
-        if (Validator.isNotEmpty(object.getUsername())) {
-            QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("username", object.getUsername());
-            if (object.getId() != null) {
-                queryWrapper.ne("id", object.getId());
-            }
-            int count = baseMapper.selectCount(queryWrapper);
-            if (count > 0) {
-                throw new EasyException(BusinessException.USER_REGISTERED);
-            }
+        if (checkHaving(object.getId(), "username", object.getUsername())) {
+            throw new EasyException(BusinessException.USER_REGISTERED);
         }
+        if (checkHaving(object.getId(), "email", object.getEmail())) {
+            throw new EasyException("邮箱已注册");
+        }
+        if (checkHaving(object.getId(), "phone_number", object.getPhoneNumber())) {
+            throw new EasyException("手机号已注册");
+        }
+
         // 新增时密码如果为空,则使用默认密码
         if (StrUtil.isBlank(object.getId()) && Validator.isEmpty(object.getPassword())) {
             // 生成随机的盐
@@ -189,15 +196,41 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return (SysUser) ToolUtil.checkResult(isSuccess, object);
     }
 
+    /**
+     * 检查数据是否已经存在
+     *
+     * @param id    数据id
+     * @param field 字段
+     * @param value 值
+     * @return true/false
+     */
+    private boolean checkHaving(String id, String field, String value) {
+        if (Validator.isNotEmpty(value)) {
+            QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq(field, value);
+            if (StrUtil.isNotBlank(id)) {
+                queryWrapper.ne("id", id);
+            }
+            int count = baseMapper.selectCount(queryWrapper);
+            return count > 0;
+        }
+        return false;
+    }
+
     @Override
-    public boolean resetPassword(String ids) {
+    public String resetPassword(String ids) {
         ToolUtil.checkParams(ids);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        String defaultPassword = SysConst.projectProperties.getDefaultPassword();
         // 生成随机的盐
         String salt = RandomUtil.randomString(10);
-        String password = PasswordUtil.generatingPasswords(SysConst.projectProperties.getDefaultPassword(), salt);
+        String password = PasswordUtil.generatingPasswords(defaultPassword, salt);
         queryWrapper.in("id", ids.split(CommonConst.SPLIT));
-        return baseMapper.resetPassword(password, salt, queryWrapper) > 0;
+        boolean isSuccess = baseMapper.resetPassword(password, salt, queryWrapper) > 0;
+        if (!isSuccess) {
+            throw new EasyException("重置密码失败");
+        }
+        return defaultPassword;
     }
 
     @Override
@@ -215,21 +248,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public boolean disableUser(String ids) {
-        ToolUtil.checkParams(ids);
+    public boolean setStatus(String ids, String status) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", ids.split(CommonConst.SPLIT));
-        int count = baseMapper.updateUserStatus(SysUserStatus.DISABLE.getCode(), queryWrapper);
-        return ToolUtil.checkResult(count > 0);
-    }
-
-    @Override
-    public boolean enableUser(String ids) {
-        ToolUtil.checkParams(ids);
-        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("id", ids.split(CommonConst.SPLIT));
-        int count = baseMapper.updateUserStatus(SysUserStatus.ENABLE.getCode(), queryWrapper);
-        return ToolUtil.checkResult(count > 0);
+        int count = baseMapper.updateUserStatus(status, queryWrapper);
+        return count > 0;
     }
 
     @Override

@@ -19,13 +19,21 @@
         <result column="edit_date" property="editDate"/>
     </resultMap>
     <select id="select" resultMap="BaseResultMap">
-        select t.id,t.name,t.simple_name,t.status,t.code,dt.name as type_code,p.name as p_name,t.order_no
+        select t.id, t.parent_id, t.name, t.simple_name, t.code, t.type_code, dt.name as type_name,
+               t.status, t.order_no, su.nickname as edit_user, t.edit_date
         from sys_dept t
-        left join sys_dept p on p.id = t.parent_id
         left join sys_dept_type dt on dt.code = t.type_code
+        left join sys_user su on su.id = t.edit_user
         <where>
             ${ew.sqlSegment}
         </where>
+        order by t.order_no
+    </select>
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.parent_id, t.name as title, t.id as `key`, t.code as data
+        from sys_dept t
+        where t.status = #{status}
+        order by t.order_no
     </select>
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0)
@@ -50,24 +58,7 @@
         from sys_dept t
         where type_code = (select code from sys_dept_type t where t.id = (select parent_id from sys_dept_type where code = #{code}))
     </select>
-    <select id="selectByTitle" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id, t.parent_id, t.name as title, (case when t.status = 2 then 'disabled' end) as type
-        from sys_dept t
-        where t.name like #{title}
-        order by t.parent_id, t.order_no
-        limit 0,50
-    </select>
-    <select id="selectByParentId" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id,
-               t.parent_id,
-               t.name                                                                            as title,
-               (case when t.status = 2 then 'disabled' end)                                      as type,
-               (IF((select count(1) from sys_dept where parent_id = t.id) > 0, 'false', 'true')) as isLeaf
-        from sys_dept t
-        where t.parent_id = #{parentId}
-        order by t.order_no
-    </select>
-    <select id="selectById" resultType="com.easy.admin.auth.model.SysDept">
+    <select id="get" resultType="com.easy.admin.auth.model.SysDept">
         select t.id, t.name, t.simple_name, t.code, t.type_code, t.status, t.tenant_id, sdt.name as type_name
         from sys_dept t
         left join sys_dept_type sdt on t.type_code = sdt.code

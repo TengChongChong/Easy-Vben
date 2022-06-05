@@ -1,9 +1,6 @@
 package com.easy.admin.auth.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
@@ -54,6 +51,11 @@ public class SysDeptType extends Model<SysDeptType> {
      * 租户id
      */
     private String tenantId;
+    /**
+     * 乐观锁
+     */
+    @Version
+    private Integer version;
     @TableField(fill = FieldFill.INSERT)
     private String createUser;
     @TableField(fill = FieldFill.INSERT)
@@ -64,11 +66,6 @@ public class SysDeptType extends Model<SysDeptType> {
     private Date editDate;
 
     //
-    /**
-     * 上级部门类型名称
-     */
-    @TableField(exist = false)
-    private String parentName;
     /**
      * 该部门类型可以选择的角色列表 1,2,3
      */
@@ -108,14 +105,6 @@ public class SysDeptType extends Model<SysDeptType> {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
     }
 
     public String getCode() {
@@ -204,5 +193,13 @@ public class SysDeptType extends Model<SysDeptType> {
 
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

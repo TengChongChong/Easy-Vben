@@ -28,10 +28,9 @@ public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
      *
      * @param userId 用户id
      * @param status 状态
-     * @param type   类型
      * @return List<String> 权限集合
      */
-    List<SysPermission> selectMenusByUserId(@Param("userId") String userId, @Param("status") String status, @Param("type") String type);
+    List<SysPermission> selectPermissionByUserId(@Param("userId") String userId, @Param("status") String status);
 
     /**
      * 根据用户id获取角色名称集合

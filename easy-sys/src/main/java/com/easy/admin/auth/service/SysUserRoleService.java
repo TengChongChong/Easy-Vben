@@ -44,7 +44,7 @@ public interface SysUserRoleService {
      * @param userId          用户id
      * @return 菜单集合
      */
-    List<SysPermission> selectMenusByUserId(String userId);
+    List<SysPermission> selectPermissionByUserId(String userId);
 
     /**
      * 根据用户id获取角色名称集合

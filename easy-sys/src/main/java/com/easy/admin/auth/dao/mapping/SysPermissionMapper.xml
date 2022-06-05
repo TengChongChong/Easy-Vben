@@ -35,15 +35,20 @@
     </select>
     <select id="get" resultType="com.easy.admin.auth.model.SysPermission">
         select t.id, t.parent_id, t.type, t.title, t.name, t.code, t.icon, t.order_no, t.path, t.component, t.external, t.display,
-               t.open_mode, t.status, t.remarks, t.version, p.name as parent_name
+               t.open_mode, t.status, t.remarks, t.version
         from sys_permission t
-            left join sys_permission p on p.id = t.parent_id
         where t.id = #{id}
     </select>
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(t.order_no), 0)
         from sys_permission t
-        where t.parent_id = #{parentId}
+        where
+        <if test="parentId != null">
+            t.parent_id = #{parentId}
+        </if>
+        <if test="parentId == null">
+            t.parent_id is null
+        </if>
     </select>
     <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
         select t.id, t.parent_id, t.id as `key`, t.type, t.icon, t.display, t.title

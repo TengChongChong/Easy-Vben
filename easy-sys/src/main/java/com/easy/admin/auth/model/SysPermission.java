@@ -107,13 +107,6 @@ public class SysPermission extends Model<SysPermission> {
     private Date editDate;
 
     //
-    /**
-     * 父菜单名称
-     */
-    @TableField(exist=false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String parentName;
-
     public SysPermission() {
     }
 
@@ -295,13 +288,5 @@ public class SysPermission extends Model<SysPermission> {
 
     public void setEditDate(Date editDate) {
         this.editDate = editDate;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
     }
 }

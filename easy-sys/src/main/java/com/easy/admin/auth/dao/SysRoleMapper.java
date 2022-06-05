@@ -2,8 +2,9 @@ package com.easy.admin.auth.dao;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.auth.model.SysRole;
+import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.tree.Tree;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,12 +15,13 @@ import java.util.List;
  */
 public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
-     * 根据父id查询数据
+     * 获取列表数据
      *
-     * @param parentId 父id
-     * @return List<JsTree>
+     * @param page 分页
+     * @param queryWrapper 查询条件
+     * @return List<SysRole>
      */
-    List<Tree> selectByParentId(@Param("parentId") String parentId);
+    List<SysRole> select(Page<SysRole> page, @Param("ew") QueryWrapper<SysRole> queryWrapper);
 
     /**
      * 获取所有数据
@@ -34,7 +36,7 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @param id 角色id
      * @return SysRole
      */
-    SysRole selectInfo(@Param("id") String id);
+    SysRole get(@Param("id") String id);
 
     /**
      * 查询权限id集合
@@ -45,30 +47,11 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     List<String> selectPermissions(@Param("id") String id);
 
     /**
-     * 查询指定数据
-     *
-     * @param parentId 父id
-     * @param str    开始位置
-     * @param length 长度
-     * @return List<T>
-     */
-    List<SysRole> selectOrderInfo(@Param("parentId") String parentId, @Param("str") Integer str, @Param("length") Integer length);
-
-    /**
-     * 根据关键字搜索数据
-     *
-     * @param title 关键字
-     * @return List<JsTree>
-     */
-    List<Tree> selectByTitle(@Param("title") String title);
-
-    /**
      * 获取最大排序值
      *
-     * @param id 父Id
      * @return Integer
      */
-    Integer getMaxOrderNo(@Param("parentId") String id);
+    Integer getMaxOrderNo();
 
     /**
      * 根据用户id获取角色标识

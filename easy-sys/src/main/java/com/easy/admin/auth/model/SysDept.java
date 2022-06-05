@@ -95,12 +95,6 @@ public class SysDept extends Model<SysDept> {
     @TableField(exist=false)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String typeName;
-    /**
-     * 上级部门名称
-     */
-    @TableField(exist=false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String parentName;
 
     @Override
     protected Serializable pkVal() {
@@ -225,14 +219,6 @@ public class SysDept extends Model<SysDept> {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
     }
 
     public String getTenantId() {

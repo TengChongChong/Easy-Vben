@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @date 2019-03-08
  */
 @RestController
-@RequestMapping("/auth/file")
+@RequestMapping("/api/auth/file")
 public class UploadController {
 
     @Autowired

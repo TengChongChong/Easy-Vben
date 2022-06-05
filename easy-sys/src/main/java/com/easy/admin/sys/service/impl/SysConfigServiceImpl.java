@@ -36,29 +36,42 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysConfig 查询条件
      * @return 数据集合
      */
     @Override
-    public Page<SysConfig> select(SysConfig object, Page<SysConfig> page) {
+    public Page<SysConfig> select(SysConfig sysConfig, Page<SysConfig> page) {
         QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
+        if (sysConfig != null) {
             // 查询条件
             // key
-            if (Validator.isNotEmpty(object.getSysKey())) {
-                queryWrapper.like("sys_key", object.getSysKey());
+            if (Validator.isNotEmpty(sysConfig.getSysKey())) {
+                queryWrapper.like("t.sys_key", sysConfig.getSysKey());
             }
             // value
-            if (Validator.isNotEmpty(object.getValue())) {
-                queryWrapper.like("value", object.getValue());
+            if (Validator.isNotEmpty(sysConfig.getValue())) {
+                queryWrapper.like("t.value", sysConfig.getValue());
             }
             // 类型
-            if (Validator.isNotEmpty(object.getType())) {
-                queryWrapper.eq("type", object.getType());
+            if (Validator.isNotEmpty(sysConfig.getType())) {
+                if (sysConfig.getType().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.status", sysConfig.getType().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.status", sysConfig.getType());
+                }
+            }
+            // 系统
+            if (Validator.isNotEmpty(sysConfig.getSys())) {
+                if (sysConfig.getSys().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.sys", sysConfig.getSys().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.sys", sysConfig.getSys());
+                }
             }
         }
-        page.setDefaultDesc("create_date");
-        return page(page, queryWrapper);
+        page.setDefaultDesc("t.create_date");
+        page.setRecords(baseMapper.select(page, queryWrapper));
+        return page;
     }
 
     @Override
@@ -85,24 +98,24 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysConfig 表单内容
      * @return 保存后信息
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysConfig saveData(SysConfig object) {
+    public SysConfig saveData(SysConfig sysConfig) {
         QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
         // 验证数据有效性
-        switch (object.getType()) {
+        switch (sysConfig.getType()) {
             case DataTypeConst.INTEGER:
                 try {
-                    Integer.parseInt(object.getValue());
+                    Integer.parseInt(sysConfig.getValue());
                 } catch (NumberFormatException e) {
                     throw new EasyException("请输入有效的数字");
                 }
                 break;
             case DataTypeConst.BOOLEAN:
-                if (!CommonConst.TRUE.equals(object.getValue()) && !CommonConst.FALSE.equals(object.getValue())) {
+                if (!CommonConst.TRUE.equals(sysConfig.getValue()) && !CommonConst.FALSE.equals(sysConfig.getValue())) {
                     throw new EasyException("请输入有效的boolean值");
                 }
                 break;
@@ -110,25 +123,25 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
                 break;
         }
         // 验证长度
-        if (object.getValue().length() > 150) {
+        if (sysConfig.getValue().length() > 150) {
             throw new EasyException("value长度超过限制，最多150个字符");
         }
 
-        queryWrapper.eq("sys_key", object.getSysKey());
-        if (object.getId() != null) {
-            queryWrapper.ne("id", object.getId());
+        queryWrapper.eq("sys_key", sysConfig.getSysKey());
+        if (sysConfig.getId() != null) {
+            queryWrapper.ne("id", sysConfig.getId());
         }
         if (count(queryWrapper) > 0) {
-            throw new EasyException("key[" + object.getSysKey() + "]已存在");
+            throw new EasyException("key[" + sysConfig.getSysKey() + "]已存在");
         }
         // 删除redis中的key
-        RedisUtil.del(getRedisKey(object.getSysKey()));
-        boolean isSuccess = saveOrUpdate(object);
+        RedisUtil.del(getRedisKey(sysConfig.getSysKey()));
+        boolean isSuccess = saveOrUpdate(sysConfig);
         if (isSuccess) {
             // 再次删除redis中的key，防止高并发读写产生的脏数据
-            asyncService.removeRedis(object.getSysKey(), 1000);
+            asyncService.removeRedis(sysConfig.getSysKey(), 1000);
         }
-        return object;
+        return sysConfig;
     }
 
     @Override

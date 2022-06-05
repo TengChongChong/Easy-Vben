@@ -240,7 +240,7 @@ public class ShiroServiceImpl implements ShiroService {
         sysUser.setRoleList(sysUserRoleService.selectRoleByUserId(sysUser.getId()));
 
         // 设置菜单
-        sysUser.setPermissionList(sysUserRoleService.selectMenusByUserId(sysUser.getId()));
+        sysUser.setPermissionList(sysUserRoleService.selectPermissionByUserId(sysUser.getId()));
         return sysUser;
     }
 

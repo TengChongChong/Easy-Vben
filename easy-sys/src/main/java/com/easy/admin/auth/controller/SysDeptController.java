@@ -1,12 +1,10 @@
 package com.easy.admin.auth.controller;
 
-import com.easy.admin.common.core.base.BaseController;
-import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.common.core.common.select.Select;
-import com.easy.admin.common.core.common.tree.Tree;
-import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.auth.model.SysDept;
 import com.easy.admin.auth.service.SysDeptService;
+import com.easy.admin.common.core.base.BaseController;
+import com.easy.admin.common.core.common.tree.Tree;
+import com.easy.admin.core.annotation.ResponseResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,60 +20,47 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/dept")
+@RequestMapping("/api/auth/sys/dept")
 public class SysDeptController extends BaseController {
 
     @Autowired
     private SysDeptService service;
 
     /**
-     * 获取指定parentId下的数据
-     *
-     * @param parentId parentId
-     * @return List<Tree>
-     */
-    @GetMapping("parentId")
-    @RequiresPermissions("sys:dept:select")
-    public List<Tree> selectByParentId(@RequestParam(value = "parentId", required = false) String parentId) {
-        return service.selectByParentId(parentId);
-    }
-
-    /**
-     * 根据名称搜索s
-     *
-     * @param title 名称
-     * @return List<Tree>
-     */
-    @GetMapping("title")
-    @RequiresPermissions("sys:dept:select")
-    public List<Tree> selectByTitle(@RequestParam("title") String title) {
-        return service.selectByTitle(title);
-    }
-
-    /**
      * 列表
      *
      * @param object 查询条件
-     * @param page   分页
-     * @return Page<SysDept>
+     * @return List<SysDept>
      */
     @GetMapping
     @RequiresPermissions("sys:dept:select")
-    public Page<SysDept> select(SysDept object, Page<SysDept> page) {
-        return service.select(object, page);
+    public List<SysDept> select(SysDept object) {
+        return service.select(object);
+    }
+
+    /**
+     * 获取全部数据
+     *
+     * @return List<Tree>
+     */
+    @GetMapping("all")
+    @RequiresPermissions("sys:dept:type:select")
+    public List<Tree> selectAll() {
+        return service.selectAll();
     }
 
     /**
      * 新增
      *
      * @param parentId      上级 id
-     * @param deptType 部门类型
+     * @param typeCode 部门类型
      * @return SysDept
      */
     @GetMapping({"/add/{id}", "/add"})
+    @RequiresPermissions("sys:dept:save")
     public SysDept add(@PathVariable(value = "id", required = false) String parentId,
-                       @RequestParam(value = "deptType", required = false) String deptType) {
-        return service.add(parentId, deptType);
+                       @RequestParam(value = "typeCode", required = false) String typeCode) {
+        return service.add(parentId, typeCode);
     }
 
     /**
@@ -89,6 +74,7 @@ public class SysDeptController extends BaseController {
     public boolean remove(@PathVariable("id") String id) {
         return service.remove(id);
     }
+
     /**
      * 设置状态
      *
@@ -96,10 +82,11 @@ public class SysDeptController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("sys:dept:type:status")
+    @RequiresPermissions("sys:dept:save")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
+
     /**
      * 保存
      *
@@ -113,6 +100,18 @@ public class SysDeptController extends BaseController {
     }
 
     /**
+     * 保存排序
+     *
+     * @param sysDeptList 排序
+     * @return true/false
+     */
+    @PostMapping("order")
+    @RequiresPermissions("sys:dept:save")
+    public boolean saveOrder(@RequestBody List<SysDept> sysDeptList){
+        return service.saveOrder(sysDeptList);
+    }
+
+    /**
      * 详情
      *
      * @param id id
@@ -121,30 +120,6 @@ public class SysDeptController extends BaseController {
     @GetMapping("{id}")
     public SysDept get(@PathVariable("id") String id) {
         return service.get(id);
-    }
-
-    /**
-     * 新增/修改页面获取机构类型option
-     *
-     * @param parentId      上级id
-     * @param deptType 类型
-     * @return List<Select>
-     */
-    @GetMapping("dept/type/option")
-    public List<Select> selectDeptTypeOption(@RequestParam("parentId") String parentId, @RequestParam(value = "deptType", required = false) String deptType) {
-        return service.selectDeptTypeOption(parentId, deptType);
-    }
-
-    /**
-     * 新增/修改页面获取父部门option
-     *
-     * @param parentId      上级部门id
-     * @param deptType 部门类型
-     * @return List<Select>
-     */
-    @GetMapping("up/dept/option")
-    public List<Select> selectUpDeptOption(@RequestParam("parentId") String parentId, @RequestParam(value = "deptType", required = false) String deptType) {
-        return service.selectUpDeptOption(parentId, deptType);
     }
 
     /**
