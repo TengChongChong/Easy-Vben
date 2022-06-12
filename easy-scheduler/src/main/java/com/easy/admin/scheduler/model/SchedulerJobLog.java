@@ -24,7 +24,7 @@ public class SchedulerJobLog extends Model<SchedulerJobLog> {
     /**
      * 任务id
      */
-    private String jobId;
+    private String schedulerJobId;
 
     /**
      * 执行时间
@@ -41,8 +41,8 @@ public class SchedulerJobLog extends Model<SchedulerJobLog> {
     public SchedulerJobLog() {
     }
 
-    public SchedulerJobLog(String jobId, Date runDate, Long timeConsuming) {
-        this.jobId = jobId;
+    public SchedulerJobLog(String schedulerJobId, Date runDate, Long timeConsuming) {
+        this.schedulerJobId = schedulerJobId;
         this.runDate = runDate;
         this.timeConsuming = timeConsuming;
     }
@@ -54,13 +54,15 @@ public class SchedulerJobLog extends Model<SchedulerJobLog> {
     public void setId(String id) {
         this.id = id;
     }
-    public String getJobId() {
-        return jobId;
+
+    public String getSchedulerJobId() {
+        return schedulerJobId;
     }
 
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
+    public void setSchedulerJobId(String schedulerJobId) {
+        this.schedulerJobId = schedulerJobId;
     }
+
     public Date getRunDate() {
         return runDate;
     }

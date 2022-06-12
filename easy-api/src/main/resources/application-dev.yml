@@ -1,8 +1,8 @@
 project:
-    # 项目访问url,如不使用邮件功能可不配置
+    # 项目访问url
     url: http://127.0.0.1
     # 前端访问url
-    front-end-url: http://localhost:8000
+    front-end-url: http://localhost:3100
     login:
         remember:
             # 是否开启记住我功能,安全性要求比较高的系统请改为false

@@ -1,9 +1,6 @@
 package com.easy.admin.scheduler.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
@@ -57,12 +54,16 @@ public class SchedulerJob extends Model<SchedulerJob> {
      * 状态
      */
     @NotNull(message = "状态不能为空")
-    private Integer status;
+    private String status;
 
     /**
      * 备注
      */
     private String remarks;
+    /**
+     * 是否系统
+     */
+    private String sys;
 
     /**
      * 上次执行时间
@@ -72,6 +73,7 @@ public class SchedulerJob extends Model<SchedulerJob> {
     /**
      * 乐观锁
      */
+    @Version
     private Integer version;
 
     /**
@@ -147,11 +149,11 @@ public class SchedulerJob extends Model<SchedulerJob> {
         this.method = method;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -217,5 +219,13 @@ public class SchedulerJob extends Model<SchedulerJob> {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getSys() {
+        return sys;
+    }
+
+    public void setSys(String sys) {
+        this.sys = sys;
     }
 }

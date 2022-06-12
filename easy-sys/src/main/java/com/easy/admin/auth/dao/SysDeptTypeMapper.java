@@ -36,7 +36,7 @@ public interface SysDeptTypeMapper extends BaseMapper<SysDeptType> {
      * @param id 部门类型id
      * @return SysDeptType
      */
-    SysDeptType get(@Param("id") String id);
+    SysDeptType getById(@Param("id") String id);
 
     /**
      * 查询用户角色ids
@@ -60,4 +60,12 @@ public interface SysDeptTypeMapper extends BaseMapper<SysDeptType> {
      * @return 数量
      */
     int selectChildCount(@Param("code") String code);
+
+    /**
+     * 批量更新排序&结构
+     *
+     * @param list 数据
+     * @return 更新条数
+     */
+    Integer updateOrderBatch(List<SysDeptType> list);
 }

@@ -24,7 +24,11 @@
         </where>
     </select>
     <select id="selectType" resultType="com.easy.admin.common.core.common.select.Select">
-        select type as value,concat(name, '（', type, '）') as label from sys_dict_type where status = #{status} order by type
+        select type as value,concat(name, '（', type, '）') as label
+        from sys_dict_type
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
 
     <select id="countDict" resultType="java.lang.Integer">

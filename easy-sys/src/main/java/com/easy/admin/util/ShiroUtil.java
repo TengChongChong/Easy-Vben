@@ -124,6 +124,18 @@ public class ShiroUtil {
     }
 
     /**
+     * 是否拥有某个角色标识
+     *
+     * @param roleCode 角色标识
+     * @return true/false
+     */
+    public static boolean havRole(String roleCode){
+        SysUser currentUser = getCurrentUser();
+        List<String> roleCodes = getRoleCodes(currentUser.getRoleList());
+        return roleCodes.contains(roleCode);
+    }
+
+    /**
      * 删除当前用户
      */
     public static void removeCurrentUser() {

@@ -35,7 +35,7 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      * @param id 权限id
      * @return SysPermissions
      */
-    SysPermission get(@Param("id") String id);
+    SysPermission getById(@Param("id") String id);
 
     /**
      * 获取最大排序值
@@ -44,4 +44,12 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      * @return Integer
      */
     Integer getMaxOrderNo(@Param("parentId") String id);
+
+    /**
+     * 批量更新排序&结构
+     *
+     * @param list 数据
+     * @return 更新条数
+     */
+    Integer updateOrderBatch(List<SysPermission> list);
 }

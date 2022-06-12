@@ -66,7 +66,7 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
 
     @Override
     public SysDeptType get(String id) {
-        SysDeptType sysDeptType = baseMapper.get(id);
+        SysDeptType sysDeptType = baseMapper.getById(id);
         if (sysDeptType != null) {
             sysDeptType.setRoleIdList(baseMapper.selectRoles(id));
         }
@@ -170,6 +170,6 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
 
     @Override
     public boolean saveOrder(List<SysDeptType> sysDeptTypeList) {
-        return saveOrUpdateBatch(sysDeptTypeList);
+        return baseMapper.updateOrderBatch(sysDeptTypeList) > 0;
     }
 }

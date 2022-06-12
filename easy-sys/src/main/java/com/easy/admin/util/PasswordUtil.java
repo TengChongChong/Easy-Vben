@@ -19,7 +19,7 @@ public class PasswordUtil {
     private PasswordUtil() {}
 
     /**
-     * 加密密码 用于登录/重置密码
+     * 加密密码 用于登录/重置密码/修改密码
      *
      * @param password 密码(经过一次md5)
      * @param salt     盐
@@ -38,5 +38,12 @@ public class PasswordUtil {
      */
     public static String generatingPasswords(String password, String salt) {
         return SecureUtil.md5((SecureUtil.md5(salt + PASSWORD) + SecureUtil.md5(password)));
+    }
+
+    public static void main(String[] args) {
+        //        0192023a7bbd73250516f069df18b500
+        System.out.println(generatingPasswords("admin123", "32o5g80pks"));
+        System.out.println(encryptedPasswords("0192023a7bbd73250516f069df18b500", "32o5g80pks"));
+
     }
 }

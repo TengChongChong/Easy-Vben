@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/exception")
+@RequestMapping("/api/auth/sys/exception")
 public class SysExceptionController extends BaseController {
 
     /**

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/log")
+@RequestMapping("/api/auth/sys/log")
 public class SysLogController extends BaseController {
 
     /**

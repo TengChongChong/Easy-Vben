@@ -41,11 +41,11 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
             // 查询条件
             // 错误代码
             if (Validator.isNotEmpty(object.getCode())) {
-                queryWrapper.eq("code", object.getCode());
+                queryWrapper.like("code", object.getCode());
             }
             // 异常类型
             if (Validator.isNotEmpty(object.getType())) {
-                queryWrapper.eq("type", object.getType());
+                queryWrapper.like("type", object.getType());
             }
             // 请求地址
             if (Validator.isNotEmpty(object.getUrl())) {
@@ -53,7 +53,7 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
             }
             // 错误信息
             if (Validator.isNotEmpty(object.getMessage())) {
-                queryWrapper.eq("message", object.getMessage());
+                queryWrapper.like("message", object.getMessage());
             }
             // 触发用户
             if (Validator.isNotEmpty(object.getNickname())) {

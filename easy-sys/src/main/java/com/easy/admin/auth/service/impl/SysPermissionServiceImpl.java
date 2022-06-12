@@ -91,7 +91,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     public SysPermission get(String id) {
-        return baseMapper.get(id);
+        return baseMapper.getById(id);
     }
 
     @Override
@@ -156,6 +156,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     public boolean saveOrder(List<SysPermission> sysPermissionList) {
-        return saveOrUpdateBatch(sysPermissionList);
+        return baseMapper.updateOrderBatch(sysPermissionList) > 0;
     }
 }

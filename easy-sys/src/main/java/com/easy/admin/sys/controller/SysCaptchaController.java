@@ -25,7 +25,7 @@ public class SysCaptchaController {
      * @param phone 手机号
      * @return 验证码
      */
-    @GetMapping("/auth/sys/binding/phone/captcha")
+    @GetMapping("/api/auth/sys/binding/phone/captcha")
     public String bindingPhone(String phone){
         // 注：此处仅为演示，实际场景勿返回验证码
         return service.bindingPhone(phone);

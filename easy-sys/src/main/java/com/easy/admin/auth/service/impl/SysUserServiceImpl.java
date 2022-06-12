@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.common.constant.SessionConst;
+import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.auth.common.status.SysDeptStatus;
 import com.easy.admin.auth.common.status.SysUserStatus;
 import com.easy.admin.auth.dao.SysUserMapper;
@@ -24,6 +25,7 @@ import com.easy.admin.config.shiro.service.ShiroService;
 import com.easy.admin.exception.BusinessException;
 import com.easy.admin.sys.common.constant.SexConst;
 import com.easy.admin.sys.common.constant.SysConst;
+import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
@@ -91,6 +93,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (Validator.isNotEmpty(sysUser.getDeptId())) {
             queryWrapper.eq("t.dept_id", sysUser.getDeptId());
         }
+        // 非系统管理员，仅显示非系统数据
+        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+            queryWrapper.eq("sr.sys", WhetherConst.NO);
+        }
         page.setDefaultDesc("t.create_date");
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
@@ -125,7 +131,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser get(String id) {
         ToolUtil.checkParams(id);
-        SysUser sysUser = baseMapper.selectInfo(id);
+        SysUser sysUser = baseMapper.getById(id);
         if (sysUser != null) {
             sysUser.setRoleIdList(baseMapper.selectRoles(id));
             if (Validator.isEmpty(sysUser.getRoleIdList())) {
@@ -338,7 +344,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser getUser(String id) {
         ToolUtil.checkParams(id);
-        SysUser sysUser = baseMapper.selectInfo(id);
+        SysUser sysUser = baseMapper.getById(id);
         if (sysUser != null) {
             sysUser.setDept(sysDeptService.get(sysUser.getDeptId()));
         }

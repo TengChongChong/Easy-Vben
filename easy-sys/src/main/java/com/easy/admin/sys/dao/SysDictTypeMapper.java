@@ -27,10 +27,10 @@ public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
     /**
      * 获取字典类型
      *
-     * @param status 状态
+     * @param queryWrapper 查询条件
      * @return List<Select>
      */
-    List<Select> selectType(@Param("status") String status);
+    List<Select> selectType(@Param("ew") QueryWrapper<SysDictType> queryWrapper);
 
     /**
      * 查询字典数量

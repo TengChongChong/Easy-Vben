@@ -15,7 +15,7 @@
     </resultMap>
 
     <select id="select" resultType="com.easy.admin.sys.model.SysException">
-        select t.id, t.user_id, t.trigger_time, t.type, t.message, t.url, t.code,u.nickname
+        select t.id, t.user_id, t.trigger_time, t.type, t.message, t.url, t.code, u.nickname
         from sys_exception t
         left join sys_user u on u.id = t.user_id
         <where>
@@ -23,7 +23,7 @@
         </where>
     </select>
     <select id="getById" resultType="com.easy.admin.sys.model.SysException">
-        select t.id, t.user_id, t.trigger_time, t.type, t.message, t.trace, t.url, t.code,u.nickname
+        select t.id, t.user_id, t.trigger_time, t.type, t.message, t.trace, t.url, t.code, u.nickname
         from sys_exception t
         left join sys_user u on u.id = t.user_id
         where t.id = #{id}

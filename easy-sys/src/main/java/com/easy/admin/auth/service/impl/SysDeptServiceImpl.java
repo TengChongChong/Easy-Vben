@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.dao.SysDeptMapper;
 import com.easy.admin.auth.model.SysDept;
+import com.easy.admin.auth.model.SysDeptType;
 import com.easy.admin.auth.service.SysDeptService;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.status.CommonStatus;
@@ -128,7 +129,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
     @Override
     public boolean saveOrder(List<SysDept> sysDeptList) {
-        return saveOrUpdateBatch(sysDeptList);
+        return baseMapper.updateOrderBatch(sysDeptList) > 0;
     }
 
     @Override

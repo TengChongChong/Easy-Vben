@@ -31,7 +31,7 @@ public class SysMailVerificationController extends BaseController {
      * @param json {code: ''}
      * @return true/false
      */
-    @PostMapping("sys/mail/verification")
+    @PostMapping("/api/mail/verification")
     public boolean verifies(@RequestBody JSONObject json) {
         return service.verifies(json.getStr("code"));
     }

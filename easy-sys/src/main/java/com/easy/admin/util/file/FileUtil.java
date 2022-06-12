@@ -134,7 +134,7 @@ public class FileUtil {
      */
     public static String getPath(String url) {
         if (url.contains(STATIC)) {
-            return SysConst.projectProperties.getFileUploadPath() + url.replace("/" + STATIC + "/", "");
+            return SysConst.projectProperties.getFileUploadPath() + url.substring(url.indexOf(STATIC) + STATIC.length() + 1);
         }
         return url;
     }

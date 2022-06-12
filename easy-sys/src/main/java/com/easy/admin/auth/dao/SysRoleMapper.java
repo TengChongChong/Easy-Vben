@@ -36,7 +36,7 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @param id 角色id
      * @return SysRole
      */
-    SysRole get(@Param("id") String id);
+    SysRole getById(@Param("id") String id);
 
     /**
      * 查询权限id集合

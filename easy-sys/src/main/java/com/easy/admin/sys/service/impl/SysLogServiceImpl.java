@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 /**
- * 日志 
+ * 日志
  *
  * @author TengChong
  * @date 2019-06-27
@@ -27,29 +27,42 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 
     /**
      * 列表
+     *
      * @param object 查询条件
      * @return 数据集合
      */
     @Override
     public Page<SysLog> select(SysLog object, Page<SysLog> page) {
         QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();
-        if(object != null){
+        if (object != null) {
             // 查询条件
             // 模块
             if (Validator.isNotEmpty(object.getModular())) {
-                queryWrapper.like("modular", object.getModular());
+                queryWrapper.like("t.modular", object.getModular());
             }
             // 方法
             if (Validator.isNotEmpty(object.getMethod())) {
-                queryWrapper.like("method", object.getMethod());
+                queryWrapper.like("t.method", object.getMethod());
             }
             // ip
             if (Validator.isNotEmpty(object.getIp())) {
-                queryWrapper.like("ip", object.getIp());
+                queryWrapper.like("t.ip", object.getIp());
+            }
+            // url
+            if (Validator.isNotEmpty(object.getUrl())) {
+                queryWrapper.like("t.url", object.getUrl());
             }
             // uri
             if (Validator.isNotEmpty(object.getUri())) {
-                queryWrapper.like("uri", object.getUri());
+                queryWrapper.like("t.uri", object.getUri());
+            }
+            // clazz
+            if (Validator.isNotEmpty(object.getClazz())) {
+                queryWrapper.like("t.clazz", object.getClazz());
+            }
+            // params
+            if (Validator.isNotEmpty(object.getParams())) {
+                queryWrapper.like("t.params", object.getParams());
             }
             // 操作人
             if (Validator.isNotEmpty(object.getOperationUser())) {
@@ -57,7 +70,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
             }
             // 操作时间
             if (Validator.isNotEmpty(object.getOperationDate())) {
-                queryWrapper.eq("operation_date", object.getOperationDate());
+                queryWrapper.eq("t.operation_date", object.getOperationDate());
             }
         }
         // 设置默认排序

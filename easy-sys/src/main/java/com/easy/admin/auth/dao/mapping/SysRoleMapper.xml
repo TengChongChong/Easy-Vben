@@ -28,7 +28,7 @@
     <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
         select t.id, t.id as `key`,t.name as title from sys_role t where t.status = #{status} order by t.order_no
     </select>
-    <select id="get" resultType="com.easy.admin.auth.model.SysRole">
+    <select id="getById" resultType="com.easy.admin.auth.model.SysRole">
         select t.id, t.name, t.code, t.sys, t.status, t.order_no, t.remarks, t.tenant_id, t.version
         from sys_role t
         where t.id= #{id}

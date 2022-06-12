@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.scheduler.model.SchedulerJobLog">
         <id column="id" property="id" />
-        <result column="job_id" property="jobId" />
+        <result column="scheduler_job_id" property="schedulerJobId" />
         <result column="run_date" property="runDate" />
         <result column="time_consuming" property="timeConsuming" />
     </resultMap>

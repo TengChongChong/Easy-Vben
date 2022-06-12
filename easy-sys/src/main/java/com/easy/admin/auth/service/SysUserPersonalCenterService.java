@@ -21,10 +21,10 @@ public interface SysUserPersonalCenterService {
     /**
      * 保存头像
      *
-     * @param path 文件路径
+     * @param url url
      * @return url
      */
-    String saveUserAvatar(String path);
+    String saveUserAvatar(String url);
 
     /**
      * 保存当前用户信息

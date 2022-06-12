@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
@@ -12,10 +13,12 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.dao.SysDictMapper;
 import com.easy.admin.sys.dao.SysDictTypeMapper;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.service.SysDictService;
+import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,10 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
                     queryWrapper.eq("t.status", sysDict.getStatus());
                 }
             }
+        }
+        // 非系统管理员，仅显示非系统数据
+        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+            queryWrapper.eq("dt.sys", WhetherConst.NO);
         }
         page.setDefaultAsc("t.dict_type, t.order_no");
         page.setRecords(baseMapper.select(page, queryWrapper));
@@ -149,11 +156,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         }
         refresh();
         return sysDict;
-    }
-
-    @Override
-    public List<Select> selectDictType() {
-        return dictTypeMapper.selectType(CommonStatus.ENABLE.getCode());
     }
 
     /**

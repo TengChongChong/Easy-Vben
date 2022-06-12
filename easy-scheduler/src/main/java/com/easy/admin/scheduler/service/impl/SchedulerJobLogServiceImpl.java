@@ -1,6 +1,5 @@
 package com.easy.admin.scheduler.service.impl;
 
-import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,24 +23,17 @@ public class SchedulerJobLogServiceImpl extends ServiceImpl<SchedulerJobLogMappe
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param schedulerJobLog 查询条件
      * @param page   分页
      * @return 数据集合
      */
     @Override
-    public Page<SchedulerJobLog> select(SchedulerJobLog object, Page<SchedulerJobLog> page) {
+    public Page<SchedulerJobLog> select(SchedulerJobLog schedulerJobLog, Page<SchedulerJobLog> page) {
         QueryWrapper<SchedulerJobLog> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
-            // 查询条件
-            // 任务id
-            if (Validator.isNotEmpty(object.getJobId())) {
-                queryWrapper.eq("job_id", object.getJobId());
-            }
-            // 执行时间
-            if (Validator.isNotEmpty(object.getRunDate())) {
-                queryWrapper.eq("run_date", object.getRunDate());
-            }
+        if (schedulerJobLog == null || StrUtil.isBlank(schedulerJobLog.getSchedulerJobId())) {
+            return page;
         }
+        queryWrapper.eq("scheduler_job_id", schedulerJobLog.getSchedulerJobId());
         page.setDefaultDesc("run_date");
         return page(page, queryWrapper);
     }
@@ -55,9 +47,6 @@ public class SchedulerJobLogServiceImpl extends ServiceImpl<SchedulerJobLogMappe
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SchedulerJobLog saveData(SchedulerJobLog object) {
-        if (StrUtil.isBlank(object.getId())) {
-            // 新增,设置默认值
-        }
         return (SchedulerJobLog) ToolUtil.checkResult(saveOrUpdate(object), object);
     }
 }

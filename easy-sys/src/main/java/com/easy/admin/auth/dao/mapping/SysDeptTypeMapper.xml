@@ -26,7 +26,7 @@
         </where>
         order by t.order_no
     </select>
-    <select id="get" resultType="com.easy.admin.auth.model.SysDeptType">
+    <select id="getById" resultType="com.easy.admin.auth.model.SysDeptType">
         select t.id, t.parent_id, t.code, t.name, t.order_no, t.status, t.remarks, t.tenant_id, t.version
         from sys_dept_type t
         where t.id= #{id}
@@ -53,4 +53,14 @@
         select count(1) from sys_dept_type sdt where sdt.parent_id = (select id from sys_dept_type sdt2 where sdt2.code = #{code})
     </select>
 
+    <update id="updateOrderBatch">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update sys_dept_type
+            <set>
+                parent_id = #{item.parentId},
+                order_no = #{item.orderNo}
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
 </mapper>

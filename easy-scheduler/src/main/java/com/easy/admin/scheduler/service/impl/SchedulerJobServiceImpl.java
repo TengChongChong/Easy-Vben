@@ -5,6 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.common.constant.SysRoleConst;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
@@ -16,7 +18,7 @@ import com.easy.admin.scheduler.model.SchedulerJobLog;
 import com.easy.admin.scheduler.service.QuartzService;
 import com.easy.admin.scheduler.service.SchedulerJobLogService;
 import com.easy.admin.scheduler.service.SchedulerJobService;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
 import org.quartz.SchedulerException;
@@ -41,7 +43,7 @@ import java.util.List;
 @Service
 public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, SchedulerJob> implements SchedulerJobService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private QuartzService quartzService;
@@ -71,15 +73,36 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
             }
             // bean
             if (Validator.isNotEmpty(object.getBean())) {
-                queryWrapper.eq("bean", object.getBean());
+                queryWrapper.like("bean", object.getBean());
+            }
+            // 方法
+            if (Validator.isNotEmpty(object.getMethod())) {
+                queryWrapper.like("method", object.getMethod());
             }
             // 状态
             if (Validator.isNotEmpty(object.getStatus())) {
-                queryWrapper.eq("status", object.getStatus());
+                if (object.getStatus().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("status", object.getStatus().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("status", object.getStatus());
+                }
+            }
+            // 系统
+            if (Validator.isNotEmpty(object.getSys())) {
+                if (object.getSys().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("sys", object.getSys().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("sys", object.getSys());
+                }
             }
         }
+        // 非系统管理员，仅显示非系统数据
+        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+            queryWrapper.eq("sys", WhetherConst.NO);
+        }
         page.setDefaultDesc("create_date");
-        return page(page, queryWrapper);
+        page.setRecords(baseMapper.select(page, queryWrapper));
+        return page;
     }
 
     @Override
@@ -98,7 +121,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     @Override
     public SchedulerJob get(String id) {
         ToolUtil.checkParams(id);
-        return getById(id);
+        return baseMapper.getById(id);
     }
 
     /**
@@ -111,7 +134,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
         SchedulerJob object = new SchedulerJob();
         // 默认开启
         object.setStatus(SchedulerStatus.ENABLE.getCode());
-        // 设置默认值
+        object.setSys(WhetherConst.NO);
         return object;
     }
 
@@ -178,7 +201,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
             if (StrUtil.isNotBlank(jobJobCode)) {
                 quartzService.operateJob(new SchedulerJob(jobJobCode), SchedulerStatus.DELETE);
             }
-            if (SchedulerStatus.ENABLE.getCode() == object.getStatus()) {
+            if (SchedulerStatus.ENABLE.getCode().equals(object.getStatus())) {
                 // 如果保存后是启用状态,添加到任务里
                 quartzService.addJob(object);
             }
@@ -200,7 +223,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     @Override
     public void start(String id) {
         ToolUtil.checkParams(id);
-        boolean updateSuccess = updateJobStatus(SchedulerStatus.ENABLE.getCode(), String.valueOf(id));
+        boolean updateSuccess = updateJobStatus(SchedulerStatus.ENABLE.getCode(), id);
         if (updateSuccess) {
             quartzService.operateJob(getById(id), SchedulerStatus.ENABLE);
         } else {
@@ -211,7 +234,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     @Override
     public void pause(String id) {
         ToolUtil.checkParams(id);
-        boolean updateSuccess = updateJobStatus(SchedulerStatus.DISABLE.getCode(), String.valueOf(id));
+        boolean updateSuccess = updateJobStatus(SchedulerStatus.DISABLE.getCode(), id);
         if (updateSuccess) {
             quartzService.operateJob(getById(id), SchedulerStatus.DISABLE);
         } else {
@@ -257,7 +280,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
      * @param ids    任务ids,如果null则更新全部
      * @return true/false
      */
-    private boolean updateJobStatus(int status, String ids) {
+    private boolean updateJobStatus(String status, String ids) {
         UpdateWrapper<SchedulerJob> updateWrapper = new UpdateWrapper<>();
         updateWrapper.set("status", status);
         if (StrUtil.isNotBlank(ids)) {

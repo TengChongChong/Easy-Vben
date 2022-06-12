@@ -90,7 +90,7 @@ public class SysMailVerificationServiceImpl extends ServiceImpl<SysMailVerificat
         sysMailVerifies.setMail(email);
         sysMailVerifies.setType(type);
         sysMailVerifies.setExpired(DateUtil.offsetDay(new Date(), 1));
-        sysMailVerifies.setCode(RandomUtil.randomString(255));
+        sysMailVerifies.setCode(RandomUtil.randomString(128));
         save(sysMailVerifies);
         return sysMailVerifies;
     }

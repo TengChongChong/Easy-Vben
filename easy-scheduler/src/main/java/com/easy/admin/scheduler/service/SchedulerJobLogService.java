@@ -13,11 +13,11 @@ public interface SchedulerJobLogService {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param schedulerJobLog 查询条件
      * @param page   分页
      * @return Page<SchedulerJobLog>
      */
-    Page<SchedulerJobLog> select(SchedulerJobLog object, Page<SchedulerJobLog> page);
+    Page<SchedulerJobLog> select(SchedulerJobLog schedulerJobLog, Page<SchedulerJobLog> page);
 
 
     /**

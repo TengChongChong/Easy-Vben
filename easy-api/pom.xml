@@ -27,18 +27,18 @@
             <groupId>com.easy.admin</groupId>
             <artifactId>easy-generator</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.easy.admin</groupId>-->
-<!--            <artifactId>easy-scheduler</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-scheduler</artifactId>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.easy.admin</groupId>-->
 <!--            <artifactId>easy-activiti</artifactId>-->
 <!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.easy.admin</groupId>-->
-<!--            <artifactId>easy-sample</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-sample</artifactId>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.easy.admin</groupId>-->
 <!--            <artifactId>easy-cms</artifactId>-->

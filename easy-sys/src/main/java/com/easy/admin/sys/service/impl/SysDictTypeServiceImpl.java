@@ -3,6 +3,7 @@ package com.easy.admin.sys.service.impl;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
@@ -12,6 +13,7 @@ import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.dao.SysDictTypeMapper;
 import com.easy.admin.sys.model.SysDictType;
 import com.easy.admin.sys.service.SysDictTypeService;
+import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +47,10 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
                 queryWrapper.eq("t.status", sysDictType.getStatus());
             }
         }
+        // 非系统管理员，仅显示非系统数据
+        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+            queryWrapper.eq("t.sys", WhetherConst.NO);
+        }
         page.setDefaultDesc("t.create_date");
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
@@ -52,7 +58,14 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
 
     @Override
     public List<Select> selectAll() {
-        return baseMapper.selectType(CommonStatus.ENABLE.getCode());
+        QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
+        // 非系统管理员，仅显示非系统数据
+        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+            queryWrapper.eq("sys", WhetherConst.NO);
+        }
+        queryWrapper.eq("status", CommonStatus.ENABLE.getCode());
+        queryWrapper.orderByAsc("type");
+        return baseMapper.selectType(queryWrapper);
     }
 
     @Override

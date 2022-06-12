@@ -64,80 +64,81 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public String saveUserAvatar(String path) {
-        if (StrUtil.isNotBlank(path)) {
-            File file = new File(path);
-            if (!file.exists()) {
-                throw new EasyException("头像文件不存在");
-            }
-            SysUser sysUser = ShiroUtil.getCurrentUser();
-            // 以前设置了头像
-            String oldAvatar = null;
-            if (StrUtil.isNotBlank(sysUser.getAvatar())) {
-                oldAvatar = sysUser.getAvatar();
-            }
-            // 将新头像移动到正式目录
-            path = FileUtil.moveToFormal(path);
-            // 更新数据库
-            String url = FileUtil.getUrl(path);
-            boolean isSuccess = sysUserService.updateAvatar(url);
-            if (isSuccess) {
-                if (StrUtil.isNotBlank(oldAvatar)) {
-                    // 删除原头像以及缩略图
-                    ImageUtil.delThumbnail(new File(FileUtil.getPath(oldAvatar)));
-                    FileUtil.del(oldAvatar);
-                }
-                // 生成缩略图
-                ImageUtil.generateThumbnail(new File(path));
-                // 更新redis中用户信息
-                sysUser.setAvatar(url);
-                sysUser = FileUtil.initAvatar(sysUser);
-                ShiroUtil.setCurrentUser(sysUser);
-                return url;
-            } else {
-                // 更新失败了,把移动到正式目录的图片删掉
-                cn.hutool.core.io.FileUtil.del(new File(path));
-            }
+    public String saveUserAvatar(String url) {
+        if (StrUtil.isBlank(url)) {
+            throw new EasyException("获取头像路径失败");
         }
-        throw new EasyException("获取头像路径失败");
+        String path = FileUtil.getPath(url);
+        File file = new File(path);
+        if (!file.exists()) {
+            throw new EasyException("头像文件不存在");
+        }
+        SysUser sysUser = ShiroUtil.getCurrentUser();
+        // 以前设置了头像
+        String oldAvatar = null;
+        if (StrUtil.isNotBlank(sysUser.getAvatar())) {
+            oldAvatar = sysUser.getAvatar();
+        }
+        // 将新头像移动到正式目录
+        path = FileUtil.moveToFormal(path);
+        // 更新数据库
+        url = FileUtil.getUrl(path);
+        boolean isSuccess = sysUserService.updateAvatar(url);
+        if (isSuccess) {
+            if (StrUtil.isNotBlank(oldAvatar)) {
+                // 删除原头像以及缩略图
+                ImageUtil.delThumbnail(new File(FileUtil.getPath(oldAvatar)));
+                FileUtil.del(oldAvatar);
+            }
+            // 生成缩略图
+            ImageUtil.generateThumbnail(new File(path));
+            // 更新redis中用户信息
+            sysUser.setAvatar(url);
+            sysUser = FileUtil.initAvatar(sysUser);
+            ShiroUtil.setCurrentUser(sysUser);
+            return url;
+        } else {
+            // 更新失败了,把移动到正式目录的图片删掉
+            cn.hutool.core.io.FileUtil.del(new File(path));
+            throw new EasyException("更新数据失败");
+        }
+
     }
 
     @Override
     public SysUser saveUserInfo(SysUser sysUser) {
-        if (sysUser != null) {
-            SysUser currentUser = ShiroUtil.getCurrentUser();
-            sysUser.setId(currentUser.getId());
-            sysUser = sysUserService.saveData(sysUser, false);
-            // 保存成功后更新redis中的用户信息
-            currentUser.setNickname(sysUser.getNickname());
-            currentUser.setSex(sysUser.getSex());
-            currentUser.setBirthday(sysUser.getBirthday());
-            ShiroUtil.setCurrentUser(currentUser);
-            if (StrUtil.isNotBlank(sysUser.getAvatar())) {
-                saveUserAvatar(FileUtil.getPath(sysUser.getAvatar()));
-            }
-            return currentUser;
-        } else {
+        if (sysUser == null) {
             throw new EasyException(GlobalException.FAILED_TO_GET_DATA);
         }
+        SysUser currentUser = ShiroUtil.getCurrentUser();
+        sysUser.setId(currentUser.getId());
+        sysUser = sysUserService.saveData(sysUser, false);
+        // 保存成功后更新redis中的用户信息
+        currentUser.setNickname(sysUser.getNickname());
+        currentUser.setSex(sysUser.getSex());
+        currentUser.setBirthday(sysUser.getBirthday());
+        ShiroUtil.setCurrentUser(currentUser);
+        if (StrUtil.isNotBlank(sysUser.getAvatar())) {
+            saveUserAvatar(sysUser.getAvatar());
+        }
+        return currentUser;
     }
 
     @Override
     public boolean applicationBindingEmail(String email) {
-        if (StrUtil.isNotBlank(email)) {
-            SysUser currentUser = ShiroUtil.getCurrentUser();
-            SysMailVerification sysMailVerifies = sysMailVerifiesService.saveData(String.valueOf(currentUser.getId()), email, MailConst.MAIL_BINDING_MAIL);
-            if (sysMailVerifies != null) {
-                String url = "/sys/mail-verifies/bind-mail/" + sysMailVerifies.getCode();
-                String hideUsername = StrUtil.hide(currentUser.getUsername(), 1, currentUser.getUsername().length() - 1);
-                Map<String, Object> params = new HashMap<>(2);
-                params.put("url", url);
-                params.put("username", hideUsername);
-                MailUtil.sendHtml(email, "账号" + hideUsername + "密保邮箱验证", MailTemplate.getContent("/mail/verify-mail.html", params));
-                return true;
-            }
-        } else {
+        if (StrUtil.isBlank(email)) {
             throw new EasyException("获取邮箱信息失败");
+        }
+        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SysMailVerification sysMailVerifies = sysMailVerifiesService.saveData(String.valueOf(currentUser.getId()), email, MailConst.MAIL_BINDING_MAIL);
+        if (sysMailVerifies != null) {
+            String url = "/#/auth/personal/center/mail-verifies/" + sysMailVerifies.getCode();
+            String hideUsername = StrUtil.hide(currentUser.getUsername(), 1, currentUser.getUsername().length() - 1);
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("url", url);
+            params.put("username", hideUsername);
+            MailUtil.sendHtml(email, "账号" + hideUsername + "密保邮箱验证", MailTemplate.getContent("/mail/verify-mail.html", params));
+            return true;
         }
         return false;
     }
@@ -145,8 +146,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     @Override
     public boolean changePassword(JSONObject json) {
         String oldPassword = json.getStr("oldPassword"),
-                password = json.getStr("password"),
-                passwordStrength = json.getStr("passwordStrength");
+                password = json.getStr("password");
 
         if (StrUtil.isBlank(oldPassword)) {
             throw new EasyException("请输入当前密码");

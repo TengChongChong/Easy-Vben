@@ -8,21 +8,21 @@ package com.easy.admin.scheduler.common.status;
  */
 public enum SchedulerStatus {
     // 开启
-    ENABLE(1, "开启"),
+    ENABLE("1", "开启"),
     // 暂停
-    DISABLE(2, "暂停"),
+    DISABLE("2", "暂停"),
     // 删除
-    DELETE(0, "删除");
+    DELETE("0", "删除");
 
-    int code;
+    String code;
     String message;
 
-    SchedulerStatus(int code, String message) {
+    SchedulerStatus(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 

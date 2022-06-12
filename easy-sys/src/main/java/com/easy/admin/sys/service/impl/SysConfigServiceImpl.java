@@ -4,16 +4,19 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.DataTypeConst;
+import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.dao.SysConfigMapper;
 import com.easy.admin.sys.model.SysConfig;
 import com.easy.admin.sys.service.AsyncService;
 import com.easy.admin.sys.service.SysConfigService;
+import com.easy.admin.util.ShiroUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +55,10 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             if (Validator.isNotEmpty(sysConfig.getValue())) {
                 queryWrapper.like("t.value", sysConfig.getValue());
             }
+            // 备注
+            if (Validator.isNotEmpty(sysConfig.getRemarks())) {
+                queryWrapper.like("t.remarks", sysConfig.getRemarks());
+            }
             // 类型
             if (Validator.isNotEmpty(sysConfig.getType())) {
                 if (sysConfig.getType().contains(CommonConst.SPLIT)) {
@@ -68,6 +75,10 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
                     queryWrapper.eq("t.sys", sysConfig.getSys());
                 }
             }
+        }
+        // 非系统管理员，仅显示非系统数据
+        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+            queryWrapper.eq("t.sys", WhetherConst.NO);
         }
         page.setDefaultDesc("t.create_date");
         page.setRecords(baseMapper.select(page, queryWrapper));

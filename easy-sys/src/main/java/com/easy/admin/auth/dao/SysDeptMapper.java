@@ -53,7 +53,7 @@ public interface SysDeptMapper extends BaseMapper<SysDept> {
      * @param id 数据id
      * @return 详情
      */
-    SysDept get(@Param("id") String id);
+    SysDept getById(@Param("id") String id);
 
     /**
      * 查询部门 Activiti
@@ -63,4 +63,11 @@ public interface SysDeptMapper extends BaseMapper<SysDept> {
      */
     List<SysDept> selectDepartments(@Param("ew") QueryWrapper<SysDept> queryWrapper);
 
+    /**
+     * 批量更新排序&结构
+     *
+     * @param list 数据
+     * @return 更新条数
+     */
+    Integer updateOrderBatch(List<SysDept> list);
 }

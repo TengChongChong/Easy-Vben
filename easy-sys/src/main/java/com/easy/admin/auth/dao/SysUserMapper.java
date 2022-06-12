@@ -68,7 +68,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param id 用户id
      * @return SysUser
      */
-    SysUser selectInfo(@Param("id") String id);
+    SysUser getById(@Param("id") String id);
 
     /**
      * 获取用户信息，用于登录

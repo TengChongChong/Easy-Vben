@@ -82,13 +82,6 @@ public interface SysDictService {
     SysDict saveData(SysDict object);
 
     /**
-     * 获取字典类型
-     *
-     * @return List<Select>
-     */
-    List<Select> selectDictType();
-
-    /**
      * 查询所有字典
      *
      * @return List<SysDict>

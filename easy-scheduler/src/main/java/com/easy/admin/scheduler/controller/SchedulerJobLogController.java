@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/scheduler/job/log")
+@RequestMapping("/api/auth/scheduler/job/log")
 public class SchedulerJobLogController  {
 
     /**
@@ -31,12 +31,12 @@ public class SchedulerJobLogController  {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param schedulerJobLog 查询条件
      * @return Page<SchedulerJobLog>
      */
     @GetMapping()
-    @RequiresPermissions("scheduler:job:log:select")
-    public Page<SchedulerJobLog> select(SchedulerJobLog object, Page<SchedulerJobLog> page) {
-        return service.select(object, page);
+    @RequiresPermissions("scheduler:job:select")
+    public Page<SchedulerJobLog> select(SchedulerJobLog schedulerJobLog, Page<SchedulerJobLog> page) {
+        return service.select(schedulerJobLog, page);
     }
 }

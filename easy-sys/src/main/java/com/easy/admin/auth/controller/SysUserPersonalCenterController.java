@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @ResponseResult
-    @RequestMapping("/auth/sys/user/personal/center")
+    @RequestMapping("/api/auth/sys/user/personal/center")
 public class SysUserPersonalCenterController extends BaseController {
     /**
      * 个人中心 service
@@ -37,7 +37,7 @@ public class SysUserPersonalCenterController extends BaseController {
     /**
      * 密码修改
      *
-     * @param json {oldPassword: '', password: '', passwordStrength: ''}
+     * @param json {oldPassword: '', password: ''}
      * @return true/false
      */
     @PostMapping("change/password")
@@ -48,12 +48,12 @@ public class SysUserPersonalCenterController extends BaseController {
     /**
      * 保存用户头像
      *
-     * @param json {path: ''}
+     * @param json {url: ''}
      * @return url
      */
     @PostMapping("user/avatar")
     public String saveUserAvatar(@RequestBody JSONObject json) {
-        return service.saveUserAvatar(json.getStr("path"));
+        return service.saveUserAvatar(json.getStr("url"));
     }
 
     /**
@@ -86,6 +86,6 @@ public class SysUserPersonalCenterController extends BaseController {
      */
     @PostMapping("phone")
     public boolean bindingPhone(@RequestBody JSONObject json) {
-        return service.bindingPhone(json.getStr("phoneNumber"), json.getStr("captcha"));
+        return service.bindingPhone(json.getStr("phone"), json.getStr("captcha"));
     }
 }

@@ -18,7 +18,7 @@ import javax.validation.Valid;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/scheduler/job")
+@RequestMapping("/api/auth/scheduler/job")
 public class SchedulerJobController {
 
     /**
@@ -52,6 +52,16 @@ public class SchedulerJobController {
     }
 
     /**
+     * 新增
+     *
+     * @return SchedulerJob
+     */
+    @GetMapping("/add")
+    public SchedulerJob add() {
+        return service.add();
+    }
+
+    /**
      * 删除
      *
      * @param ids 数据ids
@@ -81,9 +91,9 @@ public class SchedulerJobController {
      * @param id 数据id
      * @return true/false
      */
-    @PostMapping("start/{ids}")
+    @PostMapping("start/{id}")
     @RequiresPermissions("scheduler:job:save")
-    public boolean start(@PathVariable("ids") String id) {
+    public boolean start(@PathVariable("id") String id) {
         service.start(id);
         return true;
     }
@@ -94,9 +104,9 @@ public class SchedulerJobController {
      * @param id 数据id
      * @return true/false
      */
-    @PostMapping("pause/{ids}")
+    @PostMapping("pause/{id}")
     @RequiresPermissions("scheduler:job:save")
-    public boolean pause(@PathVariable("ids") String id) {
+    public boolean pause(@PathVariable("id") String id) {
         service.pause(id);
         return true;
     }

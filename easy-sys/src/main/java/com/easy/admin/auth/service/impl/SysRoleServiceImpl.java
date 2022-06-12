@@ -5,6 +5,7 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.auth.dao.SysRoleMapper;
 import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.service.SysDeptTypeRoleService;
@@ -20,6 +21,7 @@ import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.WhetherConst;
+import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                     queryWrapper.eq("t.status", sysRole.getStatus());
                 }
             }
+            if (Validator.isNotEmpty(sysRole.getSys())) {
+                if (sysRole.getSys().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.sys", sysRole.getSys().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.sys", sysRole.getSys());
+                }
+            }
+        }
+        // 非系统管理员，仅显示非系统数据
+        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+            queryWrapper.eq("t.sys", WhetherConst.NO);
         }
         page.setDefaultAsc("t.order_no");
         page.setRecords(baseMapper.select(page, queryWrapper));
@@ -77,7 +90,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public SysRole get(String id) {
-        SysRole sysRole = baseMapper.get(id);
+        SysRole sysRole = baseMapper.getById(id);
         if(sysRole != null){
             sysRole.setPermissionIds(baseMapper.selectPermissions(id));
         }
