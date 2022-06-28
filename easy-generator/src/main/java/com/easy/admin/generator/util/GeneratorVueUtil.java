@@ -1,0 +1,58 @@
+package com.easy.admin.generator.util;
+
+import cn.hutool.core.util.ArrayUtil;
+import com.easy.admin.generator.constant.GeneratorMethodConst;
+import com.easy.admin.generator.model.BasicsConfig;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 生成vue代码帮助类
+ *
+ * @author TengChongChong
+ * @date 2019-02-22
+ */
+public class GeneratorVueUtil {
+    private GeneratorVueUtil() {
+    }
+
+    /**
+     * 获取列表页面引入的api方法
+     *
+     * @param basicsConfig 基础信息
+     * @return 引入的方法
+     */
+    public static String getListImport(BasicsConfig basicsConfig) {
+        List<String> importMethod = new ArrayList<>();
+        for (String method : basicsConfig.getGenMethod()) {
+            if (GeneratorMethodConst.SELECT.equals(method) ||
+                    GeneratorMethodConst.ADD.equals(method) ||
+                    GeneratorMethodConst.REMOVE.equals(method) ||
+                    GeneratorMethodConst.EXPORT_DATA.equals(method)) {
+                importMethod.add(method);
+                if (GeneratorMethodConst.SELECT.equals(method)) {
+                    importMethod.add("get");
+                }
+            }
+        }
+        return ArrayUtil.join(importMethod.toArray(), ", ");
+    }
+
+    /**
+     * 获取表单页面引入的api方法
+     *
+     * @param basicsConfig 基础信息
+     * @return 引入的方法
+     */
+    public static String getInputImport(BasicsConfig basicsConfig) {
+        List<String> importMethod = new ArrayList<>();
+        for (String method : basicsConfig.getGenMethod()) {
+            if (GeneratorMethodConst.ADD.equals(method) || GeneratorMethodConst.SAVE.equals(method)) {
+                importMethod.add(method);
+            }
+        }
+        return ArrayUtil.join(importMethod.toArray(), ", ");
+    }
+
+}

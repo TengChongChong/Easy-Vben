@@ -14,7 +14,7 @@ public class GeneratorTemplateConst {
     /**
      * dao
      */
-    public static final String DAO = "/template/classes/Dao.java.btl";
+    public static final String MAPPER = "/template/classes/Mapper.java.btl";
     /**
      * mapping
      */
@@ -42,5 +42,14 @@ public class GeneratorTemplateConst {
     /**
      * 接口文件
      */
-    public static final String API_JS = "/template/js/api.js.btl";
+    public static final String API_TS = "/template/ts/api.ts.btl";
+    /**
+     * Model.ts
+     */
+    public static final String MODEL_TS = "/template/ts/model.ts.btl";
+
+    /**
+     * data.ts
+     */
+    public static final String DATA_TS = "/template/ts/data.ts.btl";
 }

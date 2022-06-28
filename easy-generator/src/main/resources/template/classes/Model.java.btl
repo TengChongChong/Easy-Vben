@@ -1,55 +1,94 @@
-package ${config.packagePath}.model;
+package ${basicsConfig.packagePath}.model;
 
 <% for(import in tableInfo.importPackages){ %>
 import ${import};
 <% } %>
-<% for(import in model.imports){ %>
+<% for(import in imports){ %>
 import ${import.name};
 <% } %>
 
 /**
- * ${config.businessName}
+ * ${basicsConfig.businessName}
  *
- * @author ${config.author}
- * @date ${config.date}
+ * @author ${basicsConfig.author}
+ * @date ${date}
  */
 @TableName("${tableInfo.name}")
-public class ${config.modelName} extends Model<${config.modelName}> {
+public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> {
 
-    <% for(field in tableInfo.fields){ %>
-    <% if(field.comment != null && field.comment != "") { %>
+    <% for(item in tableInfo.fields){ %>
+    <% if(strUtil.isNotBlank(item.comment)) { %>
     /**
-     * ${field.comment}
+     * ${item.comment}
      */
-    <% }else if(commonComment[field.propertyName] != null){ %>
+    <% }else if(commonComment[item.propertyName] != null){ %>
     /**
-     * ${commonComment[field.propertyName]}
+     * ${commonComment[item.propertyName]}
      */
     <% } %>
-    <% if(field.keyFlag) { %>
-    @TableId(value = "${field.name}")
+    <% if(item.keyFlag) { %>
+    @TableId
     <% } %>
-    <% if("editUser" == field.propertyName || "editDate" == field.propertyName){ %>
+    <% if("editUser" == item.propertyName || "editDate" == item.propertyName){ %>
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    <% } else if ("createUser" == field.propertyName || "createDate" == field.propertyName) { %>
+    <% } else if ("createUser" == item.propertyName || "createDate" == item.propertyName) { %>
     @TableField(fill = FieldFill.INSERT)
     <% } %>
-    ${GeneratorJavaUtil.generatorVerification(field.propertyName, config.fieldSets)}${GeneratorJavaUtil.generatorExport(field.propertyName, config.exportItems)}private ${field.propertyType} ${field.propertyName};
+    <% if(basicsConfig.isGeneratorMethodsExport){ %>
+    ${GeneratorJavaUtil.generatorExport(item.propertyName, exportConfig)}
     <% } %>
-    //
+    ${GeneratorJavaUtil.generatorVerification(item.propertyName, inputConfig)}private ${item.propertyType} ${item.propertyName};
+    <% } %>
+
+    // 非表字段
+    <% for(item in queryConfig){ %>
+    <% if(item.matchingMode == 'start_end'){ %>
+    /**
+     * ${item.label} - 开始时间
+     */
+    @TableField(exist=false)
+    private Date start${strUtil.upperFirst(item.propertyName)};
+    /**
+     * ${item.label} - 结束时间
+     */
+    @TableField(exist=false)
+    private Date end${strUtil.upperFirst(item.propertyName)};
+    <% } %>
+    <% } %>
 
     @Override
     protected Serializable pkVal() {
         return this.id;
     }
 
-    <% for(field in tableInfo.fields){ %>
-    public ${field.propertyType} get${field.capitalName}() {
-        return ${field.propertyName};
+    <% for(item in tableInfo.fields){ %>
+    public ${item.propertyType} get${item.capitalName}() {
+        return ${item.propertyName};
     }
 
-    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-        this.${field.propertyName} = ${field.propertyName};
+    public void set${item.capitalName}(${item.propertyType} ${item.propertyName}) {
+        this.${item.propertyName} = ${item.propertyName};
     }
+    <% } %>
+
+    <% for(item in queryConfig){ %>
+    <% if(item.matchingMode == 'start_end'){ %>
+    <% propertyName = 'start' + strUtil.upperFirst(item.propertyName); %>
+    public ${item.propertyType} get${strUtil.upperFirst(propertyName)}() {
+        return ${propertyName};
+    }
+
+    public void set${strUtil.upperFirst(propertyName)}(${item.propertyType} ${propertyName}) {
+        this.${propertyName} = ${propertyName};
+    }
+    <% propertyName = 'end' + strUtil.upperFirst(item.propertyName); %>
+    public ${item.propertyType} get${strUtil.upperFirst(propertyName)}() {
+        return ${propertyName};
+    }
+
+    public void set${strUtil.upperFirst(propertyName)}(${item.propertyType} ${propertyName}) {
+        this.${propertyName} = ${propertyName};
+    }
+    <% } %>
     <% } %>
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${config.packagePath}.dao.${tableInfo.mapperName}">
+<mapper namespace="${basicsConfig.packagePath}.dao.${tableInfo.mapperName}">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="${config.packagePath}.model.${config.modelName}">
+    <resultMap id="BaseResultMap" type="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
         <% for(field in tableInfo.fields){ %>
         <% if(field.keyIdentityFlag) { %>
         <id column="${field.name}" property="${field.propertyName}" />
@@ -12,27 +12,34 @@
         <% } %>
         <% } %>
     </resultMap>
-    <select id="select" resultType="${config.packagePath}.model.${config.modelName}">
-        select t.id<% for(item in config.tableItems){ %>, t.${item.columnName}<% } %>
+    <select id="select" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
+        select t.id<% for(item in tableConfig){ %>, ${GeneratorXmlUtil.getSelectField(item)}<% } %>
         from ${tableInfo.name} t
+        <% for(item in tableConfig){ %>
+        <% if(item.name == 'create_user' || item.name == 'edit_user'){ %>
+        left join sys_user su_${item.name} on su_${item.name}.id = t.${item.name}
+        <% } %>
+        <% } %>
         <where>
             \${ew.sqlSegment}
         </where>
     </select>
     <%index = 0;%>
-    <select id="getById" resultType="${config.packagePath}.model.${config.modelName}">
+    <select id="getById" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
         select <% for(item in tableInfo.fields){ %>${index == 0 ? '' : ', '}t.${item.name}<% index++;} %>
         from ${tableInfo.name} t
         where t.id = #{id}
     </select>
-    <% if(config.isGeneratorMethodsExport){ %>
+    <% if(basicsConfig.isGeneratorMethodsExport){ %>
     <%index = 0;%>
-    <select id="exportData" resultType="${config.packagePath}.model.${config.modelName}">
-        select <% for(item in config.exportItems){ %>${index == 0 ? '' : ', '}${strUtil.isNotBlank(item.dictType) ? 'sd_' + item.columnName + '.name as ' + item.columnName : 't.' + item.columnName}<% index++;} %>
+    <select id="exportData" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
+        select <% for(item in exportConfig!){ %>${index == 0 ? '' : ', '}${GeneratorXmlUtil.getExportField(item)}<% index++;} %>
         from ${tableInfo.name} t
-        <% for(item in config.exportItems){ %>
+        <% for(item in exportConfig!){ %>
         <% if(strUtil.isNotBlank(item.dictType)){ %>
-        left join sys_dict sd_${item.columnName} on sd_${item.columnName}.code = t.${item.columnName} and sd_${item.columnName}.dict_type = '${item.dictType}'
+        left join sys_dict sd_${item.name} on sd_${item.name}.code = t.${item.name} and sd_${item.name}.dict_type = '${item.dictType}'
+        <% } else if(item.name == 'create_user' || item.name == 'edit_user'){ %>
+        left join sys_user su_${item.name} on su_${item.name}.id = t.${item.name}
         <% } %>
         <% } %>
         <where>

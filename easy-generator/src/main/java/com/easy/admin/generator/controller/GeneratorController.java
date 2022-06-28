@@ -3,7 +3,7 @@ package com.easy.admin.generator.controller;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.core.annotation.ResponseResult;
-import com.easy.admin.generator.model.Generator;
+import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.service.GeneratorService;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +19,14 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/generator")
+@RequestMapping("/api/auth/generator")
 public class GeneratorController {
 
     @Autowired
     private GeneratorService service;
 
     /**
-     * 获取表名
+     * 获取表
      *
      * @return List<Select>
      */
@@ -44,9 +44,9 @@ public class GeneratorController {
      * @return TableInfo
      */
     @RequiresRoles("sys:admin")
-    @GetMapping("fields")
-    public TableInfo selectFields(String dataSource, String tableName) {
-        return service.selectFields(dataSource, tableName);
+    @GetMapping("table/info")
+    public TableInfo getTableInfo(String dataSource, String tableName) {
+        return service.getTableInfo(dataSource, tableName);
     }
 
     /**
@@ -62,11 +62,11 @@ public class GeneratorController {
     /**
      * 生成代码
      *
-     * @param object 参数
+     * @param generatorConfig 生成配置
      * @return true/false
      */
     @PostMapping()
-    public boolean generate(@RequestBody Generator object) {
-        return service.generate(object);
+    public boolean generate(@RequestBody GeneratorConfig generatorConfig) {
+        return service.generate(generatorConfig);
     }
 }

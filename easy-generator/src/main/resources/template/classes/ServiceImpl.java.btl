@@ -1,90 +1,120 @@
-package ${config.packagePath}.service.impl;
+package ${basicsConfig.packagePath}.service.impl;
 
-<% for(import in serviceImpl.imports!){ %>
+<% for(import in imports!){ %>
 import ${import.name};
 <% } %>
 <% if (!isMaster) { %>
 import com.baomidou.dynamic.datasource.annotation.DS;
 <% } %>
-import ${config.packagePath}.model.${config.modelName};
-import ${config.packagePath}.service.${config.modelName}Service;
-import ${config.packagePath}.dao.${config.modelName}Mapper;
+import ${basicsConfig.packagePath}.model.${basicsConfig.modelName};
+import ${basicsConfig.packagePath}.service.${basicsConfig.modelName}Service;
+import ${basicsConfig.packagePath}.dao.${basicsConfig.modelName}Mapper;
 
 /**
- * ${config.businessName}
+ * ${basicsConfig.businessName}
  *
- * @author ${config.author}
- * @date ${config.date}
+ * @author ${basicsConfig.author}
+ * @date ${date}
  */
 @Service
 <% if (!isMaster) { %>
-@DS("${config.dataSource}")
+@DS("${basicsConfig.dataSource}")
 <% } %>
-public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelName}Mapper, ${config.modelName}> implements ${config.modelName}Service<% if(config.isGeneratorMethodsImport){ %> ,ImportService<% }%> {
+public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsConfig.modelName}Mapper, ${basicsConfig.modelName}> implements ${basicsConfig.modelName}Service<% if(basicsConfig.isGeneratorMethodsImport){ %>, ImportService<% }%> {
 
-    <% if(config.isGeneratorMethodsSelect){ %>
+    <% if(basicsConfig.isGeneratorMethodsSelect){ %>
     /**
      * 列表
-     * @param ${strUtil.lowerFirst(config.modelName)} 查询条件
+     *
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @param page   分页
-     * @return Page<${config.modelName}>
+     * @return Page<${basicsConfig.modelName}>
      */
     @Override
-    public Page<${config.modelName}> select(${config.modelName} ${strUtil.lowerFirst(config.modelName)}, Page<${config.modelName}> page) {
-        QueryWrapper<${config.modelName}> queryWrapper = new QueryWrapper<>();
-        if(${strUtil.lowerFirst(config.modelName)} != null){
+    public Page<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}, Page<${basicsConfig.modelName}> page) {
+        QueryWrapper<${basicsConfig.modelName}> queryWrapper = getQueryWrapper(${strUtil.lowerFirst(basicsConfig.modelName)});
+        page.setRecords(baseMapper.select(page, queryWrapper));
+        return page;
+    }
+
+    /**
+     * 获取查询条件
+     *
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
+     * @return QueryWrapper<${basicsConfig.modelName}>
+     */
+    private QueryWrapper<${basicsConfig.modelName}> getQueryWrapper(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}){
+        QueryWrapper<${basicsConfig.modelName}> queryWrapper = new QueryWrapper<>();
+        if(${strUtil.lowerFirst(basicsConfig.modelName)} != null){
             // 查询条件
-            <% if(config.queryItems != null) { %>
-            <% for(fieldSet in config.queryItems){ %>
-            // ${fieldSet.label}
-            if (Validator.isNotEmpty(${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}())) {
-                <% if('gte' == fieldSet.matchingMode) { %>
-                queryWrapper.ge("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
-                <% } else if('lte' == fieldSet.matchingMode) {%>
-                queryWrapper.le("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
-                <% } else if('left_like' == fieldSet.matchingMode) {%>
-                queryWrapper.likeLeft("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
-                <% } else if('right_like' == fieldSet.matchingMode) {%>
-                queryWrapper.likeRight("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
+            <% if(queryConfig != null) { %>
+            <% for(item in queryConfig){ %>
+            <% queryField = GeneratorJavaUtil.getSelectField(item); %>
+            <% if('start_end' == item.matchingMode) { %>
+            // ${item.label} - 开始时间
+            if (Validator.isNotEmpty(${strUtil.lowerFirst(basicsConfig.modelName)}.getStart${strUtil.upperFirst(item.propertyName)}())) {
+                queryWrapper.ge("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.getStart${strUtil.upperFirst(item.propertyName)}());
+            }
+            // ${item.label} - 结束时间
+            if (Validator.isNotEmpty(${strUtil.lowerFirst(basicsConfig.modelName)}.getEnd${strUtil.upperFirst(item.propertyName)}())) {
+                queryWrapper.le("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.getEnd${strUtil.upperFirst(item.propertyName)}());
+            }
+            <% } else { %>
+            // ${item.label}
+            if (Validator.isNotEmpty(${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}())) {
+                <% if(strUtil.isNotBlank(item.dictType)) { %>
+                if (${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}());
+                }
+                <% } else if('gte' == item.matchingMode) { %>
+                queryWrapper.ge("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}());
+                <% } else if('lte' == item.matchingMode) {%>
+                queryWrapper.le("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}());
+                <% } else if('left_like' == item.matchingMode) {%>
+                queryWrapper.likeLeft("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}());
+                <% } else if('right_like' == item.matchingMode) {%>
+                queryWrapper.likeRight("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}());
                 <% } else {%>
-                queryWrapper.${fieldSet.matchingMode}("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
+                queryWrapper.${item.matchingMode}("${queryField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(item.propertyName)}());
                 <% } %>
             }
             <% } %>
             <% } %>
+            <% } %>
         }
-        page.setRecords(baseMapper.select(page, queryWrapper));
-        return page;
+        return queryWrapper;
     }
 
     /**
      * 详情
      *
      * @param id id
-     * @return ${config.modelName}
+     * @return ${basicsConfig.modelName}
      */
     @Override
-    public ${config.modelName} get(String id) {
+    public ${basicsConfig.modelName} get(String id) {
         ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
-    <% } %>
-    <% if(config.isGeneratorMethodsAdd){ %>
 
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsAdd){ %>
     /**
      * 新增
      *
-     * @return ${config.modelName}
+     * @return ${basicsConfig.modelName}
      */
     @Override
-    public ${config.modelName} add() {
-        ${config.modelName} ${strUtil.lowerFirst(config.modelName)} = new ${config.modelName}();
+    public ${basicsConfig.modelName} add() {
+        ${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)} = new ${basicsConfig.modelName}();
         // 设置默认值
-        return ${strUtil.lowerFirst(config.modelName)};
+        return ${strUtil.lowerFirst(basicsConfig.modelName)};
     }
-    <% } %>
-    <% if(config.isGeneratorMethodsRemove){ %>
 
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsRemove){ %>
     /**
      * 删除
      *
@@ -95,30 +125,30 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
     @Override
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
-    <% } %>
-    <% if(config.isGeneratorMethodsSave){ %>
 
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsSave){ %>
     /**
      * 保存
      *
-     * @param ${strUtil.lowerFirst(config.modelName)} 表单内容
-     * @return ${config.modelName}
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 表单内容
+     * @return ${basicsConfig.modelName}
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public ${config.modelName} saveData(${config.modelName} ${strUtil.lowerFirst(config.modelName)}) {
-        ToolUtil.checkParams(${strUtil.lowerFirst(config.modelName)});
-        if (Validator.isEmpty(${strUtil.lowerFirst(config.modelName)}.getId())) {
+    public ${basicsConfig.modelName} saveData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}) {
+        ToolUtil.checkParams(${strUtil.lowerFirst(basicsConfig.modelName)});
+        if (Validator.isEmpty(${strUtil.lowerFirst(basicsConfig.modelName)}.getId())) {
             // 新增,设置默认值
         }
-        return (${config.modelName}) ToolUtil.checkResult(saveOrUpdate(${strUtil.lowerFirst(config.modelName)}), ${strUtil.lowerFirst(config.modelName)});
+        return (${basicsConfig.modelName}) ToolUtil.checkResult(saveOrUpdate(${strUtil.lowerFirst(basicsConfig.modelName)}), ${strUtil.lowerFirst(basicsConfig.modelName)});
     }
-    <% } %>
 
-    <% if(config.isGeneratorMethodsImport){ %>
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsImport){ %>
     /**
      * 验证数据，插入临时表后调用
      * 注: 返回false会触发异常回滚
@@ -155,35 +185,15 @@ public class ${config.modelName}ServiceImpl extends ServiceImpl<${config.modelNa
     public boolean afterImport() {
         return true;
     }
-    <% }%>
 
-    <% if(config.isGeneratorMethodsExport){ %>
+    <% }%>
+    <% if(basicsConfig.isGeneratorMethodsExport){ %>
     @Override
-    public String exportData(${config.modelName} ${strUtil.lowerFirst(config.modelName)}) {
-        QueryWrapper<${config.modelName}> queryWrapper = new QueryWrapper<>();
-        if(${strUtil.lowerFirst(config.modelName)} != null){
-            // 查询条件
-            <% if(config.queryItems != null) { %>
-            <% for(fieldSet in config.queryItems){ %>
-            // ${fieldSet.label}
-            if (Validator.isNotEmpty(${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}())) {
-                <% if('gte' == fieldSet.matchingMode) { %>
-                queryWrapper.ge("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
-                <% } else if('lte' == fieldSet.matchingMode) {%>
-                queryWrapper.le("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
-                <% } else if('left_like' == fieldSet.matchingMode) {%>
-                queryWrapper.likeLeft("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
-                <% } else if('right_like' == fieldSet.matchingMode) {%>
-                queryWrapper.likeRight("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
-                <% } else {%>
-                queryWrapper.${fieldSet.matchingMode}("t.${fieldSet.columnName}", ${strUtil.lowerFirst(config.modelName)}.get${strUtil.upperFirst(fieldSet.propertyName)}());
-                <% } %>
-            }
-            <% } %>
-            <% } %>
-        }
-        List<${config.modelName}> list = baseMapper.exportData(queryWrapper);
-        return ExcelUtil.writeAndGetDownloadId("${config.businessName}", "${config.businessName}", list, ${config.modelName}.class);
+    public String exportData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}) {
+        QueryWrapper<${basicsConfig.modelName}> queryWrapper = getQueryWrapper(${strUtil.lowerFirst(basicsConfig.modelName)});
+        List<${basicsConfig.modelName}> list = baseMapper.exportData(queryWrapper);
+        return ExcelUtil.writeAndGetDownloadId("${basicsConfig.businessName}", "${basicsConfig.businessName}", list, ${basicsConfig.modelName}.class);
     }
+
     <% } %>
 }

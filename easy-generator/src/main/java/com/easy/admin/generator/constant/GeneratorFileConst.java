@@ -12,9 +12,9 @@ public class GeneratorFileConst {
      */
     public static final String MODEL = "model";
     /**
-     * dao
+     * mapper
      */
-    public static final String DAO = "dao";
+    public static final String MAPPER = "mapper";
     /**
      * mapping
      */
@@ -34,13 +34,23 @@ public class GeneratorFileConst {
     /**
      * 列表页
      */
-    public static final String LIST_VUE = "List.vue";
+    public static final String LIST_VUE = "list.vue";
     /**
      * 表单页
      */
-    public static final String INPUT_VUE = "Input.vue";
+    public static final String INPUT_VUE = "input.vue";
     /**
      * 接口文件
      */
-    public static final String API_JS = "api.js";
+    public static final String API_TS = "api.ts";
+
+    /**
+     * Model.ts
+     */
+    public static final String MODEL_TS = "model.ts";
+
+    /**
+     * data.ts
+     */
+    public static final String DATA_TS = "data.ts";
 }

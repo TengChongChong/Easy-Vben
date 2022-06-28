@@ -1,200 +1,179 @@
 <template>
-  <!-- 如无需展开查询，请移除:advanced.sync="advanced"并添加:no-advanced="true" -->
-  <e-pro-table title="${config.businessName}" :advanced.sync="advanced">
-    <template slot="query">
-      <% for(fieldSet in config.queryItems){ %>
-      <% if(fieldSetLP.index < 4){ %>
-      <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-        <a-form-model-item label="${fieldSet.label}">
-          <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
-          <e-dict-select type="${fieldSet.dictType}" v-model="queryParam.${fieldSet.propertyName}" @change="$refs.eTable.refresh(true)"/>
-          <% } else if(fieldSet.propertyType == 'Integer') {%>
-          <a-input-number v-model="queryParam.${fieldSet.propertyName}"/>
-          <% } else {%>
-          <a-input v-model="queryParam.${fieldSet.propertyName}"/>
-          <% } %>
-        </a-form-model-item>
-      </a-col>
+  <PageWrapper dense>
+    <!-- 表格 -->
+    <BasicTable
+      <% if(basicsConfig.isGeneratorMethodsExport){ %>
+      :searchInfo="searchInfo"
       <% } %>
-      <% } %>
-      <template v-if="advanced">
-        <!-- 点击展开显示的查询条件 -->
-        <% for(fieldSet in config.queryItems){ %>
-        <% if(fieldSetLP.index >= 4){ %>
-        <a-col :xxl="6" :xl="8" :lg="12" :sm="24">
-          <a-form-model-item label="${fieldSet.label}">
-            <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
-            <e-dict-select type="${fieldSet.dictType}" v-model="queryParam.${fieldSet.propertyName}" @change="$refs.eTable.refresh(true)"/>
-            <% } else if(fieldSet.propertyType == 'Integer') {%>
-            <a-input-number v-model="queryParam.${fieldSet.propertyName}"/>
-            <% } else {%>
-            <a-input v-model="queryParam.${fieldSet.propertyName}"/>
-            <% } %>
-          </a-form-model-item>
-        </a-col>
+      @register="registerTable"
+      :rowSelection="{ type: 'checkbox', onChange: onSelectChange }"
+    >
+      <template #toolbar>
+        <% if(basicsConfig.generatorMethodsAdd){ %>
+        <a-button-add ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}@click="handleCreate" />
         <% } %>
+        <% if(basicsConfig.generatorMethodsRemove){ %>
+        <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
+        <a-button-remove-batch
+          auth="${basicsConfig.permissionCode}:remove"
+          :id="checkedKeys"
+          :api="remove"
+          @success="reload"
+        />
+        <% } else { %>
+        <a-button-remove-batch :id="checkedKeys" :api="remove" @success="reload" />
+        <% } %>
+        <% } %>
+        <% if(basicsConfig.isGeneratorMethodsExport){ %>
+        <a-button-export
+          :loading="exportBtnLoading"
+          auth="sample:general:select"
+          @click="handelExportData"
+        />
         <% } %>
       </template>
-    </template>
 
-    <template slot="button">
-      <% if(config.isGeneratorMethodsAdd){ %>
-      <e-btn-add permissions="${config.permissionsCode}:save" to="${staticConfig.inputViewPath}"/>
-      <% } %>
-      <% if(config.isGeneratorMethodsRemove){ %>
-      <e-btn-remove-batch permissions="${config.permissionsCode}:remove" :loading.sync="removeBathLoading" :ids="selectedRowKeys" :click-callback="remove"/>
-      <% } %>
-      <% if(config.isGeneratorMethodsImport){ %>
-      <e-btn-import import-code="${config.permissionsCode}"/>
-      <% } %>
-      <% if(config.isGeneratorMethodsExport){ %>
-      <a-button icon="download" @click="exportData">导出数据</a-button>
-      <% } %>
-    </template>
-
-    <template slot="table">
-      <s-table
-        ref="eTable"
-        :columns="columns"
-        :data="loadData"
-        :alert="true"
-        :rowSelection="rowSelection"
-        showPagination="auto"
-      >
-        <% for(fieldSet in config.tableItems){ %>
-        <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
-        <template #${fieldSet.propertyName}="text">
-          <e-dict-tag type="${fieldSet.dictType}" :code="text"/>
-        </template>
-        <% } %>
-        <% } %>
-        <% if(config.isGeneratorMethodsSave || config.isGeneratorMethodsRemove){ %>
-        <template #action="text, record">
-          <% if(config.isGeneratorMethodsSave){ %>
-          <e-btn-edit permissions="${config.permissionsCode}:save" :to="`${staticConfig.inputViewPath}`"${config.isGeneratorMethodsRemove ? "" : " :divider=\"false\""} :tab-name="record.key" :id="record.id"/>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <% if(basicsConfig.generatorMethodsSave){ %>
+          <a-button-edit ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleEdit" />
           <% } %>
-          <% if(config.isGeneratorMethodsRemove){ %>
-          <e-btn-remove permissions="${config.permissionsCode}:remove" :id="record.id" :divider="false" :click-callback="remove"/>
+          <% if(basicsConfig.generatorMethodsRemove){ %>
+          <a-divider type="vertical" />
+          <a-button-remove ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove" ' : ''}:id="record.id" :api="remove" @success="reload" />
           <% } %>
         </template>
-        <% } %>
-      </s-table>
-    </template>
-  </e-pro-table>
+      </template>
+    </BasicTable>
+    <!-- 表单 -->
+    <${basicsConfig.modelName}Input @register="registerDrawer" @success="reload" />
+  </PageWrapper>
 </template>
-
-<script>
-<% for(imp in staticConfig.listImports){ %>
-<% if(GeneratorImportConst.IMPORT_TYPE_SINGLE == imp.importType){ %>
-import ${imp.imps} from '${imp.from}'
-<% } else { %>
-import { ${imp.imps} } from '${imp.from}'
-<% } %>
-<% } %>
-
-const columns = [
-  <% for(fieldSet in config.tableItems){ %>
-  {
-    <% if(fieldSet.dictType != null && fieldSet.dictType != ''){ %>
-    title: '${fieldSet.title}',
-    dataIndex: '${fieldSet.propertyName}',
-    width: 100,
-    sorter: true,
-    scopedSlots: { customRender: '${fieldSet.propertyName}' }
-    <% } else if(fieldSet.propertyType == 'Date'){ %>
-    title: '${fieldSet.title}',
-    dataIndex: '${fieldSet.propertyName}',
-    width: 170,
-    sorter: true,
-    customRender: (text) => formatDate(text)
-    <% } else { %>
-    title: '${fieldSet.title}',
-    dataIndex: '${fieldSet.propertyName}',
-    width: 100,
-    sorter: true
-    <% } %>
-  }${config.isGeneratorMethodsSave || config.isGeneratorMethodsRemove ? "," : ""}
+<script lang="ts">
+  import { defineComponent, ref${basicsConfig.isGeneratorMethodsExport ? ', reactive' : ''} } from 'vue';
+  import { BasicTable, useTable } from '/@/components/Table';
+  import { searchFormSchema, columns } from '${dataTsPath}';
+  import { useDrawer } from '/@/components/Drawer';
+  <% if(basicsConfig.generatorMethodsAdd){ %>
+  import AButtonAdd from '/@/components/Button/src/ButtonAdd.vue';
   <% } %>
-  <% if(config.isGeneratorMethodsSave || config.isGeneratorMethodsRemove){ %>
-  {
-    title: '操作',
-    dataIndex: 'action',
-    width: 90,
-    fixed: 'right',
-    scopedSlots: { customRender: 'action' }
-  }
+  <% if(basicsConfig.generatorMethodsRemove){ %>
+  import AButtonRemove from '/@/components/Button/src/ButtonRemove.vue';
+  import AButtonRemoveBatch from '/@/components/Button/src/ButtonRemoveBatch.vue';
   <% } %>
-]
+  import AButtonEdit from '/@/components/Button/src/ButtonEdit.vue';
+  <% if(basicsConfig.isGeneratorMethodsExport){ %>
+  import AButtonExport from '/@/components/Button/src/ButtonExport.vue';
+  import { downloadFileById } from '/@/utils/file/download';
+  import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
+  <% } %>
+  import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
+  import ${basicsConfig.modelName}Input from '${viewPath}/Input.vue';
+  import { PageWrapper } from '/@/components/Page';
 
-export default {
-  name: '${config.modelName}List',
-  components: {
-    <% for(imp in staticConfig.listImports){ %>
-    <% if(GeneratorImportConst.TYPE_COMPONENT == imp.type){ %>
-    <% for(item in imp.imp){ %>
-    ${item}${impLP.last && itemLP.last ? "" : ","}
-    <% } %>
-    <% } %>
-    <% } %>
-  },
-  data () {
-    this.columns = columns
-    return {
-      <% for(imp in staticConfig.listImports){ %>
-      <% if(GeneratorImportConst.TYPE_VARIABLE == imp.type){ %>
-      ${imp.imps}: ${imp.imps},
+  export default defineComponent({
+    name: '${basicsConfig.modelName}List',
+    components: {
+      PageWrapper,
+      ${basicsConfig.modelName}Input,
+      <% if(basicsConfig.generatorMethodsAdd){ %>
+      AButtonAdd,
       <% } %>
+      <% if(basicsConfig.generatorMethodsRemove){ %>
+      AButtonRemoveBatch,
+      AButtonRemove,
+      <% } %>
+      <% if(basicsConfig.generatorMethodsSave){ %>
+      AButtonEdit,
+      <% } %>
+      <% if(basicsConfig.isGeneratorMethodsExport){ %>
+      AButtonExport,
+      <% } %>
+      BasicTable,
+    },
+    setup() {
+      // 表格选中数据
+      const checkedKeys = ref<Array<string>>([]);
+      <% if(basicsConfig.isGeneratorMethodsExport){ %>
+      // 查询条件
+      const searchInfo = reactive<Recordable>({});
+      // 导出按钮状态
+      const exportBtnLoading = ref<boolean>(false);
       <% } %>
 
-      // 查询参数
-      advanced: false,
-      queryParam: {},
-      selectedRowKeys: [],
-      selectedRows: [],
-      removeBathLoading: false
-    }
-  },
-  activated () {
-    this.$refs.eTable.refresh(true)
-  },
-  computed: {
-    rowSelection () {
+      const [registerDrawer, { openDrawer }] = useDrawer();
+      /**
+       * 初始化表格
+       */
+      const [registerTable, { reload }] = useTable({
+        title: '${basicsConfig.businessName}',
+        api: select,
+        columns,
+        useSearchForm: true,
+        formConfig: {
+          schemas: searchFormSchema,
+        },
+        actionColumn: {
+          width: 140,
+          title: '操作',
+          key: 'action',
+        },
+      });
+
+      <% if(basicsConfig.generatorMethodsAdd){ %>
+      const handleCreate = () => {
+        add().then((data) => {
+          openDrawer(true, data);
+        });
+      };
+
+      <% } %>
+      <% if(basicsConfig.generatorMethodsSave){ %>
+      const handleEdit = (id: string) => {
+        get(id).then((data) => {
+          openDrawer(true, data);
+        });
+      };
+
+      <% } %>
+      <% if(basicsConfig.isGeneratorMethodsExport){ %>
+      const handelExportData = async () => {
+        exportBtnLoading.value = true;
+        try {
+          await exportData(searchInfo as ${basicsConfig.modelName}).then((id) => {
+            downloadFileById(id);
+          });
+        } catch (e) {
+          console.error('导出数据错误', e);
+        } finally {
+          exportBtnLoading.value = false;
+        }
+      };
+
+      <% } %>
       return {
-        selectedRowKeys: this.selectedRowKeys,
-        onChange: this.onSelectChange
-      }
-    }
-  },
-  methods: {
-    // 加载数据方法 必须为 Promise 对象
-    loadData (parameter) {
-      const requestParameters = Object.assign({}, parameter, this.queryParam)
-      return select(requestParameters)
-        .then(res => {
-          return res.data
-        })
+        checkedKeys,
+        onSelectChange(selectedRowKeys: string[]) {
+          checkedKeys.value = selectedRowKeys;
+        },
+        <% if(basicsConfig.isGeneratorMethodsExport){ %>
+        searchInfo,
+        exportBtnLoading,
+        handelExportData,
+        <% } %>
+        <% if(basicsConfig.generatorMethodsRemove){ %>
+        remove,
+        <% } %>
+        registerDrawer,
+        registerTable,
+        <% if(basicsConfig.generatorMethodsAdd){ %>
+        handleCreate,
+        <% } %>
+        <% if(basicsConfig.generatorMethodsSave){ %>
+        handleEdit,
+        <% } %>
+        reload,
+      };
     },
-    <% if(config.isGeneratorMethodsExport){ %>
-    exportData () {
-      exportData(this.queryParam).then(res => {
-        downloadFileById(res.data)
-      })
-    },
-    <% } %>
-    onSelectChange (selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
-    }${config.generatorMethodsRemove ? "," : ""}
-    <% if(config.generatorMethodsRemove){ %>
-    remove (id) {
-      remove(id).then(res => {
-        this.$refs.eTable.refresh(true)
-        this.removeBathLoading = false
-      }).catch(({ response }) => {
-        this.removeBathLoading = false
-      })
-    }
-    <% } %>
-  }
-}
+  });
 </script>

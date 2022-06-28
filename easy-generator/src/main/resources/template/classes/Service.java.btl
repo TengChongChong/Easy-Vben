@@ -1,45 +1,46 @@
-package ${config.packagePath}.service;
+package ${basicsConfig.packagePath}.service;
 
-<% for(import in service.imports!){ %>
+<% for(import in imports!){ %>
 import ${import.name};
 <% } %>
-import ${config.packagePath}.model.${config.modelName};
+import ${basicsConfig.packagePath}.model.${basicsConfig.modelName};
 
 /**
- * ${config.businessName}
+ * ${basicsConfig.businessName}
  *
- * @author ${config.author}
- * @date ${config.date}
+ * @author ${basicsConfig.author}
+ * @date ${date}
  */
-public interface ${config.modelName}Service {
-    <% if(config.isGeneratorMethodsSelect){ %>
+public interface ${basicsConfig.modelName}Service {
+    <% if(basicsConfig.isGeneratorMethodsSelect){ %>
     /**
      * 列表
-     * @param ${strUtil.lowerFirst(config.modelName)} 查询条件
+     *
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @param page   分页
-     * @return Page<${config.modelName}>
+     * @return Page<${basicsConfig.modelName}>
      */
-    Page<${config.modelName}> select(${config.modelName} ${strUtil.lowerFirst(config.modelName)}, Page<${config.modelName}> page);
+    Page<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}, Page<${basicsConfig.modelName}> page);
 
     /**
      * 详情
      *
      * @param id id
-     * @return ${config.modelName}
+     * @return ${basicsConfig.modelName}
      */
-    ${config.modelName} get(String id);
-    <% } %>
-    <% if(config.isGeneratorMethodsAdd){ %>
+    ${basicsConfig.modelName} get(String id);
 
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsAdd){ %>
     /**
      * 新增
      *
-     * @return ${config.modelName}
+     * @return ${basicsConfig.modelName}
      */
-    ${config.modelName} add();
-    <% } %>
-    <% if(config.isGeneratorMethodsRemove){ %>
+    ${basicsConfig.modelName} add();
 
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsRemove){ %>
     /**
      * 删除
      *
@@ -47,25 +48,26 @@ public interface ${config.modelName}Service {
      * @return true/false
      */
     boolean remove(String ids);
-    <% } %>
-    <% if(config.isGeneratorMethodsSave){ %>
 
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsSave){ %>
     /**
      * 保存
      *
-     * @param ${strUtil.lowerFirst(config.modelName)} 表单内容
-     * @return ${config.modelName}
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 表单内容
+     * @return ${basicsConfig.modelName}
      */
-    ${config.modelName} saveData(${config.modelName} ${strUtil.lowerFirst(config.modelName)});
-    <% } %>
+    ${basicsConfig.modelName} saveData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)});
 
-    <% if(config.isGeneratorMethodsExport){ %>
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsExport){ %>
     /**
      * 导出数据
      *
-     * @param ${strUtil.lowerFirst(config.modelName)} 查询条件
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @return 文件下载id
      */
-    String exportData(${config.modelName} ${strUtil.lowerFirst(config.modelName)});
+    String exportData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)});
+
     <% } %>
 }

@@ -1,0 +1,87 @@
+import { ${basicsConfig.modelName} } from '${modelTsPath}';
+<% if(basicsConfig.generatorMethodsSelect){ %>
+import { Page } from '/@/api/model/pageModel';
+<% } %>
+import { defHttp } from '/@/utils/http/axios';
+
+// base url
+const BASE_URL = '/api${basicsConfig.controllerMapping}/';
+
+<% if(basicsConfig.generatorMethodsSelect){ %>
+/**
+ * 查询
+ *
+ * @param params 查询条件
+ * @param pager 分页
+ */
+export function select(params: ${basicsConfig.modelName}, pager: Page<${basicsConfig.modelName}>) {
+  return defHttp.get<Page<${basicsConfig.modelName}>>({
+    url: BASE_URL,
+    params: Object.assign(params, pager),
+  });
+}
+
+/**
+ * 详情
+ *
+ * @param id id
+ */
+export function get(id: string) {
+  return defHttp.get<${basicsConfig.modelName}>({
+    url: `\${BASE_URL}\${id}`,
+  });
+}
+
+<% } %>
+<% if(basicsConfig.generatorMethodsAdd){ %>
+/**
+ * 新增
+ */
+export function add() {
+  return defHttp.get<${basicsConfig.modelName}>({
+    url: `\${BASE_URL}add`,
+  });
+}
+
+<% } %>
+<% if(basicsConfig.generatorMethodsRemove){ %>
+/**
+ * 删除
+ *
+ * @param ids ids
+ */
+export function remove(ids: string) {
+  return defHttp.delete<boolean>({
+    url: `\${BASE_URL}\${ids}`,
+  });
+}
+
+<% } %>
+<% if(basicsConfig.generatorMethodsSave){ %>
+/**
+ * 保存
+ *
+ * @param params 表单数据
+ */
+export function save(params: ${basicsConfig.modelName}) {
+  return defHttp.post<${basicsConfig.modelName}>({
+    url: BASE_URL,
+    data: params,
+  });
+}
+
+<% } %>
+<% if(basicsConfig.isGeneratorMethodsExport){ %>
+/**
+ * 导出数据
+ *
+ * @param params 查询条件
+ */
+export function exportData(params: ${basicsConfig.modelName}) {
+  return defHttp.get<string>({
+    url: `\${BASE_URL}export/data`,
+    data: params,
+  });
+}
+
+<% } %>

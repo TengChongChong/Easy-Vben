@@ -1,169 +1,132 @@
 <template>
-  <a-card title="${config.businessName}" :bordered="false">
-    <a-form-model
-      ref="form"
-      :model="model"
-      :rules="rules"
-      :label-col="FORM_LAYOUT.labelCol"
-      :wrapper-col="FORM_LAYOUT.wrapperCol">
-      <a-row class="form-row" :gutter="16">
-        <% for(fieldSet in config.inputItems){ %>
-        <% if(fieldSet.inputGrid == '1') { %>
-        <a-col :sm="24">
-          <a-form-model-item label="${fieldSet.label}" :labelCol="FULL_FORM_LAYOUT.labelCol" :wrapperCol="FULL_FORM_LAYOUT.wrapperCol" prop="${fieldSet.propertyName}">
-            <% if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'select'){ %>
-            <e-dict-select type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'radio'){ %>
-            <e-dict-radio type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'checkbox'){ %>
-            <e-dict-checkbox type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.elementType == 'select') {%>
-            <a-select v-model="model.${fieldSet.propertyName}"></a-select>
-            <% } else if(fieldSet.elementType == 'password') {%>
-            <a-input type="password" v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.elementType == 'textarea') {%>
-            <a-textarea v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.elementType == 'date') {%>
-            <e-date-picker v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.elementType == 'datetime') {%>
-            <e-date-picker v-model="model.${fieldSet.propertyName}" :date-pattern="DATE_PATTERN.NORM_DATETIME_PATTERN"/>
-            <% } else if(fieldSet.elementType == 'number') {%>
-            <a-input-number v-model="model.${fieldSet.propertyName}"/>
-            <% } else {%>
-            <a-input v-model="model.${fieldSet.propertyName}"/>
-            <% } %>
-          </a-form-model-item>
-        </a-col>
-        <% } else { %>
-        <a-col :lg="12" :sm="24">
-          <a-form-model-item label="${fieldSet.label}" prop="${fieldSet.propertyName}">
-            <% if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'select'){ %>
-            <e-dict-select type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'radio'){ %>
-            <e-dict-radio type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.dictType != null && fieldSet.dictType != '' && fieldSet.elementType == 'checkbox'){ %>
-            <e-dict-checkbox type="${fieldSet.dictType}" v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.elementType == 'select') {%>
-            <a-select v-model="model.${fieldSet.propertyName}"></a-select>
-            <% } else if(fieldSet.elementType == 'password') {%>
-            <a-input type="password" v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.elementType == 'textarea') {%>
-            <a-textarea v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.elementType == 'date') {%>
-            <e-date-picker v-model="model.${fieldSet.propertyName}"/>
-            <% } else if(fieldSet.elementType == 'datetime') {%>
-            <e-date-picker v-model="model.${fieldSet.propertyName}" :date-pattern="DATE_PATTERN.NORM_DATETIME_PATTERN"/>
-            <% }else if(fieldSet.elementType == 'number') {%>
-            <a-input-number v-model="model.${fieldSet.propertyName}"/>
-            <% } else {%>
-            <a-input v-model="model.${fieldSet.propertyName}"/>
-            <% } %>
-          </a-form-model-item>
-        </a-col>
-        <% } %>
-        <% } %>
-
-        <a-col :sm="24">
-          <div class="input-btn-group">
-            <e-btn-save permissions="${config.permissionsCode}:save" :loading="saveLoading" :click-callback="save"/>
-          </div>
-        </a-col>
-      </a-row>
-    </a-form-model>
-  </a-card>
+  <BasicDrawer
+    v-bind="$attrs"
+    @register="registerDrawer"
+    showFooter
+    title="${basicsConfig.businessName}"
+    width="30%"
+    @ok="handleSubmit"
+  >
+    <BasicForm @register="registerForm" />
+    <% if(basicsConfig.generatorMethodsAdd){ %>
+    <template #appendFooter>
+      <a-button type="primary" @click="handleSaveAndAdd">
+        <Icon icon="ant-design:plus-outlined" />
+        保存并新增
+      </a-button>
+    </template>
+    <% } %>
+  </BasicDrawer>
 </template>
+<script lang="ts">
+  import { defineComponent, nextTick, ref } from 'vue';
+  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
+  import { Icon } from '/@/components/Icon';
+  import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
+  import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
+  export default defineComponent({
+    name: '${basicsConfig.modelName}Input',
+    components: { Icon, BasicForm, BasicDrawer },
+    emits: ['success', 'register'],
+    setup(_, { emit }) {
+      const id = ref();
+      const version = ref();
 
-<script>
-<% for(imp in staticConfig.inputImports){ %>
-<% if(GeneratorImportConst.IMPORT_TYPE_SINGLE == imp.importType){ %>
-import ${imp.imps} from '${imp.from}'
-<% } else { %>
-import { ${imp.imps} } from '${imp.from}'
-<% } %>
-<% } %>
-
-export default {
-  name: '${config.modelName}Input',
-  components: {
-    <% for(imp in staticConfig.inputImports){ %>
-    <% if(GeneratorImportConst.TYPE_COMPONENT == imp.type){ %>
-    ${imp.imps}${impLP.last ? "" : ","}
-    <% } %>
-    <% } %>
-  },
-  data () {
-    return {
-      id: this.$route.query.id,
-
-      <% for(imp in staticConfig.inputImports){ %>
-      <% if(GeneratorImportConst.TYPE_VARIABLE == imp.type){ %>
-      <% for(item in imp.imp){ %>
-      ${item}: ${item},
-      <% } %>
-      <% } %>
-      <% } %>
-
-      // 表单
-      saveLoading: false,
-      model: { },
-      rules: {
-        <% for(fieldSet in config.inputItems){ %>
-        <% if(fieldSet.elementType == 'select' || fieldSet.elementType == 'radio' || fieldSet.elementType == 'checkbox'|| fieldSet.elementType == 'date'|| fieldSet.elementType == 'datetime') {%>
-        <% if(fieldSet.required) { %>
-        ${fieldSet.propertyName}: [
-          { required: true, message: '请选择${fieldSet.label}', trigger: 'change' }
+      const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
+        labelWidth: 100,
+        schemas: [
+          <% if(tableConfig != null) { %>
+          <% for(item in inputConfig){ %>
+          {
+            field: '${item.propertyName}',
+            label: '${item.label}',
+            <% if(item.required != null && item.required) { %>
+            required: true,
+            <% } %>
+            component: '${item.componentType}',
+            <% if(strUtil.isNotBlank(item.dictType)) { %>
+            componentProps: {
+              dictType: '${item.dictType}',
+            },
+            <% } %>
+            <% if(item.propertyType == 'String' && strUtil.isBlank(item.dictType)) { %>
+            <% columnLength = GeneratorUtil.getColumnLength(item); %>
+            <% if(columnLength != null) { %>
+            rules: [{ max: ${columnLength}, message: '${item.label}不能超过${columnLength}个字符', trigger: 'blur' }],
+            <% } %>
+            <% } else if(item.propertyType == 'Integer' || item.propertyType == 'Long' || item.propertyType == 'Double') {%>
+            rules: [
+              { type: 'number', max: 9999, message: '${item.label}不能大于9999', trigger: 'blur' },
+              { type: 'number', min: 0, message: '${item.label}不能小于0', trigger: 'blur' },
+            ],
+            <% } %>
+            <% customComponents = ['ApiCascader', 'ApiRadioGroup', 'ApiSelect', 'ApiTree', 'ApiTreeSelect', 'DictCascader', 'DictCheckbox', 'DictRadio', 'DictSelect']; %>
+            <% if(array.contain(customComponents, item.componentType)) { %>
+            itemProps: { validateTrigger: 'blur' },
+            <% } %>
+          },
+          <% } %>
+          <% } %>
         ],
-        <% } %>
-        <% } else { %>
-        ${fieldSet.propertyName}: [
-        <% if(fieldSet.required) { %>
-          { required: true, message: '请输入${fieldSet.label}', trigger: 'blur' },
-        <% } %>
-        <% if(fieldSet.elementType == 'text') {%>
-          { max: 16, message: '${fieldSet.label}不能超过16个字符', trigger: 'blur' }
-        <%} else if(fieldSet.elementType == 'password') {%>
-          { max: 20, message: '${fieldSet.label}不能超过20个字符', trigger: 'blur' }
-        <%} else if(fieldSet.elementType == 'textarea') {%>
-          { max: 500, message: '${fieldSet.label}不能超过500个字符', trigger: 'blur' }
-        <% } %>
-        ]${fieldSetLP.last ? "" : ","}
-        <% } %>
-        <% } %>
-      }
-    }
-  },
-  mounted () {
-    if (isNotBlank(this.id)) {
-      this.edit(this.id)
-    } else {
-      this.add()
-    }
-  },
-  methods: {
-    edit (id) {
-      get(id).then((res) => {
-        this.model = res.data
-      })
-    },
-    add () {
-      add().then((res) => {
-        this.model = res.data
-      })
-    },
-    save () {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.saveLoading = true
-          save(this.model).then((res) => {
-            this.saveLoading = false
-            saveSuccessTip()
-            this.model = res.data
-          }).catch(({ response }) => {
-            this.saveLoading = false
-          })
+        showActionButtonGroup: false,
+        baseColProps: { md: 24 },
+      });
+
+      const [registerDrawer, { changeLoading, closeDrawer }] = useDrawerInner(async (data) => {
+        changeLoading(true);
+        // 重置表单
+        await resetFields();
+        id.value = data?.id;
+        version.value = data?.version || 0;
+
+        await setFieldsValue({
+          ...data,
+        });
+        changeLoading(false);
+      });
+
+      async function handleSave(callback: (_: ${basicsConfig.modelName}) => any) {
+        try {
+          changeLoading(true);
+          const values = await validate();
+          await save({ ...values, id: id.value, version: version.value }).then((res) => {
+            emit('success');
+            callback(res);
+          });
+        } catch (e) {
+          console.error(e);
+          changeLoading(false);
         }
-      })
-    }
-  }
-}
+      }
+
+      async function handleSubmit() {
+        await handleSave((_) => {
+          changeLoading(false);
+          closeDrawer();
+        });
+      }
+
+      <% if(basicsConfig.generatorMethodsAdd){ %>
+      async function handleSaveAndAdd() {
+        await handleSave(() => {
+          nextTick(() => {
+            add().then(async (data) => {
+              // 重置表单
+              await resetFields();
+              id.value = null;
+              version.value = null;
+              await setFieldsValue({
+                ...data,
+              });
+              changeLoading(false);
+            });
+          });
+        });
+      }
+
+      <% } %>
+      return { registerDrawer, registerForm, handleSubmit, handleSaveAndAdd };
+    },
+  });
 </script>

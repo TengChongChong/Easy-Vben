@@ -1,0 +1,41 @@
+package ${basicsConfig.packagePath}.dao;
+
+<% for(import in imports!){ %>
+import ${import.name};
+<% } %>
+import ${basicsConfig.packagePath}.model.${basicsConfig.modelName};
+
+/**
+ * ${basicsConfig.businessName}
+ *
+ * @author ${basicsConfig.author}
+ * @date ${date}
+ */
+public interface ${basicsConfig.modelName}Mapper extends BaseMapper<${basicsConfig.modelName}> {
+    /**
+     * 获取列表数据
+     *
+     * @param page 分页
+     * @param queryWrapper 查询条件
+     * @return List<${basicsConfig.modelName}>
+     */
+    List<${basicsConfig.modelName}> select(Page<${basicsConfig.modelName}> page, @Param("ew") QueryWrapper<${basicsConfig.modelName}> queryWrapper);
+
+    /**
+     * 查询详细信息
+     *
+     * @param id id
+     * @return ${basicsConfig.modelName}
+     */
+    ${basicsConfig.modelName} getById(@Param("id") String id);
+
+    <% if(basicsConfig.isGeneratorMethodsExport){ %>
+    /**
+     * 获取列表数据
+     *
+     * @param queryWrapper 查询条件
+     * @return List<${basicsConfig.modelName}>
+     */
+    List<${basicsConfig.modelName}> exportData(@Param("ew") QueryWrapper<${basicsConfig.modelName}> queryWrapper);
+    <% } %>
+}

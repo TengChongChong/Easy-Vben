@@ -1,0 +1,15 @@
+import { BasicModel } from '/@/api/model/baseModel';
+
+/**
+ * ${basicsConfig.businessName}
+ */
+export interface ${basicsConfig.modelName} extends BasicModel {
+  <% for(field in tableInfo.fields){ %>
+  <% if(!GeneratorTsUtil.inBasicModel(field.propertyName)) { %>
+  <% if(field.comment != null && field.comment != "") { %>
+  // ${field.comment}
+  ${field.propertyName}${GeneratorTsUtil.isRequired(field.propertyType, inputConfig) ? '' : '?'}: ${GeneratorTsUtil.convertPropertyType(field.propertyType)};
+  <% } %>
+  <% } %>
+  <% } %>
+}

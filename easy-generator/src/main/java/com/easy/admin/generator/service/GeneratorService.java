@@ -2,7 +2,7 @@ package com.easy.admin.generator.service;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.select.Select;
-import com.easy.admin.generator.model.Generator;
+import com.easy.admin.generator.model.GeneratorConfig;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ public interface GeneratorService {
     /**
      * 生成代码
      *
-     * @param object 参数
+     * @param generatorConfig 生成配置
      * @return 是否成功
      */
-    boolean generate(Generator object);
+    boolean generate(GeneratorConfig generatorConfig);
 
     /**
      * 获取表名
@@ -36,7 +36,7 @@ public interface GeneratorService {
      * @param tableName 表名
      * @return List<Select>
      */
-    TableInfo selectFields(String dataSource, String tableName);
+    TableInfo getTableInfo(String dataSource, String tableName);
 
     /**
      * 查询所有模块

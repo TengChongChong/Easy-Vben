@@ -1,0 +1,59 @@
+import { BasicColumn, FormSchema } from '/@/components/Table';
+<% if(GeneratorTsUtil.needDayJs(queryConfig)){ %>
+import dayjs from 'dayjs';
+<% } %>
+
+/**
+ * 查询条件
+ */
+export const searchFormSchema: FormSchema[] = [
+  <% if(queryConfig != null) { %>
+  <% for(item in queryConfig){ %>
+  <% if(strUtil.isBlank(item.dictType)) { %>
+  {
+    <% if(item.componentType == 'RangePicker'){ %>
+    field: '[start${strUtil.upperFirst(item.propertyName)}, end${strUtil.upperFirst(item.propertyName)}]',
+    <% } else { %>
+    field: '${item.propertyName}',
+    <% } %>
+    label: '${item.label}',
+    component: '${item.componentType}',
+    <% if(item.componentType == 'RangePicker'){ %>
+    componentProps: {
+      allowEmpty: [true, true],
+      showTime: true,
+      ranges: {
+        今天: [dayjs().startOf('day'), dayjs().endOf('day')],
+        本周: [dayjs().startOf('week'), dayjs().endOf('week')],
+        本月: [dayjs().startOf('month'), dayjs().endOf('month')],
+      },
+    },
+    colProps: { xxl: 12, xl: 16, md: 24 },
+    <% } %>
+  },
+  <% } %>
+  <% } %>
+  <% } %>
+];
+
+// 表格列数据
+export const columns: BasicColumn[] = [
+  <% if(tableConfig != null) { %>
+  <% for(item in tableConfig){ %>
+  {
+    title: '${item.title}',
+    dataIndex: '${item.propertyName}',
+    sorter: true,
+    <% if(item.width != null) { %>
+    width: ${item.width},
+    <% } %>
+    <% if(item.format != null) { %>
+    format: '${item.format}',
+    <% } %>
+    <% if(item.filters != null) { %>
+    filters: '${item.filters}',
+    <% } %>
+  },
+  <% } %>
+  <% } %>
+];
