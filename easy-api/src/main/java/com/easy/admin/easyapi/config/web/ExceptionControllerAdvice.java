@@ -129,7 +129,7 @@ public class ExceptionControllerAdvice {
     public Object handleException(HttpServletRequest request, RuntimeException e) {
         logger.debug("未知异常", e);
         // 将异常记录到表中
-        saveLog(HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getRequestURI(), e);
+        saveLog(HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getMethod() + " " + request.getRequestURI(), e);
         return Response.failError(e.getMessage());
     }
 

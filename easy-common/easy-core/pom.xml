@@ -135,6 +135,12 @@
             <artifactId>beetl</artifactId>
             <version>${beetl.version}</version>
         </dependency>
+        <!-- HTML 解析 -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -148,7 +148,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     @Override
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         QueryWrapper<SchedulerJob> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", idList);
         List<SchedulerJob> schedulerJobs = baseMapper.selectSchedulerJobCodes(queryWrapper);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  scan="true" scanPeriod="60 seconds" debug="false">
     <contextName>easy-frame</contextName>
-    <!-- 日志文件存放目录 -->
-    <property name="log.path" value="logs" />
+    <springProperty scope="context" name="log.path" source="logging.file.path"/>
+
     <!-- 日志文件名称 -->
     <property name="log.name" value="easy-frame" />
 
@@ -27,14 +27,14 @@
         </encoder>
     </appender>
 
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="console" />
         <appender-ref ref="file" />
     </root>
 
     <!-- 开发环境 -->
     <springProfile name="dev">
-        <logger name="com.frame.easy" level="debug" additivity="false">
+        <logger name="com.easy.admin" level="debug" additivity="false">
             <appender-ref ref="console"/>
         </logger>
     </springProfile>

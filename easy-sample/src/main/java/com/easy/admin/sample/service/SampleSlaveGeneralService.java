@@ -7,16 +7,17 @@ import com.easy.admin.sample.model.SampleSlaveGeneral;
  * 从库示例
  *
  * @author 系统管理员
- * @date 2021-12-20
+ * @date 2022-06-23
  */
 public interface SampleSlaveGeneralService {
     /**
      * 列表
-     * @param object 查询条件
+     *
+     * @param sampleSlaveGeneral 查询条件
      * @param page   分页
      * @return Page<SampleSlaveGeneral>
      */
-    Page<SampleSlaveGeneral> select(SampleSlaveGeneral object, Page<SampleSlaveGeneral> page);
+    Page<SampleSlaveGeneral> select(SampleSlaveGeneral sampleSlaveGeneral, Page<SampleSlaveGeneral> page);
 
     /**
      * 详情
@@ -44,9 +45,9 @@ public interface SampleSlaveGeneralService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sampleSlaveGeneral 表单内容
      * @return SampleSlaveGeneral
      */
-    SampleSlaveGeneral saveData(SampleSlaveGeneral object);
+    SampleSlaveGeneral saveData(SampleSlaveGeneral sampleSlaveGeneral);
 
 }

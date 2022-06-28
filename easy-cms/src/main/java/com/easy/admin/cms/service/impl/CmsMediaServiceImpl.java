@@ -12,6 +12,7 @@ import com.easy.admin.cms.model.CmsMedia;
 import com.easy.admin.cms.service.CmsMediaService;
 import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.service.SysFileService;
 import com.easy.admin.util.ToolUtil;
@@ -100,9 +101,9 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
     @Override
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
-        if(isSuccess){
+        if (isSuccess) {
             for (String id : idList) {
                 sysFileService.delete(id);
             }
@@ -138,9 +139,9 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
         throw new EasyException("获取文件信息失败");
     }
 
-    private String getType(String path){
+    private String getType(String path) {
         String type = FileUtil.getType(new File(path));
-        switch (type){
+        switch (type) {
             case "jpg":
             case "jpeg":
             case "png":

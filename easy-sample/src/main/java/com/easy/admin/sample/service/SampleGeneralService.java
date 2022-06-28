@@ -7,16 +7,17 @@ import com.easy.admin.sample.model.SampleGeneral;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2021-02-23
+ * @date 2022-06-23
  */
 public interface SampleGeneralService {
     /**
      * 列表
-     * @param object 查询条件
+     *
+     * @param sampleGeneral 查询条件
      * @param page   分页
      * @return Page<SampleGeneral>
      */
-    Page<SampleGeneral> select(SampleGeneral object, Page<SampleGeneral> page);
+    Page<SampleGeneral> select(SampleGeneral sampleGeneral, Page<SampleGeneral> page);
 
     /**
      * 详情
@@ -44,16 +45,17 @@ public interface SampleGeneralService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sampleGeneral 表单内容
      * @return SampleGeneral
      */
-    SampleGeneral saveData(SampleGeneral object);
+    SampleGeneral saveData(SampleGeneral sampleGeneral);
 
     /**
      * 导出数据
      *
-     * @param object 查询条件
+     * @param sampleGeneral 查询条件
      * @return 文件下载id
      */
-    String exportData(SampleGeneral object);
+    String exportData(SampleGeneral sampleGeneral);
+
 }

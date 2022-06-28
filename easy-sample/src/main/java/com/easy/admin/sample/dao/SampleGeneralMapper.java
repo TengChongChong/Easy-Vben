@@ -3,16 +3,15 @@ package com.easy.admin.sample.dao;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.sample.model.SampleGeneral;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import com.easy.admin.sample.model.SampleGeneral;
 
 /**
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2021-02-23
+ * @date 2022-06-23
  */
 public interface SampleGeneralMapper extends BaseMapper<SampleGeneral> {
     /**

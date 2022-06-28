@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.sample.dao.SampleWorkFlowMapper;
 import com.easy.admin.sample.model.SampleWorkFlow;
 import com.easy.admin.sample.service.SampleWorkFlowService;
@@ -89,7 +90,7 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
     @Override
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
 

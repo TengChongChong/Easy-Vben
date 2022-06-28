@@ -16,14 +16,14 @@ import com.easy.admin.activiti.model.FormPropertyVO;
 import com.easy.admin.activiti.model.Task;
 import com.easy.admin.activiti.service.ProcessDefinitionService;
 import com.easy.admin.activiti.service.TaskService;
+import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.core.mail.MailTemplate;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.model.SysMessage;
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysMessageService;
-import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.util.ShiroUtil;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
@@ -215,7 +215,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         SysMessage sysMessage = new SysMessage();
         sysMessage.setTitle("你发起的[" + task.getProcessDefinitionName() + "]" + task.getBusinessTitle() + "被" + currentUser.getNickname() + "]撤销");
         // 重要
-        sysMessage.setImportant(1);
+        sysMessage.setImportant(MessageConst.IMPORTANT_YES);
         sysMessage.setContent(MailTemplate.getContent("/message/revocation-notice.html", params));
         // 接收人
         sysMessage.setReceivers(Collections.singletonList(task.getApplyUserId()));

@@ -18,6 +18,9 @@ project:
 server:
     # 端口号
     port: 80
+logging:
+    file:
+        path: logs
 spring:
     elasticsearch:
       rest:

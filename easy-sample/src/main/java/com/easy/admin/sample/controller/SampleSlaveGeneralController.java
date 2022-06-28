@@ -1,24 +1,29 @@
 package com.easy.admin.sample.controller;
 
-import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
-import com.easy.admin.sample.model.SampleSlaveGeneral;
-import com.easy.admin.sample.service.SampleSlaveGeneralService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RestController;
+import com.easy.admin.core.annotation.ResponseResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import com.easy.admin.common.core.common.pagination.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
+import com.easy.admin.sample.model.SampleSlaveGeneral;
+import com.easy.admin.sample.service.SampleSlaveGeneralService;
 
 /**
  * 从库示例
  *
  * @author 系统管理员
- * @date 2021-12-20
+ * @date 2022-06-23
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sample/slave/general")
+@RequestMapping("/api/auth/sample/slave/general")
 public class SampleSlaveGeneralController {
 
     /**
@@ -30,13 +35,13 @@ public class SampleSlaveGeneralController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sampleSlaveGeneral 查询条件
      * @return Page<SampleSlaveGeneral>
      */
     @GetMapping()
     @RequiresPermissions("sample:slave:general:select")
-    public Page<SampleSlaveGeneral> select(SampleSlaveGeneral object, Page<SampleSlaveGeneral> page){
-        return service.select(object, page);
+    public Page<SampleSlaveGeneral> select(SampleSlaveGeneral sampleSlaveGeneral, Page<SampleSlaveGeneral> page){
+        return service.select(sampleSlaveGeneral, page);
     }
 
     /**
@@ -77,13 +82,13 @@ public class SampleSlaveGeneralController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sampleSlaveGeneral 表单内容
      * @return SampleSlaveGeneral
      */
     @PostMapping()
     @RequiresPermissions("sample:slave:general:save")
-    public SampleSlaveGeneral saveData(@Valid @RequestBody SampleSlaveGeneral object){
-        return service.saveData(object);
+    public SampleSlaveGeneral saveData(@Valid @RequestBody SampleSlaveGeneral sampleSlaveGeneral){
+        return service.saveData(sampleSlaveGeneral);
     }
 
 }

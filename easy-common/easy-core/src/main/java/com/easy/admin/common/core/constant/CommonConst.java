@@ -23,6 +23,11 @@ public class CommonConst {
     public static final String SPLIT2 = ";";
 
     /**
+     * 表分隔符
+     */
+    public static final String TABLE_SEPARATE = "_";
+
+    /**
      * 小数点
      */
     public static final String DECIMAL_POINT = ".";
