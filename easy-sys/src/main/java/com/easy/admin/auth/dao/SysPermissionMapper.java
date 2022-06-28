@@ -52,4 +52,12 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      * @return 更新条数
      */
     Integer updateOrderBatch(List<SysPermission> list);
+
+    /**
+     * 检查是否有此标题的菜单
+     *
+     * @param title 标题
+     * @return 条数
+     */
+    Integer countByTitle(@Param("title") String title);
 }

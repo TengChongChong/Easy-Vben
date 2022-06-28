@@ -29,18 +29,9 @@ public interface SysMessageDetailService {
      * 根据接收消息id删除
      *
      * @param ids              消息ids
-     * @param deleteCompletely true/false 是否彻底删除
      * @return true/false
      */
-    boolean removeByIds(String ids, boolean deleteCompletely);
-
-    /**
-     * 根据接收消息id还原
-     *
-     * @param ids 消息ids
-     * @return true/false
-     */
-    boolean reductionByIds(String ids);
+    boolean removeByIds(String ids);
 
     /**
      * 保存

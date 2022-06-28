@@ -164,17 +164,6 @@ public interface SysUserService {
     SysUser getUser(String id);
 
     /**
-     * 查询用户列表
-     *
-     * @param sysUser  查询条件
-     * @param page     分页
-     * @param isSelect 是否为查找
-     * @param keywords 关键字
-     * @return Page
-     */
-    Page<SysUser> selectUser(SysUser sysUser, Page<SysUser> page, boolean isSelect, String keywords);
-
-    /**
      * 获取密码和盐，用于修改密码
      *
      * @param id 用户id

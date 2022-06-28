@@ -56,6 +56,16 @@ public class SysException extends Model<SysException> implements Serializable {
     private Integer code;
 
     //
+    /**
+     * 触发时间
+     */
+    @TableField(exist=false)
+    private Date startTriggerTime;
+    /**
+     * 触发时间
+     */
+    @TableField(exist=false)
+    private Date endTriggerTime;
 
     /**
      * 用户昵称
@@ -133,5 +143,21 @@ public class SysException extends Model<SysException> implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public Date getStartTriggerTime() {
+        return startTriggerTime;
+    }
+
+    public void setStartTriggerTime(Date startTriggerTime) {
+        this.startTriggerTime = startTriggerTime;
+    }
+
+    public Date getEndTriggerTime() {
+        return endTriggerTime;
+    }
+
+    public void setEndTriggerTime(Date endTriggerTime) {
+        this.endTriggerTime = endTriggerTime;
     }
 }

@@ -4,14 +4,15 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.dao.SysImportExcelTemporaryMapper;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.model.SysImportExcelTemporary;
 import com.easy.admin.sys.model.SysImportSummary;
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
 import com.easy.admin.util.ShiroUtil;
@@ -106,7 +107,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
     @Override
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
 

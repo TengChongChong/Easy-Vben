@@ -15,10 +15,12 @@ import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.sys.service.SysMessageService;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
+import com.easy.admin.util.file.EditorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -38,14 +40,24 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysMessage 查询条件
      * @return 数据集合
      */
     @Override
-    public Page<SysMessage> select(SysMessage object, Page<SysMessage> page) {
-        QueryWrapper<SysMessage> queryWrapper = commonQuery(object);
-        if (object != null && Validator.isNotEmpty(object.getStatus())) {
-            queryWrapper.eq("m.status", object.getStatus());
+    public Page<SysMessage> select(SysMessage sysMessage, Page<SysMessage> page) {
+        QueryWrapper<SysMessage> queryWrapper = commonQuery(sysMessage);
+        if (sysMessage != null){
+            if(Validator.isNotEmpty(sysMessage.getStatus())) {
+                queryWrapper.eq("m.status", sysMessage.getStatus());
+            }
+            // 发送时间 - 开始
+            if (Validator.isNotEmpty(sysMessage.getStartSendDate())) {
+                queryWrapper.ge("m.send_date", sysMessage.getStartSendDate());
+            }
+            // 发送时间 - 结束
+            if (Validator.isNotEmpty(sysMessage.getEndSendDate())) {
+                queryWrapper.le("m.send_date", sysMessage.getEndSendDate());
+            }
         }
         queryWrapper.eq("m.create_user", ShiroUtil.getCurrentUser().getId());
         page.setRecords(baseMapper.selectSend(page, queryWrapper));
@@ -53,40 +65,36 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     }
 
     @Override
-    public Page<SysMessage> selectReceive(SysMessage object, Page<SysMessage> page) {
+    public Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page) {
         SysUser currentUser = ShiroUtil.getCurrentUser();
         // 查询条件
-        QueryWrapper<SysMessage> queryWrapper = commonQuery(object);
+        QueryWrapper<SysMessage> queryWrapper = commonQuery(sysMessage);
         // 只查询接收人为自己的
         queryWrapper.eq("d.receiver_user", currentUser.getId());
         // 已发送
         queryWrapper.eq("m.status", MessageConst.STATUS_HAS_BEEN_SENT);
-        if (object != null) {
-            if (object.getStar() != null) {
-                queryWrapper.eq("d.star", object.getStar());
+        if (sysMessage != null) {
+            if (sysMessage.getStar() != null) {
+                queryWrapper.eq("d.star", sysMessage.getStar());
             }
-            if (StrUtil.isNotBlank(object.getDetailsStatus())) {
-                queryWrapper.eq("d.status", object.getDetailsStatus());
+            if (StrUtil.isNotBlank(sysMessage.getDetailsStatus())) {
+                queryWrapper.eq("d.status", sysMessage.getDetailsStatus());
             }
-        }
-        if (object == null || StrUtil.isBlank(object.getDetailsStatus())) {
-            // 默认查询收信
-            queryWrapper.ne("d.status", MessageConst.RECEIVE_STATUS_DELETED);
         }
         page.setDefaultDesc("m.send_date");
         page.setRecords(baseMapper.selectReceive(page, queryWrapper));
         return page;
     }
 
-    private QueryWrapper<SysMessage> commonQuery(SysMessage object) {
+    private QueryWrapper<SysMessage> commonQuery(SysMessage sysMessage) {
         QueryWrapper<SysMessage> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
-            if (StrUtil.isNotBlank(object.getTitle())) {
-                queryWrapper.and(i -> i.like("m.title", object.getTitle()).or().like("m.content", object.getTitle()));
+        if (sysMessage != null) {
+            if (StrUtil.isNotBlank(sysMessage.getTitle())) {
+                queryWrapper.and(i -> i.like("m.title", sysMessage.getTitle()).or().like("m.content", sysMessage.getTitle()));
             }
             // 类型
-            if (Validator.isNotEmpty(object.getType())) {
-                queryWrapper.eq("m.type", object.getType());
+            if (Validator.isNotEmpty(sysMessage.getType())) {
+                queryWrapper.eq("m.type", sysMessage.getType());
             }
         }
         return queryWrapper;
@@ -114,14 +122,15 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
      */
     @Override
     public SysMessage add() {
-        SysMessage object = new SysMessage();
+        SysMessage sysMessage = new SysMessage();
         // 设置默认值
-        object.setType(MessageConst.TYPE_NOTICE);
+        sysMessage.setType(MessageConst.TYPE_NOTICE);
         // 非重要
-        object.setImportant(MessageConst.IMPORTANT_NO);
+        sysMessage.setImportant(MessageConst.IMPORTANT_NO);
         // 草稿
-        object.setStatus(MessageConst.STATUS_DRAFT);
-        return object;
+        sysMessage.setStatus(MessageConst.STATUS_DRAFT);
+        sysMessage.setReceivers(new ArrayList<>());
+        return sysMessage;
     }
 
     /**
@@ -134,37 +143,46 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     @Override
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
 
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysMessage 表单内容
      * @return 保存后信息
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysMessage saveData(SysMessage object) {
-        ToolUtil.checkParams(object);
-        boolean isAdd = StrUtil.isBlank(object.getId());
-        if (MessageConst.STATUS_HAS_BEEN_SENT.equals(object.getStatus())) {
-            object.setSendDate(new Date());
+    public SysMessage saveData(SysMessage sysMessage) {
+        ToolUtil.checkParams(sysMessage);
+        boolean isAdd = StrUtil.isBlank(sysMessage.getId());
+        if (isAdd) {
+            if (StrUtil.isBlank(sysMessage.getStatus())) {
+                sysMessage.setStatus(MessageConst.STATUS_DRAFT);
+            }
         }
-        if (StrUtil.isBlank(object.getType())) {
-            object.setType(MessageConst.TYPE_NOTICE);
+        if (MessageConst.STATUS_HAS_BEEN_SENT.equals(sysMessage.getStatus())) {
+            sysMessage.setSendDate(new Date());
         }
-        boolean isSuccess = saveOrUpdate(object);
+        if (StrUtil.isBlank(sysMessage.getType())) {
+            sysMessage.setType(MessageConst.TYPE_NOTICE);
+        }
+
+        // 处理内容中的文件
+        sysMessage.setContent(EditorUtil.moveToFormal(sysMessage.getContent()));
+
+        boolean isSuccess = saveOrUpdate(sysMessage);
         if (isSuccess) {
             if (!isAdd) {
                 // 清空上次设置的收信人
-                sysMessageDetailsService.remove(String.valueOf(object.getId()));
+                sysMessageDetailsService.remove(String.valueOf(sysMessage.getId()));
             }
             // 保存收信人
-            sysMessageDetailsService.saveData(object.getId(), object.getReceivers());
+            sysMessageDetailsService.saveData(sysMessage.getId(), sysMessage.getReceivers());
         }
-        return object;
+        return sysMessage;
     }
 
     @Override

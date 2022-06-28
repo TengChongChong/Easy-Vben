@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.dao.SysDataSourceMapper;
 import com.easy.admin.sys.model.SysDataSource;
@@ -68,9 +69,25 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
             if (Validator.isNotEmpty(object.getUrl())) {
                 queryWrapper.like("t.url", object.getUrl());
             }
+            // 用户名
+            if (Validator.isNotEmpty(object.getUsername())) {
+                queryWrapper.like("t.username", object.getUsername());
+            }
+            // 密码
+            if (Validator.isNotEmpty(object.getPassword())) {
+                queryWrapper.like("t.password", object.getPassword());
+            }
+            // 备注
+            if (Validator.isNotEmpty(object.getRemarks())) {
+                queryWrapper.like("t.remarks", object.getRemarks());
+            }
             // 状态
             if (Validator.isNotEmpty(object.getStatus())) {
-                queryWrapper.eq("t.status", object.getStatus());
+                if (object.getStatus().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.status", object.getStatus().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.status", object.getStatus());
+                }
             }
         }
         page.setRecords(baseMapper.select(page, queryWrapper));
@@ -133,7 +150,7 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
     @Override
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
 
         // 移除数据源
         QueryWrapper<SysDataSource> selectNames = new QueryWrapper<>();

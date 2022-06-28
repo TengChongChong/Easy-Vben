@@ -13,20 +13,20 @@ public interface SysMessageService {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysMessage 查询条件
      * @param page   分页
      * @return Page<SysMessage>
      */
-    Page<SysMessage> select(SysMessage object, Page<SysMessage> page);
+    Page<SysMessage> select(SysMessage sysMessage, Page<SysMessage> page);
 
     /**
      * 收信列表
      *
-     * @param object 查询条件
+     * @param sysMessage 查询条件
      * @param page   分页
      * @return Page<SysMessage>
      */
-    Page<SysMessage> selectReceive(SysMessage object, Page<SysMessage> page);
+    Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page);
 
     /**
      * 详情
@@ -62,10 +62,10 @@ public interface SysMessageService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysMessage 表单内容
      * @return 保存后信息
      */
-    SysMessage saveData(SysMessage object);
+    SysMessage saveData(SysMessage sysMessage);
 
     /**
      * 发送

@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.dao.SysMessageDetailMapper;
 import com.easy.admin.sys.model.SysMessageDetail;
@@ -48,34 +49,13 @@ public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMap
     }
 
     @Override
-    public boolean removeByIds(String ids, boolean deleteCompletely) {
+    public boolean removeByIds(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
-        if (deleteCompletely) {
-            QueryWrapper<SysMessageDetail> delete = new QueryWrapper<>();
-            delete.in("id", idList);
-            delete.eq("receiver_user", ShiroUtil.getCurrentUser().getId());
-            return remove(delete);
-        } else {
-            UpdateWrapper<SysMessageDetail> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.in("id", idList);
-            updateWrapper.eq("receiver_user", ShiroUtil.getCurrentUser().getId());
-            // 回收站
-            updateWrapper.set("status", MessageConst.RECEIVE_STATUS_DELETED);
-            return update(updateWrapper);
-        }
-    }
-
-    @Override
-    public boolean reductionByIds(String ids) {
-        ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
-        UpdateWrapper<SysMessageDetail> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.in("id", idList);
-        updateWrapper.eq("receiver_user", ShiroUtil.getCurrentUser().getId());
-        // 状态设置为已读
-        updateWrapper.set("status", MessageConst.RECEIVE_STATUS_ALREADY_READ);
-        return update(updateWrapper);
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
+        QueryWrapper<SysMessageDetail> delete = new QueryWrapper<>();
+        delete.in("id", idList);
+        delete.eq("receiver_user", ShiroUtil.getCurrentUser().getId());
+        return remove(delete);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -114,13 +94,11 @@ public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMap
     public boolean setRead(String ids) {
         UpdateWrapper<SysMessageDetail> updateRead = new UpdateWrapper<>();
         if (StrUtil.isNotBlank(ids)) {
-            List<String> idList = Arrays.asList(ids.split(","));
+            List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
             updateRead.in("id", idList);
         }
         // 接收人必须是当前登录用户
         updateRead.eq("receiver_user", ShiroUtil.getCurrentUser().getId());
-        // 非回收站信息
-        updateRead.ne("status", MessageConst.RECEIVE_STATUS_DELETED);
         // 阅读时间
         updateRead.set("read_date", new Date());
         // 已读

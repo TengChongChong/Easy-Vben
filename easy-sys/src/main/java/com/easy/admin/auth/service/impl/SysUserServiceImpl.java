@@ -352,46 +352,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Page<SysUser> selectUser(SysUser sysUser, Page<SysUser> page, boolean isSelect, String keywords) {
-        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        // 如果是查询用于显示已选择的用户列表，必须传入id
-        boolean isInvalid = !isSelect && (sysUser == null || StrUtil.isBlank(sysUser.getId()));
-        if (isInvalid) {
-            return null;
-        }
-        if (sysUser != null) {
-            if (Validator.isNotEmpty(sysUser.getUsername())) {
-                queryWrapper.like("su.username", sysUser.getUsername());
-            }
-            if (Validator.isNotEmpty(sysUser.getNickname())) {
-                queryWrapper.like("su.nickname", sysUser.getNickname());
-            }
-            if (Validator.isNotEmpty(sysUser.getDeptId())) {
-                queryWrapper.eq("su.dept_id", sysUser.getDeptId());
-            }
-            if (Validator.isNotEmpty(sysUser.getRoleIdList())) {
-                queryWrapper.in("sur.role_id", sysUser.getRoleIdList());
-            }
-        }
-
-        if (StrUtil.isNotBlank(keywords)) {
-            queryWrapper.and(i -> i.like("su.username", keywords).or().like("su.nickname", keywords));
-        }
-        if (sysUser != null && StrUtil.isNotBlank(sysUser.getId())) {
-            if (sysUser.getId().contains(CommonConst.SPLIT)) {
-                queryWrapper.in("su.id", sysUser.getId().split(CommonConst.SPLIT));
-            } else {
-                queryWrapper.eq("su.id", sysUser.getId());
-            }
-        }
-
-        queryWrapper.eq("su.status", SysUserStatus.ENABLE.getCode());
-
-        page.setRecords(baseMapper.selectUser(page, queryWrapper));
-        return page;
-    }
-
-    @Override
     public SysUser selectPasswordAndSalt(String id) {
         return baseMapper.selectPasswordAndSalt(id);
     }

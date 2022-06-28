@@ -158,4 +158,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public boolean saveOrder(List<SysPermission> sysPermissionList) {
         return baseMapper.updateOrderBatch(sysPermissionList) > 0;
     }
+
+    @Override
+    public boolean hasMenu(String title) {
+        return baseMapper.countByTitle(title) > 0;
+    }
 }

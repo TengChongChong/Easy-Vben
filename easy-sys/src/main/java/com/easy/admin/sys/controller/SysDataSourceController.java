@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/data/source")
+@RequestMapping("/api/auth/sys/data/source")
 public class SysDataSourceController {
 
     /**
@@ -98,6 +98,4 @@ public class SysDataSourceController {
     public List<Select> selectOptions(){
         return service.selectOptions();
     }
-
-
 }

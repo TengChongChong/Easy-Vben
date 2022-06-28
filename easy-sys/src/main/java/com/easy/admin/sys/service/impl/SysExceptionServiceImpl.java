@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.dao.SysExceptionMapper;
 import com.easy.admin.sys.model.SysException;
@@ -59,9 +60,13 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
             if (Validator.isNotEmpty(object.getNickname())) {
                 queryWrapper.like("u.nickname", object.getNickname());
             }
-            // 触发时间
-            if (Validator.isNotEmpty(object.getTriggerTime())) {
-                queryWrapper.eq("trigger_time", object.getTriggerTime());
+            // 触发时间 - 开始
+            if (Validator.isNotEmpty(object.getStartTriggerTime())) {
+                queryWrapper.ge("trigger_time", object.getStartTriggerTime());
+            }
+            // 触发时间 - 结束
+            if (Validator.isNotEmpty(object.getEndTriggerTime())) {
+                queryWrapper.le("trigger_time", object.getEndTriggerTime());
             }
         }
         page.setDefaultDesc("trigger_time");
@@ -91,7 +96,7 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
     @Override
     public boolean remove(String ids) {
         ToolUtil.checkParams(ids);
-        List<String> idList = Arrays.asList(ids.split(","));
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
 

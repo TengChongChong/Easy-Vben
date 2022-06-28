@@ -13,11 +13,11 @@ public interface SysLogService {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysLog 查询条件
      * @param page   分页
      * @return Page<SysLog>
      */
-    Page<SysLog> select(SysLog object, Page<SysLog> page);
+    Page<SysLog> select(SysLog sysLog, Page<SysLog> page);
 
     /**
      * 详情
@@ -30,10 +30,10 @@ public interface SysLogService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysLog 表单内容
      * @return SysLog
      */
-    SysLog saveData(SysLog object);
+    SysLog saveData(SysLog sysLog);
 
     /**
      * 清理异常日志表里的数据

@@ -76,4 +76,12 @@ public interface SysPermissionService {
      */
     boolean saveOrder(List<SysPermission> sysPermissionList);
 
+    /**
+     * 检查是否有此标题的菜单
+     *
+     * @param title 标题
+     * @return true/false
+     */
+    boolean hasMenu(String title);
+
 }

@@ -22,7 +22,7 @@ import javax.validation.Valid;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/message")
+@RequestMapping("/api/auth/sys/message")
 public class SysMessageController extends BaseController {
 
     /**
@@ -37,25 +37,25 @@ public class SysMessageController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysMessage 查询条件
      * @return Page<SysMessage>
      */
     @GetMapping
     @RequiresPermissions("sys:message:select")
-    public Page<SysMessage> select(SysMessage object, Page<SysMessage> page) {
-        return service.select(object, page);
+    public Page<SysMessage> select(SysMessage sysMessage, Page<SysMessage> page) {
+        return service.select(sysMessage, page);
     }
 
     /**
      * 收信列表
      *
-     * @param object 查询条件
+     * @param sysMessage 查询条件
      * @return Page<SysMessage>
      */
     @GetMapping("receive")
     @RequiresPermissions("sys:message:select")
-    public Page<SysMessage> selectReceive(SysMessage object, Page<SysMessage> page) {
-        return service.selectReceive(object, page);
+    public Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page) {
+        return service.selectReceive(sysMessage, page);
     }
 
     /**
@@ -79,7 +79,7 @@ public class SysMessageController extends BaseController {
      */
     @GetMapping("info")
     public SysMessage info(@RequestParam(value = "id", required = false) String id,
-                           @RequestParam(value = "messageId", required = true) String messageId) {
+                           @RequestParam(value = "messageId") String messageId) {
         if(StrUtil.isNotBlank(id)){
             // 标记已读
             sysMessageDetailsService.setRead(id);
@@ -114,13 +114,13 @@ public class SysMessageController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysMessage 表单内容
      * @return SysMessage
      */
     @PostMapping
     @RequiresPermissions("sys:message:save")
-    public SysMessage save(@RequestBody @Valid SysMessage object) {
-        return service.saveData(object);
+    public SysMessage save(@RequestBody @Valid SysMessage sysMessage) {
+        return service.saveData(sysMessage);
     }
 
     /**
@@ -141,7 +141,6 @@ public class SysMessageController extends BaseController {
      * @return 未读消息数量
      */
     @GetMapping("unread/count")
-    @RequiresPermissions("sys:message:select")
     public int selectUnreadCount() {
         return service.selectUnreadCount();
     }

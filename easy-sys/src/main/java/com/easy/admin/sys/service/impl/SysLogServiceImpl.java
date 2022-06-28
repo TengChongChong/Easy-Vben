@@ -5,6 +5,7 @@ import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.dao.SysLogMapper;
 import com.easy.admin.sys.model.SysLog;
@@ -28,49 +29,60 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysLog 查询条件
      * @return 数据集合
      */
     @Override
-    public Page<SysLog> select(SysLog object, Page<SysLog> page) {
+    public Page<SysLog> select(SysLog sysLog, Page<SysLog> page) {
         QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
+        if (sysLog != null) {
             // 查询条件
             // 模块
-            if (Validator.isNotEmpty(object.getModular())) {
-                queryWrapper.like("t.modular", object.getModular());
+            if (Validator.isNotEmpty(sysLog.getModular())) {
+                queryWrapper.like("t.modular", sysLog.getModular());
             }
             // 方法
-            if (Validator.isNotEmpty(object.getMethod())) {
-                queryWrapper.like("t.method", object.getMethod());
+            if (Validator.isNotEmpty(sysLog.getMethod())) {
+                queryWrapper.like("t.method", sysLog.getMethod());
             }
             // ip
-            if (Validator.isNotEmpty(object.getIp())) {
-                queryWrapper.like("t.ip", object.getIp());
+            if (Validator.isNotEmpty(sysLog.getIp())) {
+                queryWrapper.like("t.ip", sysLog.getIp());
             }
             // url
-            if (Validator.isNotEmpty(object.getUrl())) {
-                queryWrapper.like("t.url", object.getUrl());
+            if (Validator.isNotEmpty(sysLog.getUrl())) {
+                queryWrapper.like("t.url", sysLog.getUrl());
             }
             // uri
-            if (Validator.isNotEmpty(object.getUri())) {
-                queryWrapper.like("t.uri", object.getUri());
+            if (Validator.isNotEmpty(sysLog.getUri())) {
+                queryWrapper.like("t.uri", sysLog.getUri());
             }
             // clazz
-            if (Validator.isNotEmpty(object.getClazz())) {
-                queryWrapper.like("t.clazz", object.getClazz());
+            if (Validator.isNotEmpty(sysLog.getClazz())) {
+                queryWrapper.like("t.clazz", sysLog.getClazz());
             }
             // params
-            if (Validator.isNotEmpty(object.getParams())) {
-                queryWrapper.like("t.params", object.getParams());
+            if (Validator.isNotEmpty(sysLog.getParams())) {
+                queryWrapper.like("t.params", sysLog.getParams());
             }
             // 操作人
-            if (Validator.isNotEmpty(object.getOperationUser())) {
-                queryWrapper.like("u.nickname", object.getOperationUser());
+            if (Validator.isNotEmpty(sysLog.getOperationUser())) {
+                queryWrapper.like("u.nickname", sysLog.getOperationUser());
             }
-            // 操作时间
-            if (Validator.isNotEmpty(object.getOperationDate())) {
-                queryWrapper.eq("t.operation_date", object.getOperationDate());
+            // 操作时间 - 开始
+            if (Validator.isNotEmpty(sysLog.getStartOperationDate())) {
+                queryWrapper.ge("t.operation_date", sysLog.getStartOperationDate());
+            }
+            // 操作时间 - 结束
+            if (Validator.isNotEmpty(sysLog.getEndOperationDate())) {
+                queryWrapper.le("t.operation_date", sysLog.getEndOperationDate());
+            }
+            if (Validator.isNotEmpty(sysLog.getHttpMethod())) {
+                if (sysLog.getHttpMethod().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.http_method", sysLog.getHttpMethod().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.http_method", sysLog.getHttpMethod());
+                }
             }
         }
         // 设置默认排序
@@ -94,13 +106,13 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysLog 表单内容
      * @return 保存后信息
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysLog saveData(SysLog object) {
-        return (SysLog) ToolUtil.checkResult(saveOrUpdate(object), object);
+    public SysLog saveData(SysLog sysLog) {
+        return (SysLog) ToolUtil.checkResult(saveOrUpdate(sysLog), sysLog);
     }
 
     @Override

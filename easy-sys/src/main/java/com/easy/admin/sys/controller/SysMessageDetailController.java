@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/message/detail")
+@RequestMapping("/api/auth/sys/message/detail")
 public class SysMessageDetailController extends BaseController {
 
     @Autowired
@@ -37,24 +37,11 @@ public class SysMessageDetailController extends BaseController {
      * 根据接收消息id删除
      *
      * @param ids              消息ids
-     * @param removeCompletely true/false 是否彻底删除
      * @return true/false
      */
-    @DeleteMapping("{ids}/{removeCompletely}")
-    public boolean removeByIds(@PathVariable("ids") String ids,
-                               @PathVariable("removeCompletely") boolean removeCompletely) {
-        return service.removeByIds(ids, removeCompletely);
-    }
-
-    /**
-     * 根据接收消息id恢复
-     *
-     * @param ids 消息ids
-     * @return true/false
-     */
-    @PostMapping("reduction/{ids}")
-    public boolean reductionByIds(@PathVariable("ids") String ids) {
-        return service.reductionByIds(ids);
+    @DeleteMapping("{ids}")
+    public boolean removeByIds(@PathVariable("ids") String ids) {
+        return service.removeByIds(ids);
     }
 
     /**

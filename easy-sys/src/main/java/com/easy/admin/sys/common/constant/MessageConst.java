@@ -50,11 +50,11 @@ public class MessageConst {
     /**
      * 不重要
      */
-    public static final int IMPORTANT_NO = 0;
+    public static final String IMPORTANT_NO = "0";
     /**
      * 重要
      */
-    public static final int IMPORTANT_YES = 1;
+    public static final String IMPORTANT_YES = "1";
 
     //==== 状态
     /**
@@ -89,9 +89,5 @@ public class MessageConst {
      * 未读
      */
     public static final String RECEIVE_STATUS_UNREAD = "0";
-    /**
-     * 已删除
-     */
-    public static final String RECEIVE_STATUS_DELETED = "-1";
 
 }

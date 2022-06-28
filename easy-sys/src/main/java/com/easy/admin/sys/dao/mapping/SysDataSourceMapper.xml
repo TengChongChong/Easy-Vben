@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysDataSource">
         <result column="id" property="id" />
         <result column="name" property="name" />
-        <result column="description" property="description" />
+        <result column="remarks" property="remarks" />
         <result column="type" property="type" />
         <result column="url" property="url" />
         <result column="username" property="username" />
@@ -19,7 +19,7 @@
         <result column="status" property="status" />
     </resultMap>
     <select id="select" resultType="com.easy.admin.sys.model.SysDataSource">
-        select t.id, t.type, t.name, t.description, t.url, su.nickname as edit_user, t.edit_date, t.status
+        select t.id, t.type, t.name, t.username, t.remarks, t.url, su.nickname as edit_user, t.edit_date, t.status
         from sys_data_source t
         left join sys_user su on su.id = t.edit_user
         <where>
@@ -34,7 +34,7 @@
         </where>
     </select>
     <select id="getById" resultType="com.easy.admin.sys.model.SysDataSource">
-        select t.id, t.name, t.description, t.type, t.url, t.username, t.password, t.create_date, t.create_user, t.edit_user, t.edit_date, t.version, t.status
+        select t.id, t.name, t.remarks, t.type, t.url, t.username, t.password, t.create_date, t.create_user, t.edit_user, t.edit_date, t.version, t.status
         from sys_data_source t
         where t.id = #{id}
     </select>

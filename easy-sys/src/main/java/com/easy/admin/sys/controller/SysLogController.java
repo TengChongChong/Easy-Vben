@@ -32,13 +32,13 @@ public class SysLogController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysLog 查询条件
      * @return Page<SysLog>
      */
     @GetMapping
     @RequiresPermissions("sys:log:select")
-    public Page<SysLog> select(SysLog object, Page<SysLog> page){
-        return service.select(object, page);
+    public Page<SysLog> select(SysLog sysLog, Page<SysLog> page){
+        return service.select(sysLog, page);
     }
     /**
      * 详情

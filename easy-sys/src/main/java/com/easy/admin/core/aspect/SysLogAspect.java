@@ -82,6 +82,7 @@ public class SysLogAspect {
         sysLog.setParams(Arrays.toString(args));
         if (request != null) {
             // 设置请求信息
+            sysLog.setHttpMethod(request.getMethod());
             sysLog.setUri(request.getRequestURI());
             sysLog.setUrl(request.getRequestURL().toString());
             sysLog.setIp(IpUtil.getIpAddress(request));

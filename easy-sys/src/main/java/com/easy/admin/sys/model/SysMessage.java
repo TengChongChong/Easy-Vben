@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +43,6 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
     /**
      * 状态
      */
-    @NotNull(message = "状态不能为空")
     private String status;
 
     /**
@@ -60,7 +58,7 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
     /**
      * 重要
      */
-    private Integer important;
+    private String important;
 
     /**
      * 类型
@@ -100,10 +98,10 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
     //
 
     /**
-     * 是否被标记※
+     * 收藏
      */
     @TableField(exist = false)
-    private Integer star;
+    private String star;
     /**
      * 发送人昵称
      */
@@ -138,6 +136,16 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
     @TableField(exist = false)
     private String readDate;
 
+    /**
+     * 发送时间 - 开始
+     */
+    @TableField(exist = false)
+    private Date startSendDate;
+    /**
+     * 发送时间 - 结束
+     */
+    @TableField(exist = false)
+    private Date endSendDate;
 
     public String getId() {
         return id;
@@ -195,11 +203,11 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
         this.icon = icon;
     }
 
-    public Integer getImportant() {
+    public String getImportant() {
         return important;
     }
 
-    public void setImportant(Integer important) {
+    public void setImportant(String important) {
         this.important = important;
     }
 
@@ -251,11 +259,11 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
         this.editDate = editDate;
     }
 
-    public Integer getStar() {
+    public String getStar() {
         return star;
     }
 
-    public void setStar(Integer star) {
+    public void setStar(String star) {
         this.star = star;
     }
 
@@ -307,4 +315,19 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
         this.readDate = readDate;
     }
 
+    public Date getStartSendDate() {
+        return startSendDate;
+    }
+
+    public void setStartSendDate(Date startSendDate) {
+        this.startSendDate = startSendDate;
+    }
+
+    public Date getEndSendDate() {
+        return endSendDate;
+    }
+
+    public void setEndSendDate(Date endSendDate) {
+        this.endSendDate = endSendDate;
+    }
 }

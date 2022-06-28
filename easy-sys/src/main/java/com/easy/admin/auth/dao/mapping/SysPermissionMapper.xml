@@ -56,6 +56,9 @@
         where t.status = #{status}
         order by t.order_no
     </select>
+    <select id="countByTitle" resultType="java.lang.Integer">
+        select count(1) from sys_permission where title = #{title}
+    </select>
     <update id="updateOrderBatch">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update sys_permission

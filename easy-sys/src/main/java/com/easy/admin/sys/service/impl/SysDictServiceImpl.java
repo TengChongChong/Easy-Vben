@@ -15,12 +15,10 @@ import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.dao.SysDictMapper;
-import com.easy.admin.sys.dao.SysDictTypeMapper;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.service.SysDictService;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +32,6 @@ import java.util.*;
  */
 @Service
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
-
-    @Autowired
-    private SysDictTypeMapper dictTypeMapper;
 
     @Override
     public Page<SysDict> select(SysDict sysDict, Page<SysDict> page) {

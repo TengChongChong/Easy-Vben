@@ -1,5 +1,6 @@
 package com.easy.admin.sys.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -63,6 +64,11 @@ public class SysLog extends Model<SysLog> implements Serializable{
     private String params;
 
     /**
+     * Http Method
+     */
+    private String httpMethod;
+
+    /**
      * 耗时
      * 由于需要在方法return去拦截,所以暂时作为保留字段
      */
@@ -82,6 +88,17 @@ public class SysLog extends Model<SysLog> implements Serializable{
     private Date operationDate;
 
     //
+
+    /**
+     * 操作时间
+     */
+    @TableField(exist=false)
+    private Date startOperationDate;
+    /**
+     * 操作时间
+     */
+    @TableField(exist=false)
+    private Date endOperationDate;
 
     public String getId() {
         return id;
@@ -174,5 +191,29 @@ public class SysLog extends Model<SysLog> implements Serializable{
 
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public String getHttpMethod() {
+        return httpMethod;
+    }
+
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
+    }
+
+    public Date getStartOperationDate() {
+        return startOperationDate;
+    }
+
+    public void setStartOperationDate(Date startOperationDate) {
+        this.startOperationDate = startOperationDate;
+    }
+
+    public Date getEndOperationDate() {
+        return endOperationDate;
+    }
+
+    public void setEndOperationDate(Date endOperationDate) {
+        this.endOperationDate = endOperationDate;
     }
 }

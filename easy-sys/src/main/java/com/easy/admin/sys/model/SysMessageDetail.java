@@ -42,7 +42,7 @@ public class SysMessageDetail extends Model<SysMessageDetail> implements Seriali
      */
     private String status;
     /**
-     * 是否被标记※
+     * 收藏
      */
     private Integer star;
 

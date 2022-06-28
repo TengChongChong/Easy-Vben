@@ -123,31 +123,16 @@ public class SysUserController extends BaseController {
         return service.getCurrentUser();
     }
 
-    /**
-     * 查询用户列表
-     *
-     * @param sysUser  查询条件
-     * @param isSelect 是否为查找
-     * @param keywords 关键字
-     * @return Page<SysUser>
-     */
-    @GetMapping("/users")
-    @RequiresPermissions("sys:user:select")
-    public Page<SysUser> selectUser(SysUser sysUser, Page<SysUser> page,
-                                    @RequestParam(name = "isSelect", required = false) boolean isSelect,
-                                    @RequestParam(name = "keywords", required = false) String keywords) {
-        return service.selectUser(sysUser, page, isSelect, keywords);
-    }
 
     /**
-     * 搜索用户 for activiti
+     * 查询用户，用于用户选择
      *
      * @param keyword 关键字
      * @param range   数据范围，可以选择哪些用户 'all' | 'currentDept'
      * @param deptId 部门id，如传入range='currentDept'，此参数无效
      * @return Page<SysUser>
      */
-    @GetMapping("keyword")
+    @GetMapping("search")
     public Page<SysUser> search(@RequestParam("keyword") String keyword,
                                 @RequestParam(value = "range", required = false) String range,
                                 @RequestParam(value = "deptId", required = false) String deptId,
@@ -156,7 +141,7 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 获取指定用户信息
+     * 获取指定用户信息，用于回显已选择的用户
      *
      * @param ids ids
      * @return List<SysUser>

@@ -27,10 +27,6 @@ public class SysDataSource extends Model<SysDataSource> {
     @NotBlank(message = "名称不能为空")
     private String name;
     /**
-     * 描述
-     */
-    private String description;
-    /**
      * 类型
      */
     private String type;
@@ -49,6 +45,10 @@ public class SysDataSource extends Model<SysDataSource> {
      */
     @NotBlank(message = "密码不能为空")
     private String password;
+    /**
+     * 备注
+     */
+    private String remarks;
     /**
      * 创建时间
      */
@@ -98,13 +98,6 @@ public class SysDataSource extends Model<SysDataSource> {
 
     public void setName(String name) {
         this.name = name;
-    }
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
     public String getType() {
         return type;
@@ -175,5 +168,13 @@ public class SysDataSource extends Model<SysDataSource> {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }
