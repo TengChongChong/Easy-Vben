@@ -3,11 +3,10 @@ package com.easy.admin.auth.service.impl;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.auth.dao.SysDeptTypeRoleMapper;
 import com.easy.admin.auth.model.SysDeptTypeRole;
-import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.service.SysDeptTypeRoleService;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,11 +51,5 @@ public class SysDeptTypeRoleServiceImpl extends ServiceImpl<SysDeptTypeRoleMappe
     @Override
     public boolean removeDeptTypeRole(String roles) {
         return remove(new QueryWrapper<SysDeptTypeRole>().in("role_id", roles.split(CommonConst.SPLIT)));
-    }
-
-    @Override
-    public List<SysRole> selectRoleByDept(String deptId) {
-        ToolUtil.checkParams(deptId);
-        return baseMapper.selectRoleByDept(deptId);
     }
 }

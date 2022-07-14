@@ -21,7 +21,7 @@ import javax.validation.Valid;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/import/excel/temporary")
+@RequestMapping("/api/auth/sys/import/excel/temporary")
 public class SysImportExcelTemporaryController extends BaseController {
 
     /**

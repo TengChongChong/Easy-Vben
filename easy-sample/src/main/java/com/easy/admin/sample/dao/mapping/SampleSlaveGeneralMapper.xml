@@ -17,9 +17,8 @@
         <result column="edit_date" property="editDate" />
     </resultMap>
     <select id="select" resultType="com.easy.admin.sample.model.SampleSlaveGeneral">
-        select t.id, t.name, t.sex, t.age, t.phone, t.status, su_edit_user.nickname as edit_user, t.edit_date
+        select t.id, t.name, t.sex, t.age, t.phone, t.status, t.edit_date
         from sample_slave_general t
-        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
         <where>
             ${ew.sqlSegment}
         </where>

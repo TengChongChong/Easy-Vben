@@ -1,37 +1,36 @@
 package com.easy.admin.sample.service;
 
-
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.sample.model.SampleWorkFlow;
 
 /**
  * 流程示例
  *
- * @author TengChong
- * @date 2020-04-26
+ * @author 系统管理员
+ * @date 2022-07-08
  */
 public interface SampleWorkFlowService {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sampleWorkFlow 查询条件
      * @param page   分页
-     * @return 数据集合
+     * @return Page<SampleWorkFlow>
      */
-    Page<SampleWorkFlow> select(SampleWorkFlow object, Page<SampleWorkFlow> page);
+    Page<SampleWorkFlow> select(SampleWorkFlow sampleWorkFlow, Page<SampleWorkFlow> page);
 
     /**
      * 详情
      *
      * @param id id
-     * @return 详细信息
+     * @return SampleWorkFlow
      */
     SampleWorkFlow get(String id);
 
     /**
      * 新增
      *
-     * @return 默认值
+     * @return SampleWorkFlow
      */
     SampleWorkFlow add();
 
@@ -39,15 +38,24 @@ public interface SampleWorkFlowService {
      * 删除
      *
      * @param ids 数据ids
-     * @return 是否成功
+     * @return true/false
      */
     boolean remove(String ids);
 
     /**
      * 保存
      *
-     * @param object 表单内容
-     * @return 保存后信息
+     * @param sampleWorkFlow 表单内容
+     * @return SampleWorkFlow
      */
-    SampleWorkFlow saveData(SampleWorkFlow object);
+    SampleWorkFlow saveData(SampleWorkFlow sampleWorkFlow);
+
+    /**
+     * 导出数据
+     *
+     * @param sampleWorkFlow 查询条件
+     * @return 文件下载id
+     */
+    String exportData(SampleWorkFlow sampleWorkFlow);
+
 }

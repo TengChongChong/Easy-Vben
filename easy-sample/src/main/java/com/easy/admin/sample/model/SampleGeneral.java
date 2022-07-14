@@ -10,13 +10,14 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import com.baomidou.mybatisplus.annotation.Version;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 
 /**
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2022-06-23
+ * @date 2022-07-13
  */
 @TableName("sample_general")
 public class SampleGeneral extends Model<SampleGeneral> {
@@ -27,6 +28,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
      * 姓名
      */
     @Excel(name = "姓名", width = 15, orderNum = "0")
+    @NotBlank(message = "姓名不能为空")
     private String name;
     /**
      * 性别
@@ -54,6 +56,11 @@ public class SampleGeneral extends Model<SampleGeneral> {
     @Excel(name = "地址", width = 25, orderNum = "5")
     private String address;
     /**
+     * 乐观锁
+     */
+    @Version
+    private Integer version;
+    /**
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
@@ -75,16 +82,6 @@ public class SampleGeneral extends Model<SampleGeneral> {
     private Date editDate;
 
     // 非表字段
-    /**
-     * 编辑时间 - 开始时间
-     */
-    @TableField(exist=false)
-    private Date startEditDate;
-    /**
-     * 编辑时间 - 结束时间
-     */
-    @TableField(exist=false)
-    private Date endEditDate;
 
     @Override
     protected Serializable pkVal() {
@@ -140,6 +137,13 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setAddress(String address) {
         this.address = address;
     }
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
     public String getCreateUser() {
         return createUser;
     }
@@ -169,18 +173,4 @@ public class SampleGeneral extends Model<SampleGeneral> {
         this.editDate = editDate;
     }
 
-    public Date getStartEditDate() {
-        return startEditDate;
-    }
-
-    public void setStartEditDate(Date startEditDate) {
-        this.startEditDate = startEditDate;
-    }
-    public Date getEndEditDate() {
-        return endEditDate;
-    }
-
-    public void setEndEditDate(Date endEditDate) {
-        this.endEditDate = endEditDate;
-    }
 }

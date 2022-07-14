@@ -29,15 +29,15 @@ public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> 
     <% if(item.keyFlag) { %>
     @TableId
     <% } %>
+    <% if("version" == item.propertyName) { %>
+    @Version
+    <% } %>
     <% if("editUser" == item.propertyName || "editDate" == item.propertyName){ %>
     @TableField(fill = FieldFill.INSERT_UPDATE)
     <% } else if ("createUser" == item.propertyName || "createDate" == item.propertyName) { %>
     @TableField(fill = FieldFill.INSERT)
     <% } %>
-    <% if(basicsConfig.isGeneratorMethodsExport){ %>
-    ${GeneratorJavaUtil.generatorExport(item.propertyName, exportConfig)}
-    <% } %>
-    ${GeneratorJavaUtil.generatorVerification(item.propertyName, inputConfig)}private ${item.propertyType} ${item.propertyName};
+    <% if(basicsConfig.isGeneratorMethodsExport){ %>${GeneratorJavaUtil.generatorExport(item.propertyName, exportConfig)}<% } %>${GeneratorJavaUtil.generatorVerification(item.propertyName, inputConfig)}private ${item.propertyType} ${item.propertyName};
     <% } %>
 
     // 非表字段

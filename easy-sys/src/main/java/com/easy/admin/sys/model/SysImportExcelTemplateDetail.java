@@ -44,7 +44,7 @@ public class SysImportExcelTemplateDetail extends Model<SysImportExcelTemplateDe
     /**
      * 字段长度
      */
-    private String fieldLength;
+    private Integer fieldLength;
 
     /**
      * 字段类型
@@ -95,11 +95,7 @@ public class SysImportExcelTemplateDetail extends Model<SysImportExcelTemplateDe
     private String editUser;
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
-    /**
-     * 是否需要导入
-     */
-    @TableField(exist = false)
-    private boolean needImport;
+
     //
     /**
      * 是否是日期
@@ -144,11 +140,11 @@ public class SysImportExcelTemplateDetail extends Model<SysImportExcelTemplateDe
         this.title = title;
     }
 
-    public String getFieldLength() {
+    public Integer getFieldLength() {
         return fieldLength;
     }
 
-    public void setFieldLength(String fieldLength) {
+    public void setFieldLength(Integer fieldLength) {
         this.fieldLength = fieldLength;
     }
 
@@ -198,14 +194,6 @@ public class SysImportExcelTemplateDetail extends Model<SysImportExcelTemplateDe
 
     public void setOrderNo(Integer orderNo) {
         this.orderNo = orderNo;
-    }
-
-    public boolean isNeedImport() {
-        return needImport;
-    }
-
-    public void setNeedImport(boolean needImport) {
-        this.needImport = needImport;
     }
 
     public Date getCreateDate() {

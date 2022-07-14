@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.activiti.dao.ActivitiHistoryTaskInstanceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.activiti.model.ActivitiHistoryTaskInstance">
+
+    </resultMap>
+
+    <select id="select" resultType="com.easy.admin.activiti.model.ActivitiHistoryTaskInstance">
+        select * from (
+            select aht.id_, aht.proc_def_id_ as process_definition_id, aht.task_def_key_ as task_definition_key, aht.proc_inst_id_ as process_instance_id,
+                aht.execution_id_, aht.name_, aht.parent_task_id_, aht.description_, aht.owner_, aht.assignee_, aht.start_time_, aht.claim_time_,
+                ahp.end_time_, ahp.delete_reason_, aht.duration_,aht.priority_, aht.due_date_, aht.form_key_, aht.category_, aht.tenant_id_,
+                arp.name_ as process_definition_name, arp.version_ as process_version, arp.suspension_state_ as process_suspension_state,
+                if(ahp.end_time_ is not null, '--', concat(art.name_, '[', ifnull(su_assignee.nickname, '未签收'), ']')) as name,
+                arv_businessTitle.text_ as business_title, su.nickname as apply_user,
+                row_number() over (partition by aht.proc_inst_id_ order by aht.start_time_ ${historyOrderType}) as ranker
+            from act_hi_taskinst aht
+                left join act_ru_task art on art.proc_inst_id_ = aht.proc_inst_id_
+                left join act_re_procdef arp on aht.proc_def_id_ = arp.id_
+                left join act_hi_procinst ahp on ahp.proc_inst_id_ = aht.proc_inst_id_
+                left join act_hi_varinst arv_businessTitle on arv_businessTitle.execution_id_ = aht.execution_id_ and arv_businessTitle.name_ = 'businessTitle'
+                left join act_hi_varinst arv_businessDetailsPath on arv_businessDetailsPath.execution_id_ = aht.execution_id_ and arv_businessDetailsPath.name_ = 'businessDetailsPath'
+                left join act_hi_varinst arv_applyUserId on arv_applyUserId.execution_id_ = aht.execution_id_ and arv_applyUserId.name_ = 'applyUserId'
+                left join sys_user su on su.id = arv_applyUserId.text_
+                left join sys_user su_assignee on su_assignee.id =  art.assignee_
+            <where>
+                ${ew.sqlSegment}
+            </where>
+        ) t where ranker = 1
+    </select>
+</mapper>

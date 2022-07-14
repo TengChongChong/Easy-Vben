@@ -50,25 +50,25 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysImportExcelTemplate 查询条件
      * @return 数据集合
      */
     @Override
-    public Page<SysImportExcelTemplate> select(SysImportExcelTemplate object, Page<SysImportExcelTemplate> page) {
+    public Page<SysImportExcelTemplate> select(SysImportExcelTemplate sysImportExcelTemplate, Page<SysImportExcelTemplate> page) {
         QueryWrapper<SysImportExcelTemplate> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
+        if (sysImportExcelTemplate != null) {
             // 查询条件
             // 导入模板名称
-            if (Validator.isNotEmpty(object.getName())) {
-                queryWrapper.like("name", object.getName());
+            if (Validator.isNotEmpty(sysImportExcelTemplate.getName())) {
+                queryWrapper.like("name", sysImportExcelTemplate.getName());
             }
             // 模板代码
-            if (Validator.isNotEmpty(object.getImportCode())) {
-                queryWrapper.like("import_code", object.getImportCode());
+            if (Validator.isNotEmpty(sysImportExcelTemplate.getImportCode())) {
+                queryWrapper.like("import_code", sysImportExcelTemplate.getImportCode());
             }
             // 导入表
-            if (Validator.isNotEmpty(object.getImportTable())) {
-                queryWrapper.eq("import_table", object.getImportTable());
+            if (Validator.isNotEmpty(sysImportExcelTemplate.getImportTable())) {
+                queryWrapper.eq("import_table", sysImportExcelTemplate.getImportTable());
             }
         }
         return page(page, queryWrapper);
@@ -100,10 +100,10 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
      */
     @Override
     public SysImportExcelTemplate add() {
-        SysImportExcelTemplate object = new SysImportExcelTemplate();
-        object.setStartRow(1);
+        SysImportExcelTemplate sysImportExcelTemplate = new SysImportExcelTemplate();
+        sysImportExcelTemplate.setStartRow(1);
         // 设置默认值
-        return object;
+        return sysImportExcelTemplate;
     }
 
     /**
@@ -129,32 +129,32 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysImportExcelTemplate 表单内容
      * @return 保存后信息
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysImportExcelTemplate saveData(SysImportExcelTemplate object) {
-        ToolUtil.checkParams(object);
+    public SysImportExcelTemplate saveData(SysImportExcelTemplate sysImportExcelTemplate) {
+        ToolUtil.checkParams(sysImportExcelTemplate);
         boolean isUpdate = false;
         // 模板代码不能重复
         QueryWrapper<SysImportExcelTemplate> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("import_code", object.getImportCode());
-        if (object.getId() != null) {
-            queryWrapper.ne("id", object.getId());
+        queryWrapper.eq("import_code", sysImportExcelTemplate.getImportCode());
+        if (sysImportExcelTemplate.getId() != null) {
+            queryWrapper.ne("id", sysImportExcelTemplate.getId());
             isUpdate = true;
         }
-        object.setStartRow(1);
+        sysImportExcelTemplate.setStartRow(1);
         int count = count(queryWrapper);
         if (count > 0) {
-            throw new EasyException("模板代码 " + object.getImportCode() + " 中已存在，请修改后重试");
+            throw new EasyException("模板代码 " + sysImportExcelTemplate.getImportCode() + " 中已存在，请修改后重试");
         }
-        boolean isSuccess = saveOrUpdate(object);
+        boolean isSuccess = saveOrUpdate(sysImportExcelTemplate);
         if (isSuccess && isUpdate) {
             // 修改的时候清空临时表
-            temporaryService.deleteByTemplateIds(String.valueOf(object.getId()));
+            temporaryService.deleteByTemplateIds(String.valueOf(sysImportExcelTemplate.getId()));
         }
-        return (SysImportExcelTemplate) ToolUtil.checkResult(isSuccess, object);
+        return (SysImportExcelTemplate) ToolUtil.checkResult(isSuccess, sysImportExcelTemplate);
     }
 
     @Override

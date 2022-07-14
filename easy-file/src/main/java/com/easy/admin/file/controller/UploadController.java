@@ -1,6 +1,6 @@
 package com.easy.admin.file.controller;
 
-import com.easy.admin.file.model.File;
+import com.easy.admin.file.model.FileModel;
 import com.easy.admin.file.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +29,7 @@ public class UploadController {
      * @return Tips
      */
     @PostMapping("upload")
-    public File upload(@RequestParam("file") MultipartFile file) {
+    public FileModel upload(@RequestParam("file") MultipartFile file) {
         return service.upload(file);
     }
 }

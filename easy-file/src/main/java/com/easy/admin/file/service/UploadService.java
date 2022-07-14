@@ -1,6 +1,6 @@
 package com.easy.admin.file.service;
 
-import com.easy.admin.file.model.File;
+import com.easy.admin.file.model.FileModel;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -17,5 +17,5 @@ public interface UploadService {
      * @param file 上传的文件
      * @return file
      */
-    File upload(MultipartFile file);
+    FileModel upload(MultipartFile file);
 }

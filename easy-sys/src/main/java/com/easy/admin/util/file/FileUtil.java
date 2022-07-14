@@ -22,7 +22,7 @@ public class FileUtil {
     private FileUtil() {
     }
 
-    private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     /**
      * 临时

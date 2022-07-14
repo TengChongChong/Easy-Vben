@@ -19,7 +19,7 @@ import com.easy.admin.sample.service.SampleGeneralService;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2022-06-23
+ * @date 2022-07-13
  */
 @RestController
 @ResponseResult

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.activiti.dao.ActivitiModelMapper">
+
+    <select id="selectProcessDefinitionId" resultType="java.lang.String">
+        select arp.id_
+        from act_re_procdef arp
+        where arp.suspension_state_ = #{suspensionState} and arp.deployment_id_ = (select deployment_id_ from act_re_model where key_ = #{key});
+    </select>
+    <select id="select" resultType="com.easy.admin.activiti.model.ActivitiModel">
+        select arm.id_, arm.rev_, arm.name_, arm.key_, arm.category_, arm.create_time_, arm.last_update_time_,
+               arm.version_, arm.meta_info_, arm.deployment_id_, arm.editor_source_value_id_,
+               arm.editor_source_extra_value_id_, arm.tenant_id_
+        from act_re_model arm
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="selectCountByKey" resultType="java.lang.Integer">
+        select count(1) from act_re_model
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

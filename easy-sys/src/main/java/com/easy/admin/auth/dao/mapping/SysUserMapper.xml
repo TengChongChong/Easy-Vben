@@ -74,13 +74,9 @@
         from sys_user u
             left join sys_dept sd on sd.id = u.dept_id
             left join sys_dept_type sdt on sdt.code = sd.type_code
-        where u.status = #{status}
-          and sd.status = #{deptStatus}
-          and sdt.status = #{deptTypeStatus}
-          and (u.username like #{keyword} or nickname like #{keyword} or sd.name like #{keyword})
-        <if test="deptId != null">
-          and sd.id = #{deptId}
-        </if>
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
     <select id="selectPasswordAndSalt" resultType="com.easy.admin.auth.model.SysUser">
         select u.password, u.salt from sys_user u where u.id = #{id}

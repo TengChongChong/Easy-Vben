@@ -1,8 +1,7 @@
 package com.easy.admin.sys.model;
 
 /**
- * 导入汇总
- * 用于显示导入到临时表后的汇总信息
+ * 导入汇总，用于显示导入到临时表后的汇总信息
  *
  * @author TengChongChong
  * @date 2019-04-26

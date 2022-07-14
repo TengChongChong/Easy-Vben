@@ -1,7 +1,7 @@
 package com.easy.admin.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.easy.admin.sys.model.Column;
+import com.easy.admin.sys.model.TableHeadColumn;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,7 +20,7 @@ public interface SysImportExcelTemplateDetailMapper extends BaseMapper<SysImport
      * @param templateId 模板id
      * @return heads
      */
-    List<Column> selectTableHeadByTemplateId(@Param("templateId") String templateId);
+    List<TableHeadColumn> selectTableHeadByTemplateId(@Param("templateId") String templateId);
 
 
 }

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/import/excel/data")
+@RequestMapping("/api/auth/sys/import/excel/data")
 public class SysImportExcelDataController extends BaseController {
 
     @Autowired
@@ -33,15 +33,22 @@ public class SysImportExcelDataController extends BaseController {
      * 获取导入模板信息
      *
      * @param importCode 模板代码
-     * @return {template: {}, hasLast: boolean}
+     * @return SysImportExcelTemplate
      */
     @GetMapping("{importCode}")
-    public JSONObject select(@PathVariable("importCode") String importCode) {
-        JSONObject res = new JSONObject();
-        SysImportExcelTemplate template = importExcelTemplateService.getByImportCode(importCode);
-        res.set("template", template);
-        res.set("hasLast", service.checkLastData(template.getId()));
-        return res;
+    public SysImportExcelTemplate getImportExcelTemplate(@PathVariable("importCode") String importCode) {
+        return importExcelTemplateService.getByImportCode(importCode);
+    }
+
+    /**
+     * 检查上次导入数据
+     *
+     * @param templateId 模板id
+     * @return true/false
+     */
+    @GetMapping("check/last/data/{templateId}")
+    public boolean checkLastData(@PathVariable("templateId") String templateId){
+        return service.checkLastData(templateId);
     }
 
     /**

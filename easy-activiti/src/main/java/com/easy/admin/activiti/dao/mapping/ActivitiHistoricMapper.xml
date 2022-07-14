@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.activiti.dao.ActivitiHistoricMapper">
+
+
+    <select id="select" resultType="com.easy.admin.activiti.model.ActivitiHistoric">
+        select aha.id_, aha.proc_def_id_ as process_definition_id, arp.name_ as process_definition_name, aha.proc_inst_id_ as process_instance_id, aha.execution_id_,
+               aha.act_id_ as activity_id, aha.task_id_, aha.call_proc_inst_id_ as call_process_instance_id, aha.act_name_ as activity_name,
+               aha.act_type_ as activity_type, su.nickname as assignee_, aha.start_time_, aha.end_time_, aha.duration_, aha.tenant_id_
+        from act_hi_actinst aha
+        left join sys_user su on su.id = aha.assignee_
+        left join act_re_procdef arp on aha.proc_def_id_ = arp.id_
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="selectTask" resultType="com.easy.admin.activiti.model.ActivitiTask">
+        select distinct ahp.proc_inst_id_ as process_instance_id, aht.execution_id_
+        from act_hi_procinst ahp
+                 left join act_hi_taskinst aht on ahp.proc_inst_id_ = aht.proc_inst_id_
+        where ahp.business_key_ = #{businessKey}
+    </select>
+</mapper>

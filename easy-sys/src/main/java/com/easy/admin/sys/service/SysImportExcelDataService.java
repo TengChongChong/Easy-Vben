@@ -15,10 +15,10 @@ public interface SysImportExcelDataService {
     /**
      * 检查上次导入数据
      *
-     * @param template 模板id
+     * @param templateId 模板id
      * @return true/false
      */
-    boolean checkLastData(String template);
+    boolean checkLastData(String templateId);
 
     /**
      * 验证并解析文件

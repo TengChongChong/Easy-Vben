@@ -20,7 +20,7 @@ import javax.validation.Valid;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/import/excel/template")
+@RequestMapping("/api/auth/sys/import/excel/template")
 public class SysImportExcelTemplateController extends BaseController {
 
     /**
@@ -32,14 +32,14 @@ public class SysImportExcelTemplateController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
-     * @param page   page
+     * @param sysImportExcelTemplate 查询条件
+     * @param page                   page
      * @return Page<SysImportExcelTemplate>
      */
     @GetMapping()
     @RequiresPermissions("sys:import:excel:template:select")
-    public Page<SysImportExcelTemplate> select(SysImportExcelTemplate object, Page<SysImportExcelTemplate> page) {
-        return service.select(object, page);
+    public Page<SysImportExcelTemplate> select(SysImportExcelTemplate sysImportExcelTemplate, Page<SysImportExcelTemplate> page) {
+        return service.select(sysImportExcelTemplate, page);
     }
 
     /**
@@ -69,13 +69,13 @@ public class SysImportExcelTemplateController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysImportExcelTemplate 表单内容
      * @return SysImportExcelTemplate
      */
     @PostMapping()
     @RequiresPermissions("sys:import:excel:template:save")
-    public SysImportExcelTemplate saveData(@RequestBody @Valid SysImportExcelTemplate object) {
-        return service.saveData(object);
+    public SysImportExcelTemplate saveData(@RequestBody @Valid SysImportExcelTemplate sysImportExcelTemplate) {
+        return service.saveData(sysImportExcelTemplate);
     }
 
     /**
@@ -87,7 +87,7 @@ public class SysImportExcelTemplateController extends BaseController {
     @GetMapping("template/{importCode}")
     @RequiresPermissions("sys:import:excel:template:select")
     public String downloadTemplate(@PathVariable("importCode") String importCode,
-                                                               HttpServletRequest request) {
+                                   HttpServletRequest request) {
         return service.downloadTemplate(importCode, request);
     }
 }

@@ -76,9 +76,8 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     private SysImportExcelDataMapper mapper;
 
     @Override
-    public boolean checkLastData(String template) {
-        ToolUtil.checkParams(template);
-        return importExcelTemporaryService.checkLastData(template);
+    public boolean checkLastData(String templateId) {
+        return importExcelTemporaryService.checkLastData(templateId);
     }
 
     @Override
@@ -113,37 +112,32 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         List<List<Object>> data = reader.read();
         // 最小行
         int minDataRow = 3;
-        if (data.size() >= minDataRow) {
-            data.remove(0);
-            // 比对模板信息是否与导入规则匹配
-            if (checkTemplate(data.get(0), configs)) {
-                // 模板验证通过,将数据插入到临时表
-                data.remove(0);
-                SysUser sysUser = ShiroUtil.getCurrentUser();
-                // 清空上次导入的信息
-                cleanLastImport(importExcelTemplate);
-                // 插入数据到临时表
-                if (!insertData(sysUser, importExcelTemplate, configs, data)) {
-                    throw new EasyException(BusinessException.IMPORT_INSERT_FAIL);
-                }
-                // 唯一约束检查
-                checkOnly(configs, templateId, sysUser.getId());
-                if (StrUtil.isNotBlank(importExcelTemplate.getCallback())) {
-                    ImportService importService = SpringContextHolder.getBean(importExcelTemplate.getCallback());
-                    boolean isSuccess = importService.verificationData(templateId, sysUser.getId());
-                    if (!isSuccess) {
-                        throw new EasyException("执行验证数据回调失败");
-                    }
-                }
-                return true;
-            } else {
-                // 模板不匹配，请重新下载模板
-                throw new EasyException(BusinessException.IMPORT_TEMPLATE_MISMATCH);
-            }
-        } else {
+        if (data.size() < minDataRow) {
             // 请至少录入一条数据后导入
             throw new EasyException(BusinessException.IMPORT_TEMPLATE_NO_DATA);
         }
+        data.remove(0);
+        // 比对模板信息是否与导入规则匹配
+        checkTemplate(data.get(0), configs);
+        // 模板验证通过,将数据插入到临时表
+        data.remove(0);
+        SysUser sysUser = ShiroUtil.getCurrentUser();
+        // 清空上次导入的信息
+        cleanLastImport(importExcelTemplate);
+        // 插入数据到临时表
+        if (!insertData(sysUser, importExcelTemplate, configs, data)) {
+            throw new EasyException(BusinessException.IMPORT_INSERT_FAIL);
+        }
+        // 唯一约束检查
+        checkOnly(configs, templateId, sysUser.getId());
+        if (StrUtil.isNotBlank(importExcelTemplate.getCallback())) {
+            ImportService importService = SpringContextHolder.getBean(importExcelTemplate.getCallback());
+            boolean isSuccess = importService.verificationData(templateId, sysUser.getId());
+            if (!isSuccess) {
+                throw new EasyException("执行验证数据回调失败");
+            }
+        }
+        return true;
     }
 
     /**
@@ -219,12 +213,14 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
             int length = heads.size();
             for (int i = 0; i < length; i++) {
                 if (!heads.get(i).equals(configs.get(i).getTitle())) {
-                    return false;
+                    // 模板不匹配，请重新下载模板
+                    throw new EasyException("模板不匹配，\"" + heads.get(i) + "\"应为\"" + configs.get(i).getTitle() + "\"");
                 }
             }
             return true;
         }
-        return false;
+        // 模板不匹配，请重新下载模板
+        throw new EasyException(BusinessException.IMPORT_TEMPLATE_MISMATCH);
     }
 
     /**
@@ -345,7 +341,8 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
                 temporary.setVerificationStatus(ImportConst.VERIFICATION_STATUS_SUCCESS);
             }
             return temporary;
-        } catch (IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchMethodException e) {
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
             throw new EasyException(e.getMessage());
         }
@@ -392,7 +389,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      * @return string
      */
     private String objectToString(Object object) {
-        if(object == null){
+        if (object == null) {
             return "";
         }
         if (object instanceof Date) {
@@ -481,20 +478,20 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
 
         List<String> dictTypes = new ArrayList<>();
         for (SysImportExcelTemplateDetail detail : configs) {
-            if(ImportConst.SYS_DICT.equals(detail.getReplaceTable())){
+            if (ImportConst.SYS_DICT.equals(detail.getReplaceTable())) {
                 // 收集所需的字典类别数据
                 dictTypes.add(detail.getReplaceTableDictType());
             }
         }
         Map<String, List<SysDict>> dictionaries = null;
-        if(!dictTypes.isEmpty()){
+        if (!dictTypes.isEmpty()) {
             // 如果模板中包含字典，则设置select
             dictionaries = sysDictService.selectDictionaries(ArrayUtil.toArray(dictTypes, String.class));
         }
 
         SysImportExcelTemplateDetail detail = new SysImportExcelTemplateDetail();
         detail.setTitle("验证结果");
-        detail.setFieldLength("128");
+        detail.setFieldLength(128);
         configs.add(detail);
         String path = ExcelUtil.writFile(importExcelTemplate.getName() + "验证失败数据", configs, dictionaries, rows);
         return sysDownloadService.saveData(new SysDownload(

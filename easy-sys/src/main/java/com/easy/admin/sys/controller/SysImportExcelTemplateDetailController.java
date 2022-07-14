@@ -2,7 +2,7 @@ package com.easy.admin.sys.controller;
 
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.core.annotation.ResponseResult;
-import com.easy.admin.sys.model.Column;
+import com.easy.admin.sys.model.TableHeadColumn;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/import/excel/template/details")
+@RequestMapping("/api/auth/sys/import/excel/template/details")
 public class SysImportExcelTemplateDetailController extends BaseController {
     /**
      * 导入模板详情 service
@@ -46,7 +46,7 @@ public class SysImportExcelTemplateDetailController extends BaseController {
      * @return List<Column>
      */
     @GetMapping("table/head/{templateId}")
-    public List<Column> selectTableHeadByTemplateCode(@PathVariable("templateId") String templateId){
+    public List<TableHeadColumn> selectTableHeadByTemplateCode(@PathVariable("templateId") String templateId){
         return service.selectTableHeadByTemplateCode(templateId);
     }
 

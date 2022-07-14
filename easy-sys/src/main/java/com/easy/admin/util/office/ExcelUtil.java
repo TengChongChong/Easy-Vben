@@ -147,16 +147,10 @@ public class ExcelUtil {
         List<String> head = new ArrayList<>();
         for (int i = 0; i < details.size(); i++) {
             head.add(details.get(i).getTitle());
-            if (StrUtil.isNotBlank(details.get(i).getFieldLength())) {
-                int fieldLength = 32;
-                try {
-                    fieldLength = Integer.parseInt(details.get(i).getFieldLength());
-                } catch (NumberFormatException e) {
-                    logger.warn("下载模板[" + name + "]时字段[" + details.get(i).getFieldName() + "]长度转换失败[" + details.get(i).getFieldLength() + "]");
-                }
-                if (fieldLength > 32) {
+            if (details.get(i).getFieldLength() != null) {
+                if (details.get(i).getFieldLength() > 32) {
                     // 字段长度大于32
-                    int columnWidth = fieldLength / 4;
+                    int columnWidth = details.get(i).getFieldLength() / 4;
                     // 根据字段长度设置列宽，最宽不超过48
                     writer.setColumnWidth(i, Math.min(columnWidth, 48));
                 }

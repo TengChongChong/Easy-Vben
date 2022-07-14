@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.sys.dao.SysImportExcelTemplateDetailMapper;
-import com.easy.admin.sys.model.Column;
+import com.easy.admin.sys.model.TableHeadColumn;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.util.ToolUtil;
@@ -39,9 +39,9 @@ public class SysImportExcelTemplateDetailServiceImpl extends ServiceImpl<SysImpo
     }
 
     @Override
-    public List<Column> selectTableHeadByTemplateCode(String templateId) {
+    public List<TableHeadColumn> selectTableHeadByTemplateCode(String templateId) {
         ToolUtil.checkParams(templateId);
-        List<Column> columns = baseMapper.selectTableHeadByTemplateId(templateId);
+        List<TableHeadColumn> columns = baseMapper.selectTableHeadByTemplateId(templateId);
         int columnsLength = columns.size();
         while (columnsLength-- > 0) {
             columns.get(columnsLength).setField("field" + (columnsLength + 1));
@@ -64,17 +64,15 @@ public class SysImportExcelTemplateDetailServiceImpl extends ServiceImpl<SysImpo
         remove(deleteOld);
 
         // 设置字段长度
-        if(list != null && !list.isEmpty()){
+        if (list != null && !list.isEmpty()) {
+            int index = 1;
             for (SysImportExcelTemplateDetail details : list) {
                 details.setTemplateId(templateId);
-                if(StrUtil.isNotBlank(details.getReplaceTable())){
+                if (StrUtil.isNotBlank(details.getReplaceTable())) {
                     details.setReplaceTable(details.getReplaceTable().toLowerCase());
                 }
-                String type = details.getFieldType();
-                if(type.contains("(")){
-                    details.setFieldType(type.substring(0, type.indexOf("(")));
-                    details.setFieldLength(type.substring(type.indexOf("(") + 1, type.length() - 1));
-                }
+                details.setOrderNo(index);
+                index++;
             }
         }
         return saveBatch(list);

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.activiti.dao.ActivitiProcessDefinitionMapper">
+
+    <select id="countBusinessKey" resultType="java.lang.Integer">
+        select count(1) from act_hi_procinst where business_key_ = #{businessKey}
+    </select>
+    <select id="selectCandidate" resultType="java.lang.String">
+        select distinct id from(
+           select user_id as id from sys_user_role sur
+           where sur.role_id in (select group_id_ from act_ru_identitylink ari where type_ = 'candidate' and task_id_ = #{taskId} and group_id_ is not null)
+           union all
+           select su.id as id from sys_user su where su.id in (select user_id_ from act_ru_identitylink ari where type_ = 'candidate' and task_id_ = #{taskId} and user_id_ is not null)
+       ) t
+    </select>
+    <select id="selectTaskId" resultType="java.lang.String">
+        select id_ from act_ru_task where proc_inst_id_ = #{processInstanceId}
+    </select>
+</mapper>

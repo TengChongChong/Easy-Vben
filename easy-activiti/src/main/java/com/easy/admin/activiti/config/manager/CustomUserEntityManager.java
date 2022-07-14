@@ -2,7 +2,7 @@ package com.easy.admin.activiti.config.manager;
 
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.activiti.config.util.ActivitiUserUtil;
-import com.easy.admin.activiti.constant.WorkflowConst;
+import com.easy.admin.activiti.constant.ActivitiWorkflowConst;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.auth.service.SysUserService;
@@ -85,9 +85,9 @@ public class CustomUserEntityManager extends UserEntityManager {
     private SysUser getUser(String userId) {
         SysUser user = new SysUser();
         // 判断是否是系统管理员
-        if (WorkflowConst.INTERFACE_SYSTEM_ID.equals(userId)) {
-            user.setId(WorkflowConst.INTERFACE_SYSTEM_ID);
-            user.setNickname(WorkflowConst.INTERFACE_SYSTEM_NAME);
+        if (ActivitiWorkflowConst.INTERFACE_SYSTEM_ID.equals(userId)) {
+            user.setId(ActivitiWorkflowConst.INTERFACE_SYSTEM_ID);
+            user.setNickname(ActivitiWorkflowConst.INTERFACE_SYSTEM_NAME);
             user.setPassword("");
             user.setEmail("");
         } else {

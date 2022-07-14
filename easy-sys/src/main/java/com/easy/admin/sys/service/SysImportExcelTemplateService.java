@@ -15,11 +15,11 @@ public interface SysImportExcelTemplateService {
     /**
      * 列表
      *
-     * @param object 查询条件
-     * @param page   page
+     * @param sysImportExcelTemplate 查询条件
+     * @param page                   page
      * @return Page<SysImportExcelTemplate>
      */
-    Page<SysImportExcelTemplate> select(SysImportExcelTemplate object, Page<SysImportExcelTemplate> page);
+    Page<SysImportExcelTemplate> select(SysImportExcelTemplate sysImportExcelTemplate, Page<SysImportExcelTemplate> page);
 
     /**
      * 详情
@@ -55,10 +55,10 @@ public interface SysImportExcelTemplateService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysImportExcelTemplate 表单内容
      * @return SysImportExcelTemplate
      */
-    SysImportExcelTemplate saveData(SysImportExcelTemplate object);
+    SysImportExcelTemplate saveData(SysImportExcelTemplate sysImportExcelTemplate);
 
     /**
      * 下载导入模板

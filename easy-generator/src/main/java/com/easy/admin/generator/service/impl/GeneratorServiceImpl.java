@@ -379,6 +379,9 @@ public class GeneratorServiceImpl implements GeneratorService {
     public TableInfo getTableInfo(String dataSource, String tableName) {
         ConfigBuilder configBuilder = new ConfigBuilder(null, getDataSourceConfig(dataSource), getStrategyConfig(tableName), null, getGlobalConfig());
         List<TableInfo> tableInfoList = configBuilder.getTableInfoList();
+        if (tableInfoList == null || tableInfoList.size() == 0) {
+            throw new EasyException("表不存在");
+        }
         return tableInfoList.get(0);
     }
 }

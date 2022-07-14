@@ -133,7 +133,7 @@ public class SysUserController extends BaseController {
      * @return Page<SysUser>
      */
     @GetMapping("search")
-    public Page<SysUser> search(@RequestParam("keyword") String keyword,
+    public Page<SysUser> search(@RequestParam(value = "keyword", required = false) String keyword,
                                 @RequestParam(value = "range", required = false) String range,
                                 @RequestParam(value = "deptId", required = false) String deptId,
                                 Page<SysUser> page) {

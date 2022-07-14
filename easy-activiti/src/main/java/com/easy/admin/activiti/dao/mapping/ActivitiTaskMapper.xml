@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.activiti.dao.ActivitiTaskMapper">
+
+
+    <select id="select" resultType="com.easy.admin.activiti.model.ActivitiTask">
+        select distinct
+            art.id_, art.rev_, art.execution_id_, art.proc_inst_id_ as process_instance_id, art.proc_def_id_ as process_definition_id, art.name_,
+            art.parent_task_id_, art.description_, art.task_def_key_ as task_definition_key, art.owner_, art.assignee_, art.delegation_, art.priority_,
+            art.create_time_, art.due_date_, art.category_, art.suspension_state_, art.tenant_id_, art.form_key_,
+            arp.name_ as processDefinitionName, arv_businessKey.text_ as businessKey, arp.version_,
+            arv_businessTitle.text_ as businessTitle, arv_businessDetailsPath.text_ as businessDetailsPath,
+            su.nickname as applyUser, arv_applyUserId.text_ as _applyUserId, su.avatar
+        from act_ru_task art
+            inner join act_ru_identitylink ari on ari.task_id_ = art.id_
+            left join act_re_procdef arp on art.proc_def_id_ = arp.id_
+            left join act_ru_variable arv_businessKey on arv_businessKey.execution_id_ = art.execution_id_ and arv_businessKey.name_ = 'businessKey'
+            left join act_ru_variable arv_businessTitle on arv_businessTitle.execution_id_ = art.execution_id_ and arv_businessTitle.name_ = 'businessTitle'
+            left join act_ru_variable arv_businessDetailsPath on arv_businessDetailsPath.execution_id_ = art.execution_id_ and arv_businessDetailsPath.name_ = 'businessDetailsPath'
+            left join act_ru_variable arv_applyUserId on arv_applyUserId.execution_id_ = art.execution_id_ and arv_applyUserId.name_ = 'applyUserId'
+            left join sys_user su on su.id = arv_applyUserId.text_
+        <where>
+            ${ew.sqlSegment}
+        </where>
+
+    </select>
+    <select id="selectProcessDefinitionId" resultType="com.easy.admin.activiti.model.ActivitiTask">
+        select art.proc_def_id_ as process_definition_id, art.proc_inst_id_ as process_instance_id
+        from act_ru_task art
+            left join act_re_procdef arp on art.proc_def_id_ = arp.id_
+        where art.id_ = #{taskId} and arp.suspension_state_ = #{activation}
+    </select>
+    <select id="selectTask" resultType="com.easy.admin.activiti.model.ActivitiTask">
+        select art.id_, art.rev_, art.execution_id_, art.proc_inst_id_ as process_instance_id, art.proc_def_id_ as process_definition_id, art.name_,
+               art.create_time_, arp.name_ as processDefinitionName, arp.version_ as processVersion,
+               arv_businessTitle.text_ as businessTitle, arv_businessDetailsPath.text_ as businessDetailsPath,
+               su.nickname as applyUser, arv_applyUserId.text_ as _applyUserId, su.avatar
+        from act_ru_task art
+            left join act_re_procdef arp on art.proc_def_id_ = arp.id_
+            left join act_ru_variable arv_businessDetailsPath on arv_businessDetailsPath.execution_id_ = art.execution_id_ and arv_businessDetailsPath.name_ = 'businessDetailsPath'
+            left join act_ru_variable arv_businessTitle on arv_businessTitle.execution_id_ = art.execution_id_ and arv_businessTitle.name_ = 'businessTitle'
+            left join act_ru_variable arv_applyUserId on arv_applyUserId.execution_id_ = art.execution_id_ and arv_applyUserId.name_ = 'applyUserId'
+            left join sys_user su on su.id = arv_applyUserId.text_
+        where art.proc_inst_id_ = #{processInstanceId}
+    </select>
+
+</mapper>

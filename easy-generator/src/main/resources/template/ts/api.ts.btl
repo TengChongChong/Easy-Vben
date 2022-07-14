@@ -5,7 +5,7 @@ import { Page } from '/@/api/model/pageModel';
 import { defHttp } from '/@/utils/http/axios';
 
 // base url
-const BASE_URL = '/api${basicsConfig.controllerMapping}/';
+const BASE_URL = '/api${basicsConfig.controllerMapping}';
 
 <% if(basicsConfig.generatorMethodsSelect){ %>
 /**
@@ -28,7 +28,7 @@ export function select(params: ${basicsConfig.modelName}, pager: Page<${basicsCo
  */
 export function get(id: string) {
   return defHttp.get<${basicsConfig.modelName}>({
-    url: `\${BASE_URL}\${id}`,
+    url: `\${BASE_URL}/\${id}`,
   });
 }
 
@@ -39,7 +39,7 @@ export function get(id: string) {
  */
 export function add() {
   return defHttp.get<${basicsConfig.modelName}>({
-    url: `\${BASE_URL}add`,
+    url: `\${BASE_URL}/add`,
   });
 }
 
@@ -52,7 +52,7 @@ export function add() {
  */
 export function remove(ids: string) {
   return defHttp.delete<boolean>({
-    url: `\${BASE_URL}\${ids}`,
+    url: `\${BASE_URL}/\${ids}`,
   });
 }
 
@@ -79,7 +79,7 @@ export function save(params: ${basicsConfig.modelName}) {
  */
 export function exportData(params: ${basicsConfig.modelName}) {
   return defHttp.get<string>({
-    url: `\${BASE_URL}export/data`,
+    url: `\${BASE_URL}/export/data`,
     data: params,
   });
 }

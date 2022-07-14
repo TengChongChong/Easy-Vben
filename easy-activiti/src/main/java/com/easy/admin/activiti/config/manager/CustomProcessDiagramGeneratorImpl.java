@@ -1,6 +1,6 @@
 package com.easy.admin.activiti.config.manager;
 
-import com.easy.admin.activiti.constant.WorkflowConst;
+import com.easy.admin.activiti.constant.ActivitiWorkflowConst;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.*;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
@@ -30,7 +30,7 @@ public class CustomProcessDiagramGeneratorImpl extends DefaultProcessDiagramGene
     static {
         new CustomProcessDiagramCanvas(
                 10, 10, 0, 0, "png",
-                WorkflowConst.TYPEFACE, WorkflowConst.TYPEFACE, WorkflowConst.TYPEFACE, null
+                ActivitiWorkflowConst.TYPEFACE, ActivitiWorkflowConst.TYPEFACE, ActivitiWorkflowConst.TYPEFACE, null
         );
     }
 

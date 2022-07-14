@@ -4,7 +4,7 @@ import cn.hutool.core.date.DatePattern;
 import com.easy.admin.activiti.config.factory.CustomGroupEntityManagerFactory;
 import com.easy.admin.activiti.config.factory.CustomUserEntityManagerFactory;
 import com.easy.admin.activiti.config.manager.CustomProcessDiagramGenerator;
-import com.easy.admin.activiti.constant.WorkflowConst;
+import com.easy.admin.activiti.constant.ActivitiWorkflowConst;
 import org.activiti.engine.*;
 import org.activiti.engine.form.AbstractFormType;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
@@ -60,9 +60,9 @@ public class ActivitiConfig {
         processEngineConfiguration.setTransactionManager(transactionManager);
 
         // 流程图字体
-        processEngineConfiguration.setActivityFontName(WorkflowConst.TYPEFACE);
-        processEngineConfiguration.setAnnotationFontName(WorkflowConst.TYPEFACE);
-        processEngineConfiguration.setLabelFontName(WorkflowConst.TYPEFACE);
+        processEngineConfiguration.setActivityFontName(ActivitiWorkflowConst.TYPEFACE);
+        processEngineConfiguration.setAnnotationFontName(ActivitiWorkflowConst.TYPEFACE);
+        processEngineConfiguration.setLabelFontName(ActivitiWorkflowConst.TYPEFACE);
 
         // 用户验证表改成使用视图
         processEngineConfiguration.setDbIdentityUsed(false);

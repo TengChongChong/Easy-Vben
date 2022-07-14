@@ -1,8 +1,6 @@
 package com.easy.admin.sample.service.impl;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -10,8 +8,8 @@ import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.sample.dao.SampleWorkFlowMapper;
 import com.easy.admin.sample.model.SampleWorkFlow;
 import com.easy.admin.sample.service.SampleWorkFlowService;
-import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.ToolUtil;
+import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,46 +19,74 @@ import java.util.List;
 /**
  * 流程示例
  *
- * @author TengChong
- * @date 2020-04-26
+ * @author 系统管理员
+ * @date 2022-07-08
  */
 @Service
 public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper, SampleWorkFlow> implements SampleWorkFlowService {
 
     /**
      * 列表
-     * @param object 查询条件
-     * @return 数据集合
+     *
+     * @param sampleWorkFlow 查询条件
+     * @param page   分页
+     * @return Page<SampleWorkFlow>
      */
     @Override
-    public Page<SampleWorkFlow> select(SampleWorkFlow object, Page<SampleWorkFlow> page) {
-        QueryWrapper<SampleWorkFlow> queryWrapper = new QueryWrapper<>();
-        if(object != null){
-            // 查询条件
-            // 流程实例id
-            if (Validator.isNotEmpty(object.getProcessInstanceId())) {
-                queryWrapper.eq("t.process_instance_id", object.getProcessInstanceId());
-            }
-            // 请假类型
-            if (Validator.isNotEmpty(object.getLeaveType())) {
-                queryWrapper.eq("t.leave_type", object.getLeaveType());
-            }
-            // 状态
-            if (Validator.isNotEmpty(object.getStatus())) {
-                queryWrapper.eq("t.status", object.getStatus());
-            }
-        }
-        queryWrapper.eq("t.create_user", ShiroUtil.getCurrentUser().getId());
+    public Page<SampleWorkFlow> select(SampleWorkFlow sampleWorkFlow, Page<SampleWorkFlow> page) {
+        QueryWrapper<SampleWorkFlow> queryWrapper = getQueryWrapper(sampleWorkFlow);
         page.setDefaultDesc("t.create_date");
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
     /**
+     * 获取查询条件
+     *
+     * @param sampleWorkFlow 查询条件
+     * @return QueryWrapper<SampleWorkFlow>
+     */
+    private QueryWrapper<SampleWorkFlow> getQueryWrapper(SampleWorkFlow sampleWorkFlow){
+        QueryWrapper<SampleWorkFlow> queryWrapper = new QueryWrapper<>();
+        if(sampleWorkFlow != null){
+            // 查询条件
+            // 请假类型
+            if (Validator.isNotEmpty(sampleWorkFlow.getLeaveType())) {
+                if (sampleWorkFlow.getLeaveType().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.leave_type", sampleWorkFlow.getLeaveType().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.leave_type", sampleWorkFlow.getLeaveType());
+                }
+            }
+            // 开始时间
+            if (Validator.isNotEmpty(sampleWorkFlow.getStartDate())) {
+                queryWrapper.ge("t.start_date", sampleWorkFlow.getStartDate());
+            }
+            // 结束时间
+            if (Validator.isNotEmpty(sampleWorkFlow.getEndDate())) {
+                queryWrapper.le("t.end_date", sampleWorkFlow.getEndDate());
+            }
+            // 原因
+            if (Validator.isNotEmpty(sampleWorkFlow.getReason())) {
+                queryWrapper.like("t.reason", sampleWorkFlow.getReason());
+            }
+            // 状态
+            if (Validator.isNotEmpty(sampleWorkFlow.getStatus())) {
+                if (sampleWorkFlow.getStatus().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.status", sampleWorkFlow.getStatus().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.status", sampleWorkFlow.getStatus());
+                }
+            }
+        }
+        return queryWrapper;
+    }
+
+    /**
      * 详情
      *
      * @param id id
-     * @return 详细信息
+     * @return SampleWorkFlow
      */
     @Override
     public SampleWorkFlow get(String id) {
@@ -71,20 +97,20 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
     /**
      * 新增
      *
-     * @return 默认值
+     * @return SampleWorkFlow
      */
     @Override
     public SampleWorkFlow add() {
-        SampleWorkFlow object = new SampleWorkFlow();
+        SampleWorkFlow sampleWorkFlow = new SampleWorkFlow();
         // 设置默认值
-        return object;
+        return sampleWorkFlow;
     }
 
     /**
      * 删除
      *
      * @param ids 数据ids
-     * @return 是否成功
+     * @return true/false
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
@@ -97,21 +123,24 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
     /**
      * 保存
      *
-     * @param object 表单内容
-     * @return 保存后信息
+     * @param sampleWorkFlow 表单内容
+     * @return SampleWorkFlow
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SampleWorkFlow saveData(SampleWorkFlow object) {
-        ToolUtil.checkParams(object);
-        if (StrUtil.isBlank(object.getId())) {
+    public SampleWorkFlow saveData(SampleWorkFlow sampleWorkFlow) {
+        ToolUtil.checkParams(sampleWorkFlow);
+        if (Validator.isEmpty(sampleWorkFlow.getId())) {
             // 新增,设置默认值
         }
-        // 解析日期范围
-        if(StrUtil.isNotBlank(object.getDateRange())){
-            object.setStartDate(DateUtil.parse(object.getDateRange().split("~")[0].trim()));
-            object.setEndDate(DateUtil.parse(object.getDateRange().split("~")[1].trim()));
-        }
-        return (SampleWorkFlow) ToolUtil.checkResult(saveOrUpdate(object), object);
+        return (SampleWorkFlow) ToolUtil.checkResult(saveOrUpdate(sampleWorkFlow), sampleWorkFlow);
     }
+
+    @Override
+    public String exportData(SampleWorkFlow sampleWorkFlow) {
+        QueryWrapper<SampleWorkFlow> queryWrapper = getQueryWrapper(sampleWorkFlow);
+        List<SampleWorkFlow> list = baseMapper.exportData(queryWrapper);
+        return ExcelUtil.writeAndGetDownloadId("流程示例", "流程示例", list, SampleWorkFlow.class);
+    }
+
 }

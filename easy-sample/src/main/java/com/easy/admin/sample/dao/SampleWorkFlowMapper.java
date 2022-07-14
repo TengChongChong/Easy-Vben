@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * 流程示例
  *
- * @author TengChong
- * @date 2020-04-26
+ * @author 系统管理员
+ * @date 2022-07-08
  */
 public interface SampleWorkFlowMapper extends BaseMapper<SampleWorkFlow> {
     /**
@@ -20,15 +20,23 @@ public interface SampleWorkFlowMapper extends BaseMapper<SampleWorkFlow> {
      *
      * @param page 分页
      * @param queryWrapper 查询条件
-     * @return 数据列表
+     * @return List<SampleWorkFlow>
      */
     List<SampleWorkFlow> select(Page<SampleWorkFlow> page, @Param("ew") QueryWrapper<SampleWorkFlow> queryWrapper);
 
     /**
      * 查询详细信息
      *
-     * @param id 数据id
-     * @return 详情
+     * @param id id
+     * @return SampleWorkFlow
      */
     SampleWorkFlow getById(@Param("id") String id);
+
+    /**
+     * 获取列表数据
+     *
+     * @param queryWrapper 查询条件
+     * @return List<SampleWorkFlow>
+     */
+    List<SampleWorkFlow> exportData(@Param("ew") QueryWrapper<SampleWorkFlow> queryWrapper);
 }

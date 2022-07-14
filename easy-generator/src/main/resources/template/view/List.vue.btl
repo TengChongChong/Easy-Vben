@@ -35,13 +35,15 @@
 
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
-          <% if(basicsConfig.generatorMethodsSave){ %>
-          <a-button-edit ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleEdit" />
-          <% } %>
-          <% if(basicsConfig.generatorMethodsRemove){ %>
-          <a-divider type="vertical" />
-          <a-button-remove ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove" ' : ''}:id="record.id" :api="remove" @success="reload" />
-          <% } %>
+          <div class="basic-table-action center">
+            <% if(basicsConfig.generatorMethodsSave){ %>
+            <a-button-edit ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleEdit" />
+            <% } %>
+            <% if(basicsConfig.generatorMethodsRemove){ %>
+            <a-divider type="vertical" />
+            <a-button-remove ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove" ' : ''}:id="record.id" :api="remove" @success="reload" />
+            <% } %>
+          </div>
         </template>
       </template>
     </BasicTable>

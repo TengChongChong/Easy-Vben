@@ -8,7 +8,6 @@ import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysMessage;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.sys.service.SysMessageService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +40,6 @@ public class SysMessageController extends BaseController {
      * @return Page<SysMessage>
      */
     @GetMapping
-    @RequiresPermissions("sys:message:select")
     public Page<SysMessage> select(SysMessage sysMessage, Page<SysMessage> page) {
         return service.select(sysMessage, page);
     }
@@ -53,7 +51,6 @@ public class SysMessageController extends BaseController {
      * @return Page<SysMessage>
      */
     @GetMapping("receive")
-    @RequiresPermissions("sys:message:select")
     public Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page) {
         return service.selectReceive(sysMessage, page);
     }
@@ -65,7 +62,6 @@ public class SysMessageController extends BaseController {
      * @return SysMessage
      */
     @GetMapping("{id}")
-    @RequiresPermissions("sys:message:select")
     public SysMessage get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -94,7 +90,6 @@ public class SysMessageController extends BaseController {
      * @return SysMessage
      */
     @GetMapping("add")
-    @RequiresPermissions("sys:message:save")
     public SysMessage add() {
         return service.add();
     }
@@ -106,7 +101,6 @@ public class SysMessageController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("sys:message:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -118,7 +112,6 @@ public class SysMessageController extends BaseController {
      * @return SysMessage
      */
     @PostMapping
-    @RequiresPermissions("sys:message:save")
     public SysMessage save(@RequestBody @Valid SysMessage sysMessage) {
         return service.saveData(sysMessage);
     }
@@ -130,7 +123,6 @@ public class SysMessageController extends BaseController {
      * @return true/false
      */
     @PostMapping("send")
-    @RequiresPermissions("sys:message:save")
     public boolean send(@RequestBody JSONObject json) {
         return service.send(json.getStr("ids"));
     }

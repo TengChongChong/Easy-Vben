@@ -61,6 +61,7 @@ public class GeneratorModel extends GeneratorFile {
         if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.SAVE)) {
             imports.add(NotBlank.class);
             imports.add(NotNull.class);
+            imports.add(Version.class);
         }
         // 导出
         if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.EXPORT_DATA)) {

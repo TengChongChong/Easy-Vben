@@ -1,6 +1,6 @@
 package com.easy.admin.activiti.config.manager;
 
-import com.easy.admin.activiti.constant.WorkflowConst;
+import com.easy.admin.activiti.constant.ActivitiWorkflowConst;
 import org.activiti.bpmn.model.AssociationDirection;
 import org.activiti.bpmn.model.GraphicInfo;
 import org.activiti.image.exception.ActivitiImageException;
@@ -33,9 +33,9 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
 
     private static volatile boolean flag = false;
 
-    protected String activityFontName = WorkflowConst.TYPEFACE;
-    protected String labelFontName = WorkflowConst.TYPEFACE;
-    protected String annotationFontName = WorkflowConst.TYPEFACE;
+    protected String activityFontName = ActivitiWorkflowConst.TYPEFACE;
+    protected String labelFontName = ActivitiWorkflowConst.TYPEFACE;
+    protected String annotationFontName = ActivitiWorkflowConst.TYPEFACE;
 
     public CustomProcessDiagramCanvas(int width, int height, int minX, int minY, String imageType) {
         super(width, height, minX, minY, imageType);
@@ -127,7 +127,7 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
             Paint originalPaint = g.getPaint();
             Font originalFont = g.getFont();
             if (highLighted) {
-                g.setPaint(WorkflowConst.COLOR_NORMAL);
+                g.setPaint(ActivitiWorkflowConst.COLOR_NORMAL);
             } else {
                 g.setPaint(LABEL_COLOR);
             }
@@ -169,13 +169,13 @@ public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
         }
 
         // Try to remove white space
-        minX = Math.max(minX, WorkflowConst.PROCESS_PADDING);
-        minY = Math.max(minY, WorkflowConst.PROCESS_PADDING);
+        minX = Math.max(minX, ActivitiWorkflowConst.PROCESS_PADDING);
+        minY = Math.max(minY, ActivitiWorkflowConst.PROCESS_PADDING);
         return processDiagram.getSubimage(
-                minX - WorkflowConst.PROCESS_PADDING,
-                minY - WorkflowConst.PROCESS_PADDING,
-                canvasWidth - minX + WorkflowConst.PROCESS_PADDING,
-                canvasHeight - minY + WorkflowConst.PROCESS_PADDING);
+                minX - ActivitiWorkflowConst.PROCESS_PADDING,
+                minY - ActivitiWorkflowConst.PROCESS_PADDING,
+                canvasWidth - minX + ActivitiWorkflowConst.PROCESS_PADDING,
+                canvasHeight - minY + ActivitiWorkflowConst.PROCESS_PADDING);
     }
 
     @Override

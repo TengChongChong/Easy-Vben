@@ -21,7 +21,7 @@ import java.util.List;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2022-06-23
+ * @date 2022-07-13
  */
 @Service
 public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, SampleGeneral> implements SampleGeneralService, ImportService {
@@ -77,18 +77,6 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
             // 地址
             if (Validator.isNotEmpty(sampleGeneral.getAddress())) {
                 queryWrapper.like("t.address", sampleGeneral.getAddress());
-            }
-            // 编辑人
-            if (Validator.isNotEmpty(sampleGeneral.getEditUser())) {
-                queryWrapper.like("su_edit_user.nickname", sampleGeneral.getEditUser());
-            }
-            // 编辑时间 - 开始时间
-            if (Validator.isNotEmpty(sampleGeneral.getStartEditDate())) {
-                queryWrapper.ge("t.edit_date", sampleGeneral.getStartEditDate());
-            }
-            // 编辑时间 - 结束时间
-            if (Validator.isNotEmpty(sampleGeneral.getEndEditDate())) {
-                queryWrapper.le("t.edit_date", sampleGeneral.getEndEditDate());
             }
         }
         return queryWrapper;
@@ -148,43 +136,6 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
         return (SampleGeneral) ToolUtil.checkResult(saveOrUpdate(sampleGeneral), sampleGeneral);
     }
 
-    /**
-     * 验证数据，插入临时表后调用
-     * 注: 返回false会触发异常回滚
-     *
-     * @param templateId 模板id
-     * @param userId 用户id
-     * @return true/false
-     */
-    @Override
-    public boolean verificationData(String templateId, String userId) {
-        return true;
-    }
-
-    /**
-     * 导入前回调，插入正式表之前会调用此方法，建议导入正式表之前使用次方法再次验证数据，防止验证 ~ 导入之间数据发送变动
-     * 注: 返回false会触发异常回滚
-     *
-     * @param templateId 模板id
-     * @param userId 用户id
-     * @return true/false
-     */
-    @Override
-    public boolean beforeImport(String templateId, String userId) {
-        return true;
-    }
-
-    /**
-     * 导入后回调，插入正式表后会调用此方法
-     * 注: 返回false会触发异常回滚
-     *
-     * @return true/false
-     */
-    @Override
-    public boolean afterImport() {
-        return true;
-    }
-
     @Override
     public String exportData(SampleGeneral sampleGeneral) {
         QueryWrapper<SampleGeneral> queryWrapper = getQueryWrapper(sampleGeneral);
@@ -192,4 +143,18 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
         return ExcelUtil.writeAndGetDownloadId("代码生成示例", "代码生成示例", list, SampleGeneral.class);
     }
 
+    @Override
+    public boolean verificationData(String templateId, String userId) {
+        return true;
+    }
+
+    @Override
+    public boolean beforeImport(String templateId, String userId) {
+        return true;
+    }
+
+    @Override
+    public boolean afterImport() {
+        return true;
+    }
 }

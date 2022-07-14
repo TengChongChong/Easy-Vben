@@ -11,6 +11,7 @@
         <result column="phone" property="phone" />
         <result column="status" property="status" />
         <result column="address" property="address" />
+        <result column="version" property="version" />
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
         <result column="edit_user" property="editUser" />
@@ -25,7 +26,7 @@
         </where>
     </select>
     <select id="getById" resultType="com.easy.admin.sample.model.SampleGeneral">
-        select t.id, t.name, t.sex, t.age, t.phone, t.status, t.address, t.create_user, t.create_date, t.edit_user, t.edit_date
+        select t.id, t.name, t.sex, t.age, t.phone, t.status, t.address, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
         from sample_general t
         where t.id = #{id}
     </select>

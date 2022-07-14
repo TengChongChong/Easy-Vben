@@ -1,7 +1,7 @@
 package com.easy.admin.sys.service;
 
 
-import com.easy.admin.sys.model.Column;
+import com.easy.admin.sys.model.TableHeadColumn;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface SysImportExcelTemplateDetailService {
      * @param templateId 模板id
      * @return List<Column>
      */
-    List<Column> selectTableHeadByTemplateCode(String templateId);
+    List<TableHeadColumn> selectTableHeadByTemplateCode(String templateId);
 
     /**
      * 保存

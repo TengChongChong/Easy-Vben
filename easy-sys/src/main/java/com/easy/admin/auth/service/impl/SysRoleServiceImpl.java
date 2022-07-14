@@ -1,6 +1,5 @@
 package com.easy.admin.auth.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -178,7 +177,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 如果是查询用于显示已选择的角色列表，必须传入id
         boolean isInvalid = !isSelect && (sysRole == null || StrUtil.isBlank(sysRole.getId()));
         if (isInvalid) {
-            return CollectionUtil.empty(SysRole.class);
+            return null;
         }
         if (sysRole != null && StrUtil.isNotBlank(sysRole.getId())) {
             if (sysRole.getId().contains(CommonConst.SPLIT)) {

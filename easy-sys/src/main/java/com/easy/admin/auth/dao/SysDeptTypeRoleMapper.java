@@ -19,7 +19,7 @@ public interface SysDeptTypeRoleMapper extends BaseMapper<SysDeptTypeRole> {
      * 根据部门类型获取可分配的角色数据
      *
      * @param deptId 部门类型id
-     * @return
+     * @return List<SysRole>
      */
     List<SysRole> selectRoleByDept(@Param("deptId") String deptId);
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.activiti.dao.ActivitiProcessMapper">
+
+    <resultMap id="BaseResultMap" type="com.easy.admin.activiti.model.ActivitiProcess">
+        <id column="id_" jdbcType="VARCHAR" property="processDefinitionId"/>
+        <result column="category_" jdbcType="VARCHAR" property="category"/>
+        <result column="name_" jdbcType="VARCHAR" property="name"/>
+        <result column="key_" jdbcType="VARCHAR" property="key"/>
+        <result column="version_" jdbcType="INTEGER" property="version"/>
+        <result column="deployment_id_" jdbcType="VARCHAR" property="deploymentId"/>
+        <result column="resource_name_" jdbcType="VARCHAR" property="resourceName"/>
+        <result column="dgrm_resource_name_" jdbcType="VARCHAR" property="dgrmResourceName"/>
+        <result column="description_" jdbcType="VARCHAR" property="description"/>
+        <result column="has_start_form_key_" jdbcType="INTEGER" property="hasStartFormKey"/>
+        <result column="has_graphical_notation_" jdbcType="INTEGER" property="hasGraphicalNotation"/>
+        <result column="suspension_state_" jdbcType="INTEGER" property="suspensionState"/>
+        <result column="tenant_id_" jdbcType="VARCHAR" property="tenantId"/>
+    </resultMap>
+
+    <select id="select" resultType="com.easy.admin.activiti.model.ActivitiProcess">
+        select arp.id_ as process_definition_id, arp.name_, arp.key_, arp.version_, arp.has_start_form_key_, arp.suspension_state_,
+        arp.resource_name_ as resourceName, arp.dgrm_resource_name_ as dgrmResourceName, arp.deployment_id_, ard.deploy_time_
+        from act_re_procdef arp
+        left join act_re_deployment ard on arp.deployment_id_ = ard.id_
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="getById" resultType="com.easy.admin.activiti.model.ActivitiProcess">
+        select arp.* from act_re_procdef arp where arp.id_ = #{id}
+    </select>
+    <select id="selectProcessForSelect" resultType="com.easy.admin.common.core.common.select.Select">
+        select arp.id_ as value, concat(arp.name_, ' v' , arp.version_) as label from act_re_procdef arp order by arp.key_
+    </select>
+</mapper>

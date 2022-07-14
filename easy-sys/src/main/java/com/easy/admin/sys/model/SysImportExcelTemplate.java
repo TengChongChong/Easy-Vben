@@ -1,9 +1,6 @@
 package com.easy.admin.sys.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
@@ -22,13 +19,13 @@ public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
     private String id;
 
     /**
-     * 导入模板名称
+     * 模板名称
      */
     @NotBlank(message = "名称不能为空")
     private String name;
 
     /**
-     * 导入表
+     * 表
      */
     @NotBlank(message = "导入表不能为空")
     private String importTable;
@@ -60,7 +57,11 @@ public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
      * 备注
      */
     private String remarks;
-
+    /**
+     * 乐观锁
+     */
+    @Version
+    private Integer version;
     @TableField(fill = FieldFill.INSERT)
     private Date createDate;
     @TableField(fill = FieldFill.INSERT)
@@ -161,5 +162,13 @@ public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }
