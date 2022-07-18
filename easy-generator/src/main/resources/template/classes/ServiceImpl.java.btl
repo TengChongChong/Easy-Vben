@@ -172,7 +172,7 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
      */
     @Override
     public boolean beforeImport(String templateId, String userId) {
-        return true;
+        return verificationData(templateId, userId);
     }
 
     /**

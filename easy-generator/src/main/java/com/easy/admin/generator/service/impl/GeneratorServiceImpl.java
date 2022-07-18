@@ -190,6 +190,9 @@ public class GeneratorServiceImpl implements GeneratorService {
      * @return SysImportExcelTemplate
      */
     private SysImportExcelTemplate saveImportExcelTemplate(GeneratorConfig generatorConfig) {
+        if(sysImportExcelTemplateService.checkHav(generatorConfig.getBasicsConfig().getPermissionCode(), null)){
+            return null;
+        }
         // 需要创建导入模板
         SysImportExcelTemplate sysImportExcelTemplate = new SysImportExcelTemplate();
         sysImportExcelTemplate.setName(generatorConfig.getBasicsConfig().getBusinessName());
@@ -208,7 +211,23 @@ public class GeneratorServiceImpl implements GeneratorService {
                 importExcelTemplateDetails.setTemplateId(sysImportExcelTemplate.getId());
                 importExcelTemplateDetails.setTitle(item.getTitle());
                 importExcelTemplateDetails.setFieldName(item.getColumnName());
-                importExcelTemplateDetails.setFieldType(item.getColumnType().toString());
+                importExcelTemplateDetails.setFieldType(item.getType());
+                // 字段长度
+                if (importExcelTemplateDetails.getFieldType().contains("(")) {
+                    try {
+                        importExcelTemplateDetails.setFieldLength(
+                                Integer.parseInt(
+                                        importExcelTemplateDetails.getFieldType().substring(
+                                                importExcelTemplateDetails.getFieldType().indexOf("(") + 1,
+                                                importExcelTemplateDetails.getFieldType().indexOf(")")
+                                        )
+                                )
+                        );
+                    } catch (NumberFormatException e) {
+                        // ignore
+                    }
+                }
+
                 importExcelTemplateDetails.setOrderNo(index);
                 if (StrUtil.isNotBlank(item.getDictType())) {
                     importExcelTemplateDetails.setReplaceTable("sys_dict");

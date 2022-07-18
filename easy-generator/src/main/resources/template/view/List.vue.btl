@@ -24,10 +24,13 @@
         <a-button-remove-batch :id="checkedKeys" :api="remove" @success="reload" />
         <% } %>
         <% } %>
+        <% if(basicsConfig.isGeneratorMethodsImport){ %>
+        <a-button-import ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':import:data" ' : ''} import-code="${basicsConfig.permissionCode}" />
+        <% } %>
         <% if(basicsConfig.isGeneratorMethodsExport){ %>
         <a-button-export
           :loading="exportBtnLoading"
-          auth="sample:general:select"
+          ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':select" ' : ''}
           @click="handelExportData"
         />
         <% } %>
@@ -41,7 +44,12 @@
             <% } %>
             <% if(basicsConfig.generatorMethodsRemove){ %>
             <a-divider type="vertical" />
-            <a-button-remove ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove" ' : ''}:id="record.id" :api="remove" @success="reload" />
+            <a-button-remove
+              ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove" ' : ''}
+              :id="record.id"
+              :api="remove"
+              @success="reload"
+            />
             <% } %>
           </div>
         </template>
@@ -53,6 +61,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref${basicsConfig.isGeneratorMethodsExport ? ', reactive' : ''} } from 'vue';
+  import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable } from '/@/components/Table';
   import { searchFormSchema, columns } from '${dataTsPath}';
   import { useDrawer } from '/@/components/Drawer';
@@ -64,6 +73,9 @@
   import AButtonRemoveBatch from '/@/components/Button/src/ButtonRemoveBatch.vue';
   <% } %>
   import AButtonEdit from '/@/components/Button/src/ButtonEdit.vue';
+  <% if(basicsConfig.isGeneratorMethodsImport){ %>
+  import AButtonImport from '/@/components/Button/src/ButtonImport.vue';
+  <% } %>
   <% if(basicsConfig.isGeneratorMethodsExport){ %>
   import AButtonExport from '/@/components/Button/src/ButtonExport.vue';
   import { downloadFileById } from '/@/utils/file/download';
@@ -71,7 +83,7 @@
   <% } %>
   import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
   import ${basicsConfig.modelName}Input from '${viewPath}/Input.vue';
-  import { PageWrapper } from '/@/components/Page';
+
 
   export default defineComponent({
     name: '${basicsConfig.modelName}List',
@@ -87,6 +99,9 @@
       <% } %>
       <% if(basicsConfig.generatorMethodsSave){ %>
       AButtonEdit,
+      <% } %>
+      <% if(basicsConfig.isGeneratorMethodsImport){ %>
+      AButtonImport,
       <% } %>
       <% if(basicsConfig.isGeneratorMethodsExport){ %>
       AButtonExport,
