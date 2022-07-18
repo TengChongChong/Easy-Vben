@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.sys.dao.SysImportExcelTemplateDetailMapper;
-import com.easy.admin.sys.model.TableHeadColumn;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.util.ToolUtil;
@@ -36,17 +35,6 @@ public class SysImportExcelTemplateDetailServiceImpl extends ServiceImpl<SysImpo
         queryWrapper.eq("template_id", templateId);
         queryWrapper.orderByAsc("order_no");
         return list(queryWrapper);
-    }
-
-    @Override
-    public List<TableHeadColumn> selectTableHeadByTemplateCode(String templateId) {
-        ToolUtil.checkParams(templateId);
-        List<TableHeadColumn> columns = baseMapper.selectTableHeadByTemplateId(templateId);
-        int columnsLength = columns.size();
-        while (columnsLength-- > 0) {
-            columns.get(columnsLength).setField("field" + (columnsLength + 1));
-        }
-        return columns;
     }
 
     /**

@@ -67,9 +67,17 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
         if (Validator.isNotEmpty(object.getTemplateId())) {
             queryWrapper.eq("template_id", object.getTemplateId());
         }
-        // 关键字暂时只关联field1查询
+        // filed 1
         if (Validator.isNotEmpty(object.getField1())) {
             queryWrapper.and(i -> i.like("field1", object.getField1()));
+        }
+        // filed 2
+        if (Validator.isNotEmpty(object.getField2())) {
+            queryWrapper.and(i -> i.like("field2", object.getField2()));
+        }
+        // filed 3
+        if (Validator.isNotEmpty(object.getField3())) {
+            queryWrapper.and(i -> i.like("field3", object.getField3()));
         }
         page.setDefaultAsc("verification_status");
         page.setRecords(baseMapper.select(page, selectFields, leftJoinTables, queryWrapper));
@@ -121,13 +129,13 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
     }
 
     @Override
-    public void cleanMyImport(String templateId) {
+    public boolean cleanMyImport(String templateId) {
         ToolUtil.checkParams(templateId);
         SysUser sysUser = ShiroUtil.getCurrentUser();
         QueryWrapper<SysImportExcelTemporary> clean = new QueryWrapper<>();
         clean.eq("user_id", sysUser.getId());
         clean.eq("template_id", templateId);
-        remove(clean);
+        return remove(clean);
     }
 
     @Override

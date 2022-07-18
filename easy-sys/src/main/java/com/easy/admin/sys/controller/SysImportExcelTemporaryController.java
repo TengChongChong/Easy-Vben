@@ -85,9 +85,10 @@ public class SysImportExcelTemporaryController extends BaseController {
      * 清空指定导入代码中数据
      *
      * @param templateId 模板id
+     * @return true/false
      */
     @DeleteMapping("clean/my/import/{templateId}")
-    public void cleanMyImport(@PathVariable("templateId") String templateId) {
-        service.cleanMyImport(templateId);
+    public boolean cleanMyImport(@PathVariable("templateId") String templateId) {
+        return service.cleanMyImport(templateId);
     }
 }

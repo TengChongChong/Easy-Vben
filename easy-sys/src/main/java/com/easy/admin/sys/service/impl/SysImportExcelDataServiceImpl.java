@@ -469,6 +469,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         // 导入用户id
         queryWrapper.eq("user_id", ShiroUtil.getCurrentUser().getId());
         queryWrapper.eq("template_id", importExcelTemplate.getId());
+        queryWrapper.eq("verification_status", ImportConst.VERIFICATION_STATUS_FAIL);
         // 查询验证失败数据
         List<SysImportExcelTemporary> temporaryList = mapper.selectVerificationFailData(selectFields,
                 leftJoinTables,

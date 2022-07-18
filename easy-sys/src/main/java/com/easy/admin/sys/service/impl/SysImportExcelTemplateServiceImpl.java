@@ -2,6 +2,7 @@ package com.easy.admin.sys.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -90,7 +91,11 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     public SysImportExcelTemplate getByImportCode(String importCode) {
         QueryWrapper<SysImportExcelTemplate> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("import_code", importCode);
-        return getOne(queryWrapper);
+        SysImportExcelTemplate sysImportExcelTemplate = getOne(queryWrapper);
+        if (sysImportExcelTemplate != null) {
+            sysImportExcelTemplate.setDetailList(templateDetailsService.selectDetails(sysImportExcelTemplate.getId()));
+        }
+        return sysImportExcelTemplate;
     }
 
     /**
@@ -126,6 +131,18 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
         return isSuccess;
     }
 
+    @Override
+    public boolean checkHav(String importCode, String id) {
+        // 模板代码不能重复
+        QueryWrapper<SysImportExcelTemplate> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("import_code", importCode);
+        if (StrUtil.isNotBlank(id)) {
+            queryWrapper.ne("id", id);
+        }
+        int count = count(queryWrapper);
+        return count > 0;
+    }
+
     /**
      * 保存
      *
@@ -136,24 +153,16 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     @Override
     public SysImportExcelTemplate saveData(SysImportExcelTemplate sysImportExcelTemplate) {
         ToolUtil.checkParams(sysImportExcelTemplate);
-        boolean isUpdate = false;
-        // 模板代码不能重复
-        QueryWrapper<SysImportExcelTemplate> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("import_code", sysImportExcelTemplate.getImportCode());
-        if (sysImportExcelTemplate.getId() != null) {
-            queryWrapper.ne("id", sysImportExcelTemplate.getId());
-            isUpdate = true;
-        }
-        sysImportExcelTemplate.setStartRow(1);
-        int count = count(queryWrapper);
-        if (count > 0) {
+        if (checkHav(sysImportExcelTemplate.getImportCode(), sysImportExcelTemplate.getId())) {
             throw new EasyException("模板代码 " + sysImportExcelTemplate.getImportCode() + " 中已存在，请修改后重试");
         }
+        boolean isUpdate = StrUtil.isNotBlank(sysImportExcelTemplate.getId());
         boolean isSuccess = saveOrUpdate(sysImportExcelTemplate);
         if (isSuccess && isUpdate) {
             // 修改的时候清空临时表
             temporaryService.deleteByTemplateIds(String.valueOf(sysImportExcelTemplate.getId()));
         }
+
         return (SysImportExcelTemplate) ToolUtil.checkResult(isSuccess, sysImportExcelTemplate);
     }
 
@@ -170,13 +179,13 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
         List<SysImportExcelTemplateDetail> details = templateDetailsService.selectDetails(sysImportExcelTemplate.getId());
         List<String> dictTypes = new ArrayList<>();
         for (SysImportExcelTemplateDetail detail : details) {
-            if(ImportConst.SYS_DICT.equals(detail.getReplaceTable())){
+            if (ImportConst.SYS_DICT.equals(detail.getReplaceTable())) {
                 // 收集所需的字典类别数据
                 dictTypes.add(detail.getReplaceTableDictType());
             }
         }
         Map<String, List<SysDict>> dictionaries = null;
-        if(!dictTypes.isEmpty()){
+        if (!dictTypes.isEmpty()) {
             // 如果模板中包含字典，则设置select
             dictionaries = sysDictService.selectDictionaries(ArrayUtil.toArray(dictTypes, String.class));
         }

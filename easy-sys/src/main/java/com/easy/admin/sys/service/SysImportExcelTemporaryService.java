@@ -51,8 +51,9 @@ public interface SysImportExcelTemporaryService {
      * 清空指定导入代码中数据
      *
      * @param templateId 模板id
+     * @return true/false
      */
-    void cleanMyImport(String templateId);
+    boolean cleanMyImport(String templateId);
 
     /**
      * 删除验证成功的数据,用于保存数据后删除数据

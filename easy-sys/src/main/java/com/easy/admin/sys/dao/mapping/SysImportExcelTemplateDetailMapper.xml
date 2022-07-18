@@ -23,12 +23,4 @@
         <result column="edit_user" property="editUser" />
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <select id="selectTableHeadByTemplateId" resultType="com.easy.admin.sys.model.TableHeadColumn">
-        select title, replace_table_dict_type as dictType
-        from sys_import_excel_template_detail
-        where template_id = #{templateId}
-        order by order_no
-    </select>
-
 </mapper>

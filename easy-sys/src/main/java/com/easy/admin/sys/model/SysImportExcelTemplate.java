@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 导入模板
@@ -72,6 +73,11 @@ public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
     private Date editDate;
 
     //
+    /**
+     * 导入配置
+     */
+    @TableField(exist=false)
+    private List<SysImportExcelTemplateDetail> detailList;
 
     public String getId() {
         return id;
@@ -170,5 +176,13 @@ public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public List<SysImportExcelTemplateDetail> getDetailList() {
+        return detailList;
+    }
+
+    public void setDetailList(List<SysImportExcelTemplateDetail> detailList) {
+        this.detailList = detailList;
     }
 }

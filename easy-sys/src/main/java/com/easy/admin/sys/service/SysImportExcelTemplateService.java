@@ -53,6 +53,15 @@ public interface SysImportExcelTemplateService {
     boolean remove(String ids);
 
     /**
+     * 模版代码是否已存在
+     *
+     * @param importCode 模版代码
+     * @param id         数据id
+     * @return true/false
+     */
+    boolean checkHav(String importCode, String id);
+
+    /**
      * 保存
      *
      * @param sysImportExcelTemplate 表单内容
