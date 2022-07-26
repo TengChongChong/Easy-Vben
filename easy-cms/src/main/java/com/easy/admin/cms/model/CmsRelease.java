@@ -79,7 +79,7 @@ public class CmsRelease extends Model<CmsRelease> {
     //
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

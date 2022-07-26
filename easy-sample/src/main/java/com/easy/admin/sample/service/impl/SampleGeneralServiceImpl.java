@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.sample.dao.SampleGeneralMapper;
 import com.easy.admin.sample.model.SampleGeneral;
@@ -21,7 +22,7 @@ import java.util.List;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2022-07-13
+ * @date 2022-07-18
  */
 @Service
 public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, SampleGeneral> implements SampleGeneralService, ImportService {
@@ -36,6 +37,7 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
     @Override
     public Page<SampleGeneral> select(SampleGeneral sampleGeneral, Page<SampleGeneral> page) {
         QueryWrapper<SampleGeneral> queryWrapper = getQueryWrapper(sampleGeneral);
+        page.setDefaultDesc("t.create_date");
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
@@ -103,6 +105,8 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
     public SampleGeneral add() {
         SampleGeneral sampleGeneral = new SampleGeneral();
         // 设置默认值
+        sampleGeneral.setStatus(CommonStatus.ENABLE.getCode());
+        sampleGeneral.setSex(CommonStatus.ENABLE.getCode());
         return sampleGeneral;
     }
 
@@ -136,6 +140,43 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
         return (SampleGeneral) ToolUtil.checkResult(saveOrUpdate(sampleGeneral), sampleGeneral);
     }
 
+    /**
+     * 验证数据，插入临时表后调用
+     * 注: 返回false会触发异常回滚
+     *
+     * @param templateId 模板id
+     * @param userId 用户id
+     * @return true/false
+     */
+    @Override
+    public boolean verificationData(String templateId, String userId) {
+        return true;
+    }
+
+    /**
+     * 导入前回调，插入正式表之前会调用此方法，建议导入正式表之前使用次方法再次验证数据，防止验证 ~ 导入之间数据发送变动
+     * 注: 返回false会触发异常回滚
+     *
+     * @param templateId 模板id
+     * @param userId 用户id
+     * @return true/false
+     */
+    @Override
+    public boolean beforeImport(String templateId, String userId) {
+        return verificationData(templateId, userId);
+    }
+
+    /**
+     * 导入后回调，插入正式表后会调用此方法
+     * 注: 返回false会触发异常回滚
+     *
+     * @return true/false
+     */
+    @Override
+    public boolean afterImport() {
+        return true;
+    }
+
     @Override
     public String exportData(SampleGeneral sampleGeneral) {
         QueryWrapper<SampleGeneral> queryWrapper = getQueryWrapper(sampleGeneral);
@@ -143,18 +184,4 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
         return ExcelUtil.writeAndGetDownloadId("代码生成示例", "代码生成示例", list, SampleGeneral.class);
     }
 
-    @Override
-    public boolean verificationData(String templateId, String userId) {
-        return true;
-    }
-
-    @Override
-    public boolean beforeImport(String templateId, String userId) {
-        return true;
-    }
-
-    @Override
-    public boolean afterImport() {
-        return true;
-    }
 }

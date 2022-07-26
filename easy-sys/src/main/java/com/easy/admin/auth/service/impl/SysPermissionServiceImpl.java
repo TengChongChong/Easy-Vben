@@ -114,7 +114,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         // 检查是否有子权限
         QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
-        int count = count(queryWrapper);
+        long count = count(queryWrapper);
         if (count > 0) {
             throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }

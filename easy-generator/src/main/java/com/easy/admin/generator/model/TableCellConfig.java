@@ -1,7 +1,5 @@
 package com.easy.admin.generator.model;
 
-import com.baomidou.mybatisplus.generator.config.po.TableField;
-
 /**
  * 表格
  *
@@ -98,7 +96,6 @@ public class TableCellConfig extends TableField {
         this.fixed = fixed;
     }
 
-    @Override
     public String getPropertyType() {
         return propertyType;
     }

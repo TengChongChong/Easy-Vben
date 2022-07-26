@@ -106,7 +106,7 @@ public class SysFile extends Model<SysFile> {
     private String url;
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

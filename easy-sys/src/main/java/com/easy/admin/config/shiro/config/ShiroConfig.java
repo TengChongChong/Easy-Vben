@@ -6,18 +6,14 @@ import com.easy.admin.config.shiro.cache.RedisCacheManager;
 import com.easy.admin.config.shiro.check.RetryLimitCredentialsMatcher;
 import com.easy.admin.config.shiro.filter.CheckSessionFilter;
 import com.easy.admin.config.shiro.session.RedisSessionDAO;
-import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,29 +32,6 @@ import java.util.*;
 @Configuration
 public class ShiroConfig {
 
-    /**
-     * 记住我cookie
-     */
-    public static final String REMEMBER_ME = "rememberMe";
-
-    /**
-     * cookie加密的密钥
-     * 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
-     */
-    public static final String REMEMBER_ME_SECRET_KEY = "XPgE3lrQuxfE3tBEnU/7iQ==";
-
-    /**
-     * 记住我过期时间 默认30天 单位: 秒
-     */
-    @Value("${project.login.remember.invalidate-time}")
-    private final Integer loginRememberInvalidateTime = 259200;
-
-    /**
-     * 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话
-     */
-    @Value("${project.session-validation-interval}")
-    private final Integer sessionValidationInterval = 86400;
-
     @Bean
     public MethodInvokingFactoryBean methodInvokingFactoryBean(SecurityManager securityManager) {
         MethodInvokingFactoryBean bean = new MethodInvokingFactoryBean();
@@ -75,8 +48,8 @@ public class ShiroConfig {
     /**
      * 设置过滤规则
      *
-     * @param securityManager
-     * @return
+     * @param securityManager securityManager
+     * @return ShiroFilterFactoryBean
      */
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
@@ -122,9 +95,6 @@ public class ShiroConfig {
         // 自定义session管理 使用redis
         securityManager.setSessionManager(sessionManager());
 
-        // 注入记住我管理器
-        securityManager.setRememberMeManager(rememberMeManager());
-
         // 设置realm.
         securityManager.setRealm(shiroRealm());
         return securityManager;
@@ -141,8 +111,8 @@ public class ShiroConfig {
      * 开启shiro aop注解支持.
      * 使用代理方式;所以需要开启代码支持;
      *
-     * @param securityManager
-     * @return
+     * @param securityManager securityManager
+     * @return AuthorizationAttributeSourceAdvisor
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
@@ -154,7 +124,7 @@ public class ShiroConfig {
     /**
      * cacheManager 缓存 redis实现
      *
-     * @return
+     * @return RedisCacheManager
      */
     @Bean
     public RedisCacheManager redisCacheManager() {
@@ -172,41 +142,21 @@ public class ShiroConfig {
     @Bean
     public DefaultWebSessionManager sessionManager() {
         SessionManager sessionManager = new SessionManager();
-//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(sessionDAO());
 
         Collection<org.apache.shiro.session.SessionListener> sessionListeners = new ArrayList<>();
         sessionManager.setSessionListeners(sessionListeners);
 
         //全局会话超时时间 单位: 毫秒,默认30分钟
-        sessionManager.setGlobalSessionTimeout(24 * 60 * 60 * 1000);
+        sessionManager.setGlobalSessionTimeout(-1);
 
         //是否开启删除无效的session对象 默认为true
         sessionManager.setDeleteInvalidSessions(true);
         //是否开启定时调度器进行检测过期session 默认为true
-        sessionManager.setSessionValidationSchedulerEnabled(true);
-        //设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 30分钟
-        sessionManager.setSessionValidationInterval(sessionValidationInterval * 1000L);
-
+        sessionManager.setSessionValidationSchedulerEnabled(false);
         //取消url 后面的 JSESSIONID
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         return sessionManager;
-    }
-
-    /**
-     * cookie对象
-     * rememberMeCookie()方法是设置Cookie的生成模版，比如cookie的name，cookie的有效时间等等
-     *
-     * @return SimpleCookie
-     */
-    private SimpleCookie rememberMeCookie() {
-        // 这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-        SimpleCookie simpleCookie = new SimpleCookie(REMEMBER_ME);
-        // 防止跨站脚本
-        simpleCookie.setHttpOnly(true);
-        // 记住我cookie生效时间30天,不设置默认永不过期 单位: 秒
-        simpleCookie.setMaxAge(loginRememberInvalidateTime);
-        return simpleCookie;
     }
 
     /**
@@ -217,18 +167,5 @@ public class ShiroConfig {
     @Bean
     public RetryLimitCredentialsMatcher credentialsMatcher() {
         return new RetryLimitCredentialsMatcher();
-    }
-
-    /**
-     * cookie管理对象;记住我功能
-     *
-     * @return CookieRememberMeManager
-     */
-    private CookieRememberMeManager rememberMeManager() {
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(rememberMeCookie());
-        //rememberMe
-        cookieRememberMeManager.setCipherKey(Base64.decode(REMEMBER_ME_SECRET_KEY));
-        return cookieRememberMeManager;
     }
 }

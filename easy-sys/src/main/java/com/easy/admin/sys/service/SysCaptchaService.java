@@ -1,17 +1,34 @@
 package com.easy.admin.sys.service;
 
+import com.anji.captcha.model.vo.CaptchaVO;
+
 /**
- * 短信验证码
+ * 验证码
  *
  * @author TengChongChong
  * @date 2020/12/23
  */
 public interface SysCaptchaService {
     /**
-     * 绑定手机短信验证码
+     * 获取验证码
      *
-     * @param phone 手机号
-     * @return 验证码
+     * @return CaptchaVO
      */
-    String bindingPhone(String phone);
+    CaptchaVO getCaptcha();
+
+    /**
+     * 检查是否验证通过
+     *
+     * @param captchaVO CaptchaVO
+     * @return CaptchaVO
+     */
+    CaptchaVO checkCaptcha(CaptchaVO captchaVO);
+
+    /**
+     * 检查是否验证通过
+     *
+     * @param captchaVerification 服务端二次验证
+     * @return true/false
+     */
+    boolean verification(String captchaVerification);
 }

@@ -1,7 +1,5 @@
 package com.easy.admin.generator.model;
 
-import com.baomidou.mybatisplus.generator.config.po.TableField;
-
 /**
  * 表单
  *
@@ -87,7 +85,6 @@ public class FieldConfig extends TableField {
         this.required = required;
     }
 
-    @Override
     public String getPropertyType() {
         return propertyType;
     }

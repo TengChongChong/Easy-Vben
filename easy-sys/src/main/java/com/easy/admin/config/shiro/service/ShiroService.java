@@ -16,16 +16,16 @@ public interface ShiroService {
     /**
      * 验证用户
      *
-     * @param username 用户名
+     * @param username 账号
      * @param password 密码
      * @return 用户信息
      */
     SysUser validateUser(String username, String password);
 
     /**
-     * 根据用户名获取用户
+     * 根据账号获取用户
      *
-     * @param username 用户名
+     * @param username 账号
      * @return 用户信息
      */
     SysUser getSysUserByUserName(String username);

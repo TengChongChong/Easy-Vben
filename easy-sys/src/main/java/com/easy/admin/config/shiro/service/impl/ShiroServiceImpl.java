@@ -2,23 +2,22 @@ package com.easy.admin.config.shiro.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.auth.common.constant.SessionConst;
-import com.easy.admin.common.core.common.status.CommonStatus;
-import com.easy.admin.common.core.common.status.ResultCode;
-import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.common.core.util.Response;
-import com.easy.admin.common.core.util.WebUtils;
-import com.easy.admin.common.redis.constant.RedisPrefix;
-import com.easy.admin.common.redis.util.RedisUtil;
-import com.easy.admin.config.shiro.service.ShiroService;
-import com.easy.admin.config.shiro.session.RedisSessionDAO;
-import com.easy.admin.exception.BusinessException;
-import com.easy.admin.sys.common.constant.SysConst;
 import com.easy.admin.auth.common.status.SysUserStatus;
 import com.easy.admin.auth.dao.SysDeptMapper;
 import com.easy.admin.auth.dao.SysUserMapper;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.service.SysDeptTypeService;
 import com.easy.admin.auth.service.SysUserRoleService;
+import com.easy.admin.common.core.common.status.CommonStatus;
+import com.easy.admin.common.core.common.status.ResultCode;
+import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.util.Response;
+import com.easy.admin.common.redis.constant.RedisPrefix;
+import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.config.shiro.service.ShiroService;
+import com.easy.admin.config.shiro.session.RedisSessionDAO;
+import com.easy.admin.exception.BusinessException;
+import com.easy.admin.sys.common.constant.SysConst;
 import com.easy.admin.util.PasswordUtil;
 import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
@@ -26,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -60,11 +58,11 @@ public class ShiroServiceImpl implements ShiroService {
     /**
      * 获取用户剩余尝试次数
      *
-     * @param username 用户名
+     * @param username 账号
      * @return true/false
      */
     private int getRetryCount(String username) {
-        String isLockKey = RedisPrefix.ACCOUNT + "is_lock_" + username;
+        String isLockKey = RedisPrefix.LOGIN_LOCK + username;
         // 检查是否已被锁定
         if (checkIsLock(username)) {
             throw new EasyException(Response.SHOW_TYPE_WARNING, ResultCode.UNAUTHORIZED.getCode(), "帐号[" + username + "]已被锁定，请" + RedisUtil.getExpire(isLockKey) / 60 + "分钟后重试");
@@ -77,23 +75,23 @@ public class ShiroServiceImpl implements ShiroService {
     /**
      * 检查用户是否因多次密码错误被锁定
      *
-     * @param username 用户名
+     * @param username 账号
      * @return true/false
      */
     private boolean checkIsLock(String username) {
-        String isLockKey = RedisPrefix.ACCOUNT + "is_lock_" + username;
+        String isLockKey = RedisPrefix.LOGIN_LOCK + username;
         return RedisUtil.hasKey(isLockKey);
     }
 
     /**
      * 锁定账号
      *
-     * @param username 用户名
+     * @param username 账号
      * @return true/false
      */
     private boolean lockUser(String username) {
-        String loginCountKey = RedisPrefix.ACCOUNT + "login_count_" + username;
-        String isLockKey = RedisPrefix.ACCOUNT + "is_lock_" + username;
+        String loginCountKey = RedisPrefix.LOGIN_ATTEMPT + username;
+        String isLockKey = RedisPrefix.LOGIN_LOCK + username;
         RedisUtil.set(isLockKey, "lock", SysConst.projectProperties.getLoginLockLength());
         RedisUtil.setExpire(loginCountKey, SysConst.projectProperties.getLoginLockLength());
         throw new EasyException(Response.SHOW_TYPE_WARNING, ResultCode.UNAUTHORIZED.getCode(), "由于密码输入错误次数过多，帐号[" + username + "]已被锁定" + SysConst.projectProperties.getLoginLockLength() / 60 + "分钟");
@@ -102,25 +100,12 @@ public class ShiroServiceImpl implements ShiroService {
     /**
      * 获取尝试登录次数
      *
-     * @param username   用户名
+     * @param username   账号
      * @param cumulative 是否累加
      * @return 当前第*次尝试登录
      */
     private int getTrialFrequency(String username, boolean cumulative) {
-        String loginCountKey = RedisPrefix.ACCOUNT + "login_count_" + username;
-        // 登录尝试次数
-        return getRedisValue(cumulative, loginCountKey);
-    }
-
-    /**
-     * 获取尝试登录次数
-     *
-     * @param sessionId  用户名
-     * @param cumulative 是否累加
-     * @return 当前第*次尝试登录
-     */
-    private int getClientTrialFrequency(String sessionId, boolean cumulative) {
-        String loginCountKey = RedisPrefix.SESSION + "login_count_" + sessionId;
+        String loginCountKey = RedisPrefix.LOGIN_ATTEMPT + username;
         // 登录尝试次数
         return getRedisValue(cumulative, loginCountKey);
     }
@@ -145,88 +130,55 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     /**
-     * 检查验证码
-     *
-     * @return true/false
-     */
-    private boolean checkVerificationCode() {
-        // 如果开启了验证码验证
-        if (SysConst.projectProperties.getLoginVerificationCode()) {
-            HttpServletRequest request = WebUtils.getRequest();
-            // 检查验证码
-            String code = (String) RedisUtil.get(RedisPrefix.VERIFICATION_CODE + request.getAttribute(SessionConst.CODE_ID));
-            if (StrUtil.isBlank(code)) {
-                // 如果验证码为空，说明验证码过期了，需要刷新验证码
-                throw new EasyException(Response.SHOW_TYPE_WARNING, "03014", "验证码已过期，请重新输入");
-            }
-            String receivedCode = (String) request.getAttribute(SessionConst.VERIFICATION_CODE);
-            if (StrUtil.isNotBlank(receivedCode)) {
-                if (!receivedCode.equalsIgnoreCase(code)) {
-                    throw new EasyException(Response.SHOW_TYPE_WARNING, "03012", "验证码错误，请重新输入");
-                }
-            } else {
-                throw new EasyException(Response.SHOW_TYPE_WARNING, "03013", "请输入验证码");
-            }
-        }
-        return true;
-    }
-
-    /**
      * 验证账户
      * 1.检查是否锁定
-     * 2.用户名&密码是否匹配
+     * 2.账号&密码是否匹配
      * 3.账号状态
      * 4.部门状态
      *
-     * @param username 用户名
+     * @param username 账号
      * @param password 密码
-     * @return
+     * @return SysUser
      */
     @Override
     public SysUser validateUser(String username, String password) {
-        // 检查验证码
-        if (checkVerificationCode()) {
-            // 检查尝试次数
-            int retryCount = getRetryCount(username);
-            if (retryCount >= 0) {
-                SysUser sysUser = getSysUserByUserName(username);
-                // 用户不存在或密码错误
-                if (sysUser == null || !PasswordUtil.encryptedPasswords(password, sysUser.getSalt()).equals(sysUser.getPassword())) {
-                    if (retryCount > 0) {
-                        throw new EasyException(Response.SHOW_TYPE_WARNING, ResultCode.UNAUTHORIZED.getCode(), "用户名或密码错误，你还剩" + retryCount + "次重试的机会");
-                    } else {
-                        lockUser(username);
-                    }
-                    // 如果不需提示还有多少次机会使用下面提示
-                    // throw new EasyException(BusinessException.INVALID_USERNAME_OR_PASSWORD);
-                }
-                // 账号被禁用
-                if (SysUserStatus.DISABLE.getCode().equals(sysUser.getStatus())) {
-                    logger.debug("账号[{}]被禁用", username);
-                    throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.USER_DISABLED);
-                }
-                // 查询用户部门信息并验证
-                sysUser.setDept(deptMapper.selectById(sysUser.getDeptId()));
-                // 部门被删除
-                if (sysUser.getDept() == null) {
-                    logger.debug("账号[{}]所在部门[{}]被删除", username, sysUser.getDeptId());
-                    throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.DEPT_NON_EXISTENT);
-                }
-                // 部门被禁用
-                if (CommonStatus.DISABLE.getCode().equals(sysUser.getDept().getStatus())) {
-                    logger.debug("账号[{}]所在部门[{}]被禁用", username, sysUser.getDept().getName());
-                    throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.DEPT_DISABLED);
-                }
-                // 检查部门类型是否被禁用
-                if (StrUtil.isBlank(sysUser.getDept().getTypeCode())) {
-                    throw new EasyException(Response.SHOW_TYPE_WARNING, "部门[" + sysUser.getDept().getName() + "]未设置类型，请联系管理员");
-                }
-                sysDeptTypeService.checkDeptTypeIsDisabled(sysUser.getDept().getTypeCode());
-
-                return sysUser;
+        // 检查尝试次数
+        int retryCount = getRetryCount(username);
+        SysUser sysUser = getSysUserByUserName(username);
+        // 用户不存在或密码错误
+        if (sysUser == null || !PasswordUtil.encryptedPasswords(password, sysUser.getSalt()).equals(sysUser.getPassword())) {
+            if (retryCount > 0) {
+                throw new EasyException(Response.SHOW_TYPE_WARNING, ResultCode.UNAUTHORIZED.getCode(), "账号或密码错误，你还剩" + retryCount + "次重试的机会");
+            } else {
+                lockUser(username);
             }
+            // 如果不需提示还有多少次机会使用下面提示
+            // throw new EasyException(BusinessException.INVALID_USERNAME_OR_PASSWORD);
         }
-        throw new EasyException(Response.SHOW_TYPE_WARNING, "未知错误，请联系管理员");
+        // 账号被禁用
+        if (SysUserStatus.DISABLE.getCode().equals(sysUser.getStatus())) {
+            logger.debug("账号[{}]被禁用", username);
+            throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.USER_DISABLED);
+        }
+        // 查询用户部门信息并验证
+        sysUser.setDept(deptMapper.selectById(sysUser.getDeptId()));
+        // 部门被删除
+        if (sysUser.getDept() == null) {
+            logger.debug("账号[{}]所在部门[{}]被删除", username, sysUser.getDeptId());
+            throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.DEPT_NON_EXISTENT);
+        }
+        // 部门被禁用
+        if (CommonStatus.DISABLE.getCode().equals(sysUser.getDept().getStatus())) {
+            logger.debug("账号[{}]所在部门[{}]被禁用", username, sysUser.getDept().getName());
+            throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.DEPT_DISABLED);
+        }
+        // 检查部门类型是否被禁用
+        if (StrUtil.isBlank(sysUser.getDept().getTypeCode())) {
+            throw new EasyException(Response.SHOW_TYPE_WARNING, "部门[" + sysUser.getDept().getName() + "]未设置类型，请联系管理员");
+        }
+        sysDeptTypeService.checkDeptTypeIsDisabled(sysUser.getDept().getTypeCode());
+
+        return sysUser;
     }
 
     @Override

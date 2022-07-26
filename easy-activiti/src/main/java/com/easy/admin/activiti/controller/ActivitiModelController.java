@@ -29,7 +29,7 @@ public class ActivitiModelController {
      * 列表
      *
      * @param object 查询条件
-     * @return Tips
+     * @return Page<ActivitiModel>
      */
     @RequestMapping()
     @ResponseResult
@@ -68,7 +68,7 @@ public class ActivitiModelController {
      * 删除
      *
      * @param ids 数据ids
-     * @return Tips
+     * @return true/false
      */
     @DeleteMapping("{ids}")
     @ResponseResult
@@ -81,7 +81,7 @@ public class ActivitiModelController {
      * 保存
      *
      * @param object 表单内容
-     * @return Tips
+     * @return ModelEntity
      */
     @PostMapping()
     @ResponseResult

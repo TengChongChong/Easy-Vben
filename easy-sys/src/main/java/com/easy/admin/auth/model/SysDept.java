@@ -97,7 +97,7 @@ public class SysDept extends Model<SysDept> {
     private String typeName;
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

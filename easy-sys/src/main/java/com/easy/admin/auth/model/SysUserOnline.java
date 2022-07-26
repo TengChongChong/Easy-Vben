@@ -8,7 +8,7 @@ import java.util.Date;
  * @author TengChongChong
  * @date 2018/9/12
  */
-public class SysUserOnline extends SysUser{
+public class SysUserOnline extends SysUser {
     /**
      * sessionId
      */

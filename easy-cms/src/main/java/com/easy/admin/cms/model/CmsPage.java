@@ -75,7 +75,7 @@ public class CmsPage extends Model<CmsPage> {
     //
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

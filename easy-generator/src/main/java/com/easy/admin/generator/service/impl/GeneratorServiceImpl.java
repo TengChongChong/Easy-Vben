@@ -13,7 +13,6 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.easy.admin.auth.common.type.PermissionType;
 import com.easy.admin.auth.model.SysPermission;
 import com.easy.admin.auth.service.SysPermissionService;
@@ -327,9 +326,7 @@ public class GeneratorServiceImpl implements GeneratorService {
      * @return GlobalConfig
      */
     private GlobalConfig getGlobalConfig() {
-        GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setDateType(DateType.ONLY_DATE);
-        return globalConfig;
+        return new GlobalConfig.Builder().dateType(DateType.ONLY_DATE).build();
     }
 
     /**
@@ -339,10 +336,7 @@ public class GeneratorServiceImpl implements GeneratorService {
      * @return 策略
      */
     private StrategyConfig getStrategyConfig(String tableName) {
-        StrategyConfig strategyConfig = new StrategyConfig();
-        strategyConfig.setInclude(tableName);
-        strategyConfig.setNaming(NamingStrategy.underline_to_camel);
-        return strategyConfig;
+        return new StrategyConfig.Builder().addInclude(tableName).build();
     }
 
     /**
@@ -353,12 +347,7 @@ public class GeneratorServiceImpl implements GeneratorService {
     private DataSourceConfig getDataSourceConfig(String dataSource) {
         ItemDataSource itemDataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(dataSource);
         DruidDataSource ds = (DruidDataSource) itemDataSource.getRealDataSource();
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setUrl(ds.getUrl());
-        dataSourceConfig.setDriverName(ds.getDriverClassName());
-        dataSourceConfig.setUsername(ds.getUsername());
-        dataSourceConfig.setPassword(ds.getPassword());
-        return dataSourceConfig;
+        return new DataSourceConfig.Builder(ds.getUrl(), ds.getUsername(), ds.getPassword()).build();
     }
 
     @Override
@@ -396,9 +385,9 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     @Override
     public TableInfo getTableInfo(String dataSource, String tableName) {
-        ConfigBuilder configBuilder = new ConfigBuilder(null, getDataSourceConfig(dataSource), getStrategyConfig(tableName), null, getGlobalConfig());
+        ConfigBuilder configBuilder = new ConfigBuilder(null, getDataSourceConfig(dataSource), getStrategyConfig(tableName), null, getGlobalConfig(), null);
         List<TableInfo> tableInfoList = configBuilder.getTableInfoList();
-        if (tableInfoList == null || tableInfoList.size() == 0) {
+        if (tableInfoList.size() == 0) {
             throw new EasyException("表不存在");
         }
         return tableInfoList.get(0);

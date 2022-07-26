@@ -127,7 +127,7 @@
         <dependency>
             <groupId>io.github.biezhi</groupId>
             <artifactId>TinyPinyin</artifactId>
-            <version>2.0.3.RELEASE</version>
+            <version>${tiny-pin-yin.version}</version>
         </dependency>
         <!-- beetl -->
         <dependency>
@@ -140,6 +140,12 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
+        </dependency>
+        <!-- 验证码 -->
+        <dependency>
+            <groupId>com.anji-plus</groupId>
+            <artifactId>spring-boot-starter-captcha</artifactId>
+            <version>${captcha.version}</version>
         </dependency>
     </dependencies>
 

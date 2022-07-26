@@ -66,7 +66,7 @@ public class District extends Model<District> {
     private List<District> children;
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

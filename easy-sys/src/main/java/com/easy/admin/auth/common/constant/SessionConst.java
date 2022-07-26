@@ -36,4 +36,9 @@ public class SessionConst {
      */
     public static final String VERIFICATION_CODE = "verificationCode";
 
+    /**
+     * 记住我方式登录
+     */
+    public static final String REMEMBER_ME = "rememberMe";
+
 }

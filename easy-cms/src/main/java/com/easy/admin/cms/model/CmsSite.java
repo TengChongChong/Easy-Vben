@@ -117,7 +117,7 @@ public class CmsSite extends Model<CmsSite> implements Cloneable {
     }
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

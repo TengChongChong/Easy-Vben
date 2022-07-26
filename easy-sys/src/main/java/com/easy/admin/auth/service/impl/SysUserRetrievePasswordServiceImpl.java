@@ -36,11 +36,11 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
     public boolean sendEmail(String username, String email) {
         SysUser sysUser = sysUserService.getSysUserMailAndPhoneByUserName(username);
         if (sysUser == null || StrUtil.isBlank(sysUser.getEmail()) || !sysUser.getEmail().equals(email)) {
-            throw new EasyException("用户名与邮箱不匹配");
+            throw new EasyException("账号与邮箱不匹配");
         }
         String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
         // 验证码
-        String code = RandomUtil.randomString(6);
+        String code = RandomUtil.randomNumbers(6);
         // 放到redis中,用于修改密码时验证
         RedisUtil.set(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username, code);
         Map<String, Object> params = new HashMap<>(2);
@@ -51,27 +51,27 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
     }
 
     @Override
-    public String sendMessage(String username, String phone) {
+    public String sendSms(String username, String mobile) {
         SysUser sysUser = sysUserService.getSysUserMailAndPhoneByUserName(username);
-        if (sysUser == null || StrUtil.isBlank(sysUser.getEmail()) || !sysUser.getPhoneNumber().equals(phone)) {
-            throw new EasyException("用户名与手机号不匹配");
+        if (sysUser == null || StrUtil.isBlank(sysUser.getEmail()) || !sysUser.getPhoneNumber().equals(mobile)) {
+            throw new EasyException("账号与手机号不匹配");
         }
-        String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
+//        String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
         // 验证码
-        String code = RandomUtil.randomString(6);
+        String code = RandomUtil.randomNumbers(6);
         // 放到redis中,用于修改密码时验证
         RedisUtil.set(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username, code);
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("code", code);
-        params.put("username", hideUsername);
-        // todo: 发送短信，这里只做模拟
+//        Map<String, Object> params = new HashMap<>(2);
+//        params.put("code", code);
+//        params.put("username", hideUsername);
+        // todo: 发送短信
         return code;
     }
 
     @Override
     public boolean verifiesCode(String username, String code) {
         if (StrUtil.isBlank(username) || StrUtil.isBlank(code)) {
-            throw new EasyException("获取用户名或验证码失败");
+            throw new EasyException("获取账号或验证码失败");
         }
         String relCode = (String) RedisUtil.get(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username);
         // 缓存中有当前用户重置密码需要的验证码
@@ -86,16 +86,13 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
 
     @Override
     public boolean resetPassword(String username, String code, String password) {
-        if (StrUtil.isNotBlank(username) && StrUtil.isNotBlank(code) && verifiesCode(username, code)) {
-            boolean isSuccess = sysUserService.resetPassword(username, password);
-            if (isSuccess) {
-                sysMailVerifiesService.remove(code);
-                return true;
-            } else {
-                throw new EasyException("更新密码失败，请稍后重试");
-            }
+        // 检查账户与验证码
+        verifiesCode(username, code);
+        boolean isSuccess = sysUserService.resetPassword(username, password);
+        if (!isSuccess) {
+            throw new EasyException("更新密码失败，请稍后重试");
         }
-        throw new EasyException("获取用户名或校验码失败");
+        sysMailVerifiesService.remove(code);
+        return true;
     }
-
 }

@@ -101,7 +101,7 @@ public class SysDict extends Model<SysDict> {
     private String dictTypeName;
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

@@ -101,7 +101,7 @@ public class SysDownload extends Model<SysDownload> implements Serializable {
     }
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

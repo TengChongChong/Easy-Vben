@@ -1,11 +1,8 @@
 package com.easy.admin.config.shiro.cache;
 
-import com.easy.admin.common.redis.model.RedisProperties;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -14,31 +11,26 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * redis
+ *
  * @author TengChongChong
  */
 public class RedisCacheManager implements CacheManager {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Cache> cacheConcurrentMap = new ConcurrentHashMap<>();
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private RedisProperties redisProperties;
-
     @Override
     public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-        logger.debug("获取名称为: {} 的RedisCache实例", name);
-        Cache c = caches.get(name);
+        Cache cache = cacheConcurrentMap.get(name);
 
-        if(c == null){
-            c =  new RedisShiroCache<K, V>(name, redisTemplate, redisProperties);
-            caches.put(name, c);
+        if (cache == null) {
+            cache = new RedisShiroCache<K, V>(redisTemplate);
+            cacheConcurrentMap.put(name, cache);
         }
 
-        return  c;
+        return cache;
     }
 
 }

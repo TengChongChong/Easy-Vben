@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/redis")
+@RequestMapping("/api/auth/sys/redis")
 public class SysRedisController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class SysRedisController {
      * 根据前缀查询redis列表
      *
      * @param prefix 前缀
-     * @return Tips
+     * @return Set<String>
      */
     @GetMapping("prefix/{prefix}")
     @RequiresPermissions("sys:redis:select")
@@ -40,7 +40,7 @@ public class SysRedisController {
      * 根据键获取信息
      *
      * @param key 键
-     * @return Tips
+     * @return SysRedisVO
      */
     @GetMapping("key/{key}")
     @RequiresPermissions("sys:redis:select")
@@ -53,7 +53,7 @@ public class SysRedisController {
      * 根据键删除信息
      *
      * @param key 键
-     * @return Tips
+     * @return true/false
      */
     @DeleteMapping("{key}")
     @RequiresPermissions("sys:redis:remove")
@@ -66,7 +66,7 @@ public class SysRedisController {
      * 保存
      *
      * @param sysRedis redis信息
-     * @return Tips
+     * @return true/false
      */
     @PutMapping()
     @RequiresPermissions("sys:redis:save")

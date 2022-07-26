@@ -36,9 +36,9 @@ public class SysDataSource extends Model<SysDataSource> {
     @NotBlank(message = "url不能为空")
     private String url;
     /**
-     * 用户名
+     * 账号
      */
-    @NotBlank(message = "用户名不能为空")
+    @NotBlank(message = "账号不能为空")
     private String username;
     /**
      * 密码
@@ -81,7 +81,7 @@ public class SysDataSource extends Model<SysDataSource> {
     //
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

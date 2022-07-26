@@ -113,7 +113,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 检查是否有子节点
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
-        int count = count(queryWrapper);
+        long count = count(queryWrapper);
         if (count > 0) {
             throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }

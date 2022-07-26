@@ -7,9 +7,6 @@ spring:
     profiles:
         # dev - 开发模式 / prod - 生产模式
         active: dev
-    resources:
-        # 静态资源映射
-        static-locations: ["classpath:/static/", "classpath:/themes/", "file:${project.file-upload-path}/"]
     mvc:
         static-path-pattern: /static/**
     servlet:
@@ -18,10 +15,15 @@ spring:
             max-request-size: 1000MB
             # 单个文件的最大值
             max-file-size: 100MB
+    web:
+        resources:
+            static-locations:
+              [ "classpath:/static/", "classpath:/themes/", "file:${project.file-upload-path}/" ]
     datasource:
         druid:
             # druid连接池监控
             stat-view-servlet:
+                enabled: true
                 login-username: admin
                 login-password: 123
         dynamic:

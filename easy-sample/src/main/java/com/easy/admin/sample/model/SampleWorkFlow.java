@@ -87,7 +87,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     private String workFlowStatus;
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

@@ -102,7 +102,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
         if (Validator.isNotEmpty(sysDictType.getId())) {
             queryWrapper.ne("id", sysDictType.getId());
         }
-        int count = baseMapper.selectCount(queryWrapper);
+        long count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
             throw new EasyException("字典类型代码 " + sysDictType.getType() + " 已存在");
         }

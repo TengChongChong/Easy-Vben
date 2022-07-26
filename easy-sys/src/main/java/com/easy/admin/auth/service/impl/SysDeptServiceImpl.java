@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.dao.SysDeptMapper;
 import com.easy.admin.auth.model.SysDept;
-import com.easy.admin.auth.model.SysDeptType;
 import com.easy.admin.auth.service.SysDeptService;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.status.CommonStatus;
@@ -90,12 +89,12 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         // 检查是否有子节点
         QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
-        int count = count(queryWrapper);
+        long count = count(queryWrapper);
         if (count > 0) {
             throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }
         // 检查部门下是否有用户
-        int userCount = sysUserService.countUser(ids);
+        long userCount = sysUserService.countUser(ids);
         if (userCount > 0) {
             throw new EasyException("所选部门中包含 " + userCount + " 个用户，请移除后重试");
         }
@@ -113,7 +112,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             if (StrUtil.isNotBlank(object.getId())) {
                 queryWrapper.ne("id", object.getId());
             }
-            int count = baseMapper.selectCount(queryWrapper);
+            long count = baseMapper.selectCount(queryWrapper);
             if (count > 0) {
                 throw new EasyException("已存在编码为[" + object.getCode() + "]的部门，请修改后重试");
             }

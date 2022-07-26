@@ -24,8 +24,8 @@ public enum BusinessException implements EasyServiceException {
     /**
      * 用户
      */
-    // 用户名已注册
-    USER_REGISTERED("03001", "用户名已注册"),
+    // 账号已注册
+    USER_REGISTERED("03001", "账号已注册"),
     // 手机号已注册
     MOBILE_PHONE_REGISTERED("03002", "手机号已注册"),
     // 用户禁用
@@ -33,9 +33,9 @@ public enum BusinessException implements EasyServiceException {
     // 密码强度低
     LOW_PASSWORD_STRENGTH("03004", "密码强度过低"),
     // 用户不存在
-    USER_NON_EXISTENT("03005", "用户名或密码错误"),
-    // 无效的用户名或密码
-    INVALID_USERNAME_OR_PASSWORD("03006", "用户名或密码错误"),
+    USER_NON_EXISTENT("03005", "账号或密码错误"),
+    // 无效的账号或密码
+    INVALID_USERNAME_OR_PASSWORD("03006", "账号或密码错误"),
 
     // 不能删除超级管理员
     CANNOT_DELETE_SUPER_ADMIN("03009", "不能删除超级管理员"),

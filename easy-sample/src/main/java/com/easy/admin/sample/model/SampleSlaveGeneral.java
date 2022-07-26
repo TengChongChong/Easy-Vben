@@ -75,7 +75,7 @@ public class SampleSlaveGeneral extends Model<SampleSlaveGeneral> {
     // 非表字段
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

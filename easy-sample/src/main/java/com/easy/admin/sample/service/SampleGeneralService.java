@@ -7,7 +7,7 @@ import com.easy.admin.sample.model.SampleGeneral;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2022-07-13
+ * @date 2022-07-18
  */
 public interface SampleGeneralService {
     /**

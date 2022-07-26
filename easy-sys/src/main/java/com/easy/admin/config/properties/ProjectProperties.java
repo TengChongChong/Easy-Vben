@@ -20,7 +20,7 @@ import java.io.File;
  */
 @Configuration
 public class ProjectProperties {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 版本号
@@ -38,26 +38,6 @@ public class ProjectProperties {
     private String projectFrontEndUrl;
 
     /**
-     * 是否开启记住我功能
-     */
-    @Value("${project.login.remember.enabled}")
-    private Boolean loginRemember = true;
-    /**
-     * 记住我过期时间 默认30天 单位: 秒
-     */
-    @Value("${project.login.remember.invalidate-time}")
-    private Integer loginRememberInvalidateTime = 259200;
-    /**
-     * 开启记住我功能,敏感操作仍要客户登录 比如 支付/删除/审核
-     */
-    @Value("${project.login.remember.security}")
-    private Boolean loginRememberSecurity = true;
-    /**
-     * 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 30分钟
-     */
-    @Value("${project.session-validation-interval}")
-    private Integer sessionValidationInterval = 60 * 30;
-    /**
      * 主数据源名称
      */
     @Value("${spring.datasource.dynamic.primary}")
@@ -74,18 +54,7 @@ public class ProjectProperties {
      * 锁定时长,默认10分钟 单位: 秒
      */
     private Integer loginLockLength = 600;
-    /**
-     * 是否允许多点登录
-     */
-    private boolean loginMultipoint = false;
-    /**
-     * 新增用户时的默认密码
-     */
-    private String defaultPassword = "123";
-    /**
-     * session过期时间 单位：秒
-     */
-    private Integer sessionInvalidateTime = 60 * 30;
+
     /**
      * 缓存类型
      */
@@ -127,10 +96,6 @@ public class ProjectProperties {
         this.fileUploadPath = fileUploadPath;
     }
 
-    public Integer getSessionInvalidateTime() {
-        return Convert.toInt(SysConfigUtil.get(SysConfigConst.SESSION_INVALIDATE_TIME), sessionInvalidateTime);
-    }
-
     public Boolean getLoginVerificationCode() {
         return Convert.toBool(SysConfigUtil.get(SysConfigConst.LOGIN_VERIFICATION_CODE), loginVerificationCode);
     }
@@ -143,37 +108,6 @@ public class ProjectProperties {
         return Convert.toInt(SysConfigUtil.get(SysConfigConst.LOGIN_LOCK_LENGTH), loginLockLength);
     }
 
-    public boolean getLoginMultipoint() {
-        return Convert.toBool(SysConfigUtil.get(SysConfigConst.LOGIN_MULTIPOINT), loginMultipoint);
-    }
-
-    public Boolean getLoginRemember() {
-        return loginRemember;
-    }
-
-    public void setLoginRemember(Boolean loginRemember) {
-        this.loginRemember = loginRemember;
-    }
-
-    public Boolean getLoginRememberSecurity() {
-        return loginRememberSecurity;
-    }
-
-    public void setLoginRememberSecurity(Boolean loginRememberSecurity) {
-        this.loginRememberSecurity = loginRememberSecurity;
-    }
-
-    public Integer getLoginRememberInvalidateTime() {
-        return loginRememberInvalidateTime;
-    }
-
-    public void setLoginRememberInvalidateTime(Integer loginRememberInvalidateTime) {
-        this.loginRememberInvalidateTime = loginRememberInvalidateTime;
-    }
-
-    public String getDefaultPassword() {
-        return Convert.toStr(SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD), defaultPassword);
-    }
     public String getCacheType() {
         return cacheType;
     }
@@ -196,14 +130,6 @@ public class ProjectProperties {
 
     public void setUnderscoreToCamelCase(boolean underscoreToCamelCase) {
         this.underscoreToCamelCase = underscoreToCamelCase;
-    }
-
-    public Integer getSessionValidationInterval() {
-        return sessionValidationInterval;
-    }
-
-    public void setSessionValidationInterval(Integer sessionValidationInterval) {
-        this.sessionValidationInterval = sessionValidationInterval;
     }
 
     public String getProjectUrl() {

@@ -1,13 +1,16 @@
 package com.easy.admin.sys.controller;
 
+import com.anji.captcha.model.vo.CaptchaVO;
 import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.sys.service.SysCaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 短信验证码
+ * 验证码
  *
  * @author TengChongChong
  * @date 2020/12/23
@@ -19,15 +22,19 @@ public class SysCaptchaController {
     @Autowired
     private SysCaptchaService service;
 
+    @GetMapping({"/api/sys/captcha"})
+    public CaptchaVO getCaptcha() {
+        return service.getCaptcha();
+    }
+
     /**
-     * 绑定手机短信验证码
+     * 检查是否验证通过
      *
-     * @param phone 手机号
-     * @return 验证码
+     * @param captchaVO CaptchaVO
+     * @return ResponseModel
      */
-    @GetMapping("/api/auth/sys/binding/phone/captcha")
-    public String bindingPhone(String phone){
-        // 注：此处仅为演示，实际场景勿返回验证码
-        return service.bindingPhone(phone);
+    @PostMapping({"/api/sys/captcha/check"})
+    public CaptchaVO checkCaptcha(@RequestBody CaptchaVO captchaVO) {
+        return service.checkCaptcha(captchaVO);
     }
 }

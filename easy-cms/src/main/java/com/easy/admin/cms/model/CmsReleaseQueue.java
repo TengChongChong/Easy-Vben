@@ -71,7 +71,7 @@ public class CmsReleaseQueue extends Model<CmsReleaseQueue> {
     }
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

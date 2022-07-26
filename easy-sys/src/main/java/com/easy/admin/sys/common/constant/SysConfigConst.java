@@ -32,6 +32,11 @@ public class SysConfigConst {
     public static final String SESSION_INVALIDATE_TIME = "sessionInvalidateTime";
 
     /**
+     * 记住我session失效时间 单位：天
+     */
+    public static final String REMEMBER_ME_SESSION_INVALIDATE_TIME = "rememberMeSessionInvalidateTime";
+
+    /**
      * 新增用户时的默认密码
      */
     public static final String DEFAULT_PASSWORD = "defaultPassword";

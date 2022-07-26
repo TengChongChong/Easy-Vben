@@ -5,7 +5,6 @@ import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.core.util.Response;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
-import com.easy.admin.sys.common.constant.SysConst;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -67,9 +66,7 @@ public class CheckSessionFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         Subject subject = getSubject(servletRequest, servletResponse);
         // 是否认证
-        boolean isAuthenticated = subject.isAuthenticated() || (SysConst.projectProperties.getLoginRemember() && subject.isRemembered());
-        if (isAuthenticated) {
-            // 已认证或系统开启记住密我并且通过记住我登录
+        if (subject.isAuthenticated()) {
             // 记住密码或已登录,检查账户是否被挤掉或者踢出
             Session session = (Session) RedisUtil.get(RedisPrefix.SHIRO_SESSION + subject.getSession().getId());
             // 检查是否被踢出

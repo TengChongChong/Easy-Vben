@@ -2,6 +2,7 @@ package com.easy.admin.cms.config.beetl;
 
 import com.easy.admin.common.core.exception.EasyException;
 import org.beetl.core.ConsoleErrorHandler;
+import org.beetl.core.GroupTemplate;
 import org.beetl.core.Resource;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.ErrorInfo;
@@ -24,13 +25,14 @@ public class WebErrorHandler extends ConsoleErrorHandler {
             + "</head><body><div class='main'><h1>[title]</h1><HR size='1' noshade='noshade' class='t1'><xmp style='padding-left:20px'>[message]</xmp><HR size='1' noshade='noshade'><h3>"
             + VERSION + "</h3><div></body></html>";
 
+
     @Override
-    public void processExcption(BeetlException e, Writer writer) {
+    public void processException(BeetlException e, GroupTemplate groupTemplate, Writer writer) {
         // 判断是否为CMS发布模式
-        Object releasePattern = e.gt.getSharedVars().get("release-pattern");
-        if (releasePattern != null && (boolean) releasePattern) {
-            throw new EasyException("模板解析失败");
-        }
+//        Object releasePattern = e.gt.getSharedVars().get("release-pattern");
+//        if (releasePattern != null && (boolean) releasePattern) {
+//            throw new EasyException("模板解析失败");
+//        }
         ErrorInfo error = new ErrorInfo(e);
         StringBuilder title;
         StringBuilder msg = new StringBuilder();
@@ -100,7 +102,6 @@ public class WebErrorHandler extends ConsoleErrorHandler {
         } catch (IOException e1) {
 
         }
-
     }
 
     protected void render(Writer w, String title, String msg) {

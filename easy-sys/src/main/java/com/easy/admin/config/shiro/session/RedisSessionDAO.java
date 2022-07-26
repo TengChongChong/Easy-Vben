@@ -1,16 +1,17 @@
 package com.easy.admin.config.shiro.session;
 
 import cn.hutool.core.lang.Validator;
-import com.easy.admin.config.properties.ProjectProperties;
+import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.common.core.util.WebUtils;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.sys.common.constant.SysConfigConst;
+import com.easy.admin.util.SysConfigUtil;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,8 +41,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
      */
     private static final String IGNORE = "1";
 
-    @Autowired
-    private ProjectProperties projectProperties;
+    private static final long DAY = 60 * 60 * 24;
 
     /**
      * 创建会话
@@ -59,8 +59,6 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         }
         Serializable sessionId = this.generateSessionId(session);
         this.assignSessionId(session, sessionId);
-        logger.debug("createSession:{}", sessionId.toString());
-        RedisUtil.set(getKey(sessionId.toString()), session, projectProperties.getSessionInvalidateTime());
         return sessionId;
     }
 
@@ -100,8 +98,8 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     @Override
     public void update(Session session) {
         if (checkSession(session)) {
-            logger.debug("updateSession:{}", session.getId().toString());
             HttpServletRequest request = WebUtils.getRequest();
+            logger.debug("updateSession({}):{}", request.getServletPath(), session.getId().toString());
             String uri = request.getServletPath();
             if (WebUtils.isStaticRequest(uri)) {
                 return;
@@ -110,7 +108,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
             if (!IGNORE.equals(ignore)) {
                 // 如请求不需要更新session会话有效期,请在url中传入ignore=1
                 String key = getKey(session.getId().toString());
-                RedisUtil.set(key, session, projectProperties.getSessionInvalidateTime());
+                RedisUtil.set(key, session, getSessionInvalidateTime(session));
             }
         }
     }
@@ -149,6 +147,21 @@ public class RedisSessionDAO extends AbstractSessionDAO {
 
     private boolean checkSession(Session session) {
         return session != null && Validator.isNotEmpty(session.getId());
+    }
+
+
+    /**
+     * 获取会话有效期
+     *
+     * @param session 会话
+     * @return 有效期
+     */
+    private long getSessionInvalidateTime(Session session) {
+        if (session.getAttribute(SessionConst.REMEMBER_ME) != null && (Boolean) session.getAttribute(SessionConst.REMEMBER_ME)) {
+            return (Long) SysConfigUtil.get(SysConfigConst.REMEMBER_ME_SESSION_INVALIDATE_TIME) * DAY;
+        } else {
+            return (Long) SysConfigUtil.get(SysConfigConst.SESSION_INVALIDATE_TIME);
+        }
     }
 }
 

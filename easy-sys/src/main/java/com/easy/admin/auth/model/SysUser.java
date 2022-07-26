@@ -33,9 +33,9 @@ public class SysUser extends Model<SysUser> implements Serializable {
      */
     private String postId;
     /**
-     * 用户名
+     * 账号
      */
-    @NotBlank(message = "用户名不能为空")
+    @NotBlank(message = "账号不能为空")
     private String username;
     /**
      * 昵称
@@ -170,7 +170,7 @@ public class SysUser extends Model<SysUser> implements Serializable {
     }
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

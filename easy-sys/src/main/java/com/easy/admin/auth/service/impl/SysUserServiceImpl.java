@@ -12,7 +12,6 @@ import com.easy.admin.auth.common.status.SysDeptStatus;
 import com.easy.admin.auth.common.status.SysUserStatus;
 import com.easy.admin.auth.dao.SysUserMapper;
 import com.easy.admin.auth.model.SysUser;
-import com.easy.admin.auth.service.SysDeptService;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -21,13 +20,13 @@ import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
-import com.easy.admin.config.shiro.service.ShiroService;
 import com.easy.admin.exception.BusinessException;
 import com.easy.admin.sys.common.constant.SexConst;
-import com.easy.admin.sys.common.constant.SysConst;
+import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.util.SysConfigUtil;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,12 +48,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
-
-    @Autowired
-    private ShiroService shiroService;
-
-    @Autowired
-    private SysDeptService sysDeptService;
 
     @Override
     public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
@@ -172,7 +165,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser saveData(SysUser object, boolean updateAuthorization) {
         ToolUtil.checkParams(object);
-        // 用户名不能重复
+        // 账号不能重复
         if (checkHaving(object.getId(), "username", object.getUsername())) {
             throw new EasyException(BusinessException.USER_REGISTERED);
         }
@@ -187,7 +180,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (StrUtil.isBlank(object.getId()) && Validator.isEmpty(object.getPassword())) {
             // 生成随机的盐
             object.setSalt(RandomUtil.randomString(10));
-            object.setPassword(PasswordUtil.generatingPasswords(SysConst.projectProperties.getDefaultPassword(), object.getSalt()));
+            object.setPassword(PasswordUtil.generatingPasswords((String) SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD), object.getSalt()));
         } else if (Validator.isNotEmpty(object.getPassword())) {
             // 生成随机的盐
             object.setSalt(RandomUtil.randomString(10));
@@ -221,7 +214,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (StrUtil.isNotBlank(id)) {
                 queryWrapper.ne("id", id);
             }
-            int count = baseMapper.selectCount(queryWrapper);
+            long count = baseMapper.selectCount(queryWrapper);
             return count > 0;
         }
         return false;
@@ -231,7 +224,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public String resetPassword(String ids) {
         ToolUtil.checkParams(ids);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        String defaultPassword = SysConst.projectProperties.getDefaultPassword();
+        String defaultPassword = (String) SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD);
         // 生成随机的盐
         String salt = RandomUtil.randomString(10);
         String password = PasswordUtil.generatingPasswords(defaultPassword, salt);
@@ -249,7 +242,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 生成随机的盐
         String salt = RandomUtil.randomString(10);
         if (StrUtil.isBlank(password)) {
-            password = PasswordUtil.generatingPasswords(SysConst.projectProperties.getDefaultPassword(), salt);
+            password = PasswordUtil.generatingPasswords((String) SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD), salt);
         } else {
             password = PasswordUtil.encryptedPasswords(password, salt);
         }
@@ -279,7 +272,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public SysUser getSysUserMailAndPhoneByUserName(String username) {
         if (Validator.isNotEmpty(username)) {
             QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-            queryWrapper.select("email, phone");
+            queryWrapper.select("email, phone_number");
             queryWrapper.eq("username", username);
             return baseMapper.selectOne(queryWrapper);
         }
@@ -301,7 +294,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setSalt(null);
         // 如果没有授权,从数据库查询权限
         if (sysUser.getPermissionList() == null) {
-            sysUser = shiroService.queryUserPermissions(sysUser);
+            // 设置角色
+            sysUser.setRoleList(sysUserRoleService.selectRoleByUserId(sysUser.getId()));
+            // 设置菜单
+            sysUser.setPermissionList(sysUserRoleService.selectPermissionByUserId(sysUser.getId()));
             ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, sysUser);
         }
         // 由于密保邮箱&手机可能会发生变动,这里重新从数据库查询
@@ -314,7 +310,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public int countUser(String deptIds) {
+    public long countUser(String deptIds) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("dept_id", deptIds.split(CommonConst.SPLIT));
         return baseMapper.selectCount(queryWrapper);
@@ -347,12 +343,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public SysUser getUser(String id) {
-        ToolUtil.checkParams(id);
-        SysUser sysUser = baseMapper.getById(id);
-        if (sysUser != null) {
-            sysUser.setDept(sysDeptService.get(sysUser.getDeptId()));
-        }
-        return sysUser;
+        return baseMapper.getById(id);
     }
 
     @Override

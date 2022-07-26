@@ -1,5 +1,7 @@
 package com.easy.admin.auth.service.impl;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.config.shiro.session.RedisSessionDAO;
 import com.easy.admin.auth.model.SysUser;
@@ -28,48 +30,68 @@ public class SysOnlineServiceImpl implements SysUserOnlineService {
     private RedisSessionDAO sessionDAO;
 
     @Override
-    public List<SysUserOnline> select() {
-        List<SysUserOnline> sysUserOnlineList = new ArrayList<>();
+    public List<SysUserOnline> select(SysUserOnline sysUserOnline) {
+        List<SysUserOnline> userOnlineList = new ArrayList<>();
         Collection<Session> sessions = sessionDAO.getActiveSessions();
         if (sessions != null && !sessions.isEmpty()) {
             for (Session session : sessions) {
-                SysUserOnline sysUserOnline = new SysUserOnline();
-                SysUser sysUser;
+                SysUserOnline userOnline = new SysUserOnline();
                 SimplePrincipalCollection principalCollection;
+                // 管理员强制退出
+                if (Convert.toBool(session.getAttribute(SessionConst.FORCE_LOGOUT), false)) {
+                    continue;
+                }
+                // 在其他地方登录,被踢出
+                if (Convert.toBool(session.getAttribute(SessionConst.LOGIN_ELSEWHERE), false)) {
+                    continue;
+                }
                 if (session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY) == null) {
                     continue;
-                } else {
-                    principalCollection = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-                    sysUser = (SysUser) principalCollection.getPrimaryPrincipal();
-                    sysUserOnline.setUsername(sysUser.getUsername());
-                    sysUserOnline.setNickname(sysUser.getNickname());
-                    sysUserOnline.setPhoneNumber(sysUser.getPhoneNumber());
-                    sysUserOnline.setId(sysUser.getId());
                 }
-                sysUserOnline.setSessionId((String) session.getId());
-                sysUserOnline.setHost(session.getHost());
-                sysUserOnline.setStartTimestamp(session.getStartTimestamp());
-                sysUserOnline.setLastAccessTime(session.getLastAccessTime());
-                if (session.getTimeout() == 0L) {
-                    sysUserOnline.setStatus("0");
-                } else {
-                    sysUserOnline.setStatus("1");
+                principalCollection = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+                SysUser sysUser = (SysUser) principalCollection.getPrimaryPrincipal();
+                // 用户名
+                if (StrUtil.isNotBlank(sysUserOnline.getUsername())) {
+                    if (!sysUser.getUsername().contains(sysUserOnline.getUsername())) {
+                        continue;
+                    }
                 }
-                sysUserOnline.setTimeout(session.getTimeout());
-                sysUserOnlineList.add(sysUserOnline);
+                // 昵称
+                if (StrUtil.isNotBlank(sysUserOnline.getNickname())) {
+                    if (!sysUser.getNickname().contains(sysUserOnline.getNickname())) {
+                        continue;
+                    }
+                }
+                // 部门
+                if (StrUtil.isNotBlank(sysUserOnline.getDeptName())) {
+                    if (!sysUser.getDept().getName().contains(sysUserOnline.getDeptName())) {
+                        continue;
+                    }
+                }
+                userOnline.setUsername(sysUser.getUsername());
+                userOnline.setNickname(sysUser.getNickname());
+                userOnline.setDeptName(sysUser.getDept().getName());
+                userOnline.setAvatar(sysUser.getAvatar());
+                userOnline.setId(sysUser.getId());
+
+                userOnline.setSessionId((String) session.getId());
+                userOnline.setHost(session.getHost());
+                userOnline.setStartTimestamp(session.getStartTimestamp());
+                userOnline.setLastAccessTime(session.getLastAccessTime());
+                userOnline.setTimeout(session.getTimeout());
+                userOnlineList.add(userOnline);
             }
         }
-        return sysUserOnlineList;
+        return userOnlineList;
     }
 
     @Override
-    public boolean forceLogout(String sessionId) {
-        Session session = sessionDAO.readSession(sessionId);
+    public boolean forceLogout(String token) {
+        Session session = sessionDAO.readSession(token);
         if (session != null) {
             // 标记为管理员强制退出
             session.setAttribute(SessionConst.FORCE_LOGOUT, true);
             sessionDAO.update(session);
-//            sessionDAO.delete(session); // 拦截器中检查是否标记已踢出的属性,如有则返回已踢出提醒并删除session
             return true;
         } else {
             return false;

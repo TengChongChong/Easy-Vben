@@ -118,9 +118,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
         // 验证数据有效性
         switch (sysConfig.getType()) {
-            case DataTypeConst.INTEGER:
+            case DataTypeConst.Long:
                 try {
-                    Integer.parseInt(sysConfig.getValue());
+                    Long.parseLong(sysConfig.getValue());
                 } catch (NumberFormatException e) {
                     throw new EasyException("请输入有效的数字");
                 }
@@ -134,8 +134,8 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
                 break;
         }
         // 验证长度
-        if (sysConfig.getValue().length() > 150) {
-            throw new EasyException("value长度超过限制，最多150个字符");
+        if (sysConfig.getValue().length() > 255) {
+            throw new EasyException("value长度超过限制，最多255个字符");
         }
 
         queryWrapper.eq("sys_key", sysConfig.getSysKey());

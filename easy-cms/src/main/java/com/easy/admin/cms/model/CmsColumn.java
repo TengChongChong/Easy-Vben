@@ -126,7 +126,7 @@ public class CmsColumn extends Model<CmsColumn> implements Cloneable {
     }
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

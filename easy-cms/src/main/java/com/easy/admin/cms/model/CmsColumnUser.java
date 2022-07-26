@@ -46,7 +46,7 @@ public class CmsColumnUser extends Model<CmsColumnUser> {
     //
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

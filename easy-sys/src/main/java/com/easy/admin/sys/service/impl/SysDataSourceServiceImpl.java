@@ -69,7 +69,7 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
             if (Validator.isNotEmpty(object.getUrl())) {
                 queryWrapper.like("t.url", object.getUrl());
             }
-            // 用户名
+            // 账号
             if (Validator.isNotEmpty(object.getUsername())) {
                 queryWrapper.like("t.username", object.getUsername());
             }

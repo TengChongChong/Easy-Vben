@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.0.RELEASE</version>
+        <version>2.7.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -34,23 +34,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
-        <hutool.version>5.5.4</hutool.version>
+        <spring-boot.version>2.7.0</spring-boot.version>
+        <hutool.version>5.8.3</hutool.version>
+        <tiny-pin-yin.version>2.0.3.RELEASE</tiny-pin-yin.version>
         <javax.mail.version>1.4.7</javax.mail.version>
-        <poi.version>4.1.2</poi.version>
-        <easypoi.version>4.1.2</easypoi.version>
-        <mybatis-plus.version>3.4.1</mybatis-plus.version>
-        <druid.version>1.1.10</druid.version>
-        <mysql-connector-java.version>8.0.22</mysql-connector-java.version>
-        <dynamic-datasource.version>3.5.0</dynamic-datasource.version>
+        <poi.version>5.2.2</poi.version>
+        <easypoi.version>4.4.0</easypoi.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <druid.version>1.2.11</druid.version>
+        <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
+        <dynamic-datasource.version>3.5.1</dynamic-datasource.version>
         <swagger.fox.version>2.9.2</swagger.fox.version>
         <swagger.core.version>1.5.24</swagger.core.version>
         <jjwt.version>0.9.1</jjwt.version>
         <knife4j.version>2.0.4</knife4j.version>
-        <shiro.version>1.7.0</shiro.version>
-        <beetl.version>3.3.0.RELEASE</beetl.version>
+        <shiro.version>1.9.1</shiro.version>
+        <beetl.version>3.10.0.RELEASE</beetl.version>
         <jsoup.version>1.15.1</jsoup.version>
         <log4j2.version>2.15.0</log4j2.version>
+        <captcha.version>1.3.0</captcha.version>
     </properties>
 
     <dependencyManagement>

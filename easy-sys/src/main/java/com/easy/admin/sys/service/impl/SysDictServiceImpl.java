@@ -137,7 +137,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         if (sysDict.getId() != null) {
             queryWrapper.ne("id", sysDict.getId());
         }
-        int count = baseMapper.selectCount(queryWrapper);
+        long count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
             throw new EasyException("字典类型 " + sysDict.getDictType() + " 中已存在编码为 " + sysDict.getCode() + " 的字典，请修改后重试");
         }

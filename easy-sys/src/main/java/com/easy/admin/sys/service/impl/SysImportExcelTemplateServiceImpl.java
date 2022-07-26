@@ -139,7 +139,7 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
         if (StrUtil.isNotBlank(id)) {
             queryWrapper.ne("id", id);
         }
-        int count = count(queryWrapper);
+        long count = count(queryWrapper);
         return count > 0;
     }
 

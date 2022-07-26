@@ -34,20 +34,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * 设置跨域响应头
-	 *
-	 * @param response HttpServletResponse
-	 */
-	public static void setCors(HttpServletResponse response){
-		// 此处配置的是允许任意域名跨域请求，可根据需求指定
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS");
-		response.setHeader("Access-Control-Max-Age", "86400");
-		response.setHeader("Access-Control-Allow-Headers", "*");
-	}
-
-	/**
 	 * 判断请求是否为静态文件用于减少session读写频率
 	 * 注: 仅根据CommonConst.STATIC_FILE_SUFFIX配置的后缀判断
 	 *

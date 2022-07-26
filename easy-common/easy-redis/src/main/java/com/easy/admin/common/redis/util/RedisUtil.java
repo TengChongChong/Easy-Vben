@@ -120,8 +120,8 @@ public class RedisUtil {
      * @param key       键
      * @param increment 递增数
      */
-    public static void increment(String key, int increment) {
-        redisTemplate.opsForValue().increment(key, increment);
+    public static Long increment(String key, long increment) {
+        return redisTemplate.opsForValue().increment(key, increment);
     }
 
     /**

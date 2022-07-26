@@ -89,7 +89,7 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
         // 检查是否有子部门
         QueryWrapper<SysDeptType> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
-        int count = count(queryWrapper);
+        long count = count(queryWrapper);
         if (count > 0) {
             throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }
@@ -137,7 +137,7 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
         if (Validator.isNotEmpty(object.getId())) {
             queryWrapper.ne("id", object.getId());
         }
-        int count = baseMapper.selectCount(queryWrapper);
+        long count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
             throw new EasyException("部门类型代码 " + object.getCode() + " 已存在");
         }

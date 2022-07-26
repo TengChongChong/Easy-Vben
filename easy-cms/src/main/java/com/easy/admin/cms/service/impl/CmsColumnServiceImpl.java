@@ -138,7 +138,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
         // 检查是否有子节点
         QueryWrapper<CmsColumn> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("p_id", id);
-        int count = count(queryWrapper);
+        long count = count(queryWrapper);
         if (count > 0) {
             throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }
@@ -266,7 +266,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
         }
         // 站点内栏目别名禁止重复
         queryWrapper.eq("site_id", object.getSiteId());
-        int count = baseMapper.selectCount(queryWrapper);
+        long count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
             throw new EasyException("栏目别名 " + object.getSlug() + " 已存在");
         }
@@ -362,7 +362,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
         if (StrUtil.isNotBlank(name)) {
             QueryWrapper<CmsColumn> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("name", name);
-            int count = baseMapper.selectCount(queryWrapper);
+            long count = baseMapper.selectCount(queryWrapper);
             return count > 0;
         } else {
             throw new EasyException("[checkMenuIsHaving(String name)]站点名称不能为空");

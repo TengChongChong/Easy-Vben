@@ -18,7 +18,7 @@ public enum ResultCode {
      */
     BAD_REQUEST("00400"),
     /**
-     * 用户没有权限（令牌、用户名、密码错误）
+     * 用户没有权限（令牌、账号、密码错误）
      */
     UNAUTHORIZED("00401"),
     /**

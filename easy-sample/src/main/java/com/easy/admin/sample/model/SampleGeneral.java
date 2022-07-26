@@ -17,7 +17,7 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2022-07-13
+ * @date 2022-07-18
  */
 @TableName("sample_general")
 public class SampleGeneral extends Model<SampleGeneral> {
@@ -28,7 +28,6 @@ public class SampleGeneral extends Model<SampleGeneral> {
      * 姓名
      */
     @Excel(name = "姓名", width = 15, orderNum = "0")
-    @NotBlank(message = "姓名不能为空")
     private String name;
     /**
      * 性别
@@ -48,12 +47,11 @@ public class SampleGeneral extends Model<SampleGeneral> {
     /**
      * 状态
      */
-    @Excel(name = "状态", width = 9, orderNum = "4")
     private String status;
     /**
      * 地址
      */
-    @Excel(name = "地址", width = 25, orderNum = "5")
+    @Excel(name = "地址", width = 25, orderNum = "4")
     private String address;
     /**
      * 乐观锁
@@ -84,7 +82,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     // 非表字段
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

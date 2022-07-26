@@ -29,7 +29,7 @@ import java.util.Date;
  */
 public class SessionManager extends DefaultWebSessionManager {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 定义的请求头中使用的标记key，用来传递 token
@@ -41,9 +41,9 @@ public class SessionManager extends DefaultWebSessionManager {
     /**
      * 获取sessionId，原本是根据sessionKey来获取一个sessionId
      *
-     * @param request
-     * @param response
-     * @return
+     * @param request request
+     * @param response response
+     * @return sessionId
      */
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
@@ -75,7 +75,6 @@ public class SessionManager extends DefaultWebSessionManager {
         if (request != null && sessionId != null) {
             Object sessionObj = request.getAttribute(sessionId.toString());
             if (sessionObj != null) {
-                logger.debug("从 ServletRequest 获取到 Session:{}", sessionId);
                 return (Session) sessionObj;
             }
         }
@@ -88,7 +87,6 @@ public class SessionManager extends DefaultWebSessionManager {
             return null;
         }
         if (request != null && sessionId != null) {
-            logger.debug("存储 Session 到 ServletRequest:{}", sessionId);
             request.setAttribute(sessionId.toString(), session);
         }
         return session;

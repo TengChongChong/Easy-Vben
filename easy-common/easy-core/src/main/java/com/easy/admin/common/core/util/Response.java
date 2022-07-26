@@ -84,7 +84,7 @@ public class Response implements Serializable {
     /**
      * 成功默认
      *
-     * @return Tips
+     * @return Response
      */
     public static Response success() {
         return success(null);
@@ -94,7 +94,7 @@ public class Response implements Serializable {
      * 成功
      *
      * @param data 响应数据
-     * @return Tips
+     * @return Response
      */
     public static Response success(Object data) {
         Response response = new Response();
@@ -219,7 +219,6 @@ public class Response implements Serializable {
      * @param message  消息
      */
     public static void response(HttpServletResponse response, String code, String message) {
-        WebUtils.setCors(response);
         ServletUtil.write(
                 response,
                 Response.failError(code, message).toString(),

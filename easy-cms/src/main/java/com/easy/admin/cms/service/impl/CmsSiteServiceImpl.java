@@ -135,7 +135,7 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
         // 检查是否有子节点
         QueryWrapper<CmsSite> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("p_id", id);
-        int count = count(queryWrapper);
+        long count = count(queryWrapper);
         if (count > 0) {
             throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
         }
@@ -310,7 +310,7 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
         if (StrUtil.isNotBlank(name)) {
             QueryWrapper<CmsSite> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("name", name);
-            int count = baseMapper.selectCount(queryWrapper);
+            long count = baseMapper.selectCount(queryWrapper);
             return count > 0;
         } else {
             throw new EasyException("[checkMenuIsHaving(String name)]站点名称不能为空");

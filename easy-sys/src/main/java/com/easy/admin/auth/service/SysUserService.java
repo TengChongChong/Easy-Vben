@@ -84,7 +84,7 @@ public interface SysUserService {
     /**
      * 重置密码
      *
-     * @param username         用户名
+     * @param username         账号
      * @param password         新密码
      * @return true/false
      */
@@ -100,17 +100,17 @@ public interface SysUserService {
     boolean setStatus(String ids, String status);
 
     /**
-     * 根据用户名查询用户
+     * 根据账号查询用户
      *
-     * @param username 用户名
+     * @param username 账号
      * @return SysUser
      */
     SysUser getSysUserByUserName(String username);
 
     /**
-     * 根据用户名查询用户邮箱
+     * 根据账号查询用户邮箱
      *
-     * @param username 用户名
+     * @param username 账号
      * @return SysUser
      */
     SysUser getSysUserMailAndPhoneByUserName(String username);
@@ -134,9 +134,9 @@ public interface SysUserService {
      * 根据部门id查询用户数量
      *
      * @param deptIds 部门ids
-     * @return int
+     * @return long
      */
-    int countUser(String deptIds);
+    long countUser(String deptIds);
 
     /**
      * 更新头像

@@ -9,14 +9,14 @@ package com.easy.admin.common.redis.constant;
 public class RedisPrefix {
 
     /**
-     * 用户登录尝试次数以及锁定账号
+     * 用户登录尝试次数
      */
-    public static final String ACCOUNT = "account:";
+    public static final String LOGIN_ATTEMPT = "login:attempt:";
 
     /**
-     * 当前会话尝试登录次数
+     * 用户登录锁定账号
      */
-    public static final String SESSION = "account:session:";
+    public static final String LOGIN_LOCK = "login:lock:";
 
     /**
      * shiro session
@@ -37,6 +37,7 @@ public class RedisPrefix {
      * 系统字典
      */
     public static final String SYS_DICT = "sys:dict";
+
     /**
      * 找回密码验证码
      */
@@ -46,9 +47,4 @@ public class RedisPrefix {
      * 绑定手机号短信验证码
      */
     public static final String BINDING_PHONE_VERIFICATION_CODE = "binding:phone:verification:code";
-
-    /**
-     * 登录验证码
-     */
-    public static final String VERIFICATION_CODE = "verification:code:";
 }

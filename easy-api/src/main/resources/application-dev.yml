@@ -3,18 +3,8 @@ project:
     url: http://127.0.0.1
     # 前端访问url
     front-end-url: http://localhost:3100
-    login:
-        remember:
-            # 是否开启记住我功能,安全性要求比较高的系统请改为false
-            enabled: true
-            # 记住我过期时间 默认30天 单位: 秒
-            invalidate-time: 2592000
-            # 开启记住我功能,敏感操作仍要客户登录 比如 支付/删除/审核
-            security: true
     # 文件上传路径(不要写以~开头的路径会导致无法访问)
     file-upload-path: /Users/tengchong/development/easy-vben
-    # 设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话
-    session-validation-interval: 86400
 server:
     # 端口号
     port: 80
@@ -63,6 +53,10 @@ spring:
                     url: jdbc:mysql://${DB_HOST:121.199.79.208}:${DB_PORT:3306}/${DB_NAME:easy-vben-dev}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
                     username: ${DB_USERNAME:easy-vben}
                     password: ${DB_PASSWORD:UskJ4RGXu2eBCtU2k6sP}
+aj:
+    captcha:
+        # 滑动验证，底图路径，不配置将使用默认图片
+        jigsaw: classpath:images/verification
 async:
     executor:
         thread:

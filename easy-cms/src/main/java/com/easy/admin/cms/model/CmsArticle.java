@@ -189,7 +189,7 @@ public class CmsArticle extends Model<CmsArticle> {
     }
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

@@ -39,26 +39,32 @@ public class SysPermission extends Model<SysPermission> {
     /**
      * 组件名称
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
     /**
      * 标识
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String code;
     /**
      * 图标
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String icon;
     /**
      * 地址
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String path;
     /**
      * 组件路径
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String component;
     /**
      * 是否外链
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String external;
     /**
      * 排序值
@@ -68,14 +74,17 @@ public class SysPermission extends Model<SysPermission> {
     /**
      * 是否显示
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String display;
     /**
      * 打开方式
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String openMode;
     /**
      * 状态
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @NotNull(message = "状态不能为空")
     private String status;
     /**
@@ -126,7 +135,7 @@ public class SysPermission extends Model<SysPermission> {
     }
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return this.id;
     }
 

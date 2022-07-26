@@ -26,7 +26,7 @@ public class UploadController {
      * 文件上传
      *
      * @param file 文件
-     * @return Tips
+     * @return FileModel
      */
     @PostMapping("upload")
     public FileModel upload(@RequestParam("file") MultipartFile file) {

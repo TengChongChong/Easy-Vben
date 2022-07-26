@@ -17,7 +17,7 @@ public class DataTypeConst {
     /**
      * 数字
      */
-    public static final String INTEGER = "number";
+    public static final String Long = "number";
     /**
      * 布尔值
      */

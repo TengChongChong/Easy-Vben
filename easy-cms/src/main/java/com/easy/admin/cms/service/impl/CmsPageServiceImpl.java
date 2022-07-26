@@ -158,7 +158,7 @@ public class CmsPageServiceImpl extends ServiceImpl<CmsPageMapper, CmsPage> impl
         }
         // 站点内栏目别名禁止重复
         queryWrapper.eq("site_id", object.getSiteId());
-        int count = baseMapper.selectCount(queryWrapper);
+        long count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
             throw new EasyException("页面别名 " + object.getSlug() + " 已存在");
         }

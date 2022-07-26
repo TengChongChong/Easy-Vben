@@ -51,7 +51,7 @@ public class SysDeptTypeRole extends Model<SysDeptTypeRole> {
     }
 
     @Override
-    protected Serializable pkVal() {
+    public Serializable pkVal() {
         return null;
     }
 }

@@ -1,21 +1,17 @@
 package com.easy.admin.auth.controller;
 
-import cn.hutool.captcha.CaptchaUtil;
-import cn.hutool.captcha.LineCaptcha;
 import com.easy.admin.auth.service.AuthService;
-import com.easy.admin.common.redis.constant.RedisPrefix;
-import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.core.annotation.ResponseResult;
 import com.easy.admin.core.annotation.SysLog;
 import com.easy.admin.sys.model.LoginVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 
 /**
  * 会话
@@ -51,19 +47,4 @@ public class AuthController {
         SecurityUtils.getSubject().logout();
     }
 
-    /**
-     * 验证码
-     *
-     * @param response response
-     * @param codeId   验证码id
-     */
-    @GetMapping("/api/get/verification/code/{codeId}")
-    public void getVerificationCode(HttpServletResponse response, @PathVariable("codeId") String codeId) throws IOException {
-        // 定义图形验证码的长、宽、验证码字符数、干扰元素个数
-        LineCaptcha captcha = CaptchaUtil.createLineCaptcha(100, 30, 4, 8);
-        captcha.createCode();
-        // 验证码放到redis中，有效期5分钟
-        RedisUtil.set(RedisPrefix.VERIFICATION_CODE + codeId, captcha.getCode(), 60 * 5L);
-        captcha.write(response.getOutputStream());
-    }
 }

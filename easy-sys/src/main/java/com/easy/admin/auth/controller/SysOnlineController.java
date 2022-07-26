@@ -18,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/auth/sys/online")
+@RequestMapping("/api/auth/sys/online")
 public class SysOnlineController extends BaseController {
 
     @Autowired
@@ -31,20 +31,20 @@ public class SysOnlineController extends BaseController {
      */
     @GetMapping
     @RequiresPermissions("sys:online:select")
-    public List<SysUserOnline> select() {
-        return service.select();
+    public List<SysUserOnline> select(SysUserOnline sysUserOnline) {
+        return service.select(sysUserOnline);
     }
 
     /**
      * 踢出用户
      *
-     * @param sessionId 会话id
+     * @param token token
      *
-     * @return @return true/false
+     * @return true/false
      */
-    @PostMapping("force/logout/{sessionId}")
+    @PostMapping("force/logout/{token}")
     @RequiresPermissions("sys:online:force")
-    public boolean forceLogin(@PathVariable("sessionId") String sessionId) {
-        return service.forceLogout(sessionId);
+    public boolean forceLogin(@PathVariable("token") String token) {
+        return service.forceLogout(token);
     }
 }

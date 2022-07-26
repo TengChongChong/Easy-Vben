@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2020/12/11
  */
 public class LoginVO {
-    @NotBlank(message = "用户名不能为空")
+    @NotBlank(message = "账号不能为空")
     private String username;
     @NotBlank(message = "密码不能为空")
     private String password;
@@ -19,13 +19,9 @@ public class LoginVO {
     private Boolean rememberMe;
 
     /**
-     * 验证码id
-     */
-    private String codeId;
-    /**
      * 验证码
      */
-    private String verificationCode;
+    private String captchaVerification;
 
     public String getUsername() {
         return username;
@@ -51,20 +47,12 @@ public class LoginVO {
         this.rememberMe = rememberMe;
     }
 
-    public String getCodeId() {
-        return codeId;
+    public String getCaptchaVerification() {
+        return captchaVerification;
     }
 
-    public void setCodeId(String codeId) {
-        this.codeId = codeId;
-    }
-
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
+    public void setCaptchaVerification(String captchaVerification) {
+        this.captchaVerification = captchaVerification;
     }
 
     @Override
@@ -73,8 +61,7 @@ public class LoginVO {
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", rememberMe=" + rememberMe +
-                ", codeId='" + codeId + '\'' +
-                ", verificationCode='" + verificationCode + '\'' +
+                ", captchaVerification='" + captchaVerification + '\'' +
                 '}';
     }
 }

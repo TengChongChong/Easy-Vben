@@ -62,7 +62,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 获取用户信息，用于登录
      *
-     * @param username 用户名|邮箱|手机号
+     * @param username 账号|邮箱|手机号
      * @return SysUser
      */
     SysUser getSysUserByUserName(@Param("account") String username);

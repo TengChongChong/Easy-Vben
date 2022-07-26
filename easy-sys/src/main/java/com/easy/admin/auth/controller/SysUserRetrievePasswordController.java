@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/sys/user/retrieve/password")
+@RequestMapping("/api/sys/user/retrieve/password")
 public class SysUserRetrievePasswordController extends BaseController {
 
     /**
@@ -39,18 +39,18 @@ public class SysUserRetrievePasswordController extends BaseController {
     /**
      * 发送重置密码短信
      *
-     * @param json {username: '', phone: ''}
+     * @param json {username: '', mobile: ''}
      * @return 验证码
      */
-    @PostMapping("message")
-    public String sendMessage(@RequestBody JSONObject json) {
-        return service.sendMessage(json.getStr("username"), json.getStr("phoneNumber"));
+    @PostMapping("sms")
+    public String sendSms(@RequestBody JSONObject json) {
+        return service.sendSms(json.getStr("username"), json.getStr("mobile"));
     }
 
     /**
-     * 验证用户名与校验码是否匹配
+     * 验证账号与校验码是否匹配
      *
-     * @param username 用户名
+     * @param username 账号
      * @param code     校验码
      * @return true/false
      */
@@ -62,7 +62,7 @@ public class SysUserRetrievePasswordController extends BaseController {
     /**
      * 重设密码
      *
-     * @param username 用户名
+     * @param username 账号
      * @param code     校验码
      * @param json {password: ''}
      * @return true/false

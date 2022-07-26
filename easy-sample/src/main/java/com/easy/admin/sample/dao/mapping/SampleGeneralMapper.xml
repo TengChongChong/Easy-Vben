@@ -31,10 +31,9 @@
         where t.id = #{id}
     </select>
     <select id="exportData" resultType="com.easy.admin.sample.model.SampleGeneral">
-        select t.name, sd_sex.name as sex, t.age, t.phone, sd_status.name as status, t.address
+        select t.name, sd_sex.name as sex, t.age, t.phone, t.address
         from sample_general t
         left join sys_dict sd_sex on sd_sex.code = t.sex and sd_sex.dict_type = 'sex'
-        left join sys_dict sd_status on sd_status.code = t.status and sd_status.dict_type = 'commonStatus'
         <where>
             ${ew.sqlSegment}
         </where>

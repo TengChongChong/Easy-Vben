@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021/01/04
  */
 @RestController
-@RequestMapping("/auth/sys/status")
+@RequestMapping("/api/auth/sys/status")
 @ResponseResult
 public class SysStatusController {
 
@@ -23,61 +23,67 @@ public class SysStatusController {
      * @return JvmSpecInfo
      */
     @GetMapping("jvm/spec/info")
-    public JvmSpecInfo getJvmSpecInfo(){
+    public JvmSpecInfo getJvmSpecInfo() {
         return SystemUtil.getJvmSpecInfo();
     }
+
     /**
      * Java Virtual Machine Implementation信息
      *
      * @return JvmInfo
      */
     @GetMapping("jvm/info")
-    public JvmInfo getJvmInfo(){
+    public JvmInfo getJvmInfo() {
         return SystemUtil.getJvmInfo();
     }
+
     /**
      * Java Specification信息
      *
      * @return JavaSpecInfo
      */
     @GetMapping("java/spec/info")
-    public JavaSpecInfo getJavaSpecInfo(){
+    public JavaSpecInfo getJavaSpecInfo() {
         return SystemUtil.getJavaSpecInfo();
     }
+
     /**
      * Java Implementation信息
      *
      * @return JavaInfo
      */
     @GetMapping("java/info")
-    public JavaInfo getJavaInfo(){
+    public JavaInfo getJavaInfo() {
         return SystemUtil.getJavaInfo();
     }
+
     /**
      * Java运行时信息
      *
      * @return JavaRuntimeInfo
      */
     @GetMapping("java/runtime/info")
-    public JavaRuntimeInfo getJavaRuntimeInfo(){
+    public JavaRuntimeInfo getJavaRuntimeInfo() {
         return SystemUtil.getJavaRuntimeInfo();
     }
+
     /**
      * 系统信息
      *
      * @return OsInfo
      */
     @GetMapping("os/info")
-    public OsInfo getOsInfo(){
+    public OsInfo getOsInfo() {
         return SystemUtil.getOsInfo();
     }
+
     /**
      * 用户信息
      *
      * @return UserInfo
      */
     @GetMapping("user/info")
-    public UserInfo getUserInfo(){
+    public UserInfo getUserInfo() {
         return SystemUtil.getUserInfo();
     }
 
@@ -87,7 +93,7 @@ public class SysStatusController {
      * @return HostInfo
      */
     @GetMapping("host/info")
-    public HostInfo getHostInfo(){
+    public HostInfo getHostInfo() {
         return SystemUtil.getHostInfo();
     }
 
@@ -97,7 +103,7 @@ public class SysStatusController {
      * @return RuntimeInfo
      */
     @GetMapping("runtime/info")
-    public RuntimeInfo getRuntimeInfo(){
+    public RuntimeInfo getRuntimeInfo() {
         return SystemUtil.getRuntimeInfo();
     }
 }
