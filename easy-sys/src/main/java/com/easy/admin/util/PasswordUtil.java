@@ -41,9 +41,11 @@ public class PasswordUtil {
     }
 
     public static void main(String[] args) {
-        //        0192023a7bbd73250516f069df18b500
-        System.out.println(generatingPasswords("admin123", "32o5g80pks"));
-        System.out.println(encryptedPasswords("0192023a7bbd73250516f069df18b500", "32o5g80pks"));
+//        SecretKey secretKey = SecureUtil.generateKey("AES");
+//        System.out.println(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+
+//        System.out.println(generatingPasswords("admin123", "32o5g80pks"));
+//        System.out.println(encryptedPasswords("0192023a7bbd73250516f069df18b500", "32o5g80pks"));
 
     }
 }

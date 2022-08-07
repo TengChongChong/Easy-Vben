@@ -61,10 +61,6 @@ public class RedisProperties {
      */
     @Value("${spring.redis.jedis.pool.min-idle}")
     private Integer minIdle = 0;
-    /**
-     * cache前缀
-     */
-    private String cachePrefix = "cache:";
 
     public Integer getDatabase() {
         return database;
@@ -115,14 +111,6 @@ public class RedisProperties {
 
     public void setExpire(Integer expire) {
         this.expire = expire;
-    }
-
-    public String getCachePrefix() {
-        return cachePrefix;
-    }
-
-    public void setCachePrefix(String cachePrefix) {
-        this.cachePrefix = cachePrefix;
     }
 
     public Integer getMaxActive() {

@@ -219,6 +219,8 @@ public class Response implements Serializable {
      * @param message  消息
      */
     public static void response(HttpServletResponse response, String code, String message) {
+        WebUtils.setCors(response);
+
         ServletUtil.write(
                 response,
                 Response.failError(code, message).toString(),

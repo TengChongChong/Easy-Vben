@@ -10,10 +10,7 @@
     <BasicForm @register="registerForm" />
     <% if(basicsConfig.generatorMethodsAdd){ %>
     <template #appendFooter>
-      <a-button type="primary" @click="handleSaveAndAdd">
-        <Icon icon="ant-design:plus-outlined" />
-        保存并新增
-      </a-button>
+      <a-button-save @click="handleSaveAndAdd" text="保存并新增" />
     </template>
     <% } %>
   </BasicDrawer>
@@ -22,19 +19,19 @@
   import { defineComponent, nextTick } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { Icon } from '/@/components/Icon';
+  import { AButtonSave } from '/@/components/Button';
   import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
   import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
   export default defineComponent({
     name: '${basicsConfig.modelName}Input',
-    components: { Icon, BasicForm, BasicDrawer },
+    components: { BasicDrawer, BasicForm, AButtonSave },
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const [registerForm, { resetFields, setFieldsValue, validate, getFieldsValue }] = useForm({
         labelWidth: 100,
         schemas: [
-          { field: 'id', label: 'id', component: 'Input', ifShow: false },
-          { field: 'version', label: 'version', component: 'Input', ifShow: false },
+          { field: 'id', label: 'id', component: 'Input', show: false },
+          { field: 'version', label: 'version', component: 'Input', show: false },
           <% if(tableConfig != null) { %>
           <% for(item in inputConfig){ %>
           {

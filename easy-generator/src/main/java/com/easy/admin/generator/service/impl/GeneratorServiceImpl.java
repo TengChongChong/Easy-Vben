@@ -209,7 +209,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                 SysImportExcelTemplateDetail importExcelTemplateDetails = new SysImportExcelTemplateDetail();
                 importExcelTemplateDetails.setTemplateId(sysImportExcelTemplate.getId());
                 importExcelTemplateDetails.setTitle(item.getTitle());
-                importExcelTemplateDetails.setFieldName(item.getColumnName());
+                importExcelTemplateDetails.setFieldName(item.getName());
                 importExcelTemplateDetails.setFieldType(item.getType());
                 // 字段长度
                 if (importExcelTemplateDetails.getFieldType().contains("(")) {

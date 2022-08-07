@@ -65,19 +65,8 @@
   import { BasicTable, useTable } from '/@/components/Table';
   import { searchFormSchema, columns } from '${dataTsPath}';
   import { useDrawer } from '/@/components/Drawer';
-  <% if(basicsConfig.generatorMethodsAdd){ %>
-  import AButtonAdd from '/@/components/Button/src/ButtonAdd.vue';
-  <% } %>
-  <% if(basicsConfig.generatorMethodsRemove){ %>
-  import AButtonRemove from '/@/components/Button/src/ButtonRemove.vue';
-  import AButtonRemoveBatch from '/@/components/Button/src/ButtonRemoveBatch.vue';
-  <% } %>
-  import AButtonEdit from '/@/components/Button/src/ButtonEdit.vue';
-  <% if(basicsConfig.isGeneratorMethodsImport){ %>
-  import AButtonImport from '/@/components/Button/src/ButtonImport.vue';
-  <% } %>
+  import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '/@/components/Button';
   <% if(basicsConfig.isGeneratorMethodsExport){ %>
-  import AButtonExport from '/@/components/Button/src/ButtonExport.vue';
   import { downloadFileById } from '/@/utils/file/download';
   import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
   <% } %>

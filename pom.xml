@@ -12,11 +12,11 @@
     </parent>
 
     <groupId>com.easy.admin</groupId>
-    <artifactId>Easy-Admin</artifactId>
+    <artifactId>easy-vben</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0</version>
     <name>${project.artifactId}</name>
-    <url>http://ea-doc.easy-frame.top/</url>
+    <url>http://ev-doc.easy-frame.top/</url>
 
     <modules>
         <module>easy-activiti</module>
