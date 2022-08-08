@@ -7,7 +7,7 @@
 基于SpringBoot2、Druid、Mybatis Plus、Apache Shiro、Activiti、Beetl、HuTool、Quartz等开源框架开发，内置权限、部门、参数、字典、定时任务、代码生成等模块。  
 建议与 [Easy-Vben-Admin](https://github.com/TengChongChong/Easy-Vben-Admin) 前端开源项目一起使用
 ## 文档
-[在线文档](http://ea-doc.easy-frame.top/ '在线文档')
+[在线文档](http://ev-doc.easy-frame.top/ '在线文档')
 
 ## 下载
 
