@@ -83,7 +83,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public List<Tree> selectAll() {
+    public List<SysRole> selectAll() {
         return baseMapper.selectAll(CommonStatus.ENABLE.getCode());
     }
 

@@ -4,7 +4,6 @@ import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.core.annotation.ResponseResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +42,11 @@ public class SysRoleController extends BaseController {
     /**
      * 获取全部数据
      *
-     * @return List<Tree>
+     * @return List<SysRole>
      */
     @GetMapping("all")
     @RequiresPermissions("sys:role:select")
-    public List<Tree> selectAll() {
+    public List<SysRole> selectAll() {
         return service.selectAll();
     }
 

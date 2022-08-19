@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.common.core.common.tree.Tree;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -26,9 +25,9 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 获取所有数据
      * @param status 状态
-     * @return List<JsTree>
+     * @return List<SysRole>
      */
-    List<Tree> selectAll(@Param("status") String status);
+    List<SysRole> selectAll(@Param("status") String status);
 
     /**
      * 获取详情信息
