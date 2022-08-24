@@ -125,7 +125,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                 WhetherConst.YES,
                 generatorConfig.getBasicsConfig().getPermissionCode() + ":select",
                 generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/list",
-                generatorConfig.getBasicsConfig().getViewPath().replace("/views", "") + "/List.vue"
+                generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/List.vue"
         );
         basePermission.setParentId("0");
         basePermission.setType(PermissionType.MENU.getCode());
@@ -143,16 +143,16 @@ public class GeneratorServiceImpl implements GeneratorService {
                 );
                 savePermission.setParentId(basePermission.getId());
                 sysPermissionsService.saveData(savePermission);
-                savePermission = getNewMenu(
-                        "详情",
-                        PermissionType.MENU.getCode(),
-                        WhetherConst.NO,
-                        null,
-                        generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/input",
-                        generatorConfig.getBasicsConfig().getViewPath().replace("/views", "") + "/Input.vue"
-                );
-                savePermission.setParentId(basePermission.getId());
-                sysPermissionsService.saveData(savePermission);
+//                savePermission = getNewMenu(
+//                        "详情",
+//                        PermissionType.MENU.getCode(),
+//                        WhetherConst.NO,
+//                        null,
+//                        generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/input",
+//                        generatorConfig.getBasicsConfig().getViewPath().replace("/views", "") + "/Input.vue"
+//                );
+//                savePermission.setParentId(basePermission.getId());
+//                sysPermissionsService.saveData(savePermission);
 
             }
             if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.REMOVE)) {

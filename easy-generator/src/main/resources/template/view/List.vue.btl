@@ -40,11 +40,12 @@
         <template v-if="column.key === 'action'">
           <div class="basic-table-action center">
             <% if(basicsConfig.generatorMethodsSave){ %>
-            <a-button-edit ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleEdit" />
+            <a-button-edit small ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleEdit" />
             <% } %>
             <% if(basicsConfig.generatorMethodsRemove){ %>
             <a-divider type="vertical" />
             <a-button-remove
+              small
               ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove" ' : ''}
               :id="record.id"
               :api="remove"

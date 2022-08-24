@@ -66,6 +66,7 @@ public class GeneratorVueUtil {
         List<String> buttonArray = new ArrayList<>();
         if(basicsConfig.isGeneratorMethodsAdd()){
             buttonArray.add("AButtonAdd");
+            buttonArray.add("AButtonEdit");
         }
         if(basicsConfig.isGeneratorMethodsRemove()){
             buttonArray.add("AButtonRemove");
