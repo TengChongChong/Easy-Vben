@@ -167,11 +167,11 @@ public class FileUtil {
      */
     public static SysUser initAvatar(SysUser sysUser) {
         if (StrUtil.isNotBlank(sysUser.getAvatar())) {
-            sysUser.setAvatarLg(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_LG));
-            sysUser.setAvatarMd(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_MD));
-            sysUser.setAvatarSm(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_SM));
-            sysUser.setAvatarXs(SysConst.projectProperties.getProjectUrl() + ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_XS));
-            sysUser.setAvatar(SysConst.projectProperties.getProjectUrl() + sysUser.getAvatar());
+            sysUser.setAvatarLg(ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_LG));
+            sysUser.setAvatarMd(ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_MD));
+            sysUser.setAvatarSm(ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_SM));
+            sysUser.setAvatarXs(ImageUtil.getThumbnailUrlByUrl(sysUser.getAvatar(), ImageUtil.IMAGE_SIZE_XS));
+            sysUser.setAvatar(sysUser.getAvatar());
         }
         return sysUser;
     }
