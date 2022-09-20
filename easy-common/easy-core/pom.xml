@@ -90,6 +90,10 @@
                     <artifactId>poi-ooxml-schemas</artifactId>
                     <groupId>org.apache.poi</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!-- poi -->

@@ -20,6 +20,7 @@
         <module>easy-mybatis</module>
         <module>easy-redis</module>
         <module>easy-elasticsearch</module>
+        <module>easy-swagger</module>
     </modules>
 
 </project>
