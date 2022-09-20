@@ -120,4 +120,15 @@ public class SysRoleController extends BaseController {
     public List<SysRole> selectRole(SysRole sysRole, @RequestParam(required = false) boolean isSelect) {
         return service.selectRole(sysRole, isSelect);
     }
+
+    /**
+     * 根据部门类型获取可分配的角色数据
+     *
+     * @param deptId 部门id
+     * @return List<SysRole>
+     */
+    @GetMapping("select/role/by/dept")
+    public List<SysRole> selectRoleByDept(String deptId) {
+        return service.selectRoleByDept(deptId);
+    }
 }

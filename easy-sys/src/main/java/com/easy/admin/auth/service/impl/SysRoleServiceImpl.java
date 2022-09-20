@@ -13,7 +13,6 @@ import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.status.CommonStatus;
-import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
@@ -168,6 +167,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public List<String> selectAllRoleCodes() {
         return baseMapper.selectAllRoleCodes();
+    }
+
+    @Override
+    public List<SysRole> selectRoleByDept(String deptId) {
+        return sysDeptTypeRoleService.selectRoleByDept(deptId);
     }
 
     @Override

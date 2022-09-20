@@ -92,4 +92,12 @@ public interface SysRoleService {
      * @return List<SysRole>
      */
     List<SysRole> selectRole(SysRole sysRole, boolean isSelect);
+
+    /**
+     * 根据部门类型获取可分配的角色数据
+     *
+     * @param deptId 部门id
+     * @return List<SysRole>
+     */
+    List<SysRole> selectRoleByDept(String deptId);
 }

@@ -1,5 +1,7 @@
 package com.easy.admin.auth.service;
 
+import com.easy.admin.auth.model.SysRole;
+
 import java.util.List;
 
 /**
@@ -33,5 +35,13 @@ public interface SysDeptTypeRoleService {
      * @return true/false
      */
     boolean removeDeptTypeRole(String roles);
+
+    /**
+     * 根据部门类型获取可分配的角色数据
+     *
+     * @param deptId 部门id
+     * @return List<SysRole>
+     */
+    List<SysRole> selectRoleByDept(String deptId);
 
 }
