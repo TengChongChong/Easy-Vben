@@ -2,9 +2,7 @@
   <PageWrapper dense>
     <!-- 表格 -->
     <BasicTable
-      <% if(basicsConfig.isGeneratorMethodsExport){ %>
       :searchInfo="searchInfo"
-      <% } %>
       @register="registerTable"
       :rowSelection="{ type: 'checkbox', onChange: onSelectChange }"
     >
@@ -61,7 +59,7 @@
   </PageWrapper>
 </template>
 <script lang="ts">
-  import { defineComponent, ref${basicsConfig.isGeneratorMethodsExport ? ', reactive' : ''} } from 'vue';
+  import { defineComponent, ref, reactive } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable } from '/@/components/Table';
   import { searchFormSchema, columns } from '${dataTsPath}';
@@ -101,9 +99,9 @@
     setup() {
       // 表格选中数据
       const checkedKeys = ref<Array<string>>([]);
-      <% if(basicsConfig.isGeneratorMethodsExport){ %>
       // 查询条件
       const searchInfo = reactive<Recordable>({});
+      <% if(basicsConfig.isGeneratorMethodsExport){ %>
       // 导出按钮状态
       const exportBtnLoading = ref<boolean>(false);
       <% } %>
@@ -163,8 +161,8 @@
         onSelectChange(selectedRowKeys: string[]) {
           checkedKeys.value = selectedRowKeys;
         },
-        <% if(basicsConfig.isGeneratorMethodsExport){ %>
         searchInfo,
+        <% if(basicsConfig.isGeneratorMethodsExport){ %>
         exportBtnLoading,
         handelExportData,
         <% } %>

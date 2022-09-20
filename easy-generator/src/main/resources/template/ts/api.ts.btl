@@ -12,12 +12,12 @@ const BASE_URL = '/api${basicsConfig.controllerMapping}';
  * 查询
  *
  * @param params 查询条件
- * @param pager 分页
+ * @param page 分页
  */
-export function select(params: ${basicsConfig.modelName}, pager: Page<${basicsConfig.modelName}>) {
+export function select(params: ${basicsConfig.modelName}, page: Page<${basicsConfig.modelName}>) {
   return defHttp.get<Page<${basicsConfig.modelName}>>({
     url: BASE_URL,
-    params: Object.assign(params, pager),
+    params: Object.assign(params, page),
   });
 }
 
