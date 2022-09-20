@@ -38,10 +38,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Subject login(LoginVO loginVO) {
-        // 检查验证码
-        captchaVerification(loginVO.getCaptchaVerification());
-
         Subject subject = SecurityUtils.getSubject();
+        // 如果已登录，表示调用此方法是为了解除锁屏，则不验证验证码
+        if (!subject.isAuthenticated()) {
+            // 检查验证码
+            captchaVerification(loginVO.getCaptchaVerification());
+        }
+
         UsernamePasswordToken token = new UsernamePasswordToken(loginVO.getUsername(), loginVO.getPassword(), loginVO.getRememberMe() != null && loginVO.getRememberMe());
         subject.login(token);
 
