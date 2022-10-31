@@ -49,6 +49,13 @@
             componentProps: {
               showTime: true,
             },
+            <% } else if(item.componentType == 'InputTextArea') { %>
+            componentProps: {
+              autoSize: {
+                minRows: 2,
+                maxRows: 7,
+              },
+            },
             <% } %>
             <% if(item.propertyType == 'String' && strUtil.isBlank(item.dictType)) { %>
             <% columnLength = GeneratorUtil.getColumnLength(item); %>

@@ -110,7 +110,7 @@
       /**
        * 初始化表格
        */
-      const [registerTable, { reload }] = useTable({
+      const [registerTable, { reload, getForm }] = useTable({
         title: '${basicsConfig.businessName}',
         api: select,
         columns,
@@ -145,7 +145,7 @@
       const handelExportData = async () => {
         exportBtnLoading.value = true;
         try {
-          await exportData(searchInfo as ${basicsConfig.modelName}).then((id) => {
+          await exportData(Object.assign(searchInfo, getForm().getFieldsValue())).then((id) => {
             downloadFileById(id);
           });
         } catch (e) {

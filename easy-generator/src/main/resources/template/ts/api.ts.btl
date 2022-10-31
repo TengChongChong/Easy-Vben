@@ -80,7 +80,7 @@ export function save(params: ${basicsConfig.modelName}) {
 export function exportData(params: ${basicsConfig.modelName}) {
   return defHttp.get<string>({
     url: `\${BASE_URL}/export/data`,
-    data: params,
+    params,
   });
 }
 
