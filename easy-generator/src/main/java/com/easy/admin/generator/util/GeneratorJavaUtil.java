@@ -82,7 +82,7 @@ public class GeneratorJavaUtil {
 
     private static String generatorExport(TableCellConfig fieldSet, int index) {
         if("Date".equals(fieldSet.getPropertyType())){
-            return addBr("@Excel(name = \"" + fieldSet.getTitle() + "\", width = 20, orderNum = \"" + index + "\", exportFormat = \"yyyy-mm-dd hh:mm:ss\")");
+            return addBr("@Excel(name = \"" + fieldSet.getTitle() + "\", width = 20, orderNum = \"" + index + "\", exportFormat = \"yyyy-MM-dd HH:mm:ss\")");
         }
         Integer width = getWidth(fieldSet);
         if (width != null) {
