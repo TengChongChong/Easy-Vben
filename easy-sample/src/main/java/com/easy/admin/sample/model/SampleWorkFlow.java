@@ -32,13 +32,13 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     /**
      * 开始时间
      */
-    @Excel(name = "开始时间", width = 20, orderNum = "1", exportFormat = "yyyy-mm-dd hh:mm:ss")
+    @Excel(name = "开始时间", width = 20, orderNum = "1", exportFormat = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "开始时间不能为空")
     private Date startDate;
     /**
      * 结束时间
      */
-    @Excel(name = "结束时间", width = 20, orderNum = "2", exportFormat = "yyyy-mm-dd hh:mm:ss")
+    @Excel(name = "结束时间", width = 20, orderNum = "2", exportFormat = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "结束时间不能为空")
     private Date endDate;
     /**

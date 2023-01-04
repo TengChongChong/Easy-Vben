@@ -56,14 +56,10 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
         if (sysUser == null || StrUtil.isBlank(sysUser.getEmail()) || !sysUser.getPhoneNumber().equals(mobile)) {
             throw new EasyException("账号与手机号不匹配");
         }
-//        String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
         // 验证码
         String code = RandomUtil.randomNumbers(6);
         // 放到redis中,用于修改密码时验证
         RedisUtil.set(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username, code);
-//        Map<String, Object> params = new HashMap<>(2);
-//        params.put("code", code);
-//        params.put("username", hideUsername);
         // todo: 发送短信
         return code;
     }

@@ -1,5 +1,6 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.RandomUtil;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.exception.EasyException;
@@ -34,7 +35,7 @@ public class SysSmsCaptchaServiceImpl implements SysSmsCaptchaService {
             code = RandomUtil.randomNumbers(6);
         }
         // 放到redis中,重新设置有效期,用于绑定时验证
-        RedisUtil.set(RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId(), code, (int) SysConfigUtil.get(SysConfigConst.MESSAGE_EXPIRE));
+        RedisUtil.set(RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId(), code, Convert.toInt(SysConfigUtil.get(SysConfigConst.MESSAGE_EXPIRE)));
         return code;
     }
 }

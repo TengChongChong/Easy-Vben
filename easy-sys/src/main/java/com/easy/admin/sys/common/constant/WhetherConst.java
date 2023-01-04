@@ -2,6 +2,7 @@ package com.easy.admin.sys.common.constant;
 
 /**
  * 是否
+ * @author tengchong
  */
 public class WhetherConst {
     /**

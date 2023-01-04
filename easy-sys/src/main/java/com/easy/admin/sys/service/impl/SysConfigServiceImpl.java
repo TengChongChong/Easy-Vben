@@ -118,7 +118,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
         // 验证数据有效性
         switch (sysConfig.getType()) {
-            case DataTypeConst.Long:
+            case DataTypeConst.LONG:
                 try {
                     Long.parseLong(sysConfig.getValue());
                 } catch (NumberFormatException e) {

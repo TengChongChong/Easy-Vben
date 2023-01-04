@@ -143,17 +143,6 @@ public class GeneratorServiceImpl implements GeneratorService {
                 );
                 savePermission.setParentId(basePermission.getId());
                 sysPermissionsService.saveData(savePermission);
-//                savePermission = getNewMenu(
-//                        "详情",
-//                        PermissionType.MENU.getCode(),
-//                        WhetherConst.NO,
-//                        null,
-//                        generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/input",
-//                        generatorConfig.getBasicsConfig().getViewPath().replace("/views", "") + "/Input.vue"
-//                );
-//                savePermission.setParentId(basePermission.getId());
-//                sysPermissionsService.saveData(savePermission);
-
             }
             if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.REMOVE)) {
                 SysPermission savePermission = getNewMenu(

@@ -115,7 +115,6 @@ public class SysPermission extends Model<SysPermission> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date editDate;
 
-    //
     public SysPermission() {
     }
 

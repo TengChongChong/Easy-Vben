@@ -1,5 +1,6 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -118,7 +119,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     @Override
     public boolean clean() {
         QueryWrapper<SysLog> clean = new QueryWrapper<>();
-        Date cleanDate = DateUtil.offsetDay(new Date(), (int) SysConfigUtil.get(SysConfigConst.CLEAN_SYS_LOG) * -1);
+        Date cleanDate = DateUtil.offsetDay(new Date(), Convert.toInt(SysConfigUtil.get(SysConfigConst.CLEAN_SYS_LOG)) * -1);
         clean.lt("operation_date", cleanDate);
         return remove(clean);
     }

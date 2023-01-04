@@ -45,10 +45,12 @@ public class SysDict extends Model<SysDict> {
     /**
      * 图标
      */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String icon;
     /**
      * 显示方式
      */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String displayType;
 
     /**

@@ -73,6 +73,9 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         if (!file.exists()) {
             throw new EasyException("头像文件不存在");
         }
+        if (file.exists() && FileUtil.inFormalPath(path)) {
+            return url;
+        }
         SysUser sysUser = ShiroUtil.getCurrentUser();
         // 以前设置了头像
         String oldAvatar = null;

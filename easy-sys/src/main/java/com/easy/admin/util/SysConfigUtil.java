@@ -56,7 +56,7 @@ public class SysConfigUtil {
         if (config != null) {
             if (DataTypeConst.STRING.equals(config.getType())) {
                 return config.getValue();
-            } else if (DataTypeConst.Long.equals(config.getType())) {
+            } else if (DataTypeConst.LONG.equals(config.getType())) {
                 return Long.parseLong(config.getValue());
             } else if (DataTypeConst.BOOLEAN.equals(config.getType())) {
                 return CommonConst.TRUE.equals(config.getValue());

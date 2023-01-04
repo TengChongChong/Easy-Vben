@@ -22,6 +22,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.time.Duration;
+
 /**
  * redis config
  *
@@ -48,7 +50,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     public JedisPoolConfig getJedisPoolConfig(){
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(redisProperties.getMaxIdle());
-        jedisPoolConfig.setMaxWaitMillis(redisProperties.getMaxWait());
+        jedisPoolConfig.setMaxWait(Duration.ofMillis(redisProperties.getMaxWait()));
         return jedisPoolConfig;
     }
 

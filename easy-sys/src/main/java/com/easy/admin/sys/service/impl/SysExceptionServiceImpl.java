@@ -1,5 +1,6 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
@@ -126,7 +127,7 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
     @Override
     public boolean clean() {
         QueryWrapper<SysException> clean = new QueryWrapper<>();
-        Date cleanDate = DateUtil.offsetDay(new Date(), (int) SysConfigUtil.get(SysConfigConst.CLEAN_EXCEPTION_LOG) * -1);
+        Date cleanDate = DateUtil.offsetDay(new Date(),  Convert.toInt(SysConfigUtil.get(SysConfigConst.CLEAN_EXCEPTION_LOG)) * -1);
         clean.lt("trigger_time", cleanDate);
         return remove(clean);
     }

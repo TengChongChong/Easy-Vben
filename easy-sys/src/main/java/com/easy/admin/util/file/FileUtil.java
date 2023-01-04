@@ -88,7 +88,17 @@ public class FileUtil {
      * @return true/false
      */
     public static boolean inTemporaryPath(String path) {
-        return path.contains(TEMPORARY);
+        return StrUtil.isNotBlank(path) && path.contains(TEMPORARY);
+    }
+
+    /**
+     * 检查文件是否在正式目录
+     *
+     * @param path 文件路径
+     * @return true/false
+     */
+    public static boolean inFormalPath(String path) {
+        return StrUtil.isNotBlank(path) && path.contains(FORMAL);
     }
 
     /**
@@ -98,12 +108,15 @@ public class FileUtil {
      * @return 新路径
      */
     public static String moveToFormal(String path) {
+        if (inFormalPath(path)) {
+            return path;
+        }
         File src = new File(path);
         if (src.exists()) {
             File file = new File(FORMAL_PATH + getDatePath());
             checkDirs(file);
             File dest = new File(file.getPath() + File.separator + src.getName());
-            cn.hutool.core.io.FileUtil.move(src, dest, true);
+            cn.hutool.core.io.FileUtil.copy(src, dest, true);
             return dest.getPath();
         } else {
             throw new EasyException("移动到正式目录失败[源文件 - " + path + " 不存在]");
