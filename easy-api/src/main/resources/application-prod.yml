@@ -1,0 +1,79 @@
+
+project:
+  # 项目访问url
+  url: http://127.0.0.1
+  # 前端访问url
+  front-end-url: http://localhost:3100
+  # 文件上传路径(不要写以~开头的路径会导致无法访问)
+  file-upload-path: /Users/tengchong/development/easy-vben
+springdoc:
+  api-docs:
+    #是否开启文档功能
+    enabled: true
+  #包扫描路径
+  packagesToScan: com.easy.admin
+server:
+  # 端口号
+  port: 80
+logging:
+  file:
+    path: logs
+spring:
+  elasticsearch:
+    rest:
+      # 连接超时时间
+      connection-timeout: 1s
+      username:
+      password:
+      # 读取超时时间
+      read-timeout: 30s
+      # es rest 接口地址，多个用逗号隔开
+      uris: ${ES_HOST:127.0.0.1}:${ES_PORT:9200}
+  # Redis
+  redis:
+    # 数据库索引（默认为0）
+    database: 9
+    # 服务器地址
+    host: 127.0.0.1
+    # 服务器连接端口
+    port: 6379
+    # 服务器连接密码（默认为空）
+    password:
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池中的最小空闲连接
+        min-idle: 0
+    # 连接超时时间 单位: 秒
+    timeout: 10
+    # 默认的数据过期时间 30 分钟 单位: 秒
+    expire: 1800
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
+          username: ${DB_USERNAME:root}
+          password: ${DB_PASSWORD:tengchong}
+aj:
+  captcha:
+    # 滑动验证，底图路径，不配置将使用默认图片
+    jigsaw: classpath:images/verification
+async:
+  executor:
+    thread:
+      # 配置核心线程数
+      core-pool-size: 5
+      # 配置最大线程数
+      max-pool-size: 5
+      # 配置队列大小
+      queue-capacity: 999
+      # 配置线程池中的线程的名称前缀
+      name-prefix: async-
+      # 配置线程最大空闲时间 s
+      keep-alive-seconds: 30

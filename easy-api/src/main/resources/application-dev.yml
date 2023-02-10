@@ -56,9 +56,13 @@ spring:
     dynamic:
       datasource:
         master:
-          url: jdbc:mysql://${DB_HOST:121.199.79.208}:${DB_PORT:3306}/${DB_NAME:easy-vben-dev}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
-          username: ${DB_USERNAME:easy-vben}
-          password: ${DB_PASSWORD:UskJ4RGXu2eBCtU2k6sP}
+          url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
+          username: ${DB_USERNAME:root}
+          password: ${DB_PASSWORD:tengchong}
+# 打印sql语句,调试用
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 aj:
   captcha:
     # 滑动验证，底图路径，不配置将使用默认图片
