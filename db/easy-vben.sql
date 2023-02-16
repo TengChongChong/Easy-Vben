@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 121.199.79.208
+ Source Server         : 本地 - MySql
  Source Server Type    : MySQL
- Source Server Version : 100413
- Source Host           : 121.199.79.208:3306
+ Source Server Version : 80016
+ Source Host           : 127.0.0.1:3306
  Source Schema         : easy-vben
 
  Target Server Type    : MySQL
- Target Server Version : 100413
+ Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 08/08/2022 11:33:33
+ Date: 16/02/2023 13:06:11
 */
 
 SET NAMES utf8mb4;
@@ -23,15 +23,15 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `district`;
 CREATE TABLE `district` (
   `id` smallint(5) DEFAULT NULL,
-  `name` varchar(270) COLLATE utf8mb4_bin DEFAULT NULL,
+  `name` varchar(270) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `parent_id` smallint(5) DEFAULT NULL,
-  `initial` char(3) COLLATE utf8mb4_bin DEFAULT NULL,
-  `initials` varchar(30) COLLATE utf8mb4_bin DEFAULT NULL,
-  `pinyin` varchar(600) COLLATE utf8mb4_bin DEFAULT NULL,
-  `extra` varchar(60) COLLATE utf8mb4_bin DEFAULT NULL,
-  `suffix` varchar(15) COLLATE utf8mb4_bin DEFAULT NULL,
-  `code` char(30) COLLATE utf8mb4_bin DEFAULT NULL,
-  `area_code` varchar(30) COLLATE utf8mb4_bin DEFAULT NULL,
+  `initial` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `initials` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `pinyin` varchar(600) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `extra` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `suffix` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `code` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `area_code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `order` tinyint(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='行政区划';
 
@@ -3613,17 +3613,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sample_general`;
 CREATE TABLE `sample_general` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '姓名',
-  `sex` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '性别',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `parent_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '姓名',
+  `sex` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '性别',
   `age` int(11) DEFAULT NULL COMMENT '年龄',
-  `phone` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '手机号码',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '地址',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `phone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '手机号码',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `order_no` int(11) DEFAULT NULL COMMENT '排序值',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '地址',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='代码生成示例';
@@ -3632,43 +3634,80 @@ CREATE TABLE `sample_general` (
 -- Records of sample_general
 -- ----------------------------
 BEGIN;
-INSERT INTO `sample_general` VALUES ('1548913939352399874', '双初然', '2', 27, '17366392932', '1', '江苏省南京市', 14, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939356594177', '善燕子', '1', 23, '17366392815', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939356594178', '庄善和', '1', 23, '17366393057', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939360788482', '乌雅冷雁', '1', 26, '17366392816', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939360788483', '恭瑜敏', '1', 26, '17366392813', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939360788485', '孔丽君', '1', 23, '17366392929', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939364982785', '诸嘉禧', '1', 28, '17366392933', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939369177091', '蓬子石', '1', 28, '17366392818', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939373371393', '亓官迎海', '1', 23, '17366392930', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939373371394', '陈绿凝', '1', 28, '17366392944', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939373371396', '訾春柏', '1', 23, '17366392814', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939377565700', 'cc', '1', 30, '17366392808', '1', 'xxx', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939381760002', '普玉石', '1', 23, '17366393050', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939385954306', '司寇傲儿', '1', 27, '17366392817', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939385954308', '麻寻桃', '1', 26, '17366392931', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939394342914', '淦尔槐', '1', 23, '17366393056', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939398537219', '六慕诗', '1', 28, '17366393065', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939729887234', '秋痴春', '2', 26, '17366393055', '1', '江苏省南京市', 2, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939734081537', '僧山', '2', 26, '17366392810', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939734081538', '答鸿信', '2', 27, '17366393053', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939734081539', '上官飞章', '2', 26, '17366393052', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939738275841', '员绮梅', '2', 23, '17366393051', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939738275842', '范姜雅韶', '2', 28, '17366392939', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939742470145', '濯丝琪', '2', 23, '17366392935', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939742470146', '势悠奕', '2', 23, '17366392808', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939746664450', '单玄清', '2', 26, '17366392934', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939759247362', '虎采珊', '2', 27, '17366392938', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939763441666', '针晓畅', '2', 26, '17366392937', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939767635970', '伯景彰', '2', 23, '17366392809', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939780218882', '叔雁露', '2', 28, '17366392812', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939784413185', '袭俊良', '2', 27, '17366393059', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939788607489', '祖流如', '2', 27, '17366392811', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939796996097', '夹谷芸儿', '2', 28, '17366393060', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939801190402', '淳于凝云', '2', 26, '17366393058', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939805384707', '候之玉', '2', 28, '17366393054', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939817967618', '寸白莲', '2', 23, '17366392936', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
-INSERT INTO `sample_general` VALUES ('1548913939889270786', '鞠理群', '2', 28, '17366392823', '1', '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939352399874', '1548913939377565700', '双初然', '2', 27, '17366392932', '1', 1, '江苏省南京市', 14, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939356594177', '1548913939377565700', '善燕子', '1', 23, '17366392815', '1', 2, '江苏省南京市', 2, '1', '2022-07-28 16:20:20', '1', '2023-02-13 14:08:55');
+INSERT INTO `sample_general` VALUES ('1548913939356594178', '1548913939377565700', '庄善和', '1', 23, '17366393057', '1', 3, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939360788482', NULL, '乌雅冷雁', '1', 26, '17366392816', '1', 1, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939360788483', '1548913939360788482', '恭瑜敏', '1', 26, '17366392813', '1', 1, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939360788485', '1548913939373371396', '孔丽君', '1', 23, '17366392929', '1', 1, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939364982785', '1548913939360788485', '诸嘉禧', '1', 28, '17366392933', '1', 1, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939369177091', '1548913939364982785', '蓬子石', '1', 28, '17366392818', '1', 1, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939373371393', NULL, '亓官迎海', '1', 23, '17366392930', '1', 2, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939373371394', NULL, '陈绿凝', '1', 28, '17366392944', '1', 3, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939373371396', '1548913939360788482', '訾春柏', '1', 23, '17366392814', '1', 2, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939377565700', NULL, 'cc', '1', 30, '17366392808', '1', 4, 'xxx', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939381760002', '1548913939356594178', '普玉石', '1', 23, '17366393050', '1', 1, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939385954306', '1548913939356594177', '司寇傲儿', '1', 27, '17366392817', '1', 4, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939385954308', NULL, '麻寻桃', '1', 26, '17366392931', '1', 5, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939394342914', '1548913939356594177', '淦尔槐', '1', 23, '17366393056', '1', 3, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939398537219', '1548913939356594177', '六慕诗', '1', 28, '17366393065', '1', 2, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939729887234', NULL, '秋痴春', '2', 26, '17366393055', '1', 6, '江苏省南京市', 2, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939734081537', '1548913939377565700', '僧山', '2', 26, '17366392810', '1', 4, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939734081538', NULL, '答鸿信', '2', 27, '17366393053', '1', 7, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939734081539', '1548913939356594177', '上官飞章', '2', 26, '17366393052', '1', 1, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939738275841', NULL, '员绮梅', '2', 23, '17366393051', '1', 8, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939738275842', '1548913939352399874', '范姜雅韶', '2', 28, '17366392939', '1', 1, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939742470145', NULL, '濯丝琪', '2', 23, '17366392935', '1', 9, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939742470146', NULL, '势悠奕', '2', 23, '17366392808', '1', 10, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939746664450', NULL, '单玄清', '2', 26, '17366392934', '1', 11, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939759247362', NULL, '虎采珊', '2', 27, '17366392938', '1', 12, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939763441666', NULL, '针晓畅', '2', 26, '17366392937', '1', 13, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939767635970', NULL, '伯景彰', '2', 23, '17366392809', '1', 14, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939780218882', NULL, '叔雁露', '2', 28, '17366392812', '1', 15, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939784413185', NULL, '袭俊良', '2', 27, '17366393059', '1', 16, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939788607489', NULL, '祖流如', '2', 27, '17366392811', '1', 17, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939796996097', NULL, '夹谷芸儿', '2', 28, '17366393060', '1', 18, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939801190402', NULL, '淳于凝云', '2', 26, '17366393058', '1', 19, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939805384707', NULL, '候之玉', '2', 28, '17366393054', '1', 20, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939817967618', NULL, '寸白莲', '2', 23, '17366392936', '1', 21, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1548913939889270786', NULL, '鞠理群', '2', 28, '17366392823', '1', 22, '江苏省南京市', 0, '1', '2022-07-28 16:20:20', '1', '2022-07-28 16:20:01');
+INSERT INTO `sample_general` VALUES ('1556203535532527617', NULL, '善燕子', '1', 23, '17366392815', NULL, 23, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535536721922', NULL, '庄善和', '1', 23, '17366393057', NULL, 24, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535545110529', NULL, '乌雅冷雁', '1', 26, '17366392816', NULL, 25, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535549304833', NULL, '恭瑜敏', '1', 26, '17366392813', NULL, 26, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535549304834', NULL, '孔丽君', '1', 23, '17366392929', NULL, 27, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535566082049', NULL, '诸嘉禧', '1', 28, '17366392933', NULL, 28, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535570276353', NULL, '蓬子石', '1', 28, '17366392818', NULL, 29, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535654162433', NULL, '亓官迎海', '1', 23, '17366392930', NULL, 30, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535662551041', NULL, '陈绿凝', '1', 28, '17366392944', NULL, 31, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535675133954', NULL, '訾春柏', '1', 23, '17366392814', NULL, 32, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535687716865', NULL, 'cc', '1', 30, '17366392808', NULL, 33, 'xxx', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535704494081', NULL, '普玉石', '1', 23, '17366393050', NULL, 34, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535708688385', NULL, '司寇傲儿', '1', 27, '17366392817', NULL, 35, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535733854209', NULL, '麻寻桃', '1', 26, '17366392931', NULL, 36, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535750631425', NULL, '淦尔槐', '1', 23, '17366393056', NULL, 37, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535767408642', NULL, '六慕诗', '1', 28, '17366393065', NULL, 38, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535779991554', NULL, '双初然', '2', 27, '17366392932', NULL, 39, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535788380162', NULL, '秋痴春', '2', 26, '17366393055', NULL, 40, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535805157378', NULL, '僧山', '2', 26, '17366392810', NULL, 41, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535813545985', NULL, '答鸿信', '2', 27, '17366393053', NULL, 42, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535826128898', NULL, '上官飞章', '2', 26, '17366393052', NULL, 43, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535834517505', NULL, '员绮梅', '2', 23, '17366393051', NULL, 44, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535851294722', NULL, '范姜雅韶', '2', 28, '17366392939', NULL, 45, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535859683330', NULL, '濯丝琪', '2', 23, '17366392935', NULL, 46, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535872266241', NULL, '势悠奕', '2', 23, '17366392808', NULL, 47, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535893237761', NULL, '单玄清', '2', 26, '17366392934', NULL, 48, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535905820674', NULL, '虎采珊', '2', 27, '17366392938', NULL, 49, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535918403586', NULL, '针晓畅', '2', 26, '17366392937', NULL, 50, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535939375106', NULL, '伯景彰', '2', 23, '17366392809', NULL, 51, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535960346626', NULL, '叔雁露', '2', 28, '17366392812', NULL, 52, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535964540929', NULL, '袭俊良', '2', 27, '17366393059', NULL, 53, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535977123842', NULL, '祖流如', '2', 27, '17366392811', NULL, 54, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535989706754', NULL, '夹谷芸儿', '2', 28, '17366393060', NULL, 55, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203535998095362', NULL, '淳于凝云', '2', 26, '17366393058', NULL, 56, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203536014872578', NULL, '候之玉', '2', 28, '17366393054', NULL, 57, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203536019066881', NULL, '寸白莲', '2', 23, '17366392936', NULL, 58, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sample_general` VALUES ('1556203536031649794', NULL, '鞠理群', '2', 28, '17366392823', NULL, 59, '江苏省南京市', 0, NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -3676,16 +3715,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sample_work_flow`;
 CREATE TABLE `sample_work_flow` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `leave_type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请假类型',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `leave_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请假类型',
   `start_date` datetime DEFAULT NULL COMMENT '开始时间',
   `end_date` datetime DEFAULT NULL COMMENT '结束时间',
-  `reason` varchar(512) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '原因',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `reason` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '原因',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
   `version` int(11) DEFAULT NULL COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='流程示例';
@@ -3711,22 +3750,23 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `scheduler_job`;
 CREATE TABLE `scheduler_job` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `code` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务代码',
-  `cron` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'cron',
-  `bean` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'bean',
-  `method` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'method',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '任务代码',
+  `cron` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'cron',
+  `bean` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'bean',
+  `method` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'method',
   `last_run_date` datetime DEFAULT NULL COMMENT '上次执行时间',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `sys` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否系统',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '状态',
+  `sys` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '是否系统',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '修改人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '修改人',
   `edit_date` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `scheduler_job_code_pk` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='定时任务';
 
 -- ----------------------------
@@ -3734,9 +3774,9 @@ CREATE TABLE `scheduler_job` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `scheduler_job` VALUES ('1535132693535129602', '示例任务1', 'sample-job', '0/5 * * * * ? *', 'sampleJob', 'sampleJob1', '2022-06-13 13:52:30', '2', '0', NULL, 0, '1', '2022-06-10 13:32:10', '1', '2022-06-10 13:32:10');
-INSERT INTO `scheduler_job` VALUES ('1535134604426555394', '清理访问日志表里的数据', 'CleanSysLog', '0 0 0 1/1 * ? *', 'cleanSysLog', 'clean', '2022-07-20 02:37:39', '1', '1', NULL, 1, '1', '2022-06-10 13:39:46', '1', '2022-06-10 13:46:09');
-INSERT INTO `scheduler_job` VALUES ('1535136351580663810', '清理异常日志表里的数据', 'CleanExceptionLog', '0 0 0 1/1 * ? *', 'cleanExceptionLog', 'clean', '2022-07-20 02:37:39', '1', '1', NULL, 1, '1', '2022-06-10 13:46:42', '1', '2022-06-10 13:47:16');
-INSERT INTO `scheduler_job` VALUES ('1535136472057851906', '清理临时目录文件', 'CleanTemporaryFile', '0 0 0 1/1 * ? *', 'cleanTemporaryFile', 'clean', '2022-08-08 00:00:00', '1', '1', '', 1, '1', '2022-06-10 13:47:11', '1', '2022-06-10 13:47:19');
+INSERT INTO `scheduler_job` VALUES ('1535134604426555394', '清理访问日志表里的数据', 'CleanSysLog', '0 0 0 1/1 * ? *', 'cleanSysLog', 'clean', '2023-02-16 11:10:44', '1', '1', NULL, 1, '1', '2022-06-10 13:39:46', '1', '2022-06-10 13:46:09');
+INSERT INTO `scheduler_job` VALUES ('1535136351580663810', '清理异常日志表里的数据', 'CleanExceptionLog', '0 0 0 1/1 * ? *', 'cleanExceptionLog', 'clean', '2023-02-16 11:10:44', '1', '1', NULL, 1, '1', '2022-06-10 13:46:42', '1', '2022-06-10 13:47:16');
+INSERT INTO `scheduler_job` VALUES ('1535136472057851906', '清理临时目录文件', 'CleanTemporaryFile', '0 0 0 1/1 * ? *', 'cleanTemporaryFile', 'clean', '2023-02-16 11:10:44', '1', '1', '', 1, '1', '2022-06-10 13:47:11', '1', '2022-06-10 13:47:19');
 COMMIT;
 
 -- ----------------------------
@@ -3744,10 +3784,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `scheduler_job_log`;
 CREATE TABLE `scheduler_job_log` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
-  `scheduler_job_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '定时任务id',
-  `run_date` datetime DEFAULT NULL COMMENT '执行时间',
-  `time_consuming` int(11) DEFAULT NULL COMMENT '耗时',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `scheduler_job_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '定时任务id',
+  `run_date` datetime NOT NULL COMMENT '执行时间',
+  `time_consuming` int(11) NOT NULL COMMENT '耗时',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='执行日志';
 
@@ -3756,18 +3796,20 @@ CREATE TABLE `scheduler_job_log` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
-  `sys_key` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'key',
-  `value` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'value',
-  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
-  `sys` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否系统',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
+  `sys_key` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'key',
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'value',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '类型',
+  `sys` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '是否系统',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
-  PRIMARY KEY (`id`)
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_config_sys_key_pk` (`sys_key`),
+  KEY `sys_config_sys_key_index` (`sys_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统参数';
 
 -- ----------------------------
@@ -3784,7 +3826,7 @@ INSERT INTO `sys_config` VALUES ('20', 'loginMultipoint', 'false', 'boolean', '0
 INSERT INTO `sys_config` VALUES ('21', 'passwordSecurityLevel', '3', 'number', '0', '修改密码时密码的等级要求，分为0~5级，默认为3级', 2, '2019-06-01 21:41:37', '1', '2022-07-25 10:25:02', '1');
 INSERT INTO `sys_config` VALUES ('4', 'loginLockLength', '300', 'number', '1', '尝试登录次数过多账号锁定时长 单位：秒', 0, '2019-03-03 16:06:49', '1', '2019-03-04 17:47:22', '1');
 INSERT INTO `sys_config` VALUES ('48bc9672ea38980c5031b86c73938690', 'cleanSysLog', '90', 'number', '1', '清理多少天前访问日志 单位: 天', 1, '2019-06-27 14:14:45', '1', '2022-06-12 14:54:14', '1');
-INSERT INTO `sys_config` VALUES ('5', 'loginVerificationCode', 'true', 'boolean', '0', '是否开启登录验证码', 12, '2019-03-03 16:07:38', '1', '2022-07-29 11:30:53', '1');
+INSERT INTO `sys_config` VALUES ('5', 'loginVerificationCode', 'false', 'boolean', '0', '是否开启登录验证码', 13, '2019-03-03 16:07:38', '1', '2022-08-05 10:57:45', '1');
 INSERT INTO `sys_config` VALUES ('76474672180a3f83b87923c5bc9a86f9', 'messageCheckInterval', '60', 'number', '1', '新消息检查间隔时长 单位：秒', 2, '2019-06-18 22:34:10', '1', '2022-06-28 20:53:40', '1');
 INSERT INTO `sys_config` VALUES ('9f20b7a0eb3757ed8c2b98af3148cc3b', 'messageExpire', '600', 'number', '0', '短信验证码有效期 单位：秒', 1, '2020-12-23 14:22:29', '1', '2022-05-31 10:12:14', '1');
 INSERT INTO `sys_config` VALUES ('bec91595c56ef6d0d197b745ca6c855f', 'cleanExceptionLog', '90', 'number', '1', '清理多少天前异常日志 单位: 天', 2, '2019-06-27 09:21:12', '1', '2022-06-12 14:54:05', '1');
@@ -3795,18 +3837,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_data_source`;
 CREATE TABLE `sys_data_source` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
-  `name` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
-  `url` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'url',
-  `username` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户名',
-  `password` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '密码',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
+  `url` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'url',
+  `username` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户名',
+  `password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '密码',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据源';
@@ -3816,20 +3858,20 @@ CREATE TABLE `sys_data_source` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
-  `parent_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '全称',
-  `simple_name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '简称',
-  `code` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '部门代码',
-  `type_code` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '部门类型代码',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `parent_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '全称',
+  `simple_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '简称',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '部门代码',
+  `type_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '部门类型代码',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '状态',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   `order_no` int(11) DEFAULT NULL COMMENT '排序值',
-  `tenant_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='部门';
@@ -3854,20 +3896,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept_type`;
 CREATE TABLE `sys_dept_type` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
-  `parent_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
-  `code` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '代码',
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
+  `parent_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '代码',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
   `order_no` int(11) DEFAULT NULL COMMENT '排序值;',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态;',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `tenant_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '状态;',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_dept_type_code_pk` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='部门类型';
 
 -- ----------------------------
@@ -3886,10 +3929,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept_type_role`;
 CREATE TABLE `sys_dept_type_role` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
-  `dept_type_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '部门类型id',
-  `role_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '角色id',
-  PRIMARY KEY (`id`)
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
+  `dept_type_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '部门类型id',
+  `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '角色id',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_dept_type_role_dept_type_id_role_id_pk` (`dept_type_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='部门类型&角色';
 
 -- ----------------------------
@@ -3898,10 +3942,10 @@ CREATE TABLE `sys_dept_type_role` (
 BEGIN;
 INSERT INTO `sys_dept_type_role` VALUES ('1531823112172101633', '1', '1531819854540070914');
 INSERT INTO `sys_dept_type_role` VALUES ('1531823112180490241', '1', '1531821964014936065');
-INSERT INTO `sys_dept_type_role` VALUES ('1531823226068426754', '1531821039040880641', '1531821666106105858');
 INSERT INTO `sys_dept_type_role` VALUES ('1531823255067844609', '1531551871330713601', '1531821754819829762');
 INSERT INTO `sys_dept_type_role` VALUES ('1531823412454907906', '1531551893631827970', '1531823375461146625');
 INSERT INTO `sys_dept_type_role` VALUES ('1531880684606459906', '1531820984426848258', '1531819907467993089');
+INSERT INTO `sys_dept_type_role` VALUES ('1531823226068426754', '1531821039040880641', '1531821666106105858');
 COMMIT;
 
 -- ----------------------------
@@ -3909,22 +3953,25 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
-  `name` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `code` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编码',
-  `parent_code` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父code',
-  `dict_type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '字典类型',
-  `icon` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标',
-  `display_type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '显示方式',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '编码',
+  `parent_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父code',
+  `dict_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '字典类型',
+  `icon` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标',
+  `display_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '显示方式',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   `order_no` int(11) DEFAULT NULL COMMENT '排序值',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_dict_dict_type_code_pk` (`dict_type`,`code`),
+  KEY `sys_dict_dict_type_index` (`dict_type`),
+  KEY `sys_dict_dict_type_code_index` (`dict_type`,`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='字典';
 
 -- ----------------------------
@@ -3941,10 +3988,6 @@ INSERT INTO `sys_dict` VALUES ('1009', '禁用', '2', '', 'commonStatus', NULL, 
 INSERT INTO `sys_dict` VALUES ('1014', 'sys', 'sys', '', 'module', NULL, '', '1', '', 1, 0, '1', '2019-01-10 17:35:42', '1', '2019-01-10 17:35:42');
 INSERT INTO `sys_dict` VALUES ('1015', 'business', 'business', '', 'module', NULL, '', '1', '', 2, 0, '1', '2019-01-10 17:36:12', '1', '2019-01-10 17:36:12');
 INSERT INTO `sys_dict` VALUES ('1016', 'sample', 'sample', '', 'module', NULL, '', '1', '', 3, 0, '1', '2019-01-10 17:36:47', '1', '2019-01-10 17:36:47');
-INSERT INTO `sys_dict` VALUES ('1017', 'Table & Drawer', 'table+drawer', '', 'generatorTemplate', NULL, '', '1', '', 1, 5, '1', '2019-01-11 12:54:21', '1', '2022-06-13 16:19:40');
-INSERT INTO `sys_dict` VALUES ('1018', '业务层 & 持久层', 'biz+mapper', '', 'generatorTemplate', NULL, '', '1', '', 11, 4, '1', '2019-01-11 13:05:34', '1', '2022-06-20 17:24:01');
-INSERT INTO `sys_dict` VALUES ('1019', '持久层', 'mapper', '', 'generatorTemplate', NULL, '', '1', '', 12, 2, '1', '2019-01-11 13:05:55', '1', '2022-06-20 17:23:56');
-INSERT INTO `sys_dict` VALUES ('1020', 'TreeTable & Drawer', 'tree-table+drawer', '', 'generatorTemplate', NULL, '', '1', '', 2, 4, '1', '2019-01-11 13:06:50', '1', '2022-06-13 16:19:51');
 INSERT INTO `sys_dict` VALUES ('1021', '=', 'eq', NULL, 'matchingMode', NULL, NULL, '1', NULL, 1, 0, '1', '2019-01-11 15:18:06', '1', '2019-01-11 13:15:18');
 INSERT INTO `sys_dict` VALUES ('1022', '!=', 'ne', '', 'matchingMode', NULL, '', '1', '', 2, 0, '1', '2019-01-11 15:18:06', '1', '2019-05-05 21:49:09');
 INSERT INTO `sys_dict` VALUES ('1023', '>', 'gt', NULL, 'matchingMode', NULL, NULL, '1', NULL, 3, 0, '1', '2019-01-11 15:18:06', '1', '2021-01-22 16:02:16');
@@ -4004,15 +4047,18 @@ INSERT INTO `sys_dict` VALUES ('1536225304308121602', 'POST', 'POST', NULL, 'htt
 INSERT INTO `sys_dict` VALUES ('1536225343902351361', 'PUT', 'PUT', NULL, 'httpMethod', NULL, 'blue', '1', NULL, 3, 0, '1', '2022-06-13 13:53:58', '1', '2022-06-13 13:53:58');
 INSERT INTO `sys_dict` VALUES ('1536225392333979649', 'DELETE', 'DELETE', NULL, 'httpMethod', NULL, 'red', '1', NULL, 4, 0, '1', '2022-06-13 13:54:10', '1', '2022-06-13 13:54:10');
 INSERT INTO `sys_dict` VALUES ('1536225486085062658', 'OPTIONS', 'OPTIONS', NULL, 'httpMethod', NULL, 'cyan', '1', NULL, 5, 0, '1', '2022-06-13 13:54:32', '1', '2022-06-13 13:54:32');
-INSERT INTO `sys_dict` VALUES ('1536262292591624193', 'Table & Input', 'table+input', '', 'generatorTemplate', NULL, NULL, '1', '', 3, 0, '1', '2022-06-13 16:20:48', '1', '2022-06-13 16:20:48');
-INSERT INTO `sys_dict` VALUES ('1536262376620310530', 'TreeTable & Input', 'tree-table+input', '', 'generatorTemplate', NULL, NULL, '1', '', 4, 0, '1', '2022-06-13 16:21:08', '1', '2022-06-13 16:21:08');
 INSERT INTO `sys_dict` VALUES ('1537341637397618690', 'start ~ end', 'start_end', '', 'matchingMode', NULL, NULL, '1', NULL, 10, 0, '1', '2022-06-16 15:49:43', '1', '2022-06-16 15:49:43');
-INSERT INTO `sys_dict` VALUES ('1538813580546162690', 'Model.ts', 'model.ts', '', 'genFile', NULL, NULL, '1', NULL, 10, 0, '1', '2022-06-20 17:18:42', '1', '2022-06-20 17:18:42');
 INSERT INTO `sys_dict` VALUES ('1541698314917945345', '未读', '0', '', 'messageStatus', NULL, 'red', '1', NULL, 1, 0, '1', '2022-06-28 16:21:36', '1', '2022-06-28 16:21:36');
 INSERT INTO `sys_dict` VALUES ('1541698354638004225', '已读', '1', NULL, 'messageStatus', NULL, 'green', '1', NULL, 2, 0, '1', '2022-06-28 16:21:45', '1', '2022-06-28 16:21:45');
 INSERT INTO `sys_dict` VALUES ('1551454498096967681', 'login:lock:', 'login:lock:', '', 'redisPrefix', NULL, NULL, '1', '用户登录锁定账号', 2, 1, '1', '2022-07-25 14:29:11', '1', '2022-07-25 14:29:26');
 INSERT INTO `sys_dict` VALUES ('1551454796261650433', 'shiro:session:', 'shiro:session:', '', 'redisPrefix', NULL, NULL, '1', '', 3, 0, '1', '2022-07-25 14:30:22', '1', '2022-07-25 14:30:22');
 INSERT INTO `sys_dict` VALUES ('1551455106229104641', 'binding:phone:verification:code', 'binding:phone:verification:code', '', 'redisPrefix', NULL, NULL, '1', '绑定手机号短信验证码', 7, 0, '1', '2022-07-25 14:31:36', '1', '2022-07-25 14:31:36');
+INSERT INTO `sys_dict` VALUES ('1623855425239711745', '表格 - Table', 'table', '', 'listGeneratorTemplate', NULL, NULL, '1', NULL, 1, 1, '1', '2023-02-10 09:24:38', '1', '2023-02-10 09:25:13');
+INSERT INTO `sys_dict` VALUES ('1623855470072627202', '树表格 - TreeTable', 'tree-table', '', 'listGeneratorTemplate', NULL, NULL, '1', NULL, 2, 1, '1', '2023-02-10 09:24:48', '1', '2023-02-10 09:25:20');
+INSERT INTO `sys_dict` VALUES ('1623855529438806017', '树 - Tree', 'tree', '', 'listGeneratorTemplate', NULL, NULL, '1', NULL, 3, 1, '1', '2023-02-10 09:25:03', '1', '2023-02-10 09:25:26');
+INSERT INTO `sys_dict` VALUES ('1623855725040173057', '抽屉 - Drawer', 'drawer', '', 'inputGeneratorTemplate', NULL, NULL, '1', NULL, 2, 1, '1', '2023-02-10 09:25:49', '1', '2023-02-10 09:26:10');
+INSERT INTO `sys_dict` VALUES ('1623855873698889729', '对话框 - Modal', 'modal', '', 'inputGeneratorTemplate', NULL, NULL, '1', NULL, 1, 0, '1', '2023-02-10 09:26:25', '1', '2023-02-10 09:26:25');
+INSERT INTO `sys_dict` VALUES ('1623855956687388673', '页面 - Page', 'page', '', 'inputGeneratorTemplate', NULL, NULL, '1', NULL, 3, 0, '1', '2023-02-10 09:26:45', '1', '2023-02-10 09:26:45');
 INSERT INTO `sys_dict` VALUES ('1760cfb5a2eea70a091a1f49801c16aa', '用户审批', 'userTask', '', 'activityType', '', 'orange', '1', '', 2, 28, '1', '2020-05-07 20:01:47', '1', '2022-07-13 14:03:08');
 INSERT INTO `sys_dict` VALUES ('19428ffc5b02c47c2bb958eb293b72fa', 'save', 'save', NULL, 'genMethod', NULL, NULL, '1', NULL, 3, 0, '1', '2021-01-22 10:43:14', '1', '2021-01-22 10:43:14');
 INSERT INTO `sys_dict` VALUES ('25145620da33d7828b7f12ab88dcf64d', '页面', 'page', NULL, 'cmsReleaseType', NULL, NULL, '1', NULL, 1, 0, '1', '2021-12-08 10:21:58', '1', '2021-12-08 10:21:58');
@@ -4020,7 +4066,6 @@ INSERT INTO `sys_dict` VALUES ('258aa110058920e3d25ab4a4f8c8606b', 'Model.java',
 INSERT INTO `sys_dict` VALUES ('2b9c81faded52d3c3f4753741b201d14', '病假', '3', '', 'leaveType', NULL, '', '1', '', 3, 0, '1', '2020-04-26 15:15:39', '1', '2020-04-26 15:15:39');
 INSERT INTO `sys_dict` VALUES ('2c67e2515e5c4cd9640fb578ede02495', '文章', 'article', NULL, 'cmsReleaseType', NULL, NULL, '1', NULL, 3, 0, '1', '2021-12-08 10:22:46', '1', '2021-12-08 10:22:46');
 INSERT INTO `sys_dict` VALUES ('2cb335b11141e600e4b6afbcfcb38a91', '当前页面', '1', NULL, 'openMode', NULL, NULL, '1', NULL, 1, 1, '1', '2021-01-04 10:23:18', '1', '2022-05-25 10:11:11');
-INSERT INTO `sys_dict` VALUES ('2fa104fae1e7914ef3ec3c92b1e9435e', 'Mapper.xml', 'mapping', '', 'genFile', NULL, NULL, '1', NULL, 3, 3, '1', '2021-01-22 10:45:43', '1', '2022-06-22 16:53:03');
 INSERT INTO `sys_dict` VALUES ('3028aa52cd73fcb37264b14b3c2e2908', 'Input.vue', 'input.vue', '', 'genFile', NULL, NULL, '1', NULL, 8, 1, '1', '2021-01-22 10:46:32', '1', '2022-06-20 17:25:01');
 INSERT INTO `sys_dict` VALUES ('397b3c02d8ea5e9e6b65316400312157', '挂起', '2', '', 'suspensionState', NULL, 'orange', '1', '', 2, 0, '1', '2020-05-21 10:52:58', '1', '2020-05-22 13:26:14');
 INSERT INTO `sys_dict` VALUES ('39a161672dd6fa4178a329698c830e0b', '中', '3', NULL, 'passwordStrength', NULL, 'green', '1', NULL, 3, 0, '1', '2020-12-22 14:07:31', '1', '2020-12-22 14:07:31');
@@ -4072,7 +4117,6 @@ INSERT INTO `sys_dict` VALUES ('e6afb823cf7f1057dc5afc03a196480b', '栏目', 'co
 INSERT INTO `sys_dict` VALUES ('e71e1827d384550145ca83cd1140f3b0', '特殊工伤假', '10', '', 'leaveType', NULL, '', '1', '', 10, 0, '1', '2020-04-26 15:16:44', '1', '2020-04-26 15:16:44');
 INSERT INTO `sys_dict` VALUES ('e75b3cf8a6ab33fe9c6e8a3c3fd50130', '新建标签页', '2', NULL, 'openMode', NULL, NULL, '1', NULL, 2, 1, '1', '2021-01-04 10:23:31', '1', '2022-05-25 10:11:19');
 INSERT INTO `sys_dict` VALUES ('efd649d15808496398ac5386336ebb83', '草稿', '0', NULL, 'cmsArticleStatus', NULL, 'orange', '1', NULL, 1, 0, '1', '2021-11-19 15:31:15', '1', '2021-11-19 15:31:15');
-INSERT INTO `sys_dict` VALUES ('f2fb2f1aa7d82d3869e7a3c69307f6c9', 'ServiceImpl.java', 'serviceImpl', '', 'genFile', NULL, NULL, '1', NULL, 5, 1, '1', '2021-01-22 10:45:59', '1', '2022-06-20 17:17:52');
 COMMIT;
 
 -- ----------------------------
@@ -4080,17 +4124,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_type`;
 CREATE TABLE `sys_dict_type` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类别名称',
-  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '字典类别',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `sys` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否系统',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '类别名称',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '字典类别',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `sys` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '是否系统',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_dict_type_type_pk` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='字典类别';
 
 -- ----------------------------
@@ -4099,7 +4144,6 @@ CREATE TABLE `sys_dict_type` (
 BEGIN;
 INSERT INTO `sys_dict_type` VALUES ('0e60608a45136e49b5cca43c88fc43a0', 'CMS网站发布状态', 'cmsReleaseStatus', '1', '0', 0, '1', '2022-05-18 16:43:47', '1', '2022-05-18 16:43:47');
 INSERT INTO `sys_dict_type` VALUES ('10205d68a481cf177cbdd44093944ba1', '是否', 'whether', '1', '1', 0, '1', '2022-05-18 16:43:47', '1', '2022-05-18 16:43:47');
-INSERT INTO `sys_dict_type` VALUES ('14', '代码生成-生成模板', 'generatorTemplate', '1', '1', 7, '1', '2022-05-18 16:43:47', '1', '2022-05-21 14:00:47');
 INSERT INTO `sys_dict_type` VALUES ('14b305d91fdb4244768204810366e631', '代码生成-生成方法', 'genMethod', '1', '1', 0, '1', '2022-05-18 16:43:47', '1', '2022-05-18 16:43:47');
 INSERT INTO `sys_dict_type` VALUES ('15', '匹配方式', 'matchingMode', '1', '1', 0, '1', '2022-05-18 16:43:47', '1', '2022-05-18 16:43:47');
 INSERT INTO `sys_dict_type` VALUES ('1527910454452584450', '标签颜色', 'tagColor', '1', '1', 0, '1', '2022-05-21 15:13:34', '1', '2022-05-21 15:13:34');
@@ -4108,6 +4152,8 @@ INSERT INTO `sys_dict_type` VALUES ('1528987145396588545', '菜单类型', 'perm
 INSERT INTO `sys_dict_type` VALUES ('1529303167152439297', '外链', 'external', '1', '1', 2, '1', '2022-05-25 11:27:43', '1', '2022-05-26 16:08:05');
 INSERT INTO `sys_dict_type` VALUES ('1536225067569020930', 'HttpMethod', 'httpMethod', '1', '1', 0, '1', '2022-06-13 13:52:52', '1', '2022-06-13 13:52:52');
 INSERT INTO `sys_dict_type` VALUES ('1541698091374125058', '消息状态', 'messageStatus', '1', '1', 6, '1', '2022-06-28 16:20:43', '1', '2022-07-02 21:56:15');
+INSERT INTO `sys_dict_type` VALUES ('1623855266070069250', '详情/修改页模板', 'inputGeneratorTemplate', '1', '0', 0, '1', '2023-02-10 09:24:00', '1', '2023-02-10 09:24:00');
+INSERT INTO `sys_dict_type` VALUES ('1623855306406690817', '列表页模板', 'listGeneratorTemplate', '1', '0', 0, '1', '2023-02-10 09:24:09', '1', '2023-02-10 09:24:09');
 INSERT INTO `sys_dict_type` VALUES ('17', '栅格', 'grid', '1', '1', 0, '1', '2022-05-18 16:43:47', '1', '2022-05-18 16:43:47');
 INSERT INTO `sys_dict_type` VALUES ('18', '字段验证', 'verification', '1', '1', 0, '1', '2022-05-18 16:43:47', '1', '2022-05-18 16:43:47');
 INSERT INTO `sys_dict_type` VALUES ('19', 'redis前缀', 'redisPrefix', '1', '1', 0, '1', '2022-05-18 16:43:47', '1', '2022-05-18 16:43:47');
@@ -4137,19 +4183,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_download`;
 CREATE TABLE `sys_download` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `path` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '路径',
-  `effective_type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '有效期类型',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
+  `path` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '路径',
+  `effective_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '有效期类型',
   `expire` datetime DEFAULT NULL COMMENT '过期时间',
-  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '文件类型',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '文件类型',
   `length` int(11) DEFAULT NULL COMMENT '文件大小',
-  `auth` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '授权',
-  `code` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '权限代码',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `tenant_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `auth` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '授权',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '权限代码',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='下载';
@@ -4159,15 +4205,15 @@ CREATE TABLE `sys_download` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_exception`;
 CREATE TABLE `sys_exception` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `user_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '触发用户',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '触发用户',
   `trigger_time` datetime DEFAULT NULL COMMENT '触发时间',
-  `type` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '异常类型',
-  `trace` mediumtext COLLATE utf8mb4_bin DEFAULT NULL COMMENT '错误堆栈',
-  `message` mediumtext COLLATE utf8mb4_bin DEFAULT NULL COMMENT '错误信息',
-  `url` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求地址',
-  `code` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '错误代码',
-  `node` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '触发节点',
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '异常类型',
+  `trace` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '错误堆栈',
+  `message` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '错误信息',
+  `url` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求地址',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '错误代码',
+  `node` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '触发节点',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='异常日志';
 
@@ -4176,23 +4222,25 @@ CREATE TABLE `sys_exception` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_file`;
 CREATE TABLE `sys_file` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
-  `parent_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
-  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
-  `display_name` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `name` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '文件名称',
-  `path` varchar(1024) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '路径',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `parent_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '父id',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
+  `display_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '文件名称',
+  `path` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '路径',
   `size` bigint(20) DEFAULT NULL COMMENT '大小',
   `order_no` int(11) DEFAULT NULL COMMENT '排序值',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `tenant_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '修改人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '修改人',
   `edit_date` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `sys_file_parent_id_index` (`parent_id`),
+  KEY `sys_file_parent_id_type_index` (`parent_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='文件';
 
 -- ----------------------------
@@ -4200,28 +4248,29 @@ CREATE TABLE `sys_file` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_import_excel_template`;
 CREATE TABLE `sys_import_excel_template` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '模板名称',
-  `import_table` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '表',
-  `start_row` int(11) DEFAULT NULL COMMENT '起始行',
-  `callback` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '回调',
-  `import_code` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '模板代码',
-  `permission_code` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '权限代码',
-  `remarks` varchar(1024) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `data_source` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据源',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '模板名称',
+  `import_table` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '表',
+  `start_row` int(11) NOT NULL COMMENT '起始行',
+  `callback` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '回调',
+  `import_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '模板代码',
+  `permission_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '权限代码',
+  `remarks` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `data_source` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据源',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_import_excel_template_import_code_pk` (`import_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='导入模板';
 
 -- ----------------------------
 -- Records of sys_import_excel_template
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_import_excel_template` VALUES ('1548922251296944129', '代码生成示例', 'sample_general', 1, 'sampleGeneralServiceImpl', 'sample:general', 'sample:general:import:data', NULL, NULL, 0, '1', '2022-07-18 14:46:56', '1', '2022-07-18 14:46:56');
+INSERT INTO `sys_import_excel_template` VALUES ('1556202254541754370', '代码生成示例', 'sample_general', 1, 'sampleGeneralServiceImpl', 'sample:general', 'sample:general:import:data', NULL, NULL, 0, '1', '2022-08-07 16:55:04', '1', '2022-08-07 16:55:04');
 COMMIT;
 
 -- ----------------------------
@@ -4229,35 +4278,36 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_import_excel_template_detail`;
 CREATE TABLE `sys_import_excel_template_detail` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `template_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '模板id',
-  `field_name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据库字段名',
-  `title` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '标题',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `template_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '模板id',
+  `field_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '数据库字段名',
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '标题',
   `field_length` int(11) DEFAULT NULL COMMENT '字段长度',
-  `field_type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '字段类型',
-  `replace_table` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '替换表表名',
-  `replace_table_field_name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '替换表;名称',
-  `replace_table_field_value` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '替换表;值',
-  `replace_table_dict_type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '替换表;字典类型',
+  `field_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '字段类型',
+  `replace_table` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '替换表表名',
+  `replace_table_field_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '替换表;名称',
+  `replace_table_field_value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '替换表;值',
+  `replace_table_dict_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '替换表;字典类型',
   `order_no` int(11) DEFAULT NULL COMMENT '排序值',
-  `required` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否必填',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `required` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否必填',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
-  `only` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否唯一',
-  PRIMARY KEY (`id`)
+  `only` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否唯一',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_import_excel_template_detail_template_id_field_name_pk` (`template_id`,`field_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='导入模板详情';
 
 -- ----------------------------
 -- Records of sys_import_excel_template_detail
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_import_excel_template_detail` VALUES ('1548922292489203713', '1548922251296944129', NULL, '姓名', 32, 'varchar(32)', NULL, NULL, NULL, NULL, 1, '1', '1', '2022-07-18 14:47:53', '1', '2022-07-18 14:47:53', '1');
-INSERT INTO `sys_import_excel_template_detail` VALUES ('1548922292531146753', '1548922251296944129', NULL, '性别', 32, 'varchar(32)', 'sys_dict', 'name', 'code', 'sex', 2, '1', '1', '2022-07-18 14:47:53', '1', '2022-07-18 14:47:53', NULL);
-INSERT INTO `sys_import_excel_template_detail` VALUES ('1548922292552118274', '1548922251296944129', NULL, '年龄', 11, 'int(11)', NULL, NULL, NULL, NULL, 3, '1', '1', '2022-07-18 14:47:53', '1', '2022-07-18 14:47:53', NULL);
-INSERT INTO `sys_import_excel_template_detail` VALUES ('1548922292568895489', '1548922251296944129', NULL, '手机号码', 32, 'varchar(32)', NULL, NULL, NULL, NULL, 4, '1', '1', '2022-07-18 14:47:53', '1', '2022-07-18 14:47:53', NULL);
-INSERT INTO `sys_import_excel_template_detail` VALUES ('1548922292589867009', '1548922251296944129', NULL, '地址', 255, 'varchar(255)', NULL, NULL, NULL, NULL, 5, '1', '1', '2022-07-18 14:47:53', '1', '2022-07-18 14:47:53', NULL);
+INSERT INTO `sys_import_excel_template_detail` VALUES ('1556202254986350594', '1556202254541754370', 'name', '姓名', 32, 'varchar(32)', NULL, NULL, NULL, NULL, 1, NULL, '1', '2022-08-07 17:00:05', '1', '2022-08-07 17:00:05', NULL);
+INSERT INTO `sys_import_excel_template_detail` VALUES ('1556202254990544897', '1556202254541754370', 'sex', '性别', 32, 'varchar(32)', 'sys_dict', 'name', 'code', 'sex', 2, NULL, '1', '2022-08-07 17:00:05', '1', '2022-08-07 17:00:05', NULL);
+INSERT INTO `sys_import_excel_template_detail` VALUES ('1556202254994739202', '1556202254541754370', 'age', '年龄', 11, 'int(11)', NULL, NULL, NULL, NULL, 3, NULL, '1', '2022-08-07 17:00:05', '1', '2022-08-07 17:00:05', NULL);
+INSERT INTO `sys_import_excel_template_detail` VALUES ('1556202254998933505', '1556202254541754370', 'phone', '手机号码', 32, 'varchar(32)', NULL, NULL, NULL, NULL, 4, NULL, '1', '2022-08-07 17:00:05', '1', '2022-08-07 17:00:05', NULL);
+INSERT INTO `sys_import_excel_template_detail` VALUES ('1556202255007322114', '1556202254541754370', 'address', '地址', 255, 'varchar(255)', NULL, NULL, NULL, NULL, 5, NULL, '1', '2022-08-07 17:00:05', '1', '2022-08-07 17:00:05', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -4265,524 +4315,262 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_import_excel_temporary`;
 CREATE TABLE `sys_import_excel_temporary` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `template_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '模板id',
-  `user_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入用户id',
-  `verification_status` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '验证结果',
-  `verification_results` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '错误信息',
-  `field1` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field2` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field3` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field4` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field5` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field6` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field7` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field8` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field9` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field10` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field11` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field12` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field13` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field14` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field15` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field16` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field17` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field18` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field19` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field20` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field21` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field22` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field23` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field24` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field25` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field26` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field27` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field28` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field29` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field30` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field31` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field32` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field33` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field34` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field35` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field36` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field37` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field38` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field39` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field40` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field41` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field42` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field43` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field44` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field45` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field46` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field47` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field48` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field49` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
-  `field50` varchar(300) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `template_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '模板id',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '导入用户id',
+  `verification_status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '验证结果',
+  `verification_results` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '错误信息',
+  `field1` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field2` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field3` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field4` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field5` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field6` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field7` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field8` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field9` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field10` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field11` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field12` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field13` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field14` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field15` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field16` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field17` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field18` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field19` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field20` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field21` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field22` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field23` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field24` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field25` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field26` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field27` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field28` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field29` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field30` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field31` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field32` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field33` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field34` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field35` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field36` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field37` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field38` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field39` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field40` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field41` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field42` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field43` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field44` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field45` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field46` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field47` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field48` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field49` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
+  `field50` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '导入字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='导入临时表';
-
--- ----------------------------
--- Records of sys_import_excel_temporary
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710103244801', '1548922251296944129', '1', '1', NULL, '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710107439105', '1548922251296944129', '1', '1', NULL, '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710111633410', '1548922251296944129', '1', '1', NULL, '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710115827714', '1548922251296944129', '1', '1', NULL, '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710115827715', '1548922251296944129', '1', '1', NULL, '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710120022017', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710120022018', '1548922251296944129', '1', '1', NULL, '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710124216322', '1548922251296944129', '1', '1', NULL, '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710124216323', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710128410625', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710128410626', '1548922251296944129', '1', '1', NULL, '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710128410627', '1548922251296944129', '1', '1', NULL, '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710128410628', '1548922251296944129', '1', '1', NULL, '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710132604929', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710132604930', '1548922251296944129', '1', '1', NULL, '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710132604931', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710136799234', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710136799235', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710136799236', '1548922251296944129', '1', '1', NULL, 'cc', '1', '30', '17366392808', 'xxx', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710140993537', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710140993538', '1548922251296944129', '1', '1', NULL, '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710140993539', '1548922251296944129', '1', '1', NULL, '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710140993540', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710145187842', '1548922251296944129', '1', '1', NULL, '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710145187843', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710149382145', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710149382146', '1548922251296944129', '1', '1', NULL, '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710149382147', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710149382148', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710153576449', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710153576450', '1548922251296944129', '1', '1', NULL, '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710153576451', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710153576452', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710157770754', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710157770755', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710157770756', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710161965058', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710161965059', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710161965060', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710161965061', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710166159362', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710166159363', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710174547969', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710174547970', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710174547971', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710174547972', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710174547973', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710178742273', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710182936577', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710182936578', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710187130882', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710187130883', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710187130884', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710191325186', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710191325187', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710195519489', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710195519490', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710195519491', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710199713793', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710199713794', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710199713795', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710203908097', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710203908098', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710208102401', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710208102402', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710208102403', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710212296705', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710212296706', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710212296707', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710216491010', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710216491011', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710216491012', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710216491013', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710220685314', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710220685315', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710220685316', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710224879618', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710224879619', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710224879620', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710229073921', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710229073922', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710229073923', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710233268226', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710237462529', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710237462530', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710237462531', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710241656834', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710241656835', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710245851137', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710245851138', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710245851139', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710254239746', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710254239747', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710254239748', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710254239749', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710258434049', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710258434050', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710258434051', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710258434052', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710262628353', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710262628354', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710266822658', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710271016961', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710271016962', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710271016963', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710275211266', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710275211267', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710275211268', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710279405569', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710279405570', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710279405571', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710279405572', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710283599873', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710283599874', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710287794177', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710291988481', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710300377089', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710308765697', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710312960002', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710317154306', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710321348610', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710329737217', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710333931522', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710338125825', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710342320129', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710342320130', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710350708737', '1548922251296944129', '1', '0', '陈绿凝已存在;', '陈绿凝', '1', '28', '17366392944', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710354903041', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710359097345', '1548922251296944129', '1', '0', 'cc已存在;', 'cc', '1', '30', '17366392808', 'xxx', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710363291649', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710363291650', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710371680257', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710375874562', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710380068865', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710384263169', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710392651777', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710396846082', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710396846083', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710401040385', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710405234690', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710409428993', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710413623298', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710417817601', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710422011905', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710422011906', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710426206209', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710426206210', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710426206211', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710430400514', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710434594817', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710434594818', '1548922251296944129', '1', '0', '蓬子石已存在;', '蓬子石', '1', '28', '17366392818', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710442983425', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710442983426', '1548922251296944129', '1', '0', '善燕子已存在;', '善燕子', '1', '23', '17366392815', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710442983427', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710447177729', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710447177730', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710447177731', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710447177732', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710451372033', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710451372034', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710459760642', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710463954946', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710463954947', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710463954948', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710463954949', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710468149249', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710468149250', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710480732162', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710489120769', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710489120770', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710497509377', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710497509378', '1548922251296944129', '1', '0', '麻寻桃已存在;', '麻寻桃', '1', '26', '17366392931', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710497509379', '1548922251296944129', '1', '0', '孔丽君已存在;', '孔丽君', '1', '23', '17366392929', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710505897985', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710514286593', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710514286594', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710518480897', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710518480898', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710518480899', '1548922251296944129', '1', '0', '普玉石已存在;', '普玉石', '1', '23', '17366393050', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710522675202', '1548922251296944129', '1', '0', '六慕诗已存在;', '六慕诗', '1', '28', '17366393065', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710522675203', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710526869505', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710531063809', '1548922251296944129', '1', '0', '乌雅冷雁已存在;', '乌雅冷雁', '1', '26', '17366392816', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710535258114', '1548922251296944129', '1', '0', '訾春柏已存在;', '訾春柏', '1', '23', '17366392814', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710535258115', '1548922251296944129', '1', '0', '庄善和已存在;', '庄善和', '1', '23', '17366393057', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710539452418', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710543646721', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710543646722', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710543646723', '1548922251296944129', '1', '0', '司寇傲儿已存在;', '司寇傲儿', '1', '27', '17366392817', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710543646724', '1548922251296944129', '1', '0', '双初然已存在;', '双初然', '1', '27', '17366392932', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710543646725', '1548922251296944129', '1', '0', '恭瑜敏已存在;', '恭瑜敏', '1', '26', '17366392813', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710547841026', '1548922251296944129', '1', '0', '诸嘉禧已存在;', '诸嘉禧', '1', '28', '17366392933', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710547841027', '1548922251296944129', '1', '0', '淦尔槐已存在;', '淦尔槐', '1', '23', '17366393056', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710547841028', '1548922251296944129', '1', '0', '亓官迎海已存在;', '亓官迎海', '1', '23', '17366392930', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710552035330', '1548922251296944129', '1', '1', NULL, '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710552035331', '1548922251296944129', '1', '1', NULL, '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710552035332', '1548922251296944129', '1', '1', NULL, '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710556229633', '1548922251296944129', '1', '1', NULL, '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710560423938', '1548922251296944129', '1', '1', NULL, '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710560423939', '1548922251296944129', '1', '1', NULL, '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710568812546', '1548922251296944129', '1', '1', NULL, '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710573006849', '1548922251296944129', '1', '1', NULL, '势悠奕', '2', '23', '17366392808', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710577201153', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710581395457', '1548922251296944129', '1', '1', NULL, '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710581395458', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710581395459', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710585589762', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710585589763', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710585589764', '1548922251296944129', '1', '1', NULL, '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710589784066', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710589784067', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710589784068', '1548922251296944129', '1', '1', NULL, '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710589784069', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710589784070', '1548922251296944129', '1', '1', NULL, '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710593978369', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710593978370', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710593978371', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710602366978', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710610755585', '1548922251296944129', '1', '1', NULL, '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710614949890', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710614949891', '1548922251296944129', '1', '1', NULL, '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710619144193', '1548922251296944129', '1', '1', NULL, '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710627532801', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710631727106', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710635921409', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710635921410', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710640115714', '1548922251296944129', '1', '1', NULL, '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710648504322', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710652698626', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710652698627', '1548922251296944129', '1', '1', NULL, '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710652698628', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710656892930', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710669475841', '1548922251296944129', '1', '1', NULL, '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710669475842', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710669475843', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710677864450', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710677864451', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710686253058', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710690447361', '1548922251296944129', '1', '1', NULL, '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710690447362', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710694641666', '1548922251296944129', '1', '0', '势悠奕已存在;', '势悠奕', '2', '23', '17366392808', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710694641667', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710698835969', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710698835970', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710698835971', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710698835972', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710698835973', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710698835974', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710703030273', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710703030274', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710703030275', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710707224578', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710707224579', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710715613185', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710719807490', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710728196097', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710732390402', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710732390403', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710732390404', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710732390405', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710732390406', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710736584706', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710736584707', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710736584708', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710736584709', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710736584710', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710736584711', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710740779010', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710740779011', '1548922251296944129', '1', '1', NULL, '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710749167618', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710749167619', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710749167620', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710749167621', '1548922251296944129', '1', '0', '势悠奕已存在;', '势悠奕', '2', '23', '17366392808', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710749167622', '1548922251296944129', '1', '0', '势悠奕已存在;', '势悠奕', '2', '23', '17366392808', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710753361921', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710753361922', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710753361923', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710757556225', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710765944833', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710774333442', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710774333443', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710778527746', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710782722049', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710786916354', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710786916355', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710791110657', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710791110658', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710791110659', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710791110660', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710791110661', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710795304961', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710795304962', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710795304963', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710795304964', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710799499266', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710799499267', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710799499268', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710799499269', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710799499270', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710803693570', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710803693571', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710803693572', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710807887874', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710807887875', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710812082177', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710816276482', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710820470785', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710824665089', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710828859394', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710837248001', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710837248002', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710841442306', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710845636609', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710845636610', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710845636611', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710849830914', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710849830915', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710862413825', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710862413826', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710862413827', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710866608130', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710866608131', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710866608132', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710866608133', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710870802434', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710870802435', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710870802436', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710870802437', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710870802438', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710870802439', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710874996737', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710874996738', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710887579650', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710891773954', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710895968258', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710895968259', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710895968260', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710895968261', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710900162561', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710904356866', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710904356867', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710904356868', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710904356869', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710912745473', '1548922251296944129', '1', '0', '势悠奕已存在;', '势悠奕', '2', '23', '17366392808', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710916939777', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710916939778', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710921134082', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710921134083', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710921134084', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710921134085', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710925328385', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710925328386', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710925328387', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710925328388', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710929522689', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710929522690', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710929522691', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710933716994', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710937911297', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710937911298', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710937911299', '1548922251296944129', '1', '0', '秋痴春已存在;', '秋痴春', '2', '26', '17366393055', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710937911300', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710937911301', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710937911302', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710942105602', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710942105603', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710946299906', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710946299907', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710950494209', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710950494210', '1548922251296944129', '1', '0', '僧山已存在;', '僧山', '2', '26', '17366392810', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710950494211', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710950494212', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710950494213', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710950494214', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710954688513', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710954688514', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710954688515', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710958882818', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710958882819', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710958882820', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710963077122', '1548922251296944129', '1', '0', '势悠奕已存在;', '势悠奕', '2', '23', '17366392808', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710963077123', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710967271425', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710967271426', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710967271427', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710975660033', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710979854338', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710992437250', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710996631554', '1548922251296944129', '1', '0', '员绮梅已存在;', '员绮梅', '2', '23', '17366393051', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710996631555', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929710996631556', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711005020161', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711009214465', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711009214466', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711013408770', '1548922251296944129', '1', '0', '候之玉已存在;', '候之玉', '2', '28', '17366393054', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711013408771', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711017603073', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711021797378', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711021797379', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711021797380', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711025991681', '1548922251296944129', '1', '0', '答鸿信已存在;', '答鸿信', '2', '27', '17366393053', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711025991682', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711030185985', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711030185986', '1548922251296944129', '1', '0', '淳于凝云已存在;', '淳于凝云', '2', '26', '17366393058', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711038574593', '1548922251296944129', '1', '0', '濯丝琪已存在;', '濯丝琪', '2', '23', '17366392935', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711038574594', '1548922251296944129', '1', '0', '针晓畅已存在;', '针晓畅', '2', '26', '17366392937', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711042768897', '1548922251296944129', '1', '0', '鞠理群已存在;', '鞠理群', '2', '28', '17366392823', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711042768898', '1548922251296944129', '1', '0', '伯景彰已存在;', '伯景彰', '2', '23', '17366392809', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711042768899', '1548922251296944129', '1', '0', '祖流如已存在;', '祖流如', '2', '27', '17366392811', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711046963201', '1548922251296944129', '1', '0', '范姜雅韶已存在;', '范姜雅韶', '2', '28', '17366392939', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711046963202', '1548922251296944129', '1', '0', '势悠奕已存在;', '势悠奕', '2', '23', '17366392808', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711046963203', '1548922251296944129', '1', '0', '单玄清已存在;', '单玄清', '2', '26', '17366392934', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711051157506', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711051157507', '1548922251296944129', '1', '0', '寸白莲已存在;', '寸白莲', '2', '23', '17366392936', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711055351810', '1548922251296944129', '1', '0', '袭俊良已存在;', '袭俊良', '2', '27', '17366393059', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711055351811', '1548922251296944129', '1', '0', '虎采珊已存在;', '虎采珊', '2', '27', '17366392938', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711059546113', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711067934722', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711067934723', '1548922251296944129', '1', '0', '夹谷芸儿已存在;', '夹谷芸儿', '2', '28', '17366393060', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711067934724', '1548922251296944129', '1', '0', '叔雁露已存在;', '叔雁露', '2', '28', '17366392812', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_import_excel_temporary` VALUES ('1548929711067934725', '1548922251296944129', '1', '0', '上官飞章已存在;', '上官飞章', '2', '26', '17366393052', '江苏省南京市', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
-  `modular` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '模块',
-  `method` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '方法',
-  `ip` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'ip',
-  `url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'url',
-  `uri` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'uri',
-  `clazz` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'class',
-  `method_name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '方法名',
-  `http_method` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Http Method',
-  `params` mediumtext COLLATE utf8mb4_bin DEFAULT NULL COMMENT '参数',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
+  `modular` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '模块',
+  `method` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '方法',
+  `ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'ip',
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'url',
+  `uri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'uri',
+  `clazz` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'class',
+  `method_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '方法名',
+  `http_method` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Http Method',
+  `params` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '参数',
   `time_consuming` int(11) DEFAULT NULL COMMENT '耗时',
-  `tenant_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
-  `operation_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '操作人',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
+  `operation_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '操作人',
   `operation_date` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='日志';
+
+-- ----------------------------
+-- Records of sys_log
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_log` VALUES ('1610549936221417474', 'sys', '用户登录', '0:0:0:0:0:0:0:1', 'http://localhost/api/login', '/api/login', 'com.easy.admin.auth.controller.AuthController', 'login', 'POST', '[LoginVO{username=\'sysadmin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=false, captchaVerification=\'null\'}]', NULL, NULL, '1', '2023-01-04 16:13:22');
+INSERT INTO `sys_log` VALUES ('1610549936502435841', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:13:22');
+INSERT INTO `sys_log` VALUES ('1610549995424018434', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:13:36');
+INSERT INTO `sys_log` VALUES ('1610550057814290433', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:13:51');
+INSERT INTO `sys_log` VALUES ('1610551053739192321', 'sys', '用户登录', '0:0:0:0:0:0:0:1', 'http://localhost/api/login', '/api/login', 'com.easy.admin.auth.controller.AuthController', 'login', 'POST', '[LoginVO{username=\'sysadmin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=false, captchaVerification=\'null\'}]', NULL, NULL, '1', '2023-01-04 16:17:48');
+INSERT INTO `sys_log` VALUES ('1610551053961490433', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:17:49');
+INSERT INTO `sys_log` VALUES ('1610551498498994178', 'sys', '用户登录', '0:0:0:0:0:0:0:1', 'http://localhost/api/login', '/api/login', 'com.easy.admin.auth.controller.AuthController', 'login', 'POST', '[LoginVO{username=\'sysadmin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=false, captchaVerification=\'null\'}]', NULL, NULL, '1', '2023-01-04 16:19:34');
+INSERT INTO `sys_log` VALUES ('1610551498637406210', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:19:35');
+INSERT INTO `sys_log` VALUES ('1610551631584260098', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:06');
+INSERT INTO `sys_log` VALUES ('1610551700647669761', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:23');
+INSERT INTO `sys_log` VALUES ('1610551705789886466', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:24');
+INSERT INTO `sys_log` VALUES ('1610551707681517569', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:24');
+INSERT INTO `sys_log` VALUES ('1610551709078220802', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:25');
+INSERT INTO `sys_log` VALUES ('1610551710705610753', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:25');
+INSERT INTO `sys_log` VALUES ('1610551711531888641', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:25');
+INSERT INTO `sys_log` VALUES ('1610551712353972225', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:25');
+INSERT INTO `sys_log` VALUES ('1610551713050226690', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:26');
+INSERT INTO `sys_log` VALUES ('1610551717487800321', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:20:27');
+INSERT INTO `sys_log` VALUES ('1610553131580616706', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 16:26:04');
+INSERT INTO `sys_log` VALUES ('1610573153636020226', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 17:45:37');
+INSERT INTO `sys_log` VALUES ('1610616916102180866', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 20:39:31');
+INSERT INTO `sys_log` VALUES ('1610619093256335361', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 20:48:10');
+INSERT INTO `sys_log` VALUES ('1610619860088352769', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-04 20:51:13');
+INSERT INTO `sys_log` VALUES ('1610801074720043009', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-05 08:51:18');
+INSERT INTO `sys_log` VALUES ('1613044005334011906', 'sys', '用户登录', '0:0:0:0:0:0:0:1', 'http://localhost/api/login', '/api/login', 'com.easy.admin.auth.controller.AuthController', 'login', 'POST', '[LoginVO{username=\'sysadmin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=false, captchaVerification=\'null\'}]', NULL, NULL, '1', '2023-01-11 13:23:54');
+INSERT INTO `sys_log` VALUES ('1613044005967351810', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 13:23:55');
+INSERT INTO `sys_log` VALUES ('1613049137413083137', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 13:44:18');
+INSERT INTO `sys_log` VALUES ('1613049450274607106', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 13:45:33');
+INSERT INTO `sys_log` VALUES ('1613050766107463681', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 13:50:46');
+INSERT INTO `sys_log` VALUES ('1613051369856552961', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 13:53:10');
+INSERT INTO `sys_log` VALUES ('1613052033651298306', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 13:55:49');
+INSERT INTO `sys_log` VALUES ('1613052387944157185', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 13:57:13');
+INSERT INTO `sys_log` VALUES ('1613053437753282561', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:01:23');
+INSERT INTO `sys_log` VALUES ('1613053790246785026', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:02:47');
+INSERT INTO `sys_log` VALUES ('1613054493719646210', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:05:35');
+INSERT INTO `sys_log` VALUES ('1613055013343580162', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:07:39');
+INSERT INTO `sys_log` VALUES ('1613055297172131842', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:08:47');
+INSERT INTO `sys_log` VALUES ('1613055981535744002', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:11:30');
+INSERT INTO `sys_log` VALUES ('1613057858868465665', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:18:57');
+INSERT INTO `sys_log` VALUES ('1613058424403251202', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:21:12');
+INSERT INTO `sys_log` VALUES ('1613058642834214914', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:22:04');
+INSERT INTO `sys_log` VALUES ('1613059669583056898', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:26:09');
+INSERT INTO `sys_log` VALUES ('1613061336667901954', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:32:47');
+INSERT INTO `sys_log` VALUES ('1613062101646036994', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:35:49');
+INSERT INTO `sys_log` VALUES ('1613062194675699714', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:36:11');
+INSERT INTO `sys_log` VALUES ('1613062526382231554', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:37:30');
+INSERT INTO `sys_log` VALUES ('1613062799427227650', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:38:35');
+INSERT INTO `sys_log` VALUES ('1613063786099494914', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:42:31');
+INSERT INTO `sys_log` VALUES ('1613064406365753345', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:44:58');
+INSERT INTO `sys_log` VALUES ('1613064778840920065', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:46:27');
+INSERT INTO `sys_log` VALUES ('1613064914237247490', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:47:00');
+INSERT INTO `sys_log` VALUES ('1613065660626227201', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:49:57');
+INSERT INTO `sys_log` VALUES ('1613066162566975490', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:51:57');
+INSERT INTO `sys_log` VALUES ('1613066169529520130', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:51:59');
+INSERT INTO `sys_log` VALUES ('1613066172192903169', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:51:59');
+INSERT INTO `sys_log` VALUES ('1613066172964655105', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:52:00');
+INSERT INTO `sys_log` VALUES ('1613066175724507137', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:52:00');
+INSERT INTO `sys_log` VALUES ('1613066178387890177', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:52:01');
+INSERT INTO `sys_log` VALUES ('1613067102137208833', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:55:41');
+INSERT INTO `sys_log` VALUES ('1613067478215282690', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:57:11');
+INSERT INTO `sys_log` VALUES ('1613068117020364802', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-01-11 14:59:43');
+INSERT INTO `sys_log` VALUES ('1623492523383128065', 'sys', '用户登录', '0:0:0:0:0:0:0:1', 'http://localhost/api/login', '/api/login', 'com.easy.admin.auth.controller.AuthController', 'login', 'POST', '[LoginVO{username=\'sysadmin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=false, captchaVerification=\'null\'}]', NULL, NULL, '1', '2023-02-09 09:22:35');
+INSERT INTO `sys_log` VALUES ('1623492523676729345', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-09 09:22:35');
+INSERT INTO `sys_log` VALUES ('1623495748144398338', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-09 09:35:24');
+INSERT INTO `sys_log` VALUES ('1623854174804443137', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:19:40');
+INSERT INTO `sys_log` VALUES ('1623855070699388930', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:23:13');
+INSERT INTO `sys_log` VALUES ('1623855131953004545', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:23:28');
+INSERT INTO `sys_log` VALUES ('1623856096298991617', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:27:18');
+INSERT INTO `sys_log` VALUES ('1623856236149669890', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:27:51');
+INSERT INTO `sys_log` VALUES ('1623857359682076674', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:32:19');
+INSERT INTO `sys_log` VALUES ('1623857538300706818', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:33:02');
+INSERT INTO `sys_log` VALUES ('1623859532566429698', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:40:57');
+INSERT INTO `sys_log` VALUES ('1623859567882469377', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:41:05');
+INSERT INTO `sys_log` VALUES ('1623863338406576129', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:56:04');
+INSERT INTO `sys_log` VALUES ('1623863519835389953', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:56:48');
+INSERT INTO `sys_log` VALUES ('1623863710806245378', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 09:57:33');
+INSERT INTO `sys_log` VALUES ('1623865473269563394', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 10:04:33');
+INSERT INTO `sys_log` VALUES ('1623865512314339330', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 10:04:43');
+INSERT INTO `sys_log` VALUES ('1623865892494442498', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 10:06:13');
+INSERT INTO `sys_log` VALUES ('1623866186682925057', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 10:07:24');
+INSERT INTO `sys_log` VALUES ('1623866423573020674', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 10:08:20');
+INSERT INTO `sys_log` VALUES ('1623870162354634754', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 10:23:11');
+INSERT INTO `sys_log` VALUES ('1623871029686370305', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 10:26:38');
+INSERT INTO `sys_log` VALUES ('1623873021007691777', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 10:34:33');
+INSERT INTO `sys_log` VALUES ('1623892500785725441', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 11:51:57');
+INSERT INTO `sys_log` VALUES ('1623892500806696961', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 11:51:57');
+INSERT INTO `sys_log` VALUES ('1623927066623803393', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 14:09:18');
+INSERT INTO `sys_log` VALUES ('1623927160798511105', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 14:09:41');
+INSERT INTO `sys_log` VALUES ('1623927596838354946', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 14:11:25');
+INSERT INTO `sys_log` VALUES ('1623928046329331714', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 14:13:12');
+INSERT INTO `sys_log` VALUES ('1623928770673049602', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 14:16:05');
+INSERT INTO `sys_log` VALUES ('1623929242129596418', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 14:17:57');
+INSERT INTO `sys_log` VALUES ('1623931032455675906', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 14:25:04');
+INSERT INTO `sys_log` VALUES ('1623969848419786753', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 16:59:18');
+INSERT INTO `sys_log` VALUES ('1623970374620299265', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 17:01:24');
+INSERT INTO `sys_log` VALUES ('1623970387106742274', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 17:01:27');
+INSERT INTO `sys_log` VALUES ('1623981537361936386', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 17:45:45');
+INSERT INTO `sys_log` VALUES ('1623981539618471938', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 17:45:46');
+INSERT INTO `sys_log` VALUES ('1624066750507139073', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 23:24:22');
+INSERT INTO `sys_log` VALUES ('1624066752142917634', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-10 23:24:22');
+INSERT INTO `sys_log` VALUES ('1624274307809034241', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-11 13:09:07');
+INSERT INTO `sys_log` VALUES ('1624274308572397569', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-11 13:09:07');
+INSERT INTO `sys_log` VALUES ('1624556133488279554', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-12 07:49:00');
+INSERT INTO `sys_log` VALUES ('1624556134255837185', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-12 07:49:00');
+INSERT INTO `sys_log` VALUES ('1624571198480334849', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-12 08:48:51');
+INSERT INTO `sys_log` VALUES ('1624571199868649473', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-12 08:48:52');
+INSERT INTO `sys_log` VALUES ('1624734750293901313', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-12 19:38:45');
+INSERT INTO `sys_log` VALUES ('1624734751992594434', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-12 19:38:46');
+INSERT INTO `sys_log` VALUES ('1624743743405965314', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-12 20:14:29');
+INSERT INTO `sys_log` VALUES ('1624743745024966658', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-12 20:14:30');
+INSERT INTO `sys_log` VALUES ('1624979319413555202', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 11:50:35');
+INSERT INTO `sys_log` VALUES ('1624979321670090754', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 11:50:36');
+INSERT INTO `sys_log` VALUES ('1624982000341368833', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 12:01:14');
+INSERT INTO `sys_log` VALUES ('1624982001847123970', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 12:01:15');
+INSERT INTO `sys_log` VALUES ('1625009392359325698', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 13:50:05');
+INSERT INTO `sys_log` VALUES ('1625010306235252737', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 13:53:43');
+INSERT INTO `sys_log` VALUES ('1625010473839640578', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 13:54:23');
+INSERT INTO `sys_log` VALUES ('1625010676403552258', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 13:55:11');
+INSERT INTO `sys_log` VALUES ('1625010885506383873', 'sys', '用户登录', '0:0:0:0:0:0:0:1', 'http://localhost/api/login', '/api/login', 'com.easy.admin.auth.controller.AuthController', 'login', 'POST', '[LoginVO{username=\'sysadmin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=false, captchaVerification=\'null\'}]', NULL, NULL, '1', '2023-02-13 13:56:01');
+INSERT INTO `sys_log` VALUES ('1625010885988728833', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 13:56:01');
+INSERT INTO `sys_log` VALUES ('1625010943119343618', 'sys', '用户登录', '0:0:0:0:0:0:0:1', 'http://localhost/api/login', '/api/login', 'com.easy.admin.auth.controller.AuthController', 'login', 'POST', '[LoginVO{username=\'sysadmin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=false, captchaVerification=\'null\'}]', NULL, NULL, '1', '2023-02-13 13:56:15');
+INSERT INTO `sys_log` VALUES ('1625010943257755650', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 13:56:15');
+INSERT INTO `sys_log` VALUES ('1625011017299804161', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 13:56:32');
+INSERT INTO `sys_log` VALUES ('1625011786761650178', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 13:59:36');
+INSERT INTO `sys_log` VALUES ('1625014065040486402', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 14:08:39');
+INSERT INTO `sys_log` VALUES ('1625047632130895874', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 16:22:02');
+INSERT INTO `sys_log` VALUES ('1625047966232375298', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 16:23:22');
+INSERT INTO `sys_log` VALUES ('1625048030271008770', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 16:23:37');
+INSERT INTO `sys_log` VALUES ('1625048400103763969', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 16:25:05');
+INSERT INTO `sys_log` VALUES ('1625048780032208898', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 16:26:36');
+INSERT INTO `sys_log` VALUES ('1625049398935318530', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 16:29:03');
+INSERT INTO `sys_log` VALUES ('1625049737457594370', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 16:30:24');
+INSERT INTO `sys_log` VALUES ('1625061793405620226', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 17:18:18');
+INSERT INTO `sys_log` VALUES ('1625062005868089345', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 17:19:09');
+INSERT INTO `sys_log` VALUES ('1625062170360303618', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 17:19:48');
+INSERT INTO `sys_log` VALUES ('1625062678940729346', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 17:21:49');
+INSERT INTO `sys_log` VALUES ('1625068825286393858', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 17:46:15');
+INSERT INTO `sys_log` VALUES ('1625068828805414914', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 17:46:16');
+INSERT INTO `sys_log` VALUES ('1625122681882001409', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 21:20:15');
+INSERT INTO `sys_log` VALUES ('1625122682003636226', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 21:20:15');
+INSERT INTO `sys_log` VALUES ('1625129530299629570', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 21:47:28');
+INSERT INTO `sys_log` VALUES ('1625129530308018178', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-13 21:47:28');
+INSERT INTO `sys_log` VALUES ('1625341745917181953', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 11:50:44');
+INSERT INTO `sys_log` VALUES ('1625341745917181954', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 11:50:44');
+INSERT INTO `sys_log` VALUES ('1625384527636275201', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 14:40:44');
+INSERT INTO `sys_log` VALUES ('1625385618646048769', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 14:45:04');
+INSERT INTO `sys_log` VALUES ('1625385872980254721', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 14:46:05');
+INSERT INTO `sys_log` VALUES ('1625401352853237761', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 15:47:36');
+INSERT INTO `sys_log` VALUES ('1625426422526906370', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 17:27:13');
+INSERT INTO `sys_log` VALUES ('1625431679197777922', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 17:48:06');
+INSERT INTO `sys_log` VALUES ('1625431679751426049', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-14 17:48:06');
+INSERT INTO `sys_log` VALUES ('1625670907307532289', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-15 09:38:42');
+INSERT INTO `sys_log` VALUES ('1625670941390446593', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-15 09:38:51');
+INSERT INTO `sys_log` VALUES ('1625671011556958210', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-15 09:39:07');
+INSERT INTO `sys_log` VALUES ('1625671733962907649', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-15 09:42:00');
+INSERT INTO `sys_log` VALUES ('1625671938640748545', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-15 09:42:48');
+INSERT INTO `sys_log` VALUES ('1626056840506793985', 'sys', '用户登录', '0:0:0:0:0:0:0:1', 'http://localhost/api/login', '/api/login', 'com.easy.admin.auth.controller.AuthController', 'login', 'POST', '[LoginVO{username=\'sysadmin\', password=\'0192023a7bbd73250516f069df18b500\', rememberMe=false, captchaVerification=\'null\'}]', NULL, NULL, '1', '2023-02-16 11:12:16');
+INSERT INTO `sys_log` VALUES ('1626056840859115521', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-16 11:12:16');
+INSERT INTO `sys_log` VALUES ('1626057429542264834', 'sys', '获取当前登录用户', '0:0:0:0:0:0:0:1', 'http://localhost/api/auth/sys/user/current', '/api/auth/sys/user/current', 'com.easy.admin.auth.controller.SysUserController', 'getCurrent', 'GET', '[]', NULL, NULL, '1', '2023-02-16 11:14:37');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_mail_verification
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_mail_verification`;
 CREATE TABLE `sys_mail_verification` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `user_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户标识/user_id/username',
-  `mail` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '邮箱',
-  `code` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '效验码',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户标识/user_id/username',
+  `mail` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '邮箱',
+  `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '效验码',
   `expired` datetime DEFAULT NULL COMMENT '过期时间',
-  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='邮箱验证';
 
@@ -4791,19 +4579,19 @@ CREATE TABLE `sys_mail_verification` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_message`;
 CREATE TABLE `sys_message` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
-  `title` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '标题',
-  `subtitle` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '副标题;保留字段',
-  `content` text COLLATE utf8mb4_bin DEFAULT NULL COMMENT '内容',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '标题',
+  `subtitle` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '副标题;保留字段',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '内容',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '状态',
   `send_date` datetime DEFAULT NULL COMMENT '发送时间',
-  `icon` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标;保留字段',
-  `important` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否重要',
-  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `icon` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标;保留字段',
+  `important` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否重要',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '类型',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='通知';
@@ -4821,13 +4609,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_message_detail`;
 CREATE TABLE `sys_message_detail` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
-  `message_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '消息id',
-  `receiver_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '接收人',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
+  `message_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '消息id',
+  `receiver_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '接收人',
   `read_date` datetime DEFAULT NULL COMMENT '阅读时间',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `star` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否被标记※',
-  PRIMARY KEY (`id`)
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `star` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否被标记※',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_message_detail_message_id_receiver_user_pk` (`message_id`,`receiver_user`),
+  KEY `sys_message_detail_receiver_user_index` (`receiver_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='消息详情';
 
 -- ----------------------------
@@ -4836,7 +4626,7 @@ CREATE TABLE `sys_message_detail` (
 BEGIN;
 INSERT INTO `sys_message_detail` VALUES ('1541335753995345922', '1541335753357811714', '1', NULL, '0', '0');
 INSERT INTO `sys_message_detail` VALUES ('1541335753999540225', '1541335753357811714', '1533320501638762498', NULL, '0', '0');
-INSERT INTO `sys_message_detail` VALUES ('1541650101754249217', '1541335717311963138', '1', NULL, '0', '0');
+INSERT INTO `sys_message_detail` VALUES ('1541650101754249217', '1541335717311963138', '1', '2023-02-16 11:18:26', '1', '0');
 INSERT INTO `sys_message_detail` VALUES ('1541650101758443522', '1541335717311963138', '1533320501638762498', NULL, '0', '0');
 INSERT INTO `sys_message_detail` VALUES ('1541650101762637825', '1541335717311963138', '1533326426277695489', NULL, '0', '0');
 INSERT INTO `sys_message_detail` VALUES ('1541650101762637826', '1541335717311963138', '1533326281821671425', NULL, '0', '0');
@@ -4847,27 +4637,28 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE `sys_permission` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
-  `parent_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
-  `type` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '类型',
-  `title` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `name` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '组件name',
-  `code` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '标识',
-  `icon` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标',
-  `path` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '地址',
-  `component` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '组件;页面地址',
-  `external` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否外链',
-  `order_no` int(11) DEFAULT NULL COMMENT '排序值',
-  `display` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否显示',
-  `open_mode` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '打开方式',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
+  `parent_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '类型',
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '组件name',
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '标识',
+  `icon` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '图标',
+  `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '地址',
+  `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '组件;页面地址',
+  `external` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '是否外链',
+  `order_no` int(11) NOT NULL COMMENT '排序值',
+  `display` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否显示',
+  `open_mode` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '打开方式',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '状态',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `sys_permission_name_index` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='权限&菜单';
 
 -- ----------------------------
@@ -4884,7 +4675,7 @@ INSERT INTO `sys_permission` VALUES ('150', '16', 'button', '删除', NULL, 'sys
 INSERT INTO `sys_permission` VALUES ('150178d7eecb8c4aa8312ba2492ca050', '434c35c3fc3e06e132a44f78b0e7e118', 'button', '删除', NULL, 'cms:column:remove', NULL, NULL, NULL, '0', 2, '0', '1', '1', NULL, 0, '1', '2021-11-18 13:58:11', '1', '2022-06-05 20:38:49');
 INSERT INTO `sys_permission` VALUES ('151', '16', 'button', '保存', NULL, 'sys:redis:save', NULL, '', NULL, '0', 1, '1', '1', '1', '', 0, '126', '2019-01-26 14:27:38', '1', '2022-07-25 14:51:13');
 INSERT INTO `sys_permission` VALUES ('152', '19', 'button', '踢出', NULL, 'sys:online:force', NULL, '', NULL, '0', 1, '1', '1', '1', '', 0, '126', '2019-01-27 12:38:49', '1', '2022-07-26 10:42:28');
-INSERT INTO `sys_permission` VALUES ('1529695376534106114', NULL, 'catalogue', '权限管理', NULL, NULL, 'ant-design:lock-outlined', NULL, NULL, NULL, 6, '1', NULL, '1', '', 6, '1', '2022-05-26 13:26:13', '1', '2022-06-05 20:38:50');
+INSERT INTO `sys_permission` VALUES ('1529695376534106114', NULL, 'catalogue', '权限管理', NULL, NULL, 'ant-design:lock-outlined', NULL, NULL, '0', 6, '1', '1', '1', '', 6, '1', '2022-05-26 13:26:13', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('1529696851075231745', '1529695376534106114', 'menu', '菜单管理', NULL, 'sys:permission:select', 'ant-design:appstore-outlined', '/auth/permission/list', '/auth/permission/List.vue', '0', 1, '1', '1', '1', NULL, 1, '1', '2022-05-26 13:32:04', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('1530186899780431874', NULL, 'menu', '首页', 'Dashboard', '', 'ant-design:home-outlined', '/dashboard', '/dashboard/analysis/index.vue', '0', 1, '0', '1', '1', '', 6, '1', '2022-05-27 21:59:21', '1', '2022-07-27 11:32:31');
 INSERT INTO `sys_permission` VALUES ('1542436081633390594', '93d659164c0cbb3716fcee100f029d5c', 'menu', '模型编辑', NULL, NULL, NULL, '/activiti/model/edit/:id', '/activiti/model/Edit.vue', '0', 4, '0', '1', '1', NULL, 2, '1', '2022-06-30 17:13:13', '1', '2022-06-30 17:17:39');
@@ -4915,7 +4706,7 @@ INSERT INTO `sys_permission` VALUES ('1552162485774069761', '1552122437028556801
 INSERT INTO `sys_permission` VALUES ('1552162507773194241', '1552122437028556801', 'catalogue', 'Tree - 树', NULL, NULL, NULL, NULL, NULL, '0', 7, '1', '1', '1', NULL, 1, '1', '2022-07-27 13:22:34', '1', '2022-07-29 14:05:22');
 INSERT INTO `sys_permission` VALUES ('1552162542216818689', '1552122437028556801', 'catalogue', 'Editor - 编辑器', NULL, NULL, NULL, NULL, NULL, '0', 8, '1', '1', '1', NULL, 1, '1', '2022-07-27 13:22:42', '1', '2022-07-29 14:05:34');
 INSERT INTO `sys_permission` VALUES ('1552162563725209602', '1552122437028556801', 'menu', 'Scroll - 滚动', NULL, NULL, NULL, '/sample/comp/scroll', '/sample/comp/scroll/index.vue', '0', 9, '1', '1', '1', NULL, 3, '1', '2022-07-27 13:22:47', '1', '2022-07-29 14:05:54');
-INSERT INTO `sys_permission` VALUES ('1552162598462435330', '1552122437028556801', 'menu', 'Modal - 弹窗', NULL, NULL, NULL, '/sample/comp/modal', '/sample/comp/modal/index.vue', '0', 10, '1', '1', '1', NULL, 2, '1', '2022-07-27 13:22:55', '1', '2022-07-29 14:06:21');
+INSERT INTO `sys_permission` VALUES ('1552162598462435330', '1552122437028556801', 'menu', 'Modal - 对话框', NULL, NULL, NULL, '/sample/comp/modal', '/sample/comp/modal/index.vue', '0', 10, '1', '1', '1', NULL, 3, '1', '2022-07-27 13:22:55', '1', '2022-08-19 16:44:46');
 INSERT INTO `sys_permission` VALUES ('1552162619748528130', '1552122437028556801', 'menu', 'Drawer - 抽屉', NULL, NULL, NULL, '/sample/comp/drawer', '/sample/comp/drawer/index.vue', '0', 11, '1', '1', '1', NULL, 2, '1', '2022-07-27 13:23:00', '1', '2022-07-29 14:06:48');
 INSERT INTO `sys_permission` VALUES ('1552162643572174850', '1552122437028556801', 'menu', 'Descriptions - 描述列表', NULL, NULL, NULL, '/sample/comp/desc', '/sample/comp/desc/index.vue', '0', 12, '1', '1', '1', NULL, 3, '1', '2022-07-27 13:23:06', '1', '2022-07-29 14:07:03');
 INSERT INTO `sys_permission` VALUES ('1552162668285014017', '1552122437028556801', 'catalogue', 'Lazy - 懒加载', NULL, NULL, NULL, '', '', '0', 13, '1', '1', '1', NULL, 3, '1', '2022-07-27 13:23:12', '1', '2022-07-29 14:07:27');
@@ -4985,6 +4776,9 @@ INSERT INTO `sys_permission` VALUES ('1552559431978328066', '1552123729377505281
 INSERT INTO `sys_permission` VALUES ('1552559574806962177', '1552123729377505281', 'menu', 'Easy-Vben-Admin（外链）', NULL, NULL, NULL, 'https://github.com/TengChongChong/Easy-Vben-Admin', NULL, '1', 2, '1', '2', '1', NULL, 1, '1', '2022-07-28 15:40:22', '1', '2022-07-28 15:40:43');
 INSERT INTO `sys_permission` VALUES ('1552559830688866305', '1552123729377505281', 'menu', '文档（内嵌）', NULL, NULL, NULL, 'http://ev-doc.easy-frame.top/', NULL, '1', 3, '1', '1', '1', NULL, 0, '1', '2022-07-28 15:41:23', '1', '2022-07-28 15:41:23');
 INSERT INTO `sys_permission` VALUES ('1552884393624838145', '1552122437028556801', 'menu', 'Dict - 字典', NULL, NULL, NULL, '/sample/comp/dict', '/sample/comp/dict/index.vue', '0', 2, '1', '1', '1', NULL, 1, '1', '2022-07-29 13:11:05', '1', '2022-07-29 14:02:54');
+INSERT INTO `sys_permission` VALUES ('1560455577560219649', '1552122437028556801', 'menu', 'UserSelect - 用户选择', NULL, NULL, '', '/sample/comp/user-select', '/sample/comp/user-select/index.vue', '0', 19, '1', '1', '1', NULL, 1, '1', '2022-08-19 10:36:16', '1', '2022-08-19 10:37:43');
+INSERT INTO `sys_permission` VALUES ('1560553057127825409', '1552122437028556801', 'menu', 'DeptSelect - 部门选择器', NULL, NULL, NULL, '/sample/comp/dept-select', '/sample/comp/dept-select/index.vue', '0', 20, '1', '1', '1', NULL, 0, '1', '2022-08-19 17:03:37', '1', '2022-08-19 17:03:37');
+INSERT INTO `sys_permission` VALUES ('1560626135536947202', '1552122437028556801', 'menu', 'RoleSelect - 角色选择器', NULL, NULL, NULL, '/sample/comp/role-select', '/sample/comp/role-select/index.vue', '0', 21, '1', '1', '1', NULL, 0, '1', '2022-08-19 21:54:00', '1', '2022-08-19 21:54:00');
 INSERT INTO `sys_permission` VALUES ('157', '164', 'menu', '系统参数', NULL, 'sys:config:select', 'ant-design:setting-outlined', '/sys/config/list', '/sys/config/List', '0', 1, '1', '1', '1', '', 3, '', '2019-02-26 22:29:36', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('158', '157', 'button', '保存', NULL, 'sys:config:save', NULL, '', '', '0', 2, '0', '1', '1', '', 0, '', '2019-02-26 22:29:36', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('159', '157', 'button', '删除', NULL, 'sys:config:remove', NULL, NULL, NULL, '0', 1, '1', '1', '1', NULL, 0, '126', '2019-02-26 22:29:36', '1', '2022-06-05 20:38:50');
@@ -4999,13 +4793,13 @@ INSERT INTO `sys_permission` VALUES ('20', '1529695376534106114', 'menu', '部�
 INSERT INTO `sys_permission` VALUES ('21', '1529695376534106114', 'menu', '用户管理', NULL, 'sys:user:select', 'ant-design:user-outlined', '/auth/user/list', '/auth/user/List', '0', 4, '1', '1', '1', '', 2, '', '2018-11-01 09:42:04', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('218', '5', 'menu', '异常日志', NULL, 'sys:exception:select', 'ant-design:bug-outlined', '/sys/exception/list', '/sys/exception/List.vue', '0', 3, '1', '1', '1', '', 4, '126', '2019-04-08 11:59:16', '1', '2022-06-12 21:30:40');
 INSERT INTO `sys_permission` VALUES ('219', '218', 'button', '删除', NULL, 'sys:exception:remove', NULL, NULL, NULL, '0', 1, '1', '1', '1', NULL, 0, '126', '2019-04-08 11:59:16', '1', '2022-06-05 20:38:50');
-INSERT INTO `sys_permission` VALUES ('220', '228', 'menu', '代码生成示例', NULL, 'sample:general:select', 'ant-design:code-sandbox-outlined', '/sample/page/general/list', '/sample/page/general/List.vue', '0', 12, '1', '1', '1', '', 5, '126', '2019-04-09 12:50:25', '1', '2022-07-29 14:11:45');
+INSERT INTO `sys_permission` VALUES ('220', '228', 'menu', '代码生成示例', NULL, 'sample:general:select', 'ant-design:code-sandbox-outlined', '/sample/general/list', '/sample/general/List.vue', '0', 12, '1', '1', '1', '', 7, '126', '2019-04-09 12:50:25', '1', '2023-02-13 13:55:48');
 INSERT INTO `sys_permission` VALUES ('221', '220', 'button', '保存', NULL, 'sample:general:save', NULL, '', NULL, '0', 1, '1', '1', '1', '', 0, '126', '2019-04-09 12:50:25', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('222', '220', 'button', '删除', NULL, 'sample:general:remove', NULL, NULL, NULL, '0', 2, '1', '1', '1', NULL, 0, '126', '2019-04-09 12:50:25', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('224', '164', 'menu', '导入模板', NULL, 'sys:import:excel:template:select', 'ant-design:cloud-upload-outlined', '/sys/import/excel/template/list', '/sys/import/excel/template/List.vue', '0', 4, '1', '1', '1', '', 2, '', '2019-04-10 15:55:00', '1', '2022-07-13 13:41:34');
 INSERT INTO `sys_permission` VALUES ('225', '224', 'button', '保存', NULL, 'sys:import:excel:template:save', NULL, '', '', '0', 1, '1', '1', '1', '', 0, '', '2019-04-10 15:55:00', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('226', '224', 'button', '删除', NULL, 'sys:import:excel:template:remove', NULL, '', '', '0', 2, '1', '1', '1', '', 0, '', '2019-04-10 15:55:00', '1', '2022-06-05 20:38:50');
-INSERT INTO `sys_permission` VALUES ('228', NULL, 'catalogue', '示例', NULL, '', 'ant-design:appstore-outlined', '', '', '0', 2, '1', '1', '1', '', 2, '', '2019-04-16 21:56:25', '1', '2022-08-05 09:42:22');
+INSERT INTO `sys_permission` VALUES ('228', NULL, 'menu', '组件&功能', NULL, '', 'ant-design:appstore-outlined', '', '', '0', 2, '1', '1', '1', '', 2, '', '2019-04-16 21:56:25', '1', '2022-08-19 09:29:46');
 INSERT INTO `sys_permission` VALUES ('236', '164', 'menu', '定时任务', NULL, 'scheduler:job:select', 'ant-design:clock-circle-outlined', '/scheduler/job/list', '/scheduler/job/List.vue', '0', 3, '1', '1', '1', '', 1, '126', '2019-05-11 17:49:15', '1', '2022-06-10 13:16:21');
 INSERT INTO `sys_permission` VALUES ('237', '236', 'button', '保存', NULL, 'scheduler:job:save', NULL, NULL, NULL, '0', 1, '1', '1', '1', NULL, 0, '126', '2019-05-11 17:49:15', '1', '2022-06-05 20:38:50');
 INSERT INTO `sys_permission` VALUES ('238', '236', 'button', '删除', NULL, 'scheduler:job:remove', NULL, NULL, NULL, '0', 2, '1', '1', '1', NULL, 0, '126', '2019-05-11 17:49:15', '1', '2022-06-05 20:38:50');
@@ -5090,15 +4884,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
   `order_no` int(11) DEFAULT NULL COMMENT '排序值',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `tenant_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='岗位';
@@ -5108,34 +4902,35 @@ CREATE TABLE `sys_post` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
-  `parent_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `code` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '标识',
-  `sys` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否系统',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `order_no` int(11) DEFAULT NULL COMMENT '排序值',
-  `remarks` varchar(900) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
-  `tenant_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
+  `parent_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '父id',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '标识',
+  `sys` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '是否系统',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '状态',
+  `order_no` int(11) NOT NULL COMMENT '排序值',
+  `remarks` varchar(900) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_role_code_pk` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES ('1531819854540070914', NULL, '管理员', 'admin', '0', '1', 2, '', NULL, 3, '1', '2022-06-01 10:08:08', '1', '2022-08-05 09:43:23');
+INSERT INTO `sys_role` VALUES ('1531819854540070914', NULL, '管理员', 'admin', '0', '1', 2, '', NULL, 2, '1', '2022-06-01 10:08:08', '1', '2022-07-27 10:37:03');
 INSERT INTO `sys_role` VALUES ('1531819907467993089', NULL, '人事', 'hr', '0', '1', 3, NULL, NULL, 2, '1', '2022-06-01 10:08:20', '1', '2022-07-12 13:21:59');
 INSERT INTO `sys_role` VALUES ('1531821666106105858', NULL, '财务', 'finance', '0', '1', 4, NULL, NULL, 0, '1', '2022-06-01 10:15:20', '1', '2022-06-28 22:29:31');
 INSERT INTO `sys_role` VALUES ('1531821754819829762', NULL, '事业部', 'business:division', '0', '1', 5, NULL, NULL, 1, '1', '2022-06-01 10:15:41', '1', '2022-06-01 10:16:36');
 INSERT INTO `sys_role` VALUES ('1531821964014936065', NULL, '总经理', 'general:manager', '0', '1', 6, NULL, NULL, 0, '1', '2022-06-01 10:16:31', '1', '2022-06-01 10:16:31');
 INSERT INTO `sys_role` VALUES ('1531823375461146625', NULL, '项目经理', 'project:manager', '0', '1', 7, NULL, NULL, 0, '1', '2022-06-01 10:22:07', '1', '2022-06-01 10:22:07');
-INSERT INTO `sys_role` VALUES ('3', NULL, '系统管理员', 'sys:admin', '1', '1', 1, '拥有至高无上的权利', NULL, 79, '1', '2018-11-26 23:14:42', '1', '2022-07-29 13:12:28');
+INSERT INTO `sys_role` VALUES ('3', NULL, '系统管理员', 'sys:admin', '1', '1', 1, '拥有至高无上的权利', NULL, 82, '1', '2018-11-26 23:14:42', '1', '2022-08-19 21:54:10');
 COMMIT;
 
 -- ----------------------------
@@ -5143,356 +4938,262 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_permission`;
 CREATE TABLE `sys_role_permission` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
-  `role_id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '角色id;',
-  `permission_id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '权限id;',
-  PRIMARY KEY (`id`)
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键;',
+  `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '角色id;',
+  `permission_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '权限id;',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_role_permission_role_id_permission_id_pk` (`role_id`,`permission_id`),
+  KEY `sys_role_permission_role_id_index` (`role_id`),
+  KEY `sys_role_permission_permission_id_index` (`permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='角色权限';
 
 -- ----------------------------
 -- Records of sys_role_permission
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_permission` VALUES ('1546726543009525762', '1531819907467993089', '1530186899780431874');
-INSERT INTO `sys_role_permission` VALUES ('1546726543017914369', '1531819907467993089', 'c25cf52649878c66073c4ac0d691e86b');
+INSERT INTO `sys_role_permission` VALUES ('1552120854257610758', '1531819854540070914', '03ad13494a492eee81d8d7d1e2d95d14');
+INSERT INTO `sys_role_permission` VALUES ('1552120854282776580', '1531819854540070914', '0c5ea7d50665e6a89050c15a446f964e');
+INSERT INTO `sys_role_permission` VALUES ('1552120854224056321', '1531819854540070914', '14');
+INSERT INTO `sys_role_permission` VALUES ('1552120854303748098', '1531819854540070914', '1529695376534106114');
+INSERT INTO `sys_role_permission` VALUES ('1552120854215667713', '1531819854540070914', '1530186899780431874');
+INSERT INTO `sys_role_permission` VALUES ('1552120854299553795', '1531819854540070914', '1542436081633390594');
+INSERT INTO `sys_role_permission` VALUES ('1552120854232444935', '1531819854540070914', '157');
+INSERT INTO `sys_role_permission` VALUES ('1552120854245027846', '1531819854540070914', '158');
+INSERT INTO `sys_role_permission` VALUES ('1552120854245027845', '1531819854540070914', '159');
+INSERT INTO `sys_role_permission` VALUES ('1552120854303748097', '1531819854540070914', '164');
+INSERT INTO `sys_role_permission` VALUES ('1552120854261805058', '1531819854540070914', '17dcc367a2c812c36b0d3e2710a567cd');
+INSERT INTO `sys_role_permission` VALUES ('1552120854224056322', '1531819854540070914', '20');
+INSERT INTO `sys_role_permission` VALUES ('1552120854224056323', '1531819854540070914', '21');
+INSERT INTO `sys_role_permission` VALUES ('1552120854274387969', '1531819854540070914', '220');
+INSERT INTO `sys_role_permission` VALUES ('1552120854274387971', '1531819854540070914', '221');
+INSERT INTO `sys_role_permission` VALUES ('1552120854278582274', '1531819854540070914', '222');
+INSERT INTO `sys_role_permission` VALUES ('1552120854257610760', '1531819854540070914', '228');
+INSERT INTO `sys_role_permission` VALUES ('1552120854245027841', '1531819854540070914', '236');
+INSERT INTO `sys_role_permission` VALUES ('1552120854249222146', '1531819854540070914', '237');
+INSERT INTO `sys_role_permission` VALUES ('1552120854249222147', '1531819854540070914', '238');
+INSERT INTO `sys_role_permission` VALUES ('1552120854245027844', '1531819854540070914', '32');
+INSERT INTO `sys_role_permission` VALUES ('1552120854282776582', '1531819854540070914', '3273e1c9ff7485e4a09c67410641ce29');
+INSERT INTO `sys_role_permission` VALUES ('1552120854274387970', '1531819854540070914', '39731ea992cfa03ce527ad0724b067fc');
+INSERT INTO `sys_role_permission` VALUES ('1552120854282776583', '1531819854540070914', '39c5c5bcdd9a15110e2c3e4014dd1531');
+INSERT INTO `sys_role_permission` VALUES ('1552120854257610759', '1531819854540070914', '3b79694872fa73ff05699bde511b238f');
+INSERT INTO `sys_role_permission` VALUES ('1552120854282776579', '1531819854540070914', '4aba9a2f7c81615c9ccdc07e980ccfe3');
+INSERT INTO `sys_role_permission` VALUES ('1552120854253416451', '1531819854540070914', '52');
+INSERT INTO `sys_role_permission` VALUES ('1552120854257610754', '1531819854540070914', '53');
+INSERT INTO `sys_role_permission` VALUES ('1552120854245027842', '1531819854540070914', '55');
+INSERT INTO `sys_role_permission` VALUES ('1552120854245027843', '1531819854540070914', '56');
+INSERT INTO `sys_role_permission` VALUES ('1552120854224056324', '1531819854540070914', '64');
+INSERT INTO `sys_role_permission` VALUES ('1552120854228250626', '1531819854540070914', '65');
+INSERT INTO `sys_role_permission` VALUES ('1552120854232444931', '1531819854540070914', '67');
+INSERT INTO `sys_role_permission` VALUES ('1552120854232444932', '1531819854540070914', '68');
+INSERT INTO `sys_role_permission` VALUES ('1552120854232444936', '1531819854540070914', '7');
+INSERT INTO `sys_role_permission` VALUES ('1552120854228250628', '1531819854540070914', '70');
+INSERT INTO `sys_role_permission` VALUES ('1552120854232444930', '1531819854540070914', '71');
+INSERT INTO `sys_role_permission` VALUES ('1552120854228250627', '1531819854540070914', '72');
+INSERT INTO `sys_role_permission` VALUES ('1552120854270193666', '1531819854540070914', '720e77810ca8ea77ec7f7871985ea018');
+INSERT INTO `sys_role_permission` VALUES ('1552120854299553797', '1531819854540070914', '734dacc38f293883683b68c6d3e5b56e');
+INSERT INTO `sys_role_permission` VALUES ('1552120854232444933', '1531819854540070914', '74');
+INSERT INTO `sys_role_permission` VALUES ('1552120854232444934', '1531819854540070914', '75');
+INSERT INTO `sys_role_permission` VALUES ('1552120854257610757', '1531819854540070914', '76180395fab6dbdab6f6c050169c5f97');
+INSERT INTO `sys_role_permission` VALUES ('1552120854299553793', '1531819854540070914', '77ce77c2dd83b746657afbfb2acd21cd');
+INSERT INTO `sys_role_permission` VALUES ('1552120854257610755', '1531819854540070914', '7da1f5456b340b1fc94e8bb8e8ae5e8f');
+INSERT INTO `sys_role_permission` VALUES ('1552120854253416450', '1531819854540070914', '906d1078178cb203bb142f8cf22d4245');
+INSERT INTO `sys_role_permission` VALUES ('1552120854286970881', '1531819854540070914', '93d659164c0cbb3716fcee100f029d5c');
+INSERT INTO `sys_role_permission` VALUES ('1552120854299553798', '1531819854540070914', 'a3322940c314d1b6d9ba1d494740971e');
+INSERT INTO `sys_role_permission` VALUES ('1552120854278582276', '1531819854540070914', 'a95f4a835e7ca0277a77223572d3c29f');
+INSERT INTO `sys_role_permission` VALUES ('1552120854282776578', '1531819854540070914', 'ae53867719661453637074b18dd7f5ab');
+INSERT INTO `sys_role_permission` VALUES ('1552120854257610756', '1531819854540070914', 'c25cf52649878c66073c4ac0d691e86b');
+INSERT INTO `sys_role_permission` VALUES ('1552120854295359490', '1531819854540070914', 'cbdd956e2a348039fe01d76c2e6d4e91');
+INSERT INTO `sys_role_permission` VALUES ('1552120854299553799', '1531819854540070914', 'd457a36b43fd8e9ad6461c9d42d3a098');
+INSERT INTO `sys_role_permission` VALUES ('1552120854291165185', '1531819854540070914', 'e7f55c6889bd826d6a62885ef2ffdb1d');
+INSERT INTO `sys_role_permission` VALUES ('1552120854299553796', '1531819854540070914', 'f1d3af076c2810d690edefbdc3462c23');
+INSERT INTO `sys_role_permission` VALUES ('1552120854295359489', '1531819854540070914', 'fe84bcc6e4781447ea21573eb04bf0fb');
+INSERT INTO `sys_role_permission` VALUES ('1552120854299553794', '1531819854540070914', 'fee57187cae386f067db09aeb0b16b4a');
 INSERT INTO `sys_role_permission` VALUES ('1546726543017914370', '1531819907467993089', '03ad13494a492eee81d8d7d1e2d95d14');
+INSERT INTO `sys_role_permission` VALUES ('1546726543009525762', '1531819907467993089', '1530186899780431874');
 INSERT INTO `sys_role_permission` VALUES ('1546726543022108673', '1531819907467993089', '3b79694872fa73ff05699bde511b238f');
 INSERT INTO `sys_role_permission` VALUES ('1546726543026302980', '1531819907467993089', '76180395fab6dbdab6f6c050169c5f97');
 INSERT INTO `sys_role_permission` VALUES ('1546726543034691586', '1531819907467993089', '7da1f5456b340b1fc94e8bb8e8ae5e8f');
-INSERT INTO `sys_role_permission` VALUES ('1552884741143896065', '3', '14');
-INSERT INTO `sys_role_permission` VALUES ('1552884741143896066', '3', '64');
-INSERT INTO `sys_role_permission` VALUES ('1552884741143896067', '3', '65');
-INSERT INTO `sys_role_permission` VALUES ('1552884741143896068', '3', '1529696851075231745');
-INSERT INTO `sys_role_permission` VALUES ('1552884741143896069', '3', '61');
-INSERT INTO `sys_role_permission` VALUES ('1552884741148090369', '3', '62');
-INSERT INTO `sys_role_permission` VALUES ('1552884741152284674', '3', '1530186899780431874');
-INSERT INTO `sys_role_permission` VALUES ('1552884741156478978', '3', '72');
-INSERT INTO `sys_role_permission` VALUES ('1552884741156478979', '3', '74');
-INSERT INTO `sys_role_permission` VALUES ('1552884741156478980', '3', '75');
-INSERT INTO `sys_role_permission` VALUES ('1552884741156478981', '3', '20');
-INSERT INTO `sys_role_permission` VALUES ('1552884741156478982', '3', '70');
-INSERT INTO `sys_role_permission` VALUES ('1552884741160673281', '3', '71');
-INSERT INTO `sys_role_permission` VALUES ('1552884741160673282', '3', '21');
-INSERT INTO `sys_role_permission` VALUES ('1552884741160673283', '3', '67');
-INSERT INTO `sys_role_permission` VALUES ('1552884741164867585', '3', '68');
-INSERT INTO `sys_role_permission` VALUES ('1552884741164867586', '3', '1529695376534106114');
-INSERT INTO `sys_role_permission` VALUES ('1552884741164867587', '3', '15');
-INSERT INTO `sys_role_permission` VALUES ('1552884741164867588', '3', '219');
-INSERT INTO `sys_role_permission` VALUES ('1552884741169061890', '3', 'ccfeae90e4d3391ad54451fa2b4c1cd4');
-INSERT INTO `sys_role_permission` VALUES ('1552884741173256194', '3', '218');
-INSERT INTO `sys_role_permission` VALUES ('1552884741173256195', '3', '792d3621d9d2f92acb7b9847dc0ef598');
-INSERT INTO `sys_role_permission` VALUES ('1552884741177450497', '3', 'c44e35a713e6e68ab1825ff0f6dd0a41');
-INSERT INTO `sys_role_permission` VALUES ('1552884741177450498', '3', '149');
-INSERT INTO `sys_role_permission` VALUES ('1552884741177450499', '3', 'cbdd956e2a348039fe01d76c2e6d4e91');
-INSERT INTO `sys_role_permission` VALUES ('1552884741177450500', '3', '77ce77c2dd83b746657afbfb2acd21cd');
-INSERT INTO `sys_role_permission` VALUES ('1552884741181644802', '3', 'fee57187cae386f067db09aeb0b16b4a');
-INSERT INTO `sys_role_permission` VALUES ('1552884741181644803', '3', '1542436081633390594');
-INSERT INTO `sys_role_permission` VALUES ('1552884741181644804', '3', '93d659164c0cbb3716fcee100f029d5c');
-INSERT INTO `sys_role_permission` VALUES ('1552884741181644805', '3', 'e7f55c6889bd826d6a62885ef2ffdb1d');
-INSERT INTO `sys_role_permission` VALUES ('1552884741181644806', '3', 'f1d3af076c2810d690edefbdc3462c23');
-INSERT INTO `sys_role_permission` VALUES ('1552884741181644807', '3', '734dacc38f293883683b68c6d3e5b56e');
-INSERT INTO `sys_role_permission` VALUES ('1552884741181644808', '3', 'a3322940c314d1b6d9ba1d494740971e');
-INSERT INTO `sys_role_permission` VALUES ('1552884741181644809', '3', 'd457a36b43fd8e9ad6461c9d42d3a098');
-INSERT INTO `sys_role_permission` VALUES ('1552884741185839105', '3', 'fe84bcc6e4781447ea21573eb04bf0fb');
-INSERT INTO `sys_role_permission` VALUES ('1552884741185839106', '3', '39c5c5bcdd9a15110e2c3e4014dd1531');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033410', '3', 'c25cf52649878c66073c4ac0d691e86b');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033411', '3', '03ad13494a492eee81d8d7d1e2d95d14');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033412', '3', '3b79694872fa73ff05699bde511b238f');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033413', '3', '76180395fab6dbdab6f6c050169c5f97');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033414', '3', '7da1f5456b340b1fc94e8bb8e8ae5e8f');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033415', '3', '164');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033416', '3', '157');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033417', '3', '7');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033418', '3', '236');
-INSERT INTO `sys_role_permission` VALUES ('1552884741190033419', '3', '224');
-INSERT INTO `sys_role_permission` VALUES ('1552884741194227713', '3', '90201ca3ab25e2204e3c250b5cd399ac');
-INSERT INTO `sys_role_permission` VALUES ('1552884741194227714', '3', '55');
-INSERT INTO `sys_role_permission` VALUES ('1552884741194227715', '3', '56');
-INSERT INTO `sys_role_permission` VALUES ('1552884741194227716', '3', '32');
-INSERT INTO `sys_role_permission` VALUES ('1552884741194227717', '3', '159');
-INSERT INTO `sys_role_permission` VALUES ('1552884741194227718', '3', '158');
-INSERT INTO `sys_role_permission` VALUES ('1552884741198422017', '3', '225');
-INSERT INTO `sys_role_permission` VALUES ('1552884741198422018', '3', '226');
-INSERT INTO `sys_role_permission` VALUES ('1552884741198422019', '3', '237');
-INSERT INTO `sys_role_permission` VALUES ('1552884741202616321', '3', '238');
-INSERT INTO `sys_role_permission` VALUES ('1552884741206810625', '3', '906d1078178cb203bb142f8cf22d4245');
-INSERT INTO `sys_role_permission` VALUES ('1552884741206810626', '3', 'e4d1ddeb3c3dc7a292ce76770bfdcc7f');
-INSERT INTO `sys_role_permission` VALUES ('1552884741211004930', '3', '306994778c19b648dfde51acee6ec24a');
-INSERT INTO `sys_role_permission` VALUES ('1552884741211004931', '3', '52');
-INSERT INTO `sys_role_permission` VALUES ('1552884741211004932', '3', '53');
-INSERT INTO `sys_role_permission` VALUES ('1552884741215199233', '3', '17');
-INSERT INTO `sys_role_permission` VALUES ('1552884741215199234', '3', '16');
-INSERT INTO `sys_role_permission` VALUES ('1552884741215199235', '3', '151');
-INSERT INTO `sys_role_permission` VALUES ('1552884741215199236', '3', '150');
-INSERT INTO `sys_role_permission` VALUES ('1552884741215199237', '3', '19');
-INSERT INTO `sys_role_permission` VALUES ('1552884741215199238', '3', '152');
-INSERT INTO `sys_role_permission` VALUES ('1552884741219393538', '3', '5');
-INSERT INTO `sys_role_permission` VALUES ('1552884741219393539', '3', '228');
-INSERT INTO `sys_role_permission` VALUES ('1552884741223587841', '3', '1552122437028556801');
-INSERT INTO `sys_role_permission` VALUES ('1552884741227782146', '3', '1552123305312399362');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976449', '3', '1552162067870396417');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976450', '3', '1552162375333851138');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976451', '3', '1552123414641127426');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976452', '3', '1552549932991258625');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976453', '3', '1552121553494224898');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976454', '3', '1552222776289406978');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976455', '3', '720e77810ca8ea77ec7f7871985ea018');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976456', '3', '1552123729377505281');
-INSERT INTO `sys_role_permission` VALUES ('1552884741231976457', '3', '1552162022194425858');
-INSERT INTO `sys_role_permission` VALUES ('1552884741236170753', '3', '1552884393624838145');
-INSERT INTO `sys_role_permission` VALUES ('1552884741236170754', '3', '1552162399434321922');
-INSERT INTO `sys_role_permission` VALUES ('1552884741236170755', '3', '1552162428064641025');
-INSERT INTO `sys_role_permission` VALUES ('1552884741236170756', '3', '1552162459303817218');
-INSERT INTO `sys_role_permission` VALUES ('1552884741236170757', '3', '1552162485774069761');
-INSERT INTO `sys_role_permission` VALUES ('1552884741236170758', '3', '1552162507773194241');
-INSERT INTO `sys_role_permission` VALUES ('1552884741240365057', '3', '1552162542216818689');
-INSERT INTO `sys_role_permission` VALUES ('1552884741240365058', '3', '1552162563725209602');
-INSERT INTO `sys_role_permission` VALUES ('1552884741240365059', '3', '1552162598462435330');
-INSERT INTO `sys_role_permission` VALUES ('1552884741244559361', '3', '1552162619748528130');
-INSERT INTO `sys_role_permission` VALUES ('1552884741244559362', '3', '1552162643572174850');
-INSERT INTO `sys_role_permission` VALUES ('1552884741244559363', '3', '1552162668285014017');
-INSERT INTO `sys_role_permission` VALUES ('1552884741244559364', '3', '1552162693387923458');
-INSERT INTO `sys_role_permission` VALUES ('1552884741244559365', '3', '1552162712996294658');
-INSERT INTO `sys_role_permission` VALUES ('1552884741244559366', '3', '1552162733850374146');
-INSERT INTO `sys_role_permission` VALUES ('1552884741244559367', '3', '1552162757757906946');
-INSERT INTO `sys_role_permission` VALUES ('1552884741248753665', '3', '1552162774488985601');
-INSERT INTO `sys_role_permission` VALUES ('1552884741248753666', '3', '1552126948300304386');
-INSERT INTO `sys_role_permission` VALUES ('1552884741248753667', '3', '1552126980588056578');
-INSERT INTO `sys_role_permission` VALUES ('1552884741252947970', '3', '1552127050326749186');
-INSERT INTO `sys_role_permission` VALUES ('1552884741252947971', '3', '1552127074058121217');
-INSERT INTO `sys_role_permission` VALUES ('1552884741252947972', '3', '1552127135114604545');
-INSERT INTO `sys_role_permission` VALUES ('1552884741252947973', '3', '1552127171101732865');
-INSERT INTO `sys_role_permission` VALUES ('1552884741252947974', '3', '1552127195491610625');
-INSERT INTO `sys_role_permission` VALUES ('1552884741252947975', '3', '1552127214743465986');
-INSERT INTO `sys_role_permission` VALUES ('1552884741257142274', '3', '1552127228970545154');
-INSERT INTO `sys_role_permission` VALUES ('1552884741257142275', '3', '1552127248763465730');
-INSERT INTO `sys_role_permission` VALUES ('1552884741257142276', '3', '1552129202101170178');
-INSERT INTO `sys_role_permission` VALUES ('1552884741257142277', '3', '1552555383464140801');
-INSERT INTO `sys_role_permission` VALUES ('1552884741261336578', '3', '1552555501416357890');
-INSERT INTO `sys_role_permission` VALUES ('1552884741265530882', '3', '1552555597688217601');
-INSERT INTO `sys_role_permission` VALUES ('1552884741265530883', '3', '1552555839296905217');
-INSERT INTO `sys_role_permission` VALUES ('1552884741265530884', '3', '1552555956439621634');
-INSERT INTO `sys_role_permission` VALUES ('1552884741269725185', '3', '1552556056595406849');
-INSERT INTO `sys_role_permission` VALUES ('1552884741269725186', '3', '1552556156063326209');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919489', '3', '1552556257078943745');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919490', '3', '1552556727491108866');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919491', '3', '1552557023374090242');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919492', '3', '1552557141691211778');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919493', '3', '1552557259131723777');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919494', '3', '1552557377524342786');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919495', '3', '1552557463054589954');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919496', '3', '1552557668537737217');
-INSERT INTO `sys_role_permission` VALUES ('1552884741273919497', '3', '1552557763144458242');
-INSERT INTO `sys_role_permission` VALUES ('1552884741278113794', '3', '1552557850641833985');
-INSERT INTO `sys_role_permission` VALUES ('1552884741278113795', '3', '1552557975577567234');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308098', '3', '1552558709345886209');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308099', '3', '1552559000367669249');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308100', '3', '1552549270056345602');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308101', '3', '1552549337102295041');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308102', '3', '1552549430933069825');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308103', '3', '1552550090034388993');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308104', '3', '1552550173316489218');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308105', '3', '39731ea992cfa03ce527ad0724b067fc');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308106', '3', '17dcc367a2c812c36b0d3e2710a567cd');
-INSERT INTO `sys_role_permission` VALUES ('1552884741282308107', '3', '220');
-INSERT INTO `sys_role_permission` VALUES ('1552884741286502402', '3', '1552225255924183042');
-INSERT INTO `sys_role_permission` VALUES ('1552884741286502403', '3', '1552225281513631746');
-INSERT INTO `sys_role_permission` VALUES ('1552884741286502404', '3', '1552225302439014402');
-INSERT INTO `sys_role_permission` VALUES ('1552884741286502405', '3', '1552225347573919746');
-INSERT INTO `sys_role_permission` VALUES ('1552884741286502406', '3', '1552225367438143489');
-INSERT INTO `sys_role_permission` VALUES ('1552884741290696705', '3', '1552559431978328066');
-INSERT INTO `sys_role_permission` VALUES ('1552884741290696706', '3', '1552559574806962177');
-INSERT INTO `sys_role_permission` VALUES ('1552884741290696707', '3', '1552559830688866305');
-INSERT INTO `sys_role_permission` VALUES ('1552884741290696708', '3', '221');
-INSERT INTO `sys_role_permission` VALUES ('1552884741290696709', '3', '222');
-INSERT INTO `sys_role_permission` VALUES ('1552884741290696710', '3', 'a95f4a835e7ca0277a77223572d3c29f');
-INSERT INTO `sys_role_permission` VALUES ('1552884741294891010', '3', '1552214776560496642');
-INSERT INTO `sys_role_permission` VALUES ('1552884741299085313', '3', '1552214944412348417');
-INSERT INTO `sys_role_permission` VALUES ('1552884741307473921', '3', '1552215050998001666');
-INSERT INTO `sys_role_permission` VALUES ('1552884741320056833', '3', '1552206108062396418');
-INSERT INTO `sys_role_permission` VALUES ('1552884741320056834', '3', '1552206155193790466');
-INSERT INTO `sys_role_permission` VALUES ('1552884741320056835', '3', '1552206179273289730');
-INSERT INTO `sys_role_permission` VALUES ('1552884741324251137', '3', '1552196675919949826');
-INSERT INTO `sys_role_permission` VALUES ('1552884741328445442', '3', '1552196825329446913');
-INSERT INTO `sys_role_permission` VALUES ('1552884741328445443', '3', '1552130346173083650');
-INSERT INTO `sys_role_permission` VALUES ('1552884741332639745', '3', '0c5ea7d50665e6a89050c15a446f964e');
-INSERT INTO `sys_role_permission` VALUES ('1552884741332639746', '3', '3273e1c9ff7485e4a09c67410641ce29');
-INSERT INTO `sys_role_permission` VALUES ('1552884741336834049', '3', 'ae53867719661453637074b18dd7f5ab');
-INSERT INTO `sys_role_permission` VALUES ('1552884741336834050', '3', '4aba9a2f7c81615c9ccdc07e980ccfe3');
-INSERT INTO `sys_role_permission` VALUES ('1552884741341028353', '3', '1552225891688394753');
-INSERT INTO `sys_role_permission` VALUES ('1552884741345222658', '3', '1552225971967373314');
-INSERT INTO `sys_role_permission` VALUES ('1552884741345222659', '3', '1552226055807315969');
-INSERT INTO `sys_role_permission` VALUES ('1552884741345222660', '3', '1552226198052941825');
-INSERT INTO `sys_role_permission` VALUES ('1552884741349416962', '3', '1552226261160439810');
-INSERT INTO `sys_role_permission` VALUES ('1552884741353611265', '3', '1552226412193132545');
-INSERT INTO `sys_role_permission` VALUES ('1552884741353611266', '3', '1552226475996884993');
-INSERT INTO `sys_role_permission` VALUES ('1552884741357805569', '3', '1552521429335941121');
-INSERT INTO `sys_role_permission` VALUES ('1552884741357805570', '3', '1552521502904033281');
-INSERT INTO `sys_role_permission` VALUES ('1552884741357805571', '3', '1552521541474852866');
-INSERT INTO `sys_role_permission` VALUES ('1552884741361999873', '3', '1552521598907457537');
-INSERT INTO `sys_role_permission` VALUES ('1552884741366194178', '3', '1552521647586549761');
-INSERT INTO `sys_role_permission` VALUES ('1552884741366194179', '3', '1552228496070160385');
-INSERT INTO `sys_role_permission` VALUES ('1552884741366194180', '3', '1552228571710238721');
-INSERT INTO `sys_role_permission` VALUES ('1552884741370388481', '3', '1552228656779112449');
-INSERT INTO `sys_role_permission` VALUES ('1552884741370388482', '3', '1552206451080966145');
-INSERT INTO `sys_role_permission` VALUES ('1552884741370388483', '3', '1552206587509092354');
-INSERT INTO `sys_role_permission` VALUES ('1555368838922354690', '1531819854540070914', '1530186899780431874');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326210', '1531819854540070914', '228');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326211', '1531819854540070914', '1552122437028556801');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326212', '1531819854540070914', '1552162022194425858');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326213', '1531819854540070914', '1552884393624838145');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326214', '1531819854540070914', '1552162399434321922');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326215', '1531819854540070914', '1552162428064641025');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326216', '1531819854540070914', '1552162459303817218');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326217', '1531819854540070914', '1552162485774069761');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326218', '1531819854540070914', '1552162507773194241');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326219', '1531819854540070914', '1552214776560496642');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326220', '1531819854540070914', '1552214944412348417');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326221', '1531819854540070914', '1552215050998001666');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326222', '1531819854540070914', '1552162542216818689');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326223', '1531819854540070914', '1552206108062396418');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326224', '1531819854540070914', '1552206155193790466');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326225', '1531819854540070914', '1552206451080966145');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326226', '1531819854540070914', '1552206587509092354');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326227', '1531819854540070914', '1552206179273289730');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326228', '1531819854540070914', '1552162563725209602');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326229', '1531819854540070914', '1552162598462435330');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326230', '1531819854540070914', '1552162619748528130');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326231', '1531819854540070914', '1552162643572174850');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326232', '1531819854540070914', '1552162668285014017');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326233', '1531819854540070914', '1552196675919949826');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326234', '1531819854540070914', '1552196825329446913');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326235', '1531819854540070914', '1552162693387923458');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326236', '1531819854540070914', '1552162712996294658');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326237', '1531819854540070914', '1552162733850374146');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326238', '1531819854540070914', '1552162757757906946');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326239', '1531819854540070914', '1552162774488985601');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326240', '1531819854540070914', '1552123305312399362');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326241', '1531819854540070914', '1552126948300304386');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326242', '1531819854540070914', '1552126980588056578');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326243', '1531819854540070914', '1552130346173083650');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326244', '1531819854540070914', '1552127050326749186');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326245', '1531819854540070914', '1552127074058121217');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326246', '1531819854540070914', '1552127135114604545');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326247', '1531819854540070914', '1552127171101732865');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326248', '1531819854540070914', '1552127195491610625');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326249', '1531819854540070914', '1552127214743465986');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326250', '1531819854540070914', '1552127228970545154');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326251', '1531819854540070914', '1552127248763465730');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326252', '1531819854540070914', '1552129202101170178');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326253', '1531819854540070914', '1552162067870396417');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326254', '1531819854540070914', '1552555383464140801');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326255', '1531819854540070914', '1552555501416357890');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326256', '1531819854540070914', '1552555597688217601');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326257', '1531819854540070914', '1552555839296905217');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326258', '1531819854540070914', '1552555956439621634');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326259', '1531819854540070914', '1552556056595406849');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326260', '1531819854540070914', '1552556156063326209');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326261', '1531819854540070914', '1552556257078943745');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326262', '1531819854540070914', '1552556727491108866');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326263', '1531819854540070914', '1552162375333851138');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326264', '1531819854540070914', '1552557023374090242');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326265', '1531819854540070914', '1552557141691211778');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326266', '1531819854540070914', '1552557259131723777');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326267', '1531819854540070914', '1552557377524342786');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326268', '1531819854540070914', '1552557463054589954');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326269', '1531819854540070914', '1552557668537737217');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326270', '1531819854540070914', '1552557763144458242');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326271', '1531819854540070914', '1552557850641833985');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326272', '1531819854540070914', '1552557975577567234');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326273', '1531819854540070914', '1552558709345886209');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326274', '1531819854540070914', '1552559000367669249');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326275', '1531819854540070914', '1552123414641127426');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326276', '1531819854540070914', '1552549270056345602');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326277', '1531819854540070914', '1552549337102295041');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326278', '1531819854540070914', '1552549430933069825');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326279', '1531819854540070914', '1552549932991258625');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326280', '1531819854540070914', '1552550090034388993');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326281', '1531819854540070914', '1552550173316489218');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326282', '1531819854540070914', '1552121553494224898');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326283', '1531819854540070914', '1552225255924183042');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326284', '1531819854540070914', '1552225891688394753');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326285', '1531819854540070914', '1552225971967373314');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326286', '1531819854540070914', '1552226055807315969');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326287', '1531819854540070914', '1552225281513631746');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326288', '1531819854540070914', '1552226198052941825');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326289', '1531819854540070914', '1552226261160439810');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326290', '1531819854540070914', '1552225302439014402');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326291', '1531819854540070914', '1552226412193132545');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326292', '1531819854540070914', '1552226475996884993');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326293', '1531819854540070914', '1552225347573919746');
-INSERT INTO `sys_role_permission` VALUES ('1555368838943326294', '1531819854540070914', '1552521429335941121');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269249', '1531819854540070914', '1552521502904033281');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269250', '1531819854540070914', '1552521541474852866');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269251', '1531819854540070914', '1552521598907457537');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269252', '1531819854540070914', '1552521647586549761');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269253', '1531819854540070914', '1552225367438143489');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269254', '1531819854540070914', '1552228496070160385');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269255', '1531819854540070914', '1552228571710238721');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269256', '1531819854540070914', '1552228656779112449');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269257', '1531819854540070914', '1552222776289406978');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269258', '1531819854540070914', '720e77810ca8ea77ec7f7871985ea018');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269259', '1531819854540070914', '1552123729377505281');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269260', '1531819854540070914', '1552559431978328066');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269261', '1531819854540070914', '1552559574806962177');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269262', '1531819854540070914', '1552559830688866305');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269263', '1531819854540070914', '17dcc367a2c812c36b0d3e2710a567cd');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269264', '1531819854540070914', 'ae53867719661453637074b18dd7f5ab');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269265', '1531819854540070914', '4aba9a2f7c81615c9ccdc07e980ccfe3');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269266', '1531819854540070914', '220');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269267', '1531819854540070914', '221');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269268', '1531819854540070914', '222');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269269', '1531819854540070914', 'a95f4a835e7ca0277a77223572d3c29f');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269270', '1531819854540070914', '39731ea992cfa03ce527ad0724b067fc');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269271', '1531819854540070914', '0c5ea7d50665e6a89050c15a446f964e');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269272', '1531819854540070914', '3273e1c9ff7485e4a09c67410641ce29');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269273', '1531819854540070914', '149');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269274', '1531819854540070914', '7da1f5456b340b1fc94e8bb8e8ae5e8f');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269275', '1531819854540070914', 'c25cf52649878c66073c4ac0d691e86b');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269276', '1531819854540070914', '76180395fab6dbdab6f6c050169c5f97');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269277', '1531819854540070914', '03ad13494a492eee81d8d7d1e2d95d14');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269278', '1531819854540070914', '3b79694872fa73ff05699bde511b238f');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269279', '1531819854540070914', '1529695376534106114');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269280', '1531819854540070914', '1529696851075231745');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269281', '1531819854540070914', '61');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269282', '1531819854540070914', '62');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269283', '1531819854540070914', '14');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269284', '1531819854540070914', '64');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269285', '1531819854540070914', '65');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269286', '1531819854540070914', '20');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269287', '1531819854540070914', '72');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269288', '1531819854540070914', '74');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269289', '1531819854540070914', '75');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269290', '1531819854540070914', '70');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269291', '1531819854540070914', '71');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269292', '1531819854540070914', '21');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269293', '1531819854540070914', '67');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269294', '1531819854540070914', '68');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269295', '1531819854540070914', '39c5c5bcdd9a15110e2c3e4014dd1531');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269296', '1531819854540070914', '93d659164c0cbb3716fcee100f029d5c');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269297', '1531819854540070914', 'cbdd956e2a348039fe01d76c2e6d4e91');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269298', '1531819854540070914', '77ce77c2dd83b746657afbfb2acd21cd');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269299', '1531819854540070914', 'fee57187cae386f067db09aeb0b16b4a');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269300', '1531819854540070914', '1542436081633390594');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269301', '1531819854540070914', 'e7f55c6889bd826d6a62885ef2ffdb1d');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269302', '1531819854540070914', 'f1d3af076c2810d690edefbdc3462c23');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269303', '1531819854540070914', '734dacc38f293883683b68c6d3e5b56e');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269304', '1531819854540070914', 'a3322940c314d1b6d9ba1d494740971e');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269305', '1531819854540070914', 'd457a36b43fd8e9ad6461c9d42d3a098');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269306', '1531819854540070914', 'fe84bcc6e4781447ea21573eb04bf0fb');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269307', '1531819854540070914', '5');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269308', '1531819854540070914', '15');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269309', '1531819854540070914', '16');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269310', '1531819854540070914', '151');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269311', '1531819854540070914', '150');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269312', '1531819854540070914', '218');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269313', '1531819854540070914', '219');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269314', '1531819854540070914', 'ccfeae90e4d3391ad54451fa2b4c1cd4');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269315', '1531819854540070914', '792d3621d9d2f92acb7b9847dc0ef598');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269316', '1531819854540070914', 'c44e35a713e6e68ab1825ff0f6dd0a41');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269317', '1531819854540070914', '17');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269318', '1531819854540070914', '19');
-INSERT INTO `sys_role_permission` VALUES ('1555368838985269319', '1531819854540070914', '152');
+INSERT INTO `sys_role_permission` VALUES ('1546726543017914369', '1531819907467993089', 'c25cf52649878c66073c4ac0d691e86b');
+INSERT INTO `sys_role_permission` VALUES ('1560626178029441028', '3', '03ad13494a492eee81d8d7d1e2d95d14');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241674', '3', '0c5ea7d50665e6a89050c15a446f964e');
+INSERT INTO `sys_role_permission` VALUES ('1560626177912000514', '3', '14');
+INSERT INTO `sys_role_permission` VALUES ('1560626178008469511', '3', '149');
+INSERT INTO `sys_role_permission` VALUES ('1560626178004275201', '3', '15');
+INSERT INTO `sys_role_permission` VALUES ('1560626178062995461', '3', '150');
+INSERT INTO `sys_role_permission` VALUES ('1560626178062995460', '3', '151');
+INSERT INTO `sys_role_permission` VALUES ('1560626178071384067', '3', '152');
+INSERT INTO `sys_role_permission` VALUES ('1560626177995886594', '3', '1529695376534106114');
+INSERT INTO `sys_role_permission` VALUES ('1560626177932972034', '3', '1529696851075231745');
+INSERT INTO `sys_role_permission` VALUES ('1560626177953943554', '3', '1530186899780431874');
+INSERT INTO `sys_role_permission` VALUES ('1560626178016858116', '3', '1542436081633390594');
+INSERT INTO `sys_role_permission` VALUES ('1560626178083966981', '3', '1552121553494224898');
+INSERT INTO `sys_role_permission` VALUES ('1560626178197213189', '3', '1552122437028556801');
+INSERT INTO `sys_role_permission` VALUES ('1560626178071384069', '3', '1552123305312399362');
+INSERT INTO `sys_role_permission` VALUES ('1560626178083966979', '3', '1552123414641127426');
+INSERT INTO `sys_role_permission` VALUES ('1560626178092355587', '3', '1552123729377505281');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938505', '3', '1552126948300304386');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938506', '3', '1552126980588056578');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938507', '3', '1552127050326749186');
+INSERT INTO `sys_role_permission` VALUES ('1560626178113327105', '3', '1552127074058121217');
+INSERT INTO `sys_role_permission` VALUES ('1560626178121715713', '3', '1552127135114604545');
+INSERT INTO `sys_role_permission` VALUES ('1560626178121715714', '3', '1552127171101732865');
+INSERT INTO `sys_role_permission` VALUES ('1560626178121715715', '3', '1552127195491610625');
+INSERT INTO `sys_role_permission` VALUES ('1560626178121715716', '3', '1552127214743465986');
+INSERT INTO `sys_role_permission` VALUES ('1560626178121715717', '3', '1552127228970545154');
+INSERT INTO `sys_role_permission` VALUES ('1560626178121715718', '3', '1552127248763465730');
+INSERT INTO `sys_role_permission` VALUES ('1560626178121715719', '3', '1552129202101170178');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241673', '3', '1552130346173083650');
+INSERT INTO `sys_role_permission` VALUES ('1560626178092355588', '3', '1552162022194425858');
+INSERT INTO `sys_role_permission` VALUES ('1560626178075578369', '3', '1552162067870396417');
+INSERT INTO `sys_role_permission` VALUES ('1560626178083966978', '3', '1552162375333851138');
+INSERT INTO `sys_role_permission` VALUES ('1560626178092355590', '3', '1552162399434321922');
+INSERT INTO `sys_role_permission` VALUES ('1560626178096549890', '3', '1552162428064641025');
+INSERT INTO `sys_role_permission` VALUES ('1560626178096549891', '3', '1552162459303817218');
+INSERT INTO `sys_role_permission` VALUES ('1560626178096549892', '3', '1552162485774069761');
+INSERT INTO `sys_role_permission` VALUES ('1560626178096549893', '3', '1552162507773194241');
+INSERT INTO `sys_role_permission` VALUES ('1560626178096549894', '3', '1552162542216818689');
+INSERT INTO `sys_role_permission` VALUES ('1560626178100744194', '3', '1552162563725209602');
+INSERT INTO `sys_role_permission` VALUES ('1560626178100744195', '3', '1552162598462435330');
+INSERT INTO `sys_role_permission` VALUES ('1560626178100744196', '3', '1552162619748528130');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938498', '3', '1552162643572174850');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938499', '3', '1552162668285014017');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938500', '3', '1552162693387923458');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938501', '3', '1552162712996294658');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938502', '3', '1552162733850374146');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938503', '3', '1552162757757906946');
+INSERT INTO `sys_role_permission` VALUES ('1560626178104938504', '3', '1552162774488985601');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241671', '3', '1552196675919949826');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241672', '3', '1552196825329446913');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241668', '3', '1552206108062396418');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241669', '3', '1552206155193790466');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241670', '3', '1552206179273289730');
+INSERT INTO `sys_role_permission` VALUES ('1560626178193018887', '3', '1552206451080966145');
+INSERT INTO `sys_role_permission` VALUES ('1560626178197213185', '3', '1552206587509092354');
+INSERT INTO `sys_role_permission` VALUES ('1560626178172047367', '3', '1552214776560496642');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241666', '3', '1552214944412348417');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241667', '3', '1552215050998001666');
+INSERT INTO `sys_role_permission` VALUES ('1560626178083966982', '3', '1552222776289406978');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658758', '3', '1552225255924183042');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658759', '3', '1552225281513631746');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658760', '3', '1552225302439014402');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658761', '3', '1552225347573919746');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658762', '3', '1552225367438143489');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241678', '3', '1552225891688394753');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241679', '3', '1552225971967373314');
+INSERT INTO `sys_role_permission` VALUES ('1560626178184630273', '3', '1552226055807315969');
+INSERT INTO `sys_role_permission` VALUES ('1560626178184630274', '3', '1552226198052941825');
+INSERT INTO `sys_role_permission` VALUES ('1560626178184630275', '3', '1552226261160439810');
+INSERT INTO `sys_role_permission` VALUES ('1560626178184630276', '3', '1552226412193132545');
+INSERT INTO `sys_role_permission` VALUES ('1560626178184630277', '3', '1552226475996884993');
+INSERT INTO `sys_role_permission` VALUES ('1560626178193018884', '3', '1552228496070160385');
+INSERT INTO `sys_role_permission` VALUES ('1560626178193018885', '3', '1552228571710238721');
+INSERT INTO `sys_role_permission` VALUES ('1560626178193018886', '3', '1552228656779112449');
+INSERT INTO `sys_role_permission` VALUES ('1560626178184630278', '3', '1552521429335941121');
+INSERT INTO `sys_role_permission` VALUES ('1560626178184630279', '3', '1552521502904033281');
+INSERT INTO `sys_role_permission` VALUES ('1560626178184630280', '3', '1552521541474852866');
+INSERT INTO `sys_role_permission` VALUES ('1560626178193018882', '3', '1552521598907457537');
+INSERT INTO `sys_role_permission` VALUES ('1560626178193018883', '3', '1552521647586549761');
+INSERT INTO `sys_role_permission` VALUES ('1560626178155270146', '3', '1552549270056345602');
+INSERT INTO `sys_role_permission` VALUES ('1560626178155270147', '3', '1552549337102295041');
+INSERT INTO `sys_role_permission` VALUES ('1560626178155270148', '3', '1552549430933069825');
+INSERT INTO `sys_role_permission` VALUES ('1560626178083966980', '3', '1552549932991258625');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658753', '3', '1552550090034388993');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658754', '3', '1552550173316489218');
+INSERT INTO `sys_role_permission` VALUES ('1560626178130104322', '3', '1552555383464140801');
+INSERT INTO `sys_role_permission` VALUES ('1560626178130104323', '3', '1552555501416357890');
+INSERT INTO `sys_role_permission` VALUES ('1560626178130104324', '3', '1552555597688217601');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298626', '3', '1552555839296905217');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298627', '3', '1552555956439621634');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298628', '3', '1552556056595406849');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298629', '3', '1552556156063326209');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298630', '3', '1552556257078943745');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298631', '3', '1552556727491108866');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298632', '3', '1552557023374090242');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298633', '3', '1552557141691211778');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298634', '3', '1552557259131723777');
+INSERT INTO `sys_role_permission` VALUES ('1560626178134298635', '3', '1552557377524342786');
+INSERT INTO `sys_role_permission` VALUES ('1560626178142687234', '3', '1552557463054589954');
+INSERT INTO `sys_role_permission` VALUES ('1560626178142687235', '3', '1552557668537737217');
+INSERT INTO `sys_role_permission` VALUES ('1560626178142687236', '3', '1552557763144458242');
+INSERT INTO `sys_role_permission` VALUES ('1560626178142687237', '3', '1552557850641833985');
+INSERT INTO `sys_role_permission` VALUES ('1560626178146881537', '3', '1552557975577567234');
+INSERT INTO `sys_role_permission` VALUES ('1560626178146881538', '3', '1552558709345886209');
+INSERT INTO `sys_role_permission` VALUES ('1560626178146881539', '3', '1552559000367669249');
+INSERT INTO `sys_role_permission` VALUES ('1560626178172047361', '3', '1552559431978328066');
+INSERT INTO `sys_role_permission` VALUES ('1560626178172047362', '3', '1552559574806962177');
+INSERT INTO `sys_role_permission` VALUES ('1560626178172047363', '3', '1552559830688866305');
+INSERT INTO `sys_role_permission` VALUES ('1560626178092355589', '3', '1552884393624838145');
+INSERT INTO `sys_role_permission` VALUES ('1560626178197213186', '3', '1560455577560219649');
+INSERT INTO `sys_role_permission` VALUES ('1560626178197213187', '3', '1560553057127825409');
+INSERT INTO `sys_role_permission` VALUES ('1560626178197213190', '3', '1560626135536947202');
+INSERT INTO `sys_role_permission` VALUES ('1560626178046218241', '3', '157');
+INSERT INTO `sys_role_permission` VALUES ('1560626178050412552', '3', '158');
+INSERT INTO `sys_role_permission` VALUES ('1560626178050412551', '3', '159');
+INSERT INTO `sys_role_permission` VALUES ('1560626178062995459', '3', '16');
+INSERT INTO `sys_role_permission` VALUES ('1560626178037829634', '3', '164');
+INSERT INTO `sys_role_permission` VALUES ('1560626178062995458', '3', '17');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658756', '3', '17dcc367a2c812c36b0d3e2710a567cd');
+INSERT INTO `sys_role_permission` VALUES ('1560626178071384066', '3', '19');
+INSERT INTO `sys_role_permission` VALUES ('1560626177974915074', '3', '20');
+INSERT INTO `sys_role_permission` VALUES ('1560626177983303682', '3', '21');
+INSERT INTO `sys_role_permission` VALUES ('1560626178008469508', '3', '218');
+INSERT INTO `sys_role_permission` VALUES ('1560626178008469506', '3', '219');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658757', '3', '220');
+INSERT INTO `sys_role_permission` VALUES ('1560626178172047364', '3', '221');
+INSERT INTO `sys_role_permission` VALUES ('1560626178172047365', '3', '222');
+INSERT INTO `sys_role_permission` VALUES ('1560626178050412546', '3', '224');
+INSERT INTO `sys_role_permission` VALUES ('1560626178054606849', '3', '225');
+INSERT INTO `sys_role_permission` VALUES ('1560626178054606850', '3', '226');
+INSERT INTO `sys_role_permission` VALUES ('1560626178197213188', '3', '228');
+INSERT INTO `sys_role_permission` VALUES ('1560626178050412545', '3', '236');
+INSERT INTO `sys_role_permission` VALUES ('1560626178054606851', '3', '237');
+INSERT INTO `sys_role_permission` VALUES ('1560626178058801153', '3', '238');
+INSERT INTO `sys_role_permission` VALUES ('1560626178058801156', '3', '306994778c19b648dfde51acee6ec24a');
+INSERT INTO `sys_role_permission` VALUES ('1560626178050412550', '3', '32');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241675', '3', '3273e1c9ff7485e4a09c67410641ce29');
+INSERT INTO `sys_role_permission` VALUES ('1560626178163658755', '3', '39731ea992cfa03ce527ad0724b067fc');
+INSERT INTO `sys_role_permission` VALUES ('1560626178029441026', '3', '39c5c5bcdd9a15110e2c3e4014dd1531');
+INSERT INTO `sys_role_permission` VALUES ('1560626178033635330', '3', '3b79694872fa73ff05699bde511b238f');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241677', '3', '4aba9a2f7c81615c9ccdc07e980ccfe3');
+INSERT INTO `sys_role_permission` VALUES ('1560626178071384068', '3', '5');
+INSERT INTO `sys_role_permission` VALUES ('1560626178058801157', '3', '52');
+INSERT INTO `sys_role_permission` VALUES ('1560626178062995457', '3', '53');
+INSERT INTO `sys_role_permission` VALUES ('1560626178050412548', '3', '55');
+INSERT INTO `sys_role_permission` VALUES ('1560626178050412549', '3', '56');
+INSERT INTO `sys_role_permission` VALUES ('1560626177932972035', '3', '61');
+INSERT INTO `sys_role_permission` VALUES ('1560626177941360641', '3', '62');
+INSERT INTO `sys_role_permission` VALUES ('1560626177928777729', '3', '64');
+INSERT INTO `sys_role_permission` VALUES ('1560626177928777730', '3', '65');
+INSERT INTO `sys_role_permission` VALUES ('1560626177983303683', '3', '67');
+INSERT INTO `sys_role_permission` VALUES ('1560626177983303684', '3', '68');
+INSERT INTO `sys_role_permission` VALUES ('1560626178046218242', '3', '7');
+INSERT INTO `sys_role_permission` VALUES ('1560626177974915075', '3', '70');
+INSERT INTO `sys_role_permission` VALUES ('1560626177974915076', '3', '71');
+INSERT INTO `sys_role_permission` VALUES ('1560626177958137857', '3', '72');
+INSERT INTO `sys_role_permission` VALUES ('1560626178092355586', '3', '720e77810ca8ea77ec7f7871985ea018');
+INSERT INTO `sys_role_permission` VALUES ('1560626178021052417', '3', '734dacc38f293883683b68c6d3e5b56e');
+INSERT INTO `sys_role_permission` VALUES ('1560626177970720770', '3', '74');
+INSERT INTO `sys_role_permission` VALUES ('1560626177970720771', '3', '75');
+INSERT INTO `sys_role_permission` VALUES ('1560626178033635331', '3', '76180395fab6dbdab6f6c050169c5f97');
+INSERT INTO `sys_role_permission` VALUES ('1560626178016858114', '3', '77ce77c2dd83b746657afbfb2acd21cd');
+INSERT INTO `sys_role_permission` VALUES ('1560626178008469509', '3', '792d3621d9d2f92acb7b9847dc0ef598');
+INSERT INTO `sys_role_permission` VALUES ('1560626178037829633', '3', '7da1f5456b340b1fc94e8bb8e8ae5e8f');
+INSERT INTO `sys_role_permission` VALUES ('1560626178050412547', '3', '90201ca3ab25e2204e3c250b5cd399ac');
+INSERT INTO `sys_role_permission` VALUES ('1560626178058801154', '3', '906d1078178cb203bb142f8cf22d4245');
+INSERT INTO `sys_role_permission` VALUES ('1560626178016858117', '3', '93d659164c0cbb3716fcee100f029d5c');
+INSERT INTO `sys_role_permission` VALUES ('1560626178021052418', '3', 'a3322940c314d1b6d9ba1d494740971e');
+INSERT INTO `sys_role_permission` VALUES ('1560626178172047366', '3', 'a95f4a835e7ca0277a77223572d3c29f');
+INSERT INTO `sys_role_permission` VALUES ('1560626178176241676', '3', 'ae53867719661453637074b18dd7f5ab');
+INSERT INTO `sys_role_permission` VALUES ('1560626178029441027', '3', 'c25cf52649878c66073c4ac0d691e86b');
+INSERT INTO `sys_role_permission` VALUES ('1560626178008469510', '3', 'c44e35a713e6e68ab1825ff0f6dd0a41');
+INSERT INTO `sys_role_permission` VALUES ('1560626178008469512', '3', 'cbdd956e2a348039fe01d76c2e6d4e91');
+INSERT INTO `sys_role_permission` VALUES ('1560626178008469507', '3', 'ccfeae90e4d3391ad54451fa2b4c1cd4');
+INSERT INTO `sys_role_permission` VALUES ('1560626178021052419', '3', 'd457a36b43fd8e9ad6461c9d42d3a098');
+INSERT INTO `sys_role_permission` VALUES ('1560626178058801155', '3', 'e4d1ddeb3c3dc7a292ce76770bfdcc7f');
+INSERT INTO `sys_role_permission` VALUES ('1560626178016858118', '3', 'e7f55c6889bd826d6a62885ef2ffdb1d');
+INSERT INTO `sys_role_permission` VALUES ('1560626178016858119', '3', 'f1d3af076c2810d690edefbdc3462c23');
+INSERT INTO `sys_role_permission` VALUES ('1560626178021052420', '3', 'fe84bcc6e4781447ea21573eb04bf0fb');
+INSERT INTO `sys_role_permission` VALUES ('1560626178016858115', '3', 'fee57187cae386f067db09aeb0b16b4a');
 COMMIT;
 
 -- ----------------------------
@@ -5500,14 +5201,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_tenant`;
 CREATE TABLE `sys_tenant` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
-  `name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
-  `contacts` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '联系人',
-  `phone_number` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '手机号',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '主键',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '名称',
+  `contacts` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '联系人',
+  `phone_number` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '手机号',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新人',
   `edit_date` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='租户';
@@ -5517,35 +5218,43 @@ CREATE TABLE `sys_tenant` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
-  `dept_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '部门id',
-  `post_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '岗位id',
-  `nickname` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '昵称',
-  `username` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户名',
-  `password` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '密码',
-  `salt` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '密码盐',
-  `sex` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '性别',
-  `email` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '邮箱',
-  `phone_number` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '手机号',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'id',
+  `dept_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '部门id',
+  `post_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '岗位id',
+  `nickname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '昵称',
+  `username` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户名',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '密码',
+  `salt` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '密码盐',
+  `sex` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '性别',
+  `email` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '邮箱',
+  `phone_number` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '手机号',
   `birthday` datetime DEFAULT NULL COMMENT '生日',
-  `avatar` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '头像',
-  `status` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态',
-  `source` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户来源',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '头像',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '状态',
+  `source` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户来源',
   `last_login_date` datetime DEFAULT NULL COMMENT '最后登录时间',
-  `tenant_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
-  `version` int(11) DEFAULT 0 COMMENT '乐观锁保留字段',
-  `create_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '租户Id',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁保留字段',
+  `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
+  `edit_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编辑人',
   `edit_date` datetime DEFAULT NULL COMMENT '编辑时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_user_username_pk` (`username`),
+  UNIQUE KEY `sys_user_email_pk` (`email`),
+  UNIQUE KEY `sys_user_phone_number_pk` (`phone_number`),
+  KEY `sys_user_nickname_index_2` (`nickname`),
+  KEY `sys_user_username_index` (`username`),
+  KEY `sys_user_dept_id_index` (`dept_id`),
+  KEY `sys_user_email_index` (`email`),
+  KEY `sys_user_phone_number_index` (`phone_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES ('1', '1', NULL, '系统管理员', 'sysadmin', '76c7d59df99d0b60d89da94df5062511', 'ezmfjc59pn', '1', 'easyframe@sina.com', '17366392808', '1990-11-25 00:00:00', '/static/formal/2022/7/29/74bdca9b-b75c-4489-b9e2-f6536a25ab43.jpg', '1', NULL, '2022-08-05 09:39:23', NULL, 1, '1', '2020-12-11 10:54:00', '1', '2022-07-29 14:19:41');
+INSERT INTO `sys_user` VALUES ('1', '1', NULL, '系统管理员', 'sysadmin', '76c7d59df99d0b60d89da94df5062511', 'ezmfjc59pn', '1', 'easyframe@sina.com', '17366392808', '1990-11-25 00:00:00', '/static/formal/2023/1/11/ea3b2d2b-41ea-4ffc-a389-78e03a827662.jpg', '1', NULL, '2023-02-16 11:12:16', NULL, 3, '1', '2020-12-11 10:54:00', '1', '2023-01-11 14:52:01');
 INSERT INTO `sys_user` VALUES ('1533320501638762498', '1', NULL, '管理员', 'admin', '07706d9563127464ee6643319203cafc', '9oszdqrwu1', '1', NULL, NULL, NULL, NULL, '1', NULL, '2022-07-27 10:37:18', NULL, 4, '1', '2022-06-05 13:31:10', '1', '2022-06-12 21:59:48');
 INSERT INTO `sys_user` VALUES ('1533322492788117506', '1531875373476855810', NULL, '人事经理', 'hr', '8ca24c20d083f0ad886bb67f6669909e', 'bjihdcoyzj', '2', NULL, NULL, NULL, NULL, '1', NULL, '2022-07-29 10:48:27', NULL, 1, '1', '2022-06-05 13:39:05', '1', '2022-06-05 13:39:15');
 INSERT INTO `sys_user` VALUES ('1533326281821671425', '1531875536031301633', NULL, 'cc', 'cc', '288c53514aa1d1080b5fb2b2d7dd4f93', 'lyxgtbu443', '1', NULL, '', NULL, NULL, '1', NULL, NULL, NULL, 0, '1', '2022-06-05 13:54:08', '1', '2022-06-05 13:54:08');
@@ -5557,21 +5266,24 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `user_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL,
-  `role_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_user_role_user_id_role_id_pk` (`user_id`,`role_id`),
+  KEY `sys_user_role_user_id_index` (`user_id`),
+  KEY `sys_user_role_role_id_index` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user_role` VALUES ('1533320429903581185', '1', '3');
+INSERT INTO `sys_user_role` VALUES ('1560632049396535297', '1', '3');
+INSERT INTO `sys_user_role` VALUES ('1535985220063256578', '1533320501638762498', '1531819854540070914');
 INSERT INTO `sys_user_role` VALUES ('1533322534836015105', '1533322492788117506', '1531819907467993089');
 INSERT INTO `sys_user_role` VALUES ('1533326281863614466', '1533326281821671425', '1531823375461146625');
 INSERT INTO `sys_user_role` VALUES ('1533326426311249922', '1533326426277695489', '1531823375461146625');
-INSERT INTO `sys_user_role` VALUES ('1535985220063256578', '1533320501638762498', '1531819854540070914');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
