@@ -47,7 +47,7 @@
         <swagger.fox.version>3.0.0</swagger.fox.version>
         <jjwt.version>0.9.1</jjwt.version>
         <knife4j.version>2.0.4</knife4j.version>
-        <shiro.version>1.10.0</shiro.version>
+        <shiro.version>1.11.0</shiro.version>
         <beetl.version>3.10.0.RELEASE</beetl.version>
         <jsoup.version>1.15.1</jsoup.version>
         <log4j2.version>2.15.0</log4j2.version>
