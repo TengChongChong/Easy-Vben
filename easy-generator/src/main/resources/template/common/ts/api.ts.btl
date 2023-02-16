@@ -2,12 +2,35 @@ import { ${basicsConfig.modelName} } from '${modelTsPath}';
 <% if(basicsConfig.generatorMethodsSelect){ %>
 import { Page } from '/@/api/model/pageModel';
 <% } %>
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+import { TreeNodeModel } from '/@/api/model/treeModel';
+<% } %>
 import { defHttp } from '/@/utils/http/axios';
 
 // base url
 const BASE_URL = '/api${basicsConfig.controllerMapping}';
-
 <% if(basicsConfig.generatorMethodsSelect){ %>
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+/**
+ * 查询
+ *
+ * @param params 查询条件
+ */
+export function select(params: ${basicsConfig.modelName}) {
+  return defHttp.get<Page<${basicsConfig.modelName}>>({
+    url: BASE_URL,
+    params: params,
+  });
+}
+/**
+ * 查询所有
+ */
+export function selectAll() {
+  return defHttp.get<TreeNodeModel[]>({
+    url: `\${BASE_URL}/all`,
+  });
+}
+<% } else { %>
 /**
  * 查询
  *
@@ -20,6 +43,7 @@ export function select(params: ${basicsConfig.modelName}, page: Page<${basicsCon
     params: Object.assign(params, page),
   });
 }
+<% } %>
 
 /**
  * 详情
@@ -31,9 +55,20 @@ export function get(id: string) {
     url: `\${BASE_URL}/\${id}`,
   });
 }
-
 <% } %>
 <% if(basicsConfig.generatorMethodsAdd){ %>
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+/**
+ * 新增
+ *
+ * @param parentId 父id
+ */
+export function add(parentId: string | undefined) {
+  return defHttp.get<${basicsConfig.modelName}>({
+    url: `\${BASE_URL}/add/\${parentId || ''}`,
+  });
+}
+<% } else { %>
 /**
  * 新增
  */
@@ -42,9 +77,10 @@ export function add() {
     url: `\${BASE_URL}/add`,
   });
 }
-
+<% } %>
 <% } %>
 <% if(basicsConfig.generatorMethodsRemove){ %>
+
 /**
  * 删除
  *
@@ -55,9 +91,9 @@ export function remove(ids: string) {
     url: `\${BASE_URL}/\${ids}`,
   });
 }
-
 <% } %>
 <% if(basicsConfig.generatorMethodsSave){ %>
+
 /**
  * 保存
  *
@@ -70,8 +106,22 @@ export function save(params: ${basicsConfig.modelName}) {
   });
 }
 
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+/**
+ * 保存排序
+ *
+ * @param params 表单数据
+ */
+export function saveOrder(params: ${basicsConfig.modelName}[]) {
+  return defHttp.post<${basicsConfig.modelName}>({
+    url: `\${BASE_URL}/order`,
+    data: params,
+  });
+}
+<% } %>
 <% } %>
 <% if(basicsConfig.isGeneratorMethodsExport){ %>
+
 /**
  * 导出数据
  *
@@ -83,5 +133,4 @@ export function exportData(params: ${basicsConfig.modelName}) {
     params,
   });
 }
-
 <% } %>

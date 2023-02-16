@@ -2,7 +2,9 @@ package com.easy.admin.generator.generator.impl;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
 import com.easy.admin.generator.constant.GeneratorPackageConst;
 import com.easy.admin.generator.constant.GeneratorTemplateConst;
@@ -55,6 +57,11 @@ public class GeneratorController extends GeneratorFile {
         imports.add(RestController.class);
         imports.add(ResponseResult.class);
         imports.add(RequestMapping.class);
+        if (GeneratorListTemplateConst.TREE_TABLE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate()) ||
+                GeneratorListTemplateConst.TREE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate())) {
+            imports.add(List.class);
+            imports.add(Tree.class);
+        }
         if (generatorConfig.isGeneratorMethod(GeneratorMethodConst.SELECT) || generatorConfig.isGeneratorMethod(GeneratorMethodConst.ADD)) {
             imports.add(GetMapping.class);
         }

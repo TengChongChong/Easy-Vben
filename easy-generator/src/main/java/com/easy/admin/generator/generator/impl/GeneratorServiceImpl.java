@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
 import com.easy.admin.generator.constant.GeneratorPackageConst;
 import com.easy.admin.generator.constant.GeneratorTemplateConst;
@@ -76,7 +78,10 @@ public class GeneratorServiceImpl extends GeneratorFile {
         imports.add(Transactional.class);
         imports.add(Arrays.class);
         imports.add(List.class);
-
+        if (GeneratorListTemplateConst.TREE_TABLE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate()) ||
+                GeneratorListTemplateConst.TREE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate())) {
+            imports.add(Tree.class);
+        }
         return imports;
     }
 

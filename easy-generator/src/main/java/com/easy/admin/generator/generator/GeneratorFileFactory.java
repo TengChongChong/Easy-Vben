@@ -44,6 +44,9 @@ public class GeneratorFileFactory {
             case GeneratorFileConst.LIST_VUE:
                 generatorFile = new GeneratorList(generatorConfig, tableInfo);
                 break;
+            case GeneratorFileConst.ORDER_VUE:
+                generatorFile = new GeneratorOrder(generatorConfig, tableInfo);
+                break;
             case GeneratorFileConst.INPUT_VUE:
                 generatorFile = new GeneratorInput(generatorConfig, tableInfo);
                 break;

@@ -22,6 +22,7 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.config.properties.ProjectProperties;
 import com.easy.admin.generator.constant.GeneratorConst;
 import com.easy.admin.generator.constant.GeneratorFileConst;
+import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.generator.GeneratorFileFactory;
@@ -87,8 +88,28 @@ public class GeneratorServiceImpl implements GeneratorService {
             for (String fileSlug : generatorConfig.getBasicsConfig().getGenFile()) {
                 GeneratorFile generatorFile = GeneratorFileFactory.getGeneratorFile(fileSlug, generatorConfig, tableInfo);
                 generatorFile.generator();
+
+                // 部分选项需要生成额外的文件，用于减少用户在前端选择的选项数量
+                if (GeneratorFileConst.MAPPER.equals(fileSlug)) {
+                    generatorFile = GeneratorFileFactory.getGeneratorFile(GeneratorFileConst.MAPPING, generatorConfig, tableInfo);
+                    generatorFile.generator();
+                }
+                if (GeneratorFileConst.SERVICE.equals(fileSlug)) {
+                    generatorFile = GeneratorFileFactory.getGeneratorFile(GeneratorFileConst.SERVICE_IMPL, generatorConfig, tableInfo);
+                    generatorFile.generator();
+                }
                 if (GeneratorFileConst.LIST_VUE.equals(fileSlug)) {
+                    if (GeneratorListTemplateConst.TREE_TABLE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate())) {
+                        // 树表格 - 排序
+                        generatorFile = GeneratorFileFactory.getGeneratorFile(GeneratorFileConst.ORDER_VUE, generatorConfig, tableInfo);
+                        generatorFile.generator();
+                    }
+
                     generatorFile = GeneratorFileFactory.getGeneratorFile(GeneratorFileConst.DATA_TS, generatorConfig, tableInfo);
+                    generatorFile.generator();
+                }
+                if (GeneratorFileConst.API_TS.equals(fileSlug)) {
+                    generatorFile = GeneratorFileFactory.getGeneratorFile(GeneratorFileConst.MODEL_TS, generatorConfig, tableInfo);
                     generatorFile.generator();
                 }
             }
@@ -178,7 +199,7 @@ public class GeneratorServiceImpl implements GeneratorService {
      * @return SysImportExcelTemplate
      */
     private SysImportExcelTemplate saveImportExcelTemplate(GeneratorConfig generatorConfig) {
-        if(sysImportExcelTemplateService.checkHav(generatorConfig.getBasicsConfig().getPermissionCode(), null)){
+        if (sysImportExcelTemplateService.checkHav(generatorConfig.getBasicsConfig().getPermissionCode(), null)) {
             return null;
         }
         // 需要创建导入模板

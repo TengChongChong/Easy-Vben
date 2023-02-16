@@ -23,6 +23,24 @@ import ${basicsConfig.packagePath}.dao.${basicsConfig.modelName}Mapper;
 public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsConfig.modelName}Mapper, ${basicsConfig.modelName}> implements ${basicsConfig.modelName}Service<% if(basicsConfig.isGeneratorMethodsImport){ %>, ImportService<% }%> {
 
     <% if(basicsConfig.isGeneratorMethodsSelect){ %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+    /**
+     * 列表
+     *
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
+     * @return List<${basicsConfig.modelName}>
+     */
+    @Override
+    public List<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}) {
+        QueryWrapper<${basicsConfig.modelName}> queryWrapper = getQueryWrapper(${strUtil.lowerFirst(basicsConfig.modelName)});
+        return baseMapper.select(queryWrapper);
+    }
+
+    @Override
+    public List<Tree> selectAll() {
+        return baseMapper.selectAll();
+    }
+    <% } else { %>
     /**
      * 列表
      *
@@ -36,6 +54,7 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
+    <% } %>
 
     /**
      * 获取查询条件
@@ -100,7 +119,28 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
     }
 
     <% } %>
-    <% if(basicsConfig.isGeneratorMethodsAdd){ %>
+    <% if(basicsConfig.isGeneratorMethodsAdd) { %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table') { %>
+    /**
+     * 新增
+     *
+     * @param parentId 上级id
+     * @return ${basicsConfig.modelName}
+     */
+    @Override
+    public ${basicsConfig.modelName} add(String parentId) {
+        ${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)} = new ${basicsConfig.modelName}();
+        // 设置默认值
+        if (Validator.isNotEmpty(parentId)) {
+            ${basicsConfig.modelName} parent${basicsConfig.modelName} = getById(parentId);
+            if (parent${basicsConfig.modelName} != null) {
+                ${strUtil.lowerFirst(basicsConfig.modelName)}.setParentId(parentId);
+                ${strUtil.lowerFirst(basicsConfig.modelName)}.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
+            }
+        }
+        return ${strUtil.lowerFirst(basicsConfig.modelName)};
+    }
+    <% } else { %>
     /**
      * 新增
      *
@@ -112,9 +152,10 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
         // 设置默认值
         return ${strUtil.lowerFirst(basicsConfig.modelName)};
     }
-
+    <% } %>
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsRemove){ %>
+
     /**
      * 删除
      *
@@ -146,6 +187,13 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
         }
         return (${basicsConfig.modelName}) ToolUtil.checkResult(saveOrUpdate(${strUtil.lowerFirst(basicsConfig.modelName)}), ${strUtil.lowerFirst(basicsConfig.modelName)});
     }
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+
+    @Override
+    public boolean saveOrder(List<${basicsConfig.modelName}> ${strUtil.lowerFirst(basicsConfig.modelName)}List) {
+        return baseMapper.updateOrderBatch(${strUtil.lowerFirst(basicsConfig.modelName)}List) > 0;
+    }
+    <% } %>
 
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsImport){ %>

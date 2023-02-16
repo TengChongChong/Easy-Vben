@@ -12,6 +12,27 @@
         <% } %>
         <% } %>
     </resultMap>
+    <% if(basicsConfig.isGeneratorMethodsSelect){ %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+    <select id="select" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
+        select t.id, t.parent_id<% for(item in tableConfig){ %>, ${GeneratorXmlUtil.getSelectField(item)}<% } %>
+        from ${tableInfo.name} t
+        <% for(item in tableConfig){ %>
+        <% if(item.name == 'create_user' || item.name == 'edit_user'){ %>
+        left join sys_user su_${item.name} on su_${item.name}.id = t.${item.name}
+        <% } %>
+        <% } %>
+        <where>
+            \${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.parent_id, t.name as title, t.id as `key`
+        from ${tableInfo.name} t
+        order by t.order_no
+    </select>
+    <% } else { %>
     <select id="select" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
         select t.id<% for(item in tableConfig){ %>, ${GeneratorXmlUtil.getSelectField(item)}<% } %>
         from ${tableInfo.name} t
@@ -24,12 +45,35 @@
             \${ew.sqlSegment}
         </where>
     </select>
+    <% } %>
+
     <%index = 0;%>
     <select id="getById" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
         select <% for(item in tableInfo.fields){ %>${index == 0 ? '' : ', '}t.${item.name}<% index++;} %>
         from ${tableInfo.name} t
         where t.id = #{id}
     </select>
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsSave){ %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(order_no), 0)
+        from ${tableInfo.name} t
+        where t.parent_id = #{parentId}
+    </select>
+    <update id="updateOrderBatch">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update ${tableInfo.name}
+            <set>
+                parent_id = #{item.parentId},
+                order_no = #{item.orderNo}
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+    <% } %>
+    <% } %>
+
     <% if(basicsConfig.isGeneratorMethodsExport){ %>
     <%index = 0;%>
     <select id="exportData" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">

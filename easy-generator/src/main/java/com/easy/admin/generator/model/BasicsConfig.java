@@ -21,9 +21,13 @@ public class BasicsConfig {
      */
     private String table;
     /**
-     * 生成模版
+     * 生成模版 - 列表
      */
-    private String generatorTemplate;
+    private String listGeneratorTemplate;
+    /**
+     * 生成模版 - 表单
+     */
+    private String formGeneratorTemplate;
     /**
      * 生成方法
      */
@@ -98,12 +102,20 @@ public class BasicsConfig {
         this.table = table;
     }
 
-    public String getGeneratorTemplate() {
-        return generatorTemplate;
+    public String getListGeneratorTemplate() {
+        return listGeneratorTemplate;
     }
 
-    public void setGeneratorTemplate(String generatorTemplate) {
-        this.generatorTemplate = generatorTemplate;
+    public void setListGeneratorTemplate(String listGeneratorTemplate) {
+        this.listGeneratorTemplate = listGeneratorTemplate;
+    }
+
+    public String getFormGeneratorTemplate() {
+        return formGeneratorTemplate;
+    }
+
+    public void setFormGeneratorTemplate(String formGeneratorTemplate) {
+        this.formGeneratorTemplate = formGeneratorTemplate;
     }
 
     public List<String> getGenMethod() {
@@ -223,47 +235,52 @@ public class BasicsConfig {
      *
      * @return true/false
      */
-    public boolean isGeneratorMethodsAdd(){
+    public boolean isGeneratorMethodsAdd() {
         return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.ADD);
     }
+
     /**
      * 是否生成删除方法
      *
      * @return true/false
      */
-    public boolean isGeneratorMethodsRemove(){
+    public boolean isGeneratorMethodsRemove() {
         return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.REMOVE);
     }
+
     /**
      * 是否生成保存方法
      *
      * @return true/false
      */
-    public boolean isGeneratorMethodsSave(){
+    public boolean isGeneratorMethodsSave() {
         return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.SAVE);
     }
+
     /**
      * 是否生成查询方法
      *
      * @return true/false
      */
-    public boolean isGeneratorMethodsSelect(){
+    public boolean isGeneratorMethodsSelect() {
         return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.SELECT);
     }
+
     /**
      * 是否生成导入数据方法
      *
      * @return true/false
      */
-    public boolean isGeneratorMethodsImport(){
+    public boolean isGeneratorMethodsImport() {
         return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.IMPORT_DATA);
     }
+
     /**
      * 是否生成导出数据方法
      *
      * @return true/false
      */
-    public boolean isGeneratorMethodsExport(){
+    public boolean isGeneratorMethodsExport() {
         return this.genMethod != null && this.genMethod.contains(GeneratorMethodConst.EXPORT_DATA);
     }
 
@@ -272,71 +289,79 @@ public class BasicsConfig {
      *
      * @return true/false
      */
-    public boolean isGeneratorFileModel(){
+    public boolean isGeneratorFileModel() {
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.MODEL);
     }
+
     /**
      * 是否生成Dao
      *
      * @return true/false
      */
-    public boolean isGeneratorFileMapper(){
+    public boolean isGeneratorFileMapper() {
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.MAPPER);
     }
+
     /**
      * 是否生成Mapping
      *
      * @return true/false
      */
-    public boolean isGeneratorFileMapping(){
-        return this.genFile != null && this.genFile.contains(GeneratorFileConst.MAPPING);
+    public boolean isGeneratorFileMapping() {
+        return this.genFile != null && this.genFile.contains(GeneratorFileConst.MAPPER);
     }
+
     /**
      * 是否生成Service
      *
      * @return true/false
      */
-    public boolean isGeneratorFileService(){
+    public boolean isGeneratorFileService() {
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.SERVICE);
     }
+
     /**
      * 是否生成Service实现类
      *
      * @return true/false
      */
-    public boolean isGeneratorFileServiceImpl(){
-        return this.genFile != null && this.genFile.contains(GeneratorFileConst.SERVICE_IMPL);
+    public boolean isGeneratorFileServiceImpl() {
+        return this.genFile != null && this.genFile.contains(GeneratorFileConst.SERVICE);
     }
+
     /**
      * 是否生成Controller
      *
      * @return true/false
      */
-    public boolean isGeneratorFileController(){
+    public boolean isGeneratorFileController() {
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.CONTROLLER);
     }
+
     /**
      * 是否生成列表页
      *
      * @return true/false
      */
-    public boolean isGeneratorFileListView(){
+    public boolean isGeneratorFileListView() {
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.LIST_VUE);
     }
+
     /**
      * 是否生成表单页
      *
      * @return true/false
      */
-    public boolean isGeneratorFileInputView(){
+    public boolean isGeneratorFileInputView() {
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.INPUT_VUE);
     }
+
     /**
      * 是否生成接口js
      *
      * @return true/false
      */
-    public boolean isGeneratorFileApi(){
+    public boolean isGeneratorFileApi() {
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.API_TS);
     }
 
@@ -345,7 +370,7 @@ public class BasicsConfig {
      *
      * @return true/false
      */
-    public boolean isGeneratorFileModelTs(){
+    public boolean isGeneratorFileModelTs() {
         return this.genFile != null && this.genFile.contains(GeneratorFileConst.MODEL_TS);
     }
 

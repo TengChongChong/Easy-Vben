@@ -24,10 +24,39 @@ public class ${basicsConfig.modelName}Controller {
     private ${basicsConfig.modelName}Service service;
 
     <% if(basicsConfig.generatorMethodsSelect){ %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
     /**
      * 列表
      *
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
+     * @return List<${basicsConfig.modelName}>
+     */
+    @GetMapping()
+    <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
+    @RequiresPermissions("${basicsConfig.permissionCode}:select")
+    <% } %>
+    public List<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}){
+        return service.select(${strUtil.lowerFirst(basicsConfig.modelName)});
+    }
+
+    /**
+     * 获取全部数据
+     *
+     * @return List<Tree>
+     */
+    @GetMapping("all")
+    <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
+    @RequiresPermissions("${basicsConfig.permissionCode}:select")
+    <% } %>
+    public List<Tree> selectAll() {
+        return service.selectAll();
+    }
+    <% } else { %>
+    /**
+     * 列表
+     *
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
+     * @param page 分页
      * @return Page<${basicsConfig.modelName}>
      */
     @GetMapping()
@@ -37,6 +66,7 @@ public class ${basicsConfig.modelName}Controller {
     public Page<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}, Page<${basicsConfig.modelName}> page){
         return service.select(${strUtil.lowerFirst(basicsConfig.modelName)}, page);
     }
+    <% } %>
 
     /**
      * 详情
@@ -54,6 +84,20 @@ public class ${basicsConfig.modelName}Controller {
 
     <% } %>
     <% if(basicsConfig.generatorMethodsAdd){ %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+    /**
+     * 新增
+     * @param parentId 上级id
+     * @return ${basicsConfig.modelName}
+     */
+    @GetMapping({"/add/{parentId}", "/add"})
+    <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
+    @RequiresPermissions("${basicsConfig.permissionCode}:save")
+    <% } %>
+    public ${basicsConfig.modelName} add(@PathVariable(value = "parentId", required = false) String parentId) {
+        return service.add(parentId);
+    }
+    <% } else { %>
     /**
      * 新增
      *
@@ -66,7 +110,7 @@ public class ${basicsConfig.modelName}Controller {
     public ${basicsConfig.modelName} add() {
         return service.add();
     }
-
+    <% } %>
     <% } %>
     <% if(basicsConfig.generatorMethodsRemove){ %>
     /**
@@ -98,7 +142,21 @@ public class ${basicsConfig.modelName}Controller {
     public ${basicsConfig.modelName} saveData(@Valid @RequestBody ${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}){
         return service.saveData(${strUtil.lowerFirst(basicsConfig.modelName)});
     }
-
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+    /**
+     * 保存排序
+     *
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)}List 排序
+     * @return true/false
+     */
+    @PostMapping("order")
+    <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
+    @RequiresPermissions("${basicsConfig.permissionCode}:save")
+    <% } %>
+    public boolean saveOrder(@RequestBody List<${basicsConfig.modelName}> ${strUtil.lowerFirst(basicsConfig.modelName)}List){
+        return service.saveOrder(${strUtil.lowerFirst(basicsConfig.modelName)}List);
+    }
+    <% } %>
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsExport){ %>
     /**

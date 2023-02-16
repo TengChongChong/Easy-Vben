@@ -36,6 +36,10 @@ public class GeneratorFileConst {
      */
     public static final String LIST_VUE = "list.vue";
     /**
+     * 排序页
+     */
+    public static final String ORDER_VUE = "order.vue";
+    /**
      * 表单页
      */
     public static final String INPUT_VUE = "input.vue";

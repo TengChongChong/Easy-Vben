@@ -2,6 +2,8 @@ package com.easy.admin.generator.generator.impl;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.tree.Tree;
+import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorPackageConst;
 import com.easy.admin.generator.constant.GeneratorTemplateConst;
 import com.easy.admin.generator.generator.GeneratorFile;
@@ -44,6 +46,11 @@ public class GeneratorService extends GeneratorFile {
     private List<Class<?>> initImports() {
         List<Class<?>> imports = new ArrayList<>();
         imports.add(Page.class);
+        if (GeneratorListTemplateConst.TREE_TABLE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate()) ||
+                GeneratorListTemplateConst.TREE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate())) {
+            imports.add(List.class);
+            imports.add(Tree.class);
+        }
         return imports;
     }
 }

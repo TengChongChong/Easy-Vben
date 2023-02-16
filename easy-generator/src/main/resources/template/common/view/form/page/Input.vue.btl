@@ -1,0 +1,130 @@
+<template>
+  <BasicDrawer
+    v-bind="$attrs"
+    @register="registerDrawer"
+    showFooter
+    title="${basicsConfig.businessName}"
+    width="30%"
+    @ok="handleSave"
+  >
+    <BasicForm @register="registerForm" />
+    <% if(basicsConfig.generatorMethodsAdd){ %>
+    <template #appendFooter>
+      <a-button-save @click="handleSaveAndAdd" text="保存并新增" />
+    </template>
+    <% } %>
+  </BasicDrawer>
+</template>
+<script lang="ts">
+  import { defineComponent, nextTick } from 'vue';
+  import { BasicForm, useForm } from '/@/components/Form';
+  import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
+  import { AButtonSave } from '/@/components/Button';
+  import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
+  import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
+  export default defineComponent({
+    name: '${basicsConfig.modelName}Input',
+    components: { BasicDrawer, BasicForm, AButtonSave },
+    emits: ['success', 'register'],
+    setup(_, { emit }) {
+      const [registerForm, { resetFields, setFieldsValue, validate, getFieldsValue }] = useForm({
+        labelWidth: 100,
+        schemas: [
+          { field: 'id', label: 'id', component: 'Input', show: false },
+          { field: 'version', label: 'version', component: 'Input', show: false },
+          <% if(tableConfig != null) { %>
+          <% for(item in inputConfig){ %>
+          {
+            field: '${item.propertyName}',
+            label: '${item.label}',
+            <% if(item.required != null && item.required) { %>
+            required: true,
+            <% } %>
+            component: '${item.componentType}',
+            <% if(strUtil.isNotBlank(item.dictType)) { %>
+            componentProps: {
+              dictType: '${item.dictType}',
+            },
+            <% } else if(item.componentType == 'DatePicker') { %>
+            componentProps: {
+              showTime: true,
+            },
+            <% } else if(item.componentType == 'InputTextArea') { %>
+            componentProps: {
+              autoSize: {
+                minRows: 2,
+                maxRows: 7,
+              },
+            },
+            <% } %>
+            <% if(item.propertyType == 'String' && strUtil.isBlank(item.dictType)) { %>
+            <% columnLength = GeneratorUtil.getColumnLength(item); %>
+            <% if(columnLength != null) { %>
+            rules: [{ max: ${columnLength}, message: '${item.label}不能超过${columnLength}个字符', trigger: 'blur' }],
+            <% } %>
+            <% } else if(item.propertyType == 'Integer' || item.propertyType == 'Long' || item.propertyType == 'Double') {%>
+            rules: [
+              { type: 'number', max: 9999, message: '${item.label}不能大于9999', trigger: 'blur' },
+              { type: 'number', min: 0, message: '${item.label}不能小于0', trigger: 'blur' },
+            ],
+            <% } %>
+            <% customComponents = ['ApiCascader', 'ApiRadioGroup', 'ApiSelect', 'ApiTree', 'ApiTreeSelect', 'DictCascader', 'DictCheckbox', 'DictRadio', 'DictSelect']; %>
+            <% if(array.contain(customComponents, item.componentType)) { %>
+            itemProps: { validateTrigger: 'blur' },
+            <% } %>
+          },
+          <% } %>
+          <% } %>
+        ],
+        showActionButtonGroup: false,
+        baseColProps: { md: 24 },
+      });
+
+      const [registerDrawer, { changeLoading, closeDrawer }] = useDrawerInner(async (data) => {
+        changeLoading(true);
+        // 重置表单
+        await resetFields();
+        await setFieldsValue(data);
+        changeLoading(false);
+      });
+
+      async function handleSubmit(callback: (_: ${basicsConfig.modelName}) => any) {
+        try {
+          changeLoading(true);
+          await validate();
+          await save(getFieldsValue() as ${basicsConfig.modelName}).then((res) => {
+            emit('success');
+            callback(res);
+          });
+        } catch (e) {
+          console.error(e);
+          changeLoading(false);
+        }
+      }
+
+      async function handleSave() {
+        await handleSubmit((_) => {
+          changeLoading(false);
+          closeDrawer();
+        });
+      }
+
+      <% if(basicsConfig.generatorMethodsAdd){ %>
+      async function handleSaveAndAdd() {
+        await handleSubmit(() => {
+          nextTick(() => {
+            add().then(async (data) => {
+              // 重置表单
+              await resetFields();
+              await setFieldsValue(data);
+              changeLoading(false);
+            });
+          });
+        });
+      }
+
+      <% } %>
+      return { registerDrawer, registerForm, handleSave, handleSaveAndAdd };
+    },
+  });
+</script>
