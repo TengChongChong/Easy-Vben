@@ -22,7 +22,7 @@
         <a-button-remove-batch :id="checkedKeys" :api="remove" @success="reload" />
         <% } %>
         <% } %>
-        <Authority value="sys:dept:save">
+        <Authority ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'value="' + basicsConfig.permissionCode + ':save" ' : ''}@click="handleCreate">
           <a-button @click="handleOrder">
             <template #icon> <Icon icon="ant-design:ordered-list-outlined" /> </template> 排序
           </a-button>
@@ -83,14 +83,18 @@
   <% if(basicsConfig.isGeneratorMethodsExport){ %>
   import { downloadFileById } from '/@/utils/file/download';
   <% } %>
+  import { Authority } from '/@/components/Authority';
   import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
   import ${basicsConfig.modelName}Input from '${viewPath}/Input.vue';
   import ${basicsConfig.modelName}Order from '${viewPath}/Order.vue';
+
 
   export default defineComponent({
     name: '${basicsConfig.modelName}List',
     components: {
       PageWrapper,
+      Authority,
+      Icon,
       ${basicsConfig.modelName}Input,
       ${basicsConfig.modelName}Order,
       <% if(basicsConfig.generatorMethodsAdd){ %>
