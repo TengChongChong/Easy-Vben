@@ -54,11 +54,12 @@ public interface SysPermissionService {
     /**
      * 设置状态
      *
-     * @param ids    角色id
+     * @param id     角色id
      * @param status 状态
+     * @param type   菜单类型
      * @return true/false
      */
-    boolean setStatus(String ids, String status);
+    boolean setStatus(String id, String status, String type);
 
     /**
      * 保存

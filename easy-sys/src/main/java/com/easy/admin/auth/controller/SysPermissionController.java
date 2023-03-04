@@ -76,14 +76,17 @@ public class SysPermissionController extends BaseController {
     /**
      * 设置状态
      *
-     * @param ids    权限ids
+     * @param id     权限id
      * @param status 状态
+     * @param type   菜单类型
      * @return true/false
      */
-    @PostMapping("{id}/status/{status}")
+    @PostMapping("{id}/status/{status}/type/{type}")
     @RequiresPermissions("sys:permission:save")
-    public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
-        return service.setStatus(ids, status);
+    public boolean setStatus(@PathVariable("id") String id,
+                             @PathVariable("status") String status,
+                             @PathVariable("type") String type) {
+        return service.setStatus(id, status, type);
     }
 
     /**
@@ -106,7 +109,7 @@ public class SysPermissionController extends BaseController {
      */
     @PostMapping("order")
     @RequiresPermissions("sys:permission:save")
-    public boolean saveOrder(@RequestBody List<SysPermission> sysPermissionList){
+    public boolean saveOrder(@RequestBody List<SysPermission> sysPermissionList) {
         return service.saveOrder(sysPermissionList);
     }
 

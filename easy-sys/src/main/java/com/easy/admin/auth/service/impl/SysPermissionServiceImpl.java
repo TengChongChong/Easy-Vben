@@ -3,6 +3,7 @@ package com.easy.admin.auth.service.impl;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.common.type.PermissionType;
 import com.easy.admin.auth.dao.SysPermissionMapper;
@@ -21,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -128,18 +128,17 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public boolean setStatus(String ids, String status) {
-        ToolUtil.checkParams(ids);
-        ToolUtil.checkParams(status);
-        List<SysPermission> permissionsList = new ArrayList<>();
-        SysPermission sysPermission;
-        for (String id : ids.split(CommonConst.SPLIT)) {
-            sysPermission = new SysPermission();
-            sysPermission.setId(id);
-            sysPermission.setStatus(status);
-            permissionsList.add(sysPermission);
+    public boolean setStatus(String id, String status, String type) {
+        UpdateWrapper<SysPermission> setStatus = new UpdateWrapper<>();
+        setStatus.set("status", status).eq("id", id);
+        boolean isSuccess = update(setStatus);
+        if(isSuccess && PermissionType.MENU.getCode().equals(type)){
+            // 如果是菜单，同时修改子级的状态
+            UpdateWrapper<SysPermission> setChildStatus = new UpdateWrapper<>();
+            setChildStatus.set("status", status).eq("parent_id", id);
+            update(setChildStatus);
         }
-        return ToolUtil.checkResult(updateBatchById(permissionsList));
+        return isSuccess;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
