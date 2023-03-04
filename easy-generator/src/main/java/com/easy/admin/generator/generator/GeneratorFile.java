@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.system.SystemUtil;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.generator.constant.GeneratorConst;
@@ -99,8 +100,11 @@ public class GeneratorFile {
      * 初始化后端Base Path
      */
     public void initBackEndPathBasePath() {
-        if(StrUtil.isNotBlank(generatorConfig.getBasicsConfig().getPackagePath())){
-            this.backEndPathBasePath = generatorConfig.getBasicsConfig().getBackEndPath() + GeneratorConst.JAVA_PATH + generatorConfig.getBasicsConfig().getPackagePath().replaceAll("\\.", File.separator) + File.separator;
+        if (StrUtil.isNotBlank(generatorConfig.getBasicsConfig().getPackagePath())) {
+            this.backEndPathBasePath = generatorConfig.getBasicsConfig().getBackEndPath() +
+                    GeneratorConst.JAVA_PATH +
+                    (SystemUtil.getOsInfo().isWindows() ? generatorConfig.getBasicsConfig().getPackagePath().replaceAll("\\.", "\\\\") : generatorConfig.getBasicsConfig().getPackagePath().replaceAll("\\.", File.separator)) +
+                    File.separator;
         }
     }
 
