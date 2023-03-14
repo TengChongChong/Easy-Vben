@@ -12,6 +12,7 @@ import ${basicsConfig.packagePath}.service.${basicsConfig.modelName}Service;
  * @author ${basicsConfig.author}
  * @date ${date}
  */
+@Tag(name = "${basicsConfig.businessName}")
 @RestController
 @ResponseResult
 @RequestMapping("/api${basicsConfig.controllerMapping}")
@@ -31,6 +32,7 @@ public class ${basicsConfig.modelName}Controller {
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @return List<${basicsConfig.modelName}>
      */
+    @Operation(summary ="列表")
     @GetMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
@@ -44,6 +46,7 @@ public class ${basicsConfig.modelName}Controller {
      *
      * @return List<Tree>
      */
+    @Operation(summary ="获取全部数据")
     @GetMapping("all")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
@@ -59,6 +62,7 @@ public class ${basicsConfig.modelName}Controller {
      * @param page 分页
      * @return Page<${basicsConfig.modelName}>
      */
+    @Operation(summary ="分页列表")
     @GetMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
@@ -74,6 +78,7 @@ public class ${basicsConfig.modelName}Controller {
      * @param id id
      * @return ${basicsConfig.modelName}
      */
+    @Operation(summary ="详情")
     @GetMapping("{id}")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
@@ -90,6 +95,7 @@ public class ${basicsConfig.modelName}Controller {
      * @param parentId 上级id
      * @return ${basicsConfig.modelName}
      */
+    @Operation(summary ="上级新增")
     @GetMapping({"/add/{parentId}", "/add"})
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:save")
@@ -104,6 +110,7 @@ public class ${basicsConfig.modelName}Controller {
      * @return ${basicsConfig.modelName}
      */
     @GetMapping("add")
+    @Operation(summary ="新增下级")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:save")
     <% } %>
@@ -119,6 +126,7 @@ public class ${basicsConfig.modelName}Controller {
      * @param ids 数据ids
      * @return true/false
      */
+    @Operation(summary ="删除")
     @DeleteMapping("{ids}")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:remove")
@@ -135,6 +143,7 @@ public class ${basicsConfig.modelName}Controller {
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 表单内容
      * @return ${basicsConfig.modelName}
      */
+    @Operation(summary ="保存-更新")
     @PostMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:save")
@@ -165,6 +174,7 @@ public class ${basicsConfig.modelName}Controller {
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @return 文件下载id
      */
+    @Operation(summary ="导出数据")
     @GetMapping("export/data")
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
     public String exportData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}){
