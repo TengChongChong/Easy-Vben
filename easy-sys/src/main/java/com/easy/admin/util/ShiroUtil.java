@@ -181,6 +181,9 @@ public class ShiroUtil {
      */
     public static List<String> getPermissionCodes(List<SysPermission> permissionList) {
         List<String> permissionCodes = new ArrayList<>();
+        if (permissionList == null) {
+            return permissionCodes;
+        }
         for (SysPermission permission : permissionList) {
             if (StrUtil.isNotBlank(permission.getCode())) {
                 permissionCodes.add(permission.getCode());
