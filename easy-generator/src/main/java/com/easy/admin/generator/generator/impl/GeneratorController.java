@@ -1,5 +1,7 @@
 package com.easy.admin.generator.generator.impl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.tree.Tree;
@@ -57,6 +59,8 @@ public class GeneratorController extends GeneratorFile {
         imports.add(RestController.class);
         imports.add(ResponseResult.class);
         imports.add(RequestMapping.class);
+        imports.add(Tag.class);
+        imports.add(Operation.class);
         if (GeneratorListTemplateConst.TREE_TABLE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate()) ||
                 GeneratorListTemplateConst.TREE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate())) {
             imports.add(List.class);
