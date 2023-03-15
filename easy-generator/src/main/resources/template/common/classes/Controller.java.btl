@@ -27,12 +27,12 @@ public class ${basicsConfig.modelName}Controller {
     <% if(basicsConfig.generatorMethodsSelect){ %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
     /**
-     * 列表
+     * 查询数据（无分页）
      *
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @return List<${basicsConfig.modelName}>
      */
-    @Operation(summary ="列表")
+    @Operation(summary ="查询数据（无分页）")
     @GetMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
@@ -42,11 +42,11 @@ public class ${basicsConfig.modelName}Controller {
     }
 
     /**
-     * 获取全部数据
+     * 查询所有数据（Tree）
      *
      * @return List<Tree>
      */
-    @Operation(summary ="获取全部数据")
+    @Operation(summary ="查询所有数据（Tree）")
     @GetMapping("all")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
@@ -56,13 +56,13 @@ public class ${basicsConfig.modelName}Controller {
     }
     <% } else { %>
     /**
-     * 列表
+     * 查询数据
      *
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @param page 分页
      * @return Page<${basicsConfig.modelName}>
      */
-    @Operation(summary ="分页列表")
+    @Operation(summary ="查询数据")
     @GetMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
@@ -73,12 +73,12 @@ public class ${basicsConfig.modelName}Controller {
     <% } %>
 
     /**
-     * 详情
+     * 查询详情
      *
      * @param id id
      * @return ${basicsConfig.modelName}
      */
-    @Operation(summary ="详情")
+    @Operation(summary ="查询详情")
     @GetMapping("{id}")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:select")
@@ -91,11 +91,12 @@ public class ${basicsConfig.modelName}Controller {
     <% if(basicsConfig.generatorMethodsAdd){ %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
     /**
-     * 新增
+     * 新增或新增下级
+     *
      * @param parentId 上级id
      * @return ${basicsConfig.modelName}
      */
-    @Operation(summary ="上级新增")
+    @Operation(summary ="新增或新增下级")
     @GetMapping({"/add/{parentId}", "/add"})
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:save")
@@ -110,7 +111,7 @@ public class ${basicsConfig.modelName}Controller {
      * @return ${basicsConfig.modelName}
      */
     @GetMapping("add")
-    @Operation(summary ="新增下级")
+    @Operation(summary ="新增")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:save")
     <% } %>
@@ -138,12 +139,12 @@ public class ${basicsConfig.modelName}Controller {
     <% } %>
     <% if(basicsConfig.generatorMethodsSave){ %>
     /**
-     * 保存
+     * 保存/修改
      *
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 表单内容
      * @return ${basicsConfig.modelName}
      */
-    @Operation(summary ="保存-更新")
+    @Operation(summary ="保存/修改")
     @PostMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
     @RequiresPermissions("${basicsConfig.permissionCode}:save")
@@ -153,9 +154,9 @@ public class ${basicsConfig.modelName}Controller {
     }
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
     /**
-     * 保存排序
+     * 保存排序&结构
      *
-     * @param ${strUtil.lowerFirst(basicsConfig.modelName)}List 排序
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)}List 排序&结构
      * @return true/false
      */
     @PostMapping("order")

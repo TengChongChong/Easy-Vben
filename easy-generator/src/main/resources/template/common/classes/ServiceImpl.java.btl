@@ -24,12 +24,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
 
     <% if(basicsConfig.isGeneratorMethodsSelect){ %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
-    /**
-     * 列表
-     *
-     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
-     * @return List<${basicsConfig.modelName}>
-     */
     @Override
     public List<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}) {
         QueryWrapper<${basicsConfig.modelName}> queryWrapper = getQueryWrapper(${strUtil.lowerFirst(basicsConfig.modelName)});
@@ -41,13 +35,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
         return baseMapper.selectAll();
     }
     <% } else { %>
-    /**
-     * 列表
-     *
-     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
-     * @param page   分页
-     * @return Page<${basicsConfig.modelName}>
-     */
     @Override
     public Page<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}, Page<${basicsConfig.modelName}> page) {
         QueryWrapper<${basicsConfig.modelName}> queryWrapper = getQueryWrapper(${strUtil.lowerFirst(basicsConfig.modelName)});
@@ -56,12 +43,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
     }
     <% } %>
 
-    /**
-     * 获取查询条件
-     *
-     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
-     * @return QueryWrapper<${basicsConfig.modelName}>
-     */
     private QueryWrapper<${basicsConfig.modelName}> getQueryWrapper(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}){
         QueryWrapper<${basicsConfig.modelName}> queryWrapper = new QueryWrapper<>();
         if(${strUtil.lowerFirst(basicsConfig.modelName)} != null){
@@ -106,12 +87,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
         return queryWrapper;
     }
 
-    /**
-     * 详情
-     *
-     * @param id id
-     * @return ${basicsConfig.modelName}
-     */
     @Override
     public ${basicsConfig.modelName} get(String id) {
         ToolUtil.checkParams(id);
@@ -121,12 +96,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsAdd) { %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table') { %>
-    /**
-     * 新增
-     *
-     * @param parentId 上级id
-     * @return ${basicsConfig.modelName}
-     */
     @Override
     public ${basicsConfig.modelName} add(String parentId) {
         ${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)} = new ${basicsConfig.modelName}();
@@ -141,11 +110,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
         return ${strUtil.lowerFirst(basicsConfig.modelName)};
     }
     <% } else { %>
-    /**
-     * 新增
-     *
-     * @return ${basicsConfig.modelName}
-     */
     @Override
     public ${basicsConfig.modelName} add() {
         ${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)} = new ${basicsConfig.modelName}();
@@ -156,12 +120,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsRemove){ %>
 
-    /**
-     * 删除
-     *
-     * @param ids 数据ids
-     * @return true/false
-     */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
@@ -172,12 +130,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
 
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsSave){ %>
-    /**
-     * 保存
-     *
-     * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 表单内容
-     * @return ${basicsConfig.modelName}
-     */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public ${basicsConfig.modelName} saveData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}) {

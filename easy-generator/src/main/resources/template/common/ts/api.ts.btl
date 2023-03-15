@@ -12,7 +12,7 @@ const BASE_URL = '/api${basicsConfig.controllerMapping}';
 <% if(basicsConfig.generatorMethodsSelect){ %>
 <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
 /**
- * 查询
+ * 查询数据（无分页）
  *
  * @param params 查询条件
  */
@@ -23,7 +23,7 @@ export function select(params: ${basicsConfig.modelName}) {
   });
 }
 /**
- * 查询所有
+ * 查询所有数据（Tree）
  */
 export function selectAll() {
   return defHttp.get<TreeNodeModel[]>({
@@ -32,7 +32,7 @@ export function selectAll() {
 }
 <% } else { %>
 /**
- * 查询
+ * 查询数据
  *
  * @param params 查询条件
  * @param page 分页
@@ -46,7 +46,7 @@ export function select(params: ${basicsConfig.modelName}, page: Page<${basicsCon
 <% } %>
 
 /**
- * 详情
+ * 查询详情
  *
  * @param id id
  */
@@ -59,7 +59,7 @@ export function get(id: string) {
 <% if(basicsConfig.generatorMethodsAdd){ %>
 <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
 /**
- * 新增
+ * 新增或新增下级
  *
  * @param parentId 父id
  */
@@ -95,7 +95,7 @@ export function remove(ids: string) {
 <% if(basicsConfig.generatorMethodsSave){ %>
 
 /**
- * 保存
+ * 保存/修改
  *
  * @param params 表单数据
  */
@@ -108,7 +108,7 @@ export function save(params: ${basicsConfig.modelName}) {
 
 <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
 /**
- * 保存排序
+ * 保存排序&结构
  *
  * @param params 表单数据
  */

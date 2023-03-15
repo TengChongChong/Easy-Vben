@@ -15,7 +15,7 @@ public interface ${basicsConfig.modelName}Service {
     <% if(basicsConfig.isGeneratorMethodsSelect){ %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
     /**
-     * 列表
+     * 查询数据（无分页）
      *
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @return List<${basicsConfig.modelName}>
@@ -23,14 +23,14 @@ public interface ${basicsConfig.modelName}Service {
     List<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)});
 
     /**
-     * 获取所有数据
+     * 查询所有数据（Tree）
      *
      * @return List<Tree>
      */
     List<Tree> selectAll();
     <% } else { %>
     /**
-     * 列表
+     * 查询数据
      *
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 查询条件
      * @param page   分页
@@ -40,7 +40,7 @@ public interface ${basicsConfig.modelName}Service {
     <% } %>
 
     /**
-     * 详情
+     * 查询详情
      *
      * @param id id
      * @return ${basicsConfig.modelName}
@@ -51,7 +51,7 @@ public interface ${basicsConfig.modelName}Service {
     <% if(basicsConfig.isGeneratorMethodsAdd){ %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
     /**
-     * 新增
+     * 新增或新增下级
      * @param parentId 上级id
      * @return ${basicsConfig.modelName}
      */
@@ -85,7 +85,7 @@ public interface ${basicsConfig.modelName}Service {
     boolean saveOrder(List<${basicsConfig.modelName}> ${strUtil.lowerFirst(basicsConfig.modelName)}List);
     <% } %>
     /**
-     * 保存
+     * 保存/修改
      *
      * @param ${strUtil.lowerFirst(basicsConfig.modelName)} 表单内容
      * @return ${basicsConfig.modelName}

@@ -15,7 +15,7 @@ public interface ${basicsConfig.modelName}Mapper extends BaseMapper<${basicsConf
     <% if(basicsConfig.isGeneratorMethodsSelect){ %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
     /**
-     * 获取列表数据
+     * 查询数据（无分页）
      *
      * @param queryWrapper 查询条件
      * @return List<${basicsConfig.modelName}>
@@ -23,13 +23,13 @@ public interface ${basicsConfig.modelName}Mapper extends BaseMapper<${basicsConf
     List<${basicsConfig.modelName}> select(@Param("ew") QueryWrapper<${basicsConfig.modelName}> queryWrapper);
 
     /**
-     * 获取所有数据
+     * 查询所有数据（Tree）
      * @return List<JsTree>
      */
     List<Tree> selectAll();
     <% } else { %>
     /**
-     * 获取列表数据
+     * 查询数据
      *
      * @param page 分页
      * @param queryWrapper 查询条件
@@ -38,7 +38,7 @@ public interface ${basicsConfig.modelName}Mapper extends BaseMapper<${basicsConf
     List<${basicsConfig.modelName}> select(Page<${basicsConfig.modelName}> page, @Param("ew") QueryWrapper<${basicsConfig.modelName}> queryWrapper);
     <% } %>
     /**
-     * 查询详细信息
+     * 查询详情
      *
      * @param id id
      * @return ${basicsConfig.modelName}
@@ -55,7 +55,7 @@ public interface ${basicsConfig.modelName}Mapper extends BaseMapper<${basicsConf
      */
     int getMaxOrderNo(@Param("parentId") String parentId);
     /**
-     * 批量更新排序&结构
+     * 保存排序&结构
      *
      * @param list 数据
      * @return 更新条数
@@ -66,7 +66,7 @@ public interface ${basicsConfig.modelName}Mapper extends BaseMapper<${basicsConf
 
     <% if(basicsConfig.isGeneratorMethodsExport){ %>
     /**
-     * 获取列表数据
+     * 查询导出数据
      *
      * @param queryWrapper 查询条件
      * @return List<${basicsConfig.modelName}>
