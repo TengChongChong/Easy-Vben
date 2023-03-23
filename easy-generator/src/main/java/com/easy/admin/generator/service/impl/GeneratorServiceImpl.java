@@ -149,6 +149,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                 generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/List.vue"
         );
         basePermission.setParentId("0");
+        basePermission.setExternal(WhetherConst.NO);
         basePermission.setType(PermissionType.MENU.getCode());
         sysPermissionsService.saveData(basePermission);
         if (StrUtil.isNotBlank(generatorConfig.getBasicsConfig().getPermissionCode())) {

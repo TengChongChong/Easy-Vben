@@ -1,10 +1,10 @@
 package com.easy.admin.generator.util;
 
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.generator.model.BasicsConfig;
 import com.easy.admin.generator.model.FieldConfig;
+import org.apache.ibatis.type.JdbcType;
 
 import java.io.File;
 import java.util.regex.Pattern;
@@ -64,13 +64,8 @@ public class GeneratorUtil {
      * @return 长度
      */
     public static Integer getColumnLength(FieldConfig fieldConfig) {
-        if (fieldConfig.getType().contains("varchar")) {
-            try {
-                String[] cs = NUMBER_PATTERN.split(fieldConfig.getType());
-                return Integer.parseInt(ArrayUtil.join(cs, ""));
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-            }
+        if (fieldConfig.getMetaInfo().getJdbcType() == JdbcType.VARCHAR) {
+            return fieldConfig.getMetaInfo().getLength();
         }
         return null;
     }

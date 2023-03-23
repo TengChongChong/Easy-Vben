@@ -1,7 +1,6 @@
 package com.easy.admin.generator.model;
 
 import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
-
 /**
  * 表字段
  *
@@ -17,6 +16,8 @@ public class TableField {
     private IColumnType columnType;
     private String comment;
     private String columnName;
+
+    private MetaInfo metaInfo;
 
     public boolean isKeyFlag() {
         return keyFlag;
@@ -80,5 +81,13 @@ public class TableField {
 
     public void setColumnName(String columnName) {
         this.columnName = columnName;
+    }
+
+    public MetaInfo getMetaInfo() {
+        return metaInfo;
+    }
+
+    public void setMetaInfo(MetaInfo metaInfo) {
+        this.metaInfo = metaInfo;
     }
 }
