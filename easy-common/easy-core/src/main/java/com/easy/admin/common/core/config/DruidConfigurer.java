@@ -14,7 +14,7 @@ import javax.servlet.*;
 import java.io.IOException;
 
 /**
- * TODO 去除druid底部的广告配置类
+ * 去除druid底部的广告配置类
  *
  * @author niuxj
  * @version 1.0
