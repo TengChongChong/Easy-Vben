@@ -29,6 +29,7 @@ import com.easy.admin.generator.generator.GeneratorFileFactory;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.model.ImportCellConfig;
 import com.easy.admin.generator.service.GeneratorService;
+import com.easy.admin.generator.type.EasyTypeConvertHandler;
 import com.easy.admin.sys.common.constant.OpenModeConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.common.status.ProfilesActiveStatus;
@@ -72,6 +73,9 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     @Autowired
     private ProjectProperties projectProperties;
+
+    @Autowired
+    private EasyTypeConvertHandler easyTypeConvertHandler;
 
 
     @Override
@@ -358,7 +362,7 @@ public class GeneratorServiceImpl implements GeneratorService {
     private DataSourceConfig getDataSourceConfig(String dataSource) {
         ItemDataSource itemDataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(dataSource);
         DruidDataSource ds = (DruidDataSource) itemDataSource.getRealDataSource();
-        return new DataSourceConfig.Builder(ds.getUrl(), ds.getUsername(), ds.getPassword()).build();
+        return new DataSourceConfig.Builder(ds.getUrl(), ds.getUsername(), ds.getPassword()).typeConvertHandler(easyTypeConvertHandler).build();
     }
 
     @Override
