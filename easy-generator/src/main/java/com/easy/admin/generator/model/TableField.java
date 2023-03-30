@@ -11,7 +11,6 @@ public class TableField {
     private boolean keyFlag;
     private boolean keyIdentityFlag;
     private String name;
-    private String type;
     private String propertyName;
     private IColumnType columnType;
     private String comment;
@@ -41,14 +40,6 @@ public class TableField {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getPropertyName() {

@@ -225,23 +225,8 @@ public class GeneratorServiceImpl implements GeneratorService {
                 importExcelTemplateDetails.setTemplateId(sysImportExcelTemplate.getId());
                 importExcelTemplateDetails.setTitle(item.getTitle());
                 importExcelTemplateDetails.setFieldName(item.getName());
-                importExcelTemplateDetails.setFieldType(item.getType());
-                // 字段长度
-                if (importExcelTemplateDetails.getFieldType().contains("(")) {
-                    try {
-                        importExcelTemplateDetails.setFieldLength(
-                                Integer.parseInt(
-                                        importExcelTemplateDetails.getFieldType().substring(
-                                                importExcelTemplateDetails.getFieldType().indexOf("(") + 1,
-                                                importExcelTemplateDetails.getFieldType().indexOf(")")
-                                        )
-                                )
-                        );
-                    } catch (NumberFormatException e) {
-                        // ignore
-                    }
-                }
-
+                importExcelTemplateDetails.setFieldType(item.getMetaInfo().getJdbcType().name().toLowerCase());
+                importExcelTemplateDetails.setFieldLength(item.getMetaInfo().getLength());
                 importExcelTemplateDetails.setOrderNo(index);
                 if (StrUtil.isNotBlank(item.getDictType())) {
                     importExcelTemplateDetails.setReplaceTable("sys_dict");
