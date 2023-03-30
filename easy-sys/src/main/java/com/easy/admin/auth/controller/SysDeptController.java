@@ -44,7 +44,6 @@ public class SysDeptController extends BaseController {
      * @return List<Tree>
      */
     @GetMapping("all")
-    @RequiresPermissions("sys:dept:type:select")
     public List<Tree> selectAll() {
         return service.selectAll();
     }
