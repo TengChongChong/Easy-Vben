@@ -4,7 +4,7 @@
     @register="registerDrawer"
     showFooter
     title="${basicsConfig.businessName}"
-    width="30%"
+    :width="520"
     @ok="handleSave"
   >
     <BasicForm @register="registerForm" />

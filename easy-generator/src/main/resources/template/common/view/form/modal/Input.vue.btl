@@ -4,13 +4,14 @@
     @register="registerModel"
     showFooter
     title="${basicsConfig.businessName}"
-    width="30%"
-    @ok="handleSave"
+    :width="520"
   >
     <BasicForm @register="registerForm" />
     <% if(basicsConfig.generatorMethodsAdd){ %>
     <template #appendFooter>
-      <a-button-save @click="handleSaveAndAdd" text="保存并新增" />
+      <a-button-cancel text="关闭" @click="closeModal" />
+      <a-button-save :loading="saveBtnLoading" @click="handleSave" />
+      <a-button-save :loading="saveBtnLoading" @click="handleSaveAndAdd" text="保存并新增" />
     </template>
     <% } %>
   </BasicModal>
@@ -19,14 +20,16 @@
   import { defineComponent, nextTick } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { AButtonSave } from '/@/components/Button';
+  import { AButtonSave, AButtonCancel } from '/@/components/Button';
   import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
   import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
   export default defineComponent({
     name: '${basicsConfig.modelName}Input',
-    components: { BasicModal, BasicForm, AButtonSave },
+    components: { BasicModal, BasicForm, AButtonSave, AButtonCancel },
     emits: ['success', 'register'],
     setup(_, { emit }) {
+      const saveBtnLoading = ref<boolean>(false);
+
       const [registerForm, { resetFields, setFieldsValue, validate, getFieldsValue }] = useForm({
         labelWidth: 100,
         schemas: [
@@ -90,6 +93,7 @@
 
       async function handleSubmit(callback: (_: ${basicsConfig.modelName}) => any) {
         try {
+          saveBtnLoading.value = true;
           changeLoading(true);
           await validate();
           await save(getFieldsValue() as ${basicsConfig.modelName}).then((res) => {
@@ -98,6 +102,7 @@
           });
         } catch (e) {
           console.error(e);
+          saveBtnLoading.value = false;
           changeLoading(false);
         }
       }
@@ -105,6 +110,7 @@
       async function handleSave() {
         await handleSubmit((_) => {
           changeLoading(false);
+          saveBtnLoading.value = false;
           closeModal();
         });
       }
@@ -124,7 +130,14 @@
       }
 
       <% } %>
-      return { registerModel, registerForm, handleSave, handleSaveAndAdd };
+      return {
+        saveBtnLoading,
+        registerModel,
+        closeModal,
+        registerForm,
+        handleSave,
+        handleSaveAndAdd,
+      };
     },
   });
 </script>

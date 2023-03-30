@@ -125,7 +125,11 @@
       /**
        * 初始化表格
        */
-      const [registerTable, { reload, getForm }] = useTable({
+       <% if(basicsConfig.isGeneratorMethodsExport){ %>
+       const [registerTable, { reload, getForm }] = useTable({
+       <% } else { %>
+       const [registerTable, { reload }] = useTable({
+       <% } %>
         title: '${basicsConfig.businessName}',
         api: select,
         columns,

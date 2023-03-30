@@ -69,6 +69,7 @@ public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> 
     public void set${item.capitalName}(${item.propertyType} ${item.propertyName}) {
         this.${item.propertyName} = ${item.propertyName};
     }
+
     <% } %>
 
     <% for(item in queryConfig){ %>
@@ -81,6 +82,7 @@ public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> 
     public void set${strUtil.upperFirst(propertyName)}(${item.propertyType} ${propertyName}) {
         this.${propertyName} = ${propertyName};
     }
+
     <% propertyName = 'end' + strUtil.upperFirst(item.propertyName); %>
     public ${item.propertyType} get${strUtil.upperFirst(propertyName)}() {
         return ${propertyName};
@@ -89,6 +91,7 @@ public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> 
     public void set${strUtil.upperFirst(propertyName)}(${item.propertyType} ${propertyName}) {
         this.${propertyName} = ${propertyName};
     }
+
     <% } %>
     <% } %>
 }
