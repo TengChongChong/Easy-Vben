@@ -21,7 +21,8 @@ import java.util.List;
  * @date 2019-04-30
  */
 public class ImportExportUtil {
-    private ImportExportUtil() {}
+    private ImportExportUtil() {
+    }
 
     /**
      * 将临时表数据转为生成excel所需的数据
@@ -187,6 +188,9 @@ public class ImportExportUtil {
      * @return 转换后的类型, 如果转换失败则用string类型
      */
     public static Object transformationData(String data, SysImportExcelTemplateDetail config) {
+        if (StrUtil.isBlank(data)) {
+            return null;
+        }
         Object obj = null;
         try {
             if (ImportExportUtil.isDate(config.getFieldType())) {
@@ -211,22 +215,23 @@ public class ImportExportUtil {
     }
 
     //====================================== str: 查询语句 ======================================/
+
     /**
      * 获取查询语句中的查询字段
      *
-     * @param configs 导入规则
+     * @param configs    导入规则
      * @param ignoreDict 是否忽略字典翻译
      * @return sql
      */
-    public static String getSelectFields(List<SysImportExcelTemplateDetail> configs, boolean ignoreDict){
+    public static String getSelectFields(List<SysImportExcelTemplateDetail> configs, boolean ignoreDict) {
         StringBuilder selectFields = new StringBuilder();
         for (int i = 0; i < configs.size(); i++) {
             // 如果指定了忽略字典并且替换表是sys_dict,则当做常规处理
             boolean ignore = ignoreDict && ImportConst.SYS_DICT.equals(configs.get(i).getReplaceTable());
-            if(ignore || StrUtil.isBlank(configs.get(i).getReplaceTable())){
+            if (ignore || StrUtil.isBlank(configs.get(i).getReplaceTable())) {
                 // 没有设置转换表,直接查询
                 selectFields.append("temp.field").append(i + 1);
-            }else{
+            } else {
                 // 表别名
                 String tableSlug = configs.get(i).getReplaceTable() + configs.get(i).getOrderNo();
                 // 拼接查询字段
@@ -244,15 +249,15 @@ public class ImportExportUtil {
     /**
      * 获取查询语句中的left关联
      *
-     * @param configs 导入规则
+     * @param configs    导入规则
      * @param ignoreDict 是否忽略字典翻译
      * @return sql
      */
-    public static String getLeftJoinTables(List<SysImportExcelTemplateDetail> configs, boolean ignoreDict){
+    public static String getLeftJoinTables(List<SysImportExcelTemplateDetail> configs, boolean ignoreDict) {
         StringBuilder leftJoinTables = new StringBuilder();
         for (int i = 0; i < configs.size(); i++) {
             boolean ignore = ignoreDict && ImportConst.SYS_DICT.equals(configs.get(i).getReplaceTable());
-            if(!ignore && StrUtil.isNotBlank(configs.get(i).getReplaceTable())){
+            if (!ignore && StrUtil.isNotBlank(configs.get(i).getReplaceTable())) {
                 // 替换表
                 String tableName = configs.get(i).getReplaceTable();
                 // 表别名
@@ -273,6 +278,7 @@ public class ImportExportUtil {
 
 
     //====================================== str: 数据类型&长度验证 ======================================/
+
     /**
      * 验证数据类型是否正确
      * 只验证date、int、long、double类型
@@ -281,7 +287,7 @@ public class ImportExportUtil {
      * @param config 单元格导入规则
      */
     public static void verificationData(String data, SysImportExcelTemplateDetail config) {
-        if(StrUtil.isNotBlank(data)){
+        if (StrUtil.isNotBlank(data)) {
             if (ImportExportUtil.isDate(config.getFieldType())) {
                 try {
                     DateUtil.parse(data);
@@ -319,7 +325,7 @@ public class ImportExportUtil {
      * @param config 单元格导入规则
      */
     private static void verificationLength(String data, SysImportExcelTemplateDetail config) {
-        if(config.getFieldLength() != null){
+        if (config.getFieldLength() != null) {
             if (data.length() > config.getFieldLength()) {
                 throw new EasyException(config.getTitle() + "长度超出限制[" + config.getFieldLength() + "];");
             }
