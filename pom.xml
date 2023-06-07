@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.3</version>
+        <version>2.7.11</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -40,7 +40,7 @@
         <javax.mail.version>1.4.7</javax.mail.version>
         <poi.version>5.2.2</poi.version>
         <easypoi.version>4.4.0</easypoi.version>
-        <mybatis-plus.version>3.5.3</mybatis-plus.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <druid.version>1.2.16</druid.version>
         <mysql-connector-java.version>8.0.32</mysql-connector-java.version>
         <dynamic-datasource.version>3.6.1</dynamic-datasource.version>
