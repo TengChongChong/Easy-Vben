@@ -22,11 +22,9 @@ import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.exception.BusinessException;
 import com.easy.admin.sys.common.constant.SexConst;
-import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.SysConfigUtil;
 import com.easy.admin.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -176,12 +174,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new EasyException("手机号已注册");
         }
 
-        // 新增时密码如果为空,则使用默认密码
-        if (StrUtil.isBlank(object.getId()) && Validator.isEmpty(object.getPassword())) {
-            // 生成随机的盐
-            object.setSalt(RandomUtil.randomString(10));
-            object.setPassword(PasswordUtil.generatingPasswords((String) SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD), object.getSalt()));
-        } else if (Validator.isNotEmpty(object.getPassword())) {
+        // 新增用户时设置密码，用户密码不允许在用户管理里设置
+        if (StrUtil.isBlank(object.getId())) {
             // 生成随机的盐
             object.setSalt(RandomUtil.randomString(10));
             object.setPassword(PasswordUtil.generatingPasswords(object.getPassword(), object.getSalt()));
@@ -224,16 +218,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public String resetPassword(String ids) {
         ToolUtil.checkParams(ids);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        String defaultPassword = (String) SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD);
+        String password = RandomUtil.randomString(16);
         // 生成随机的盐
         String salt = RandomUtil.randomString(10);
-        String password = PasswordUtil.generatingPasswords(defaultPassword, salt);
+        String encryptionPassword = PasswordUtil.generatingPasswords(password, salt);
         queryWrapper.in("id", ids.split(CommonConst.SPLIT));
-        boolean isSuccess = baseMapper.resetPassword(password, salt, queryWrapper) > 0;
+        boolean isSuccess = baseMapper.resetPassword(encryptionPassword, salt, queryWrapper) > 0;
         if (!isSuccess) {
             throw new EasyException("重置密码失败");
         }
-        return defaultPassword;
+        return password;
     }
 
     @Override
@@ -241,11 +235,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         // 生成随机的盐
         String salt = RandomUtil.randomString(10);
-        if (StrUtil.isBlank(password)) {
-            password = PasswordUtil.generatingPasswords((String) SysConfigUtil.get(SysConfigConst.DEFAULT_PASSWORD), salt);
-        } else {
-            password = PasswordUtil.encryptedPasswords(password, salt);
-        }
+        password = PasswordUtil.encryptedPasswords(password, salt);
         queryWrapper.eq("username", username);
         return baseMapper.resetPassword(password, salt, queryWrapper) > 0;
     }

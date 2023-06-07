@@ -3817,13 +3817,11 @@ CREATE TABLE `sys_config` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_config` VALUES ('1', 'sessionInvalidateTime', '86400', 'number', '1', 'session失效时间 单位：秒', 1, '2019-03-03 16:06:49', '1', '2022-05-31 14:02:49', '1');
-INSERT INTO `sys_config` VALUES ('15', 'defaultPassword', '123', 'text', '0', '新增用户时的默认密码', 1, '2019-03-04 17:49:34', '1', '2022-05-31 10:11:52', '1');
 INSERT INTO `sys_config` VALUES ('1549277647232569346', 'projectName', 'Easy Vben Admin', 'text', '1', '系统名称，用于找回密码、绑定邮箱等', 0, '2022-07-19 14:19:09', '1', '2022-07-19 14:19:09', '1');
 INSERT INTO `sys_config` VALUES ('1549628429522030593', 'rememberMeSessionInvalidateTime', '14', 'number', '0', '记住我session失效时间 单位：天', 1, '2022-07-20 13:33:02', '1', '2022-07-20 13:56:21', '1');
 INSERT INTO `sys_config` VALUES ('16', 'loginAttempts', '10', 'number', '0', '登录时密码错误尝试次数，超过后会被账号会被锁定', 1, '2019-03-04 21:23:30', '1', '2022-05-31 10:11:47', '1');
 INSERT INTO `sys_config` VALUES ('18', 'openRegistration', 'true', 'boolean', '0', '是否开启用户注册', 1, '2019-03-23 09:22:58', '1', '2022-05-31 10:11:41', '1');
 INSERT INTO `sys_config` VALUES ('20', 'loginMultipoint', 'false', 'boolean', '0', '是否允许多地登录', 2, '2019-03-27 13:38:32', '1', '2022-05-31 10:18:57', '1');
-INSERT INTO `sys_config` VALUES ('21', 'passwordSecurityLevel', '3', 'number', '0', '修改密码时密码的等级要求，分为0~5级，默认为3级', 2, '2019-06-01 21:41:37', '1', '2022-07-25 10:25:02', '1');
 INSERT INTO `sys_config` VALUES ('4', 'loginLockLength', '300', 'number', '1', '尝试登录次数过多账号锁定时长 单位：秒', 0, '2019-03-03 16:06:49', '1', '2019-03-04 17:47:22', '1');
 INSERT INTO `sys_config` VALUES ('48bc9672ea38980c5031b86c73938690', 'cleanSysLog', '90', 'number', '1', '清理多少天前访问日志 单位: 天', 1, '2019-06-27 14:14:45', '1', '2022-06-12 14:54:14', '1');
 INSERT INTO `sys_config` VALUES ('5', 'loginVerificationCode', 'false', 'boolean', '0', '是否开启登录验证码', 13, '2019-03-03 16:07:38', '1', '2022-08-05 10:57:45', '1');

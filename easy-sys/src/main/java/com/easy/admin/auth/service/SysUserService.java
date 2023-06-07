@@ -84,7 +84,7 @@ public interface SysUserService {
     /**
      * 重置密码
      *
-     * @param username         账号
+     * @param username         账号，请确认是用户本人的username
      * @param password         新密码
      * @return true/false
      */

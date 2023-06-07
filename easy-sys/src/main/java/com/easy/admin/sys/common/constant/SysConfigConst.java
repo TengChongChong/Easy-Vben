@@ -37,11 +37,6 @@ public class SysConfigConst {
     public static final String REMEMBER_ME_SESSION_INVALIDATE_TIME = "rememberMeSessionInvalidateTime";
 
     /**
-     * 新增用户时的默认密码
-     */
-    public static final String DEFAULT_PASSWORD = "defaultPassword";
-
-    /**
      * 是否开启验证码
      */
     public static final String LOGIN_VERIFICATION_CODE = "loginVerificationCode";
@@ -60,11 +55,6 @@ public class SysConfigConst {
      * 是否允许多点登录
      */
     public static final String LOGIN_MULTIPOINT = "loginMultipoint";
-
-    /**
-     * 修改密码时密码的等级要求，分为0~5级，默认为3级
-     */
-    public static final String PASSWORD_SECURITY_LEVEL = "passwordSecurityLevel";
 
     /**
      * 新消息检查间隔时长 默认10s
