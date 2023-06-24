@@ -137,6 +137,12 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
         if (Validator.isEmpty(${strUtil.lowerFirst(basicsConfig.modelName)}.getId())) {
             // 新增,设置默认值
         }
+        <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+        // 新增时设置排序值
+        if (StrUtil.isBlank(${strUtil.lowerFirst(basicsConfig.modelName)}.getId()) && ${strUtil.lowerFirst(basicsConfig.modelName)}.getOrderNo() == null) {
+            ${strUtil.lowerFirst(basicsConfig.modelName)}.setOrderNo(baseMapper.getMaxOrderNo(${strUtil.lowerFirst(basicsConfig.modelName)}.getParentId()) + 1);
+        }
+        <% } %>
         return (${basicsConfig.modelName}) ToolUtil.checkResult(saveOrUpdate(${strUtil.lowerFirst(basicsConfig.modelName)}), ${strUtil.lowerFirst(basicsConfig.modelName)});
     }
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>

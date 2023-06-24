@@ -2,6 +2,7 @@ package com.easy.admin.generator.util;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
+import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
 import com.easy.admin.generator.model.BasicsConfig;
 
@@ -64,9 +65,13 @@ public class GeneratorVueUtil {
      */
     public static String getImportButton(BasicsConfig basicsConfig){
         List<String> buttonArray = new ArrayList<>();
+
         if(basicsConfig.isGeneratorMethodsAdd()){
             buttonArray.add("AButtonAdd");
             buttonArray.add("AButtonEdit");
+            if(GeneratorListTemplateConst.TREE_TABLE.equals(basicsConfig.getListGeneratorTemplate())){
+                buttonArray.add("AButtonAddSub");
+            }
         }
         if(basicsConfig.isGeneratorMethodsRemove()){
             buttonArray.add("AButtonRemove");

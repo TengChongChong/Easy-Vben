@@ -4,11 +4,11 @@
     @register="registerModel"
     showFooter
     title="${basicsConfig.businessName}"
-    :width="520"
+    :width="720"
   >
     <BasicForm @register="registerForm" />
     <% if(basicsConfig.generatorMethodsAdd){ %>
-    <template #appendFooter>
+    <template #footer>
       <a-button-cancel text="关闭" @click="closeModal" />
       <a-button-save :loading="saveBtnLoading" @click="handleSave" />
       <a-button-save :loading="saveBtnLoading" @click="handleSaveAndAdd" text="保存并新增" />
@@ -17,7 +17,7 @@
   </BasicModal>
 </template>
 <script lang="ts">
-  import { defineComponent, nextTick } from 'vue';
+  import { defineComponent, nextTick, ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { AButtonSave, AButtonCancel } from '/@/components/Button';

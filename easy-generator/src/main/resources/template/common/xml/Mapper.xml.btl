@@ -25,6 +25,7 @@
         <where>
             \${ew.sqlSegment}
         </where>
+        order by t.order_no
     </select>
 
     <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">

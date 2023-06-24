@@ -22,7 +22,7 @@
         <a-button-remove-batch :id="checkedKeys" :api="remove" @success="reload" />
         <% } %>
         <% } %>
-        <Authority ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'value="' + basicsConfig.permissionCode + ':save" ' : ''}@click="handleCreate">
+        <Authority ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'value="' + basicsConfig.permissionCode + ':save" ' : ''}>
           <a-button @click="handleOrder">
             <template #icon> <Icon icon="ant-design:ordered-list-outlined" /> </template> 排序
           </a-button>
@@ -50,6 +50,8 @@
         <template v-if="column.key === 'action'">
           <div class="basic-table-action center">
             <% if(basicsConfig.generatorMethodsSave){ %>
+            <a-button-add-sub small ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleCreate" />
+            <a-divider type="vertical" />
             <a-button-edit small ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleEdit" />
             <% } %>
             <% if(basicsConfig.generatorMethodsRemove){ %>
@@ -99,6 +101,7 @@
       ${basicsConfig.modelName}Order,
       <% if(basicsConfig.generatorMethodsAdd){ %>
       AButtonAdd,
+      AButtonAddSub,
       <% } %>
       <% if(basicsConfig.generatorMethodsRemove){ %>
       AButtonRemoveBatch,
@@ -154,8 +157,8 @@
       });
 
       <% if(basicsConfig.generatorMethodsAdd){ %>
-      const handleCreate = () => {
-        add().then((data) => {
+      const handleCreate = (id: string | undefined) => {
+        add(id).then((data) => {
           openDrawer(true, data);
         });
       };
