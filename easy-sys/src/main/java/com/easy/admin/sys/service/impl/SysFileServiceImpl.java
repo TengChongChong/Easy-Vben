@@ -3,6 +3,7 @@ package com.easy.admin.sys.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.dao.SysFileMapper;
 import com.easy.admin.sys.model.SysFile;
@@ -26,7 +27,11 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
     @Override
     public List<SysFile> select(String parentId, String type) {
         QueryWrapper<SysFile> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("parent_id", parentId);
+        if (parentId.contains(CommonConst.SPLIT)) {
+            queryWrapper.in("parent_id", parentId.split(CommonConst.SPLIT));
+        } else {
+            queryWrapper.eq("parent_id", parentId);
+        }
         if (StrUtil.isNotBlank(type)) {
             queryWrapper.eq("type", type);
         }
@@ -34,21 +39,36 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
         return baseMapper.select(queryWrapper);
     }
 
+    @Override
+    public SysFile selectOne(String parentId, String type) {
+        QueryWrapper<SysFile> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("parent_id", parentId);
+        if (StrUtil.isNotBlank(type)) {
+            queryWrapper.eq("type", type);
+        }
+        queryWrapper.orderByAsc("order_no");
+        return baseMapper.selectOne(queryWrapper);
+    }
+
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean delete(String parentId, String type) {
         List<SysFile> sysFileList = select(parentId, type);
         QueryWrapper<SysFile> remove = new QueryWrapper<>();
-        remove.eq("parent_id", parentId);
-        if(StrUtil.isNotBlank(type)){
+        if (parentId.contains(CommonConst.SPLIT)) {
+            remove.in("parent_id", parentId.split(CommonConst.SPLIT));
+        } else {
+            remove.eq("parent_id", parentId);
+        }
+        if (StrUtil.isNotBlank(type)) {
             remove.eq("type", type);
         }
         boolean isSuccess = remove(remove);
         if (isSuccess) {
             sysFileList.forEach(sysFile -> {
                 File file = new File(sysFile.getPath());
-                if (file.exists() && !file.delete()) {
-                    throw new EasyException("文件删除失败[" + file.getPath() + "]");
+                if (file.exists()) {
+                    file.delete();
                 }
             });
         }

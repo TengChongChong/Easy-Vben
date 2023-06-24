@@ -19,7 +19,8 @@ import java.io.IOException;
  */
 public class ImageUtil {
 
-    private ImageUtil() {}
+    private ImageUtil() {
+    }
 
     private static Logger logger = LoggerFactory.getLogger(ImageUtil.class);
 
@@ -89,6 +90,9 @@ public class ImageUtil {
                 String destImagePath = file.getParent() + File.separator + getThumbnailName(file.getName(), size);
                 BufferedImage bufferedImage = ImageIO.read(file);
                 float scale = (float) size / bufferedImage.getWidth();
+                if (scale > 1) {
+                    return file.getPath();
+                }
                 ImgUtil.scale(file, new File(destImagePath), size, (int) (bufferedImage.getHeight() * scale), null);
                 return destImagePath;
             } catch (IOException e) {

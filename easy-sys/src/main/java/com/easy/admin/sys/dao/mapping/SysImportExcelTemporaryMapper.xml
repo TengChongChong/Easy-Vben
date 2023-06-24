@@ -62,7 +62,7 @@
     </resultMap>
     <update id="updateDuplicateData">
         update sys_import_excel_temporary
-        set verification_results = concat(ifnull(verification_results, ''), ${field}, '已存在;'),
+        set verification_results = concat(ifnull(verification_results, ''), '导入数据中包含多条（', ${field}, '）;'),
             verification_status  = #{status}
         where id in (select id
                      from (select id

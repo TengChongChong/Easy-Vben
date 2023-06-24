@@ -21,18 +21,27 @@ public interface SysFileService {
     List<SysFile> select(String parentId, String type);
 
     /**
-     * 删除
+     * 查询文件
      *
-     * @param parentId  父id
+     * @param parentId 父id
+     * @param type     类型
+     * @return SysFile
+     */
+    SysFile selectOne(String parentId, String type);
+
+    /**
+     * 删除数据相关文件
+     *
+     * @param parentId  父id，多条使用,隔开
      * @param type 类型
      * @return true/false
      */
     boolean delete(String parentId, String type);
 
     /**
-     * 删除
+     * 删除数据相关文件
      *
-     * @param parentId  父id
+     * @param parentId  父id，多条使用,隔开
      * @return true/false
      */
     boolean delete(String parentId);
