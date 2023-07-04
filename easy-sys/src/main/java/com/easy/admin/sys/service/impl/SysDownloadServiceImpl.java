@@ -186,6 +186,8 @@ public class SysDownloadServiceImpl extends ServiceImpl<SysDownloadMapper, SysDo
                 } else {
                     displayName = file.getName();
                 }
+            } else {
+                displayName = displayName + file.getName().substring(file.getName().lastIndexOf("."));
             }
             return HttpUtil.getResponseEntity(file, displayName, request);
         } else {
