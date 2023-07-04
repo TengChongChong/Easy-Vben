@@ -73,7 +73,7 @@ public class BasicsConfig {
      */
     private String frontEndPath;
     /**
-     * 视图路径
+     * 页面路径
      */
     private String viewPath;
     /**

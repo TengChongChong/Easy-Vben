@@ -44,7 +44,7 @@
             <a-divider type="vertical" />
             <a-button-remove
               small
-              ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove" ' : ''}
+              ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove"' : ''}
               :id="record.id"
               :api="remove"
               @success="reload"
@@ -64,7 +64,7 @@
   </PageWrapper>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, reactive } from 'vue';
+  import { defineComponent, ref, reactive${basicsConfig.formGeneratorTemplate == 'page' ? ', onActivated' : ''} } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable } from '/@/components/Table';
   import { searchFormSchema, columns } from '${dataTsPath}';
@@ -80,14 +80,20 @@
   import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
   <% } %>
   import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
+  <% if(basicsConfig.formGeneratorTemplate == 'drawer' || basicsConfig.formGeneratorTemplate == 'modal'){ %>
   import ${basicsConfig.modelName}Input from '${viewPath}/Input.vue';
-
+  <% } %>
+  <% if(basicsConfig.formGeneratorTemplate == 'page'){ %>
+  import { useGo } from '/@/hooks/web/usePage';
+  <% } %>
 
   export default defineComponent({
     name: '${basicsConfig.modelName}List',
     components: {
       PageWrapper,
+      <% if(basicsConfig.formGeneratorTemplate == 'drawer' || basicsConfig.formGeneratorTemplate == 'modal'){ %>
       ${basicsConfig.modelName}Input,
+      <% } %>
       <% if(basicsConfig.generatorMethodsAdd){ %>
       AButtonAdd,
       <% } %>
@@ -121,12 +127,26 @@
       <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
       const [registerModal, { openModal }] = useModal();
       <% } %>
+      <% if(basicsConfig.formGeneratorTemplate == 'page'){ %>
+      const go = useGo();
+
+      let isFirst = true;
+
+      onActivated(() => {
+        if (isFirst) {
+          // 首次加载不刷新数据，防止重复加载
+          isFirst = false;
+          return;
+        }
+        reload();
+      });
+      <% } %>
 
       /**
        * 初始化表格
        */
-       <% if(basicsConfig.isGeneratorMethodsExport){ %>
-       const [registerTable, { reload, getForm }] = useTable({
+      <% if(basicsConfig.isGeneratorMethodsExport){ %>
+      const [registerTable, { reload, getForm }] = useTable({
        <% } else { %>
        const [registerTable, { reload }] = useTable({
        <% } %>
@@ -146,27 +166,37 @@
 
       <% if(basicsConfig.generatorMethodsAdd){ %>
       const handleCreate = () => {
+        <% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
         add().then((data) => {
-          <% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
           openDrawer(true, data);
-          <% } %>
-          <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
-          openModal(true, data);
-          <% } %>
         });
+        <% } %>
+        <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
+        add().then((data) => {
+          openModal(true, data);
+        });
+        <% } %>
+        <% if(basicsConfig.formGeneratorTemplate == 'page'){ %>
+        go(`${strutil.replace(basicsConfig.viewPath, '/src/views', '')}/input`);
+        <% } %>
       };
 
       <% } %>
       <% if(basicsConfig.generatorMethodsSave){ %>
       const handleEdit = (id: string) => {
+        <% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
         get(id).then((data) => {
-          <% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
           openDrawer(true, data);
-          <% } %>
-          <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
-          openModal(true, data);
-          <% } %>
         });
+        <% } %>
+        <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
+        get(id).then((data) => {
+          openModal(true, data);
+        });
+        <% } %>
+        <% if(basicsConfig.formGeneratorTemplate == 'page'){ %>
+        go(`${strutil.replace(basicsConfig.viewPath, '/src/views', '')}/input?id=\${id}`);
+        <% } %>
       };
 
       <% } %>

@@ -20,10 +20,7 @@ import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.config.properties.ProjectProperties;
-import com.easy.admin.generator.constant.GeneratorConst;
-import com.easy.admin.generator.constant.GeneratorFileConst;
-import com.easy.admin.generator.constant.GeneratorListTemplateConst;
-import com.easy.admin.generator.constant.GeneratorMethodConst;
+import com.easy.admin.generator.constant.*;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.generator.GeneratorFileFactory;
 import com.easy.admin.generator.model.GeneratorConfig;
@@ -178,6 +175,18 @@ public class GeneratorServiceImpl implements GeneratorService {
                         generatorConfig.getBasicsConfig().getPermissionCode() + ":remove",
                         null,
                         null
+                );
+                savePermission.setParentId(basePermission.getId());
+                sysPermissionsService.saveData(savePermission);
+            }
+            if (GeneratorFormTemplateConst.PAGE.equals(generatorConfig.getBasicsConfig().getFormGeneratorTemplate())) {
+                SysPermission savePermission = getNewMenu(
+                        "详情",
+                        PermissionType.MENU.getCode(),
+                        WhetherConst.NO,
+                        null,
+                        generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/input",
+                        generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/Input.vue"
                 );
                 savePermission.setParentId(basePermission.getId());
                 sysPermissionsService.saveData(savePermission);
