@@ -105,6 +105,8 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
         if (!file.exists()) {
             throw new EasyException("保存文件失败，文件不存在[" + object.getPath() + "]");
         }
+        // 不使用前端生成的id
+        object.setId(null);
         object.setSize(file.length());
         object.setName(file.getName());
         // 检查文件是否在临时目录
