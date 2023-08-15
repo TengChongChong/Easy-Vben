@@ -11,4 +11,8 @@ public class SysRoleConst {
      * 系统管理员
      */
     public static final String SYS_ADMIN = "sys:admin";
+    /**
+     * 系统管理员
+     */
+    public static final String ADMIN = "admin";
 }

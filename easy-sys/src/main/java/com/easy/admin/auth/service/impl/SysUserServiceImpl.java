@@ -161,36 +161,55 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUser saveData(SysUser object, boolean updateAuthorization) {
-        ToolUtil.checkParams(object);
+    public SysUser saveData(SysUser sysUser, boolean updateAuthorization) {
+        ToolUtil.checkParams(sysUser);
         // 账号不能重复
-        if (checkHaving(object.getId(), "username", object.getUsername())) {
+        if (checkHaving(sysUser.getId(), "username", sysUser.getUsername())) {
             throw new EasyException(BusinessException.USER_REGISTERED);
         }
-        if (checkHaving(object.getId(), "email", object.getEmail())) {
+        if (checkHaving(sysUser.getId(), "email", sysUser.getEmail())) {
             throw new EasyException("邮箱已注册");
         }
-        if (checkHaving(object.getId(), "phone_number", object.getPhoneNumber())) {
+        if (checkHaving(sysUser.getId(), "phone_number", sysUser.getPhoneNumber())) {
             throw new EasyException("手机号已注册");
         }
 
+        // 是否系统管理员
+        boolean isAdmin = ShiroUtil.havRole(SysRoleConst.SYS_ADMIN) || ShiroUtil.havRole(SysRoleConst.ADMIN);
+
         // 新增用户时设置密码，用户密码不允许在用户管理里设置
-        if (StrUtil.isBlank(object.getId())) {
+        if (StrUtil.isBlank(sysUser.getId())) {
             // 生成随机的盐
-            object.setSalt(RandomUtil.randomString(10));
-            object.setPassword(PasswordUtil.generatingPasswords(object.getPassword(), object.getSalt()));
+            sysUser.setSalt(RandomUtil.randomString(10));
+            sysUser.setPassword(PasswordUtil.generatingPasswords(sysUser.getPassword(), sysUser.getSalt()));
+
+            // 普通用户只能管理自己部门的用户
+            if (!isAdmin && !sysUser.getDeptId().equals(ShiroUtil.getCurrentUser().getDeptId())) {
+                throw new EasyException("你无权管理其他部门的用户");
+            }
+        } else {
+            // 部门不允许修改
+            sysUser.setDeptId(null);
+            // 修改用户需检查是否有权限修改
+            if (!isAdmin) {
+                // 非管理员，只能修改自己部门的用户
+                String userDeptId = baseMapper.getDeptIdByUserId(sysUser.getId());
+                if (!ShiroUtil.getCurrentUser().getDeptId().equals(userDeptId)) {
+                    throw new EasyException("你无权管理其他部门的用户");
+                }
+            }
         }
-        if (Validator.isEmpty(object.getNickname())) {
-            object.setNickname(object.getUsername());
+        if (Validator.isEmpty(sysUser.getNickname())) {
+            sysUser.setNickname(sysUser.getUsername());
         }
 
-        boolean isSuccess = saveOrUpdate(object);
+        boolean isSuccess = saveOrUpdate(sysUser);
         if (isSuccess && updateAuthorization) {
-            sysUserRoleService.saveUserRole(object.getId(), object.getRoleIdList());
+            sysUserRoleService.saveUserRole(sysUser.getId(), sysUser.getRoleIdList());
             // 删除授权信息,下次请求资源重新授权
-            RedisUtil.del(RedisPrefix.SHIRO_AUTHORIZATION + object);
+            RedisUtil.del(RedisPrefix.SHIRO_AUTHORIZATION + sysUser);
         }
-        return (SysUser) ToolUtil.checkResult(isSuccess, object);
+        return (SysUser) ToolUtil.checkResult(isSuccess, sysUser);
     }
 
     /**
@@ -216,8 +235,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public String resetPassword(String ids) {
-        ToolUtil.checkParams(ids);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        // 是否系统管理员 || 管理员
+        boolean isAdmin = ShiroUtil.havRole(SysRoleConst.SYS_ADMIN) || ShiroUtil.havRole(SysRoleConst.ADMIN);
+        if (!isAdmin) {
+            // 非管理员，只能重置自己部门的用户
+            queryWrapper.eq("dept_id", ShiroUtil.getCurrentUser().getDeptId());
+        }
         String password = RandomUtil.randomString(16);
         // 生成随机的盐
         String salt = RandomUtil.randomString(10);

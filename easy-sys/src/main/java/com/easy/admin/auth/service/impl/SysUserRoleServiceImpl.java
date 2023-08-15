@@ -10,7 +10,7 @@ import com.easy.admin.auth.model.SysUserRole;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.exception.EasyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +29,9 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean saveUserRole(String userId, List<String> roles) {
-        ToolUtil.checkParams(userId);
+        // 根据用户id查询所在部门权限，验证是否越权
+        List<String> hasRoleList = baseMapper.selectAllRoleByUserId(userId, CommonStatus.ENABLE.getCode());
+        checkUltraVires(hasRoleList, roles);
         // 删除原权限
         remove(new QueryWrapper<SysUserRole>().eq("user_id", userId));
         if (Validator.isNotEmpty(roles)) {
@@ -45,6 +47,25 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
         }
         return true;
     }
+
+
+    private void checkUltraVires(List<String> hasRoles, List<String> setRoles) {
+        for (String setRole : setRoles) {
+            if (!checkHavingRole(hasRoles, setRole)) {
+                throw new EasyException("禁止越权分配[" + setRole + "]角色给无权限用户");
+            }
+        }
+    }
+
+    private boolean checkHavingRole(List<String> hasRoles, String roleId) {
+        for (String hasRole : hasRoles) {
+            if (hasRole.equals(roleId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public boolean deleteUserRoleByUserIds(String userIds) {

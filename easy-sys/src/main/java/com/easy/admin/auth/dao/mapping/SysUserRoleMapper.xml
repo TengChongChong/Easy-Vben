@@ -36,5 +36,17 @@
         group by p.path, p.component, p.name, p.id, p.icon, p.parent_id, p.order_no
         order by p.order_no
     </select>
+    <select id="selectAllRoleByUserId" resultType="java.lang.String">
+        select t.role_id
+        from sys_dept_type_role t
+                 left join sys_role sr on sr.id = t.role_id
+        where sr.status = #{status} and t.dept_type_id = (
+            select sdt.id from sys_dept_type sdt where sdt.code = (
+                select sd.type_code from sys_dept sd where sd.id = (
+                    select su.dept_id from sys_user su where su.id = #{userId}
+                )
+            )
+        )
+    </select>
 
 </mapper>

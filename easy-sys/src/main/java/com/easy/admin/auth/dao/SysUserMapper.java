@@ -37,7 +37,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 根据关键字搜索用户
      *
-     * @param page           分页
+     * @param page         分页
      * @param queryWrapper 查询条件
      * @return List<SysUser>
      */
@@ -95,9 +95,9 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 重置密码
      *
-     * @param password         密码
-     * @param salt             盐
-     * @param queryWrapper     条件
+     * @param password     密码
+     * @param salt         盐
+     * @param queryWrapper 条件
      * @return int
      */
     int resetPassword(
@@ -113,4 +113,12 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return int
      */
     int updateUserLastLoginDate(@Param("id") String id, @Param("lastLogin") Date lastLogin);
+
+    /**
+     * 查询用户所在部门
+     *
+     * @param id 用户id
+     * @return 部门id
+     */
+    String getDeptIdByUserId(@Param("id") String id);
 }

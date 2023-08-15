@@ -95,4 +95,7 @@
                t.birthday, t.avatar, t.status, t.source, t.last_login_date, t.tenant_id
         from sys_user t where t.username = #{account} or t.phone_number = #{account} or t.email = #{account}
     </select>
+    <select id="getDeptIdByUserId" resultType="java.lang.String">
+        select dept_id from sys_user where id = #{id}
+    </select>
 </mapper>
