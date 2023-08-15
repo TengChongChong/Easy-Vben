@@ -18,14 +18,20 @@ spring:
   web:
     resources:
       static-locations:
-        [ "classpath:/static/", "classpath:/themes/", "file:${project.file-upload-path}/" ]
+        [ "classpath:/static/", "classpath:/themes/", "file:${project.file-upload-path}/", "file:${beetl.theme-root}/" ]
   datasource:
     druid:
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
       # druid连接池监控
       stat-view-servlet:
         enabled: true
-        login-username: admin
-        login-password: 123
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: druid
+        login-password: druid
     dynamic:
       primary: 'master'
       # druid连接池监控
@@ -34,7 +40,8 @@ spring:
           # 慢SQL记录
           druid.stat.mergeSql: true
           druid.stat.slowSqlMillis: 2000
-        filters: stat
+        # 配置监控统计拦截的filters，去掉后监控界面sql无法统计
+        filters: stat,slf4j,config
         # 初始化时建立物理连接的个数
         initial-size: 5
         # 最小连接池数量
@@ -55,3 +62,7 @@ spring:
         test-while-idle: true
         use-global-data-source-stat: true
         validation-query: select 1 from dual
+beetl:
+  theme:
+    # 主题文件Root目录，为了不影响项目使用jar部署，CMS主题项目将放到项目外部，此处进作为示例。
+    root: /Users/tengchong/workspaces/github/easy-vben/easy-cms/src/main/themes
