@@ -1,9 +1,6 @@
 package com.easy.admin.cms.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
@@ -11,10 +8,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 页面管理
+ * 页面
  *
- * @author TengChongChong
- * @date 2021-11-24
+ * @author 系统管理员
+ * @date 2023-06-27
  */
 @TableName("cms_page")
 public class CmsPage extends Model<CmsPage> {
@@ -22,7 +19,7 @@ public class CmsPage extends Model<CmsPage> {
     /**
      * 主键
      */
-    @TableId(value = "id")
+    @TableId
     private String id;
     /**
      * 站点id
@@ -33,6 +30,14 @@ public class CmsPage extends Model<CmsPage> {
      */
     @NotBlank(message = "标题不能为空")
     private String title;
+    /**
+     * 副标题
+     */
+    private String subtitle;
+    /**
+     * 内容
+     */
+    private String content;
     /**
      * 别名
      */
@@ -46,11 +51,11 @@ public class CmsPage extends Model<CmsPage> {
     /**
      * 状态
      */
-    @NotBlank(message = "状态不能为空")
     private String status;
     /**
      * 乐观锁
      */
+    @Version
     private Integer version;
     /**
      * 创建人
@@ -72,7 +77,8 @@ public class CmsPage extends Model<CmsPage> {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
-    //
+
+    // 非表字段
 
     @Override
     public Serializable pkVal() {
@@ -86,6 +92,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getSiteId() {
         return siteId;
     }
@@ -93,6 +100,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
+
     public String getTitle() {
         return title;
     }
@@ -100,6 +108,23 @@ public class CmsPage extends Model<CmsPage> {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getSlug() {
         return slug;
     }
@@ -107,6 +132,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setSlug(String slug) {
         this.slug = slug;
     }
+
     public String getTemplate() {
         return template;
     }
@@ -114,6 +140,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setTemplate(String template) {
         this.template = template;
     }
+
     public String getStatus() {
         return status;
     }
@@ -121,6 +148,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public Integer getVersion() {
         return version;
     }
@@ -128,6 +156,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
     public String getCreateUser() {
         return createUser;
     }
@@ -135,6 +164,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -142,6 +172,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
     public String getEditUser() {
         return editUser;
     }
@@ -149,6 +180,7 @@ public class CmsPage extends Model<CmsPage> {
     public void setEditUser(String editUser) {
         this.editUser = editUser;
     }
+
     public Date getEditDate() {
         return editDate;
     }
@@ -156,4 +188,6 @@ public class CmsPage extends Model<CmsPage> {
     public void setEditDate(Date editDate) {
         this.editDate = editDate;
     }
+
+
 }

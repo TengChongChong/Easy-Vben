@@ -12,20 +12,21 @@ import java.util.Date;
 /**
  * 网站发布
  *
- * @author TengChongChong
- * @date 2021-11-29
+ * @author 系统管理员
+ * @date 2023-07-12
  */
 @TableName("cms_release")
 public class CmsRelease extends Model<CmsRelease> {
 
-    @TableId(value = "id")
+    /**
+     * 主键
+     */
+    @TableId
     private String id;
-
     /**
      * 站点id
      */
     private String siteId;
-
     /**
      * 页面id
      */
@@ -39,10 +40,6 @@ public class CmsRelease extends Model<CmsRelease> {
      */
     private String releaseArticle;
     /**
-     * 状态
-     */
-    private String status;
-    /**
      * 总任务
      */
     private Long total;
@@ -55,19 +52,23 @@ public class CmsRelease extends Model<CmsRelease> {
      */
     private Long fail;
     /**
-     * 发布回执
-     */
-    private String receipt;
-    /**
      * 发布时间
      */
     private Date releaseDate;
     /**
      * 结束时间
      */
-    private Date endDate;
+    private String endDate;
     /**
-     * 创建人id
+     * 发布回执
+     */
+    private String receipt;
+    /**
+     * 状态
+     */
+    private String status;
+    /**
+     * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
     private String createUser;
@@ -76,7 +77,18 @@ public class CmsRelease extends Model<CmsRelease> {
      */
     @TableField(fill = FieldFill.INSERT)
     private Date createDate;
-    //
+
+    // 非表字段
+    /**
+     * 发布时间 - 开始时间
+     */
+    @TableField(exist = false)
+    private Date startReleaseDate;
+    /**
+     * 发布时间 - 结束时间
+     */
+    @TableField(exist = false)
+    private Date endReleaseDate;
 
     @Override
     public Serializable pkVal() {
@@ -106,6 +118,7 @@ public class CmsRelease extends Model<CmsRelease> {
     public void setPageIds(String pageIds) {
         this.pageIds = pageIds;
     }
+
     public String getColumnIds() {
         return columnIds;
     }
@@ -113,19 +126,13 @@ public class CmsRelease extends Model<CmsRelease> {
     public void setColumnIds(String columnIds) {
         this.columnIds = columnIds;
     }
+
     public String getReleaseArticle() {
         return releaseArticle;
     }
 
     public void setReleaseArticle(String releaseArticle) {
         this.releaseArticle = releaseArticle;
-    }
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Long getTotal() {
@@ -144,26 +151,12 @@ public class CmsRelease extends Model<CmsRelease> {
         this.done = done;
     }
 
-    public String getReceipt() {
-        return receipt;
+    public Long getFail() {
+        return fail;
     }
 
-    public void setReceipt(String receipt) {
-        this.receipt = receipt;
-    }
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setFail(Long fail) {
+        this.fail = fail;
     }
 
     public Date getReleaseDate() {
@@ -174,19 +167,61 @@ public class CmsRelease extends Model<CmsRelease> {
         this.releaseDate = releaseDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
-    public Long getFail() {
-        return fail;
+    public String getReceipt() {
+        return receipt;
     }
 
-    public void setFail(Long fail) {
-        this.fail = fail;
+    public void setReceipt(String receipt) {
+        this.receipt = receipt;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+
+    public Date getStartReleaseDate() {
+        return startReleaseDate;
+    }
+
+    public void setStartReleaseDate(Date startReleaseDate) {
+        this.startReleaseDate = startReleaseDate;
+    }
+
+    public Date getEndReleaseDate() {
+        return endReleaseDate;
+    }
+
+    public void setEndReleaseDate(Date endReleaseDate) {
+        this.endReleaseDate = endReleaseDate;
+    }
+
 }

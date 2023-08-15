@@ -8,22 +8,22 @@ import java.util.List;
 /**
  * 站点
  *
- * @author TengChongChong
- * @date 2021-11-18
+ * @author 系统管理员
+ * @date 2023-06-19
  */
 public interface CmsSiteService {
     /**
-     * 根据父id获取数据
+     * 查询数据（无分页）
      *
-     * @param pId 父id
-     * @return List<JsTree>hotNews/list
+     * @param cmsSite 查询条件
+     * @return List<CmsSite>
      */
-    List<Tree> selectByPId(String pId);
+    List<CmsSite> select(CmsSite cmsSite);
 
     /**
-     * 获取所有数据
+     * 查询所有数据（Tree）
      *
-     * @return List<JsTree>
+     * @return List<Tree>
      */
     List<Tree> selectAll();
 
@@ -35,7 +35,7 @@ public interface CmsSiteService {
     List<CmsSite> selectAllSite();
 
     /**
-     * 详情
+     * 查询详情
      *
      * @param id id
      * @return CmsSite
@@ -43,79 +43,66 @@ public interface CmsSiteService {
     CmsSite get(String id);
 
     /**
-     * 新增
+     * 查询详情，优先从缓存获取
      *
-     * @param pId 上级id
+     * @param id id
      * @return CmsSite
      */
-    CmsSite add(String pId);
+    CmsSite getCmsSiteUseCache(String id);
+
+    /**
+     * 新增或新增下级
+     *
+     * @param parentId 上级id
+     * @return CmsSite
+     */
+    CmsSite add(String parentId);
 
     /**
      * 删除
      *
-     * @param id id
+     * @param ids 数据ids
      * @return true/false
      */
-    boolean remove(String id);
+    boolean remove(String ids);
 
     /**
-     * 设置状态
+     * 保存排序
      *
-     * @param ids    角色id
-     * @param status 状态
+     * @param cmsSiteList 排序
      * @return true/false
      */
-    boolean setStatus(String ids, String status);
+    boolean saveOrder(List<CmsSite> cmsSiteList);
 
     /**
-     * 复制节点到目标id
+     * 保存/修改
      *
-     * @param nodeIds  String 复制的节点ids [1,2,3]
-     * @param targetId String 目标节点id
-     * @return List<CmsSite>
-     */
-    List<CmsSite> copyNode(String nodeIds, String targetId);
-
-    /**
-     * 保存
-     *
-     * @param object 表单内容
+     * @param cmsSite 表单内容
      * @return CmsSite
      */
-    CmsSite saveData(CmsSite object);
+    CmsSite saveData(CmsSite cmsSite);
 
     /**
-     * 拖动改变目录或顺序
+     * 设置用户选中站点
      *
-     * @param id          拖动的id
-     * @param parent      拖动后的父id
-     * @param oldParent   拖动前的id
-     * @param position    拖动前的下标
-     * @param oldPosition 拖动后的下标
+     * @param cmsSite 站点
      * @return true/false
      */
-    boolean move(String id, String parent, String oldParent, Integer position, Integer oldPosition);
+    boolean setUserActiveSite(CmsSite cmsSite);
 
     /**
-     * 根据关键字搜索
+     * 获取用户当前选中站点
      *
-     * @param title 关键字
-     * @return List<JsTree>
+     * @return 站点信息
      */
-    List<Tree> selectByTitle(String title);
+    CmsSite getUserActiveSite();
 
     /**
-     * 检查是否已存在
+     * 导出数据
      *
-     * @param name 名称
-     * @return true/false
+     * @param cmsSite 查询条件
+     * @return 文件下载id
      */
-    boolean checkMenuIsHaving(String name);
+    String exportData(CmsSite cmsSite);
 
-    /**
-     * 刷新缓存数据
-     *
-     * @return true/false
-     */
-    boolean refreshCache();
 }

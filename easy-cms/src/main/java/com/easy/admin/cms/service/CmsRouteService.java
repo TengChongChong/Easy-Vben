@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
  * CMS 路由
  *
  * @author tengchong
- * @date 2021/11/22
+ * @date 2023-07-03
  */
 public interface CmsRouteService {
 

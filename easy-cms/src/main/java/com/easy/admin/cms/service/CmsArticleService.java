@@ -1,47 +1,55 @@
 package com.easy.admin.cms.service;
 
-import com.easy.admin.cms.model.CmsArticle;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.cms.model.CmsArticle;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 文章管理
+ * 文章
  *
- * @author TengChongChong
- * @date 2021-11-19
+ * @author 系统管理员
+ * @date 2023-06-21
  */
 public interface CmsArticleService {
     /**
-     * 列表
+     * 查询数据
      *
-     * @param object 查询条件
-     * @param page   分页
+     * @param cmsArticle 查询条件
+     * @param page       分页
      * @return Page<CmsArticle>
      */
-    Page<CmsArticle> select(CmsArticle object, Page<CmsArticle> page);
+    Page<CmsArticle> select(CmsArticle cmsArticle, Page<CmsArticle> page);
 
     /**
-     * 列表
+     * 查询文章数据，用于网站预览&发布
      *
-     * @param object 查询条件
-     * @param page   分页
+     * @param cmsArticle 查询条件
+     * @param page       分页
      * @return Page<CmsArticle>
      */
-    Page<CmsArticle> selectForUtil(CmsArticle object, Page<CmsArticle> page);
+    Page<CmsArticle> selectArticle(CmsArticle cmsArticle, Page<CmsArticle> page);
 
     /**
-     * 根据栏目ids获取已发布的文章 for 网站发布
+     * 查询指定栏目下文章数量
      *
      * @param columnIds 栏目ids
-     * @return List<CmsArticle>
+     * @return 文章数量
      */
-    List<CmsArticle> selectArticleByColumnIds(String[] columnIds);
+    long countByColumnId(String columnIds);
 
     /**
-     * 详情
+     * 查询指定站点下文章数量
+     *
+     * @param siteIds 站点ids
+     * @return 文章数量
+     */
+    long countBySiteId(String siteIds);
+
+    /**
+     * 查询详情
      *
      * @param id id
      * @return CmsArticle
@@ -51,10 +59,9 @@ public interface CmsArticleService {
     /**
      * 新增
      *
-     * @param columnId 栏目id
      * @return CmsArticle
      */
-    CmsArticle add(String columnId);
+    CmsArticle add();
 
     /**
      * 删除
@@ -65,20 +72,12 @@ public interface CmsArticleService {
     boolean remove(String ids);
 
     /**
-     * 根据站点id删除
+     * 保存/修改
      *
-     * @param siteId 站点id
-     * @return true/false
-     */
-    boolean removeBySiteId(String siteId);
-
-    /**
-     * 保存
-     *
-     * @param object 表单内容
+     * @param cmsArticle 表单内容
      * @return CmsArticle
      */
-    CmsArticle saveData(CmsArticle object);
+    CmsArticle saveData(CmsArticle cmsArticle);
 
     /**
      * 更改状态
@@ -89,6 +88,13 @@ public interface CmsArticleService {
      */
     boolean setStatus(String ids, String status);
 
+    /**
+     * 根据栏目ids获取已发布的文章 for 网站发布
+     *
+     * @param columnIds 栏目ids
+     * @return List<CmsArticle>
+     */
+    List<CmsArticle> selectArticleByColumnIds(String[] columnIds);
 
     /**
      * 根据文章id获取文章所属栏目
@@ -105,6 +111,5 @@ public interface CmsArticleService {
      * @return 数量
      */
     int selectCountByColumnId(String columnId);
-
 
 }

@@ -4,7 +4,7 @@ package com.easy.admin.cms.common.type;
  * 文章发布类型
  *
  * @author TengChongChong
- * @date 2021/11/19
+ * @date 2021-11-19
  */
 
 public enum CmsArticleReleaseType {

@@ -4,7 +4,7 @@ package com.easy.admin.cms.common.type;
  * 发布类型
  *
  * @author TengChongChong
- * @date 2021/11/19
+ * @date 2021-11-19
  */
 
 public enum CmsReleaseType {
@@ -24,8 +24,8 @@ public enum CmsReleaseType {
      * @param code code
      * @return CmsReleaseType
      */
-    public static CmsReleaseType getCmsReleaseType(String code){
-        switch (code){
+    public static CmsReleaseType getCmsReleaseType(String code) {
+        switch (code) {
             case "page":
                 return CmsReleaseType.PAGE;
             case "column":

@@ -4,7 +4,7 @@ package com.easy.admin.cms.common.status;
  * 文章状态
  *
  * @author TengChongChong
- * @date 2021/11/19
+ * @date 2021-11-19
  */
 
 public enum CmsArticleStatus {

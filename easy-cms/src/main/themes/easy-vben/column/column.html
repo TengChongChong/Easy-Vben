@@ -1,0 +1,41 @@
+<%include("../common/header/header.html"){}%>
+<!-- 这是栏目列表页默认使用的模版，如需自定义栏目模版，可新建column-{栏目别名}.html文件 -->
+<div class="hero-wrap hero-wrap-2" style="background-image: url(${themeUrl}/assets/image/bg_2.jpg);"
+     data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container-fluid">
+        <div class="row no-gutters d-flex slider-text align-items-center justify-content-center"
+             data-scrollax-parent="true">
+            <div class="col-md-6 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+                <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
+                    ${column.name}
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <%for(article in ArticleUtil.selectArticle(site.id, column.slug, -1)){%>
+            <div class="col-md-4 ftco-animate">
+                <div class="blog-entry">
+                    <a href="${article.url}" class="block-20 blog-cover">
+                        <img alt="" src="${baseUrl}${article.coverUrl}" />
+                    </a>
+                    <div class="text py-2">
+                        <div class="meta mb-2">
+                            <div><a href="#">${article.releaseDate, "yyyy-MM-dd HH:mm"}</a></div>
+                            <div><a href="#">${article.author}</a></div>
+                        </div>
+                        <h3 class="heading"><a href="#">${article.title}</a></h3>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+</section>
+
+<%include("../common/footer/footer.html"){}%>

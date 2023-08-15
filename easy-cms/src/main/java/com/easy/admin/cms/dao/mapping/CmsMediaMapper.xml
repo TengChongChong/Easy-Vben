@@ -15,21 +15,20 @@
         <result column="edit_user" property="editUser" />
         <result column="edit_date" property="editDate" />
     </resultMap>
-    <delete id="deleteBySiteId">
-        delete from cms_media where site_id =  #{siteId};
-    </delete>
     <select id="select" resultType="com.easy.admin.cms.model.CmsMedia">
-        select t.id, t.name, t.type, t.status, su.nickname as edit_user, t.edit_date, sf.path as filePath
+        select t.id, t.site_id, t.name, t.type, t.status, su_edit_user.nickname as edit_user, t.edit_date, sf.path as file_url
         from cms_media t
-        left join sys_user su on su.id = t.create_user
-        left join sys_file sf on sf.p_id = t.id and sf.type = #{sysFileType}
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        left join sys_file sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@MEDIA_FILE.code}'
         <where>
             ${ew.sqlSegment}
         </where>
     </select>
+
     <select id="getById" resultType="com.easy.admin.cms.model.CmsMedia">
-        select t.id, t.site_id, t.name, t.type, t.status, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
+        select t.id, t.site_id, t.name, t.type, t.status, t.version
         from cms_media t
         where t.id = #{id}
     </select>
+
 </mapper>

@@ -4,7 +4,7 @@ package com.easy.admin.cms.common.constant;
  * Redis key 前缀
  *
  * @author tengchong
- * @date 2021/11/23
+ * @date 2021-11-23
  */
 public class CmsRedisKeyPrefix {
     /**
@@ -25,6 +25,7 @@ public class CmsRedisKeyPrefix {
      * 已发布数量
      */
     public static final String RELEASE_DONE = "cms:release:done:";
+
     /**
      * 发布失败数量
      */

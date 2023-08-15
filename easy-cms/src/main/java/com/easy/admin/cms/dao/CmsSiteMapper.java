@@ -1,5 +1,6 @@
 package com.easy.admin.cms.dao;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.cms.model.CmsSite;
 import com.easy.admin.common.core.common.tree.Tree;
@@ -10,64 +11,62 @@ import java.util.List;
 /**
  * 站点
  *
- * @author TengChongChong
- * @date 2021-11-18
+ * @author 系统管理员
+ * @date 2023-06-19
  */
 public interface CmsSiteMapper extends BaseMapper<CmsSite> {
     /**
-     * 根据父id查询数据
+     * 查询数据（无分页）
      *
-     * @param pId 父id
+     * @param queryWrapper 查询条件
+     * @return List<CmsSite>
+     */
+    List<CmsSite> select(@Param("ew") QueryWrapper<CmsSite> queryWrapper);
+
+    /**
+     * 查询所有数据（Tree）
+     *
      * @return List<JsTree>
      */
-    List<Tree> selectByPId(@Param("pId") String pId);
+    List<Tree> selectAll();
 
     /**
      * 获取所有数据
-     * @param status 状态
-     * @return List<JsTree>
-     */
-    List<Tree> selectAll(@Param("status") String status);
-
-    /**
-     * 获取所有数据
+     *
      * @param status 状态
      * @return List<CmsSite>
      */
     List<CmsSite> selectAllSite(@Param("status") String status);
 
     /**
-     * 获取详情信息
+     * 查询详情
      *
      * @param id id
      * @return CmsSite
      */
-    CmsSite selectInfo(@Param("id") String id);
+    CmsSite getById(@Param("id") String id);
 
     /**
-     * 查询指定数据
+     * 获取parentId下子级最大排序值
      *
-     * @param pId 父id
-     * @param str    开始位置
-     * @param length 长度
-     * @return List<T>
+     * @param parentId parentId
+     * @return int
      */
-    List<CmsSite> selectOrderInfo(@Param("pId") String pId, @Param("str") Integer str, @Param("length") Integer length);
+    int getMaxOrderNo(@Param("parentId") String parentId);
 
     /**
-     * 根据关键字搜索数据
+     * 保存排序&结构
      *
-     * @param title 关键字
-     * @return List<JsTree>
+     * @param list 数据
+     * @return 更新条数
      */
-    List<Tree> selectByTitle(@Param("title") String title);
+    Integer updateOrderBatch(List<CmsSite> list);
 
     /**
-     * 获取最大排序值
+     * 查询导出数据
      *
-     * @param id 父Id
-     * @return Integer
+     * @param queryWrapper 查询条件
+     * @return List<CmsSite>
      */
-    Integer getMaxOrderNo(@Param("pId") String id);
-
+    List<CmsSite> exportData(@Param("ew") QueryWrapper<CmsSite> queryWrapper);
 }

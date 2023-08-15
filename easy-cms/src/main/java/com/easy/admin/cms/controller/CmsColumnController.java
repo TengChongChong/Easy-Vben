@@ -4,7 +4,8 @@ import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.service.CmsColumnService;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.core.annotation.ResponseResult;
-import com.easy.admin.sys.model.DragVO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,13 @@ import java.util.List;
 /**
  * 栏目
  *
- * @author TengChongChong
- * @date 2021-11-18
+ * @author 系统管理员
+ * @date 2023-06-19
  */
+@Tag(name = "栏目")
 @RestController
 @ResponseResult
-@RequestMapping("/auth/cms/column")
+@RequestMapping("/api/auth/cms/column")
 public class CmsColumnController {
 
     /**
@@ -30,122 +32,105 @@ public class CmsColumnController {
     private CmsColumnService service;
 
     /**
-     * 新增
+     * 查询数据（无分页）
      *
-     * @param pId 上级 id
-     * @return CmsColumn
-     */
-    @GetMapping("/add/{pId}")
-    public CmsColumn add(@PathVariable("pId") String pId) {
-        return service.add(pId);
-    }
-
-    /**
-     * 删除
-     *
-     * @param id id
-     * @return true/false
-     */
-    @DeleteMapping("{id}")
-    @RequiresPermissions("cms:column:remove")
-    public boolean remove(@PathVariable("id") String id) {
-        return service.remove(id);
-    }
-
-    /**
-     * 设置状态
-     *
-     * @param ids    ids
-     * @param status 状态
-     * @return true/false
-     */
-    @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("cms:column:status")
-    public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
-        return service.setStatus(ids, status);
-    }
-
-    /**
-     * 复制节点到目标id
-     *
-     * @param nodeIds  复制的节点ids [1,2,3]
-     * @param targetId 目标节点id
+     * @param cmsColumn 查询条件
      * @return List<CmsColumn>
      */
-    @PostMapping("copy/{nodeIds}/to/{targetId}")
-    @RequiresPermissions("cms:column:save")
-    public List<CmsColumn> copyNodes(@PathVariable("nodeIds") String nodeIds, @PathVariable("targetId") String targetId) {
-        return service.copyNode(nodeIds, targetId);
+    @Operation(summary = "查询数据（无分页）")
+    @GetMapping()
+    @RequiresPermissions("cms:column:select")
+    public List<CmsColumn> select(CmsColumn cmsColumn) {
+        return service.select(cmsColumn);
     }
 
     /**
-     * 保存
+     * 查询所有数据（Tree）
      *
-     * @param object 表单内容
-     * @return CmsColumn
+     * @return List<Tree>
      */
-    @PostMapping
-    @RequiresPermissions("cms:column:save")
-    public CmsColumn save(@RequestBody @Valid CmsColumn object) {
-        return service.saveData(object);
+    @Operation(summary = "查询所有数据（Tree）")
+    @GetMapping("all")
+    @RequiresPermissions("cms:column:select")
+    public List<Tree> selectAll() {
+        return service.selectAll();
     }
 
     /**
-     * 详情
+     * 查询详情
      *
      * @param id id
      * @return CmsColumn
      */
+    @Operation(summary = "查询详情")
     @GetMapping("{id}")
+    @RequiresPermissions("cms:column:select")
     public CmsColumn get(@PathVariable("id") String id) {
         return service.get(id);
     }
 
     /**
-     * 根据pId获取数据
+     * 新增或新增下级
      *
-     * @param pId 父id
-     * @return List<JsTree>
+     * @param parentId 上级id
+     * @return CmsColumn
      */
-    @GetMapping("pId")
-    @RequiresPermissions("cms:column:select")
-    public List<Tree> selectByPId(@RequestParam(value = "pId", required = false) String pId) {
-        return service.selectByPId(pId);
+    @Operation(summary = "新增或新增下级")
+    @GetMapping({"/add/{parentId}", "/add"})
+    @RequiresPermissions("cms:column:save")
+    public CmsColumn add(@PathVariable(value = "parentId", required = false) String parentId) {
+        return service.add(parentId);
     }
 
     /**
-     * 获取全部数据
+     * 删除
      *
-     * @return List<JsTree>
-     */
-    @GetMapping("all")
-    @RequiresPermissions("cms:column:select")
-    public List<Tree> selectAll() {
-        return service.selectAll(true);
-    }
-
-    /**
-     * 搜索
-     *
-     * @param title 标题
-     * @return List<JsTree>
-     */
-    @GetMapping("title")
-    @RequiresPermissions("cms:column:select")
-    public List<Tree> selectByTitle(@RequestParam("title") String title) {
-        return service.selectByTitle(title);
-    }
-
-
-    /**
-     * 拖动改变目录或顺序
-     *
-     * @param dragVO 拖动信息
+     * @param ids 数据ids
      * @return true/false
      */
-    @PostMapping("move")
-    @RequiresPermissions("cms:column:move")
-    public boolean move(@RequestBody DragVO dragVO) {
-        return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());
+    @Operation(summary = "删除")
+    @DeleteMapping("{ids}")
+    @RequiresPermissions("cms:column:remove")
+    public boolean delete(@PathVariable("ids") String ids) {
+        return service.remove(ids);
     }
+
+    /**
+     * 保存/修改
+     *
+     * @param cmsColumn 表单内容
+     * @return CmsColumn
+     */
+    @Operation(summary = "保存/修改")
+    @PostMapping()
+    @RequiresPermissions("cms:column:save")
+    public CmsColumn saveData(@Valid @RequestBody CmsColumn cmsColumn) {
+        return service.saveData(cmsColumn);
+    }
+
+    /**
+     * 保存排序&结构
+     *
+     * @param cmsColumnList 排序&结构
+     * @return true/false
+     */
+    @PostMapping("order")
+    @RequiresPermissions("cms:column:save")
+    public boolean saveOrder(@RequestBody List<CmsColumn> cmsColumnList) {
+        return service.saveOrder(cmsColumnList);
+    }
+
+    /**
+     * 导出数据
+     *
+     * @param cmsColumn 查询条件
+     * @return 文件下载id
+     */
+    @Operation(summary = "导出数据")
+    @GetMapping("export/data")
+    @RequiresPermissions("cms:column:select")
+    public String exportData(CmsColumn cmsColumn) {
+        return service.exportData(cmsColumn);
+    }
+
 }

@@ -1,0 +1,40 @@
+<%include("../common/header/header.html"){}%>
+<!-- 这是文章页默认使用的模版，如需根据栏目自定义文章模版，可新建article-{栏目别名}.html文件 -->
+<div class="hero-wrap hero-wrap-2" style="background-image: url(${themeUrl}/assets/image/bg_2.jpg);"
+     data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container-fluid">
+        <div class="row no-gutters d-flex slider-text align-items-center justify-content-center"
+             data-scrollax-parent="true">
+            <div class="col-md-6 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+                <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
+                    ${column.name}
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section ftco-degree-bg">
+    <div class="container">
+        <div class="ftco-animate">
+            <h1 class="mb-5 article-title">${article.title}</h1>
+
+            <div class="article-content">
+                ${article.content}
+            </div>
+
+            <div class="tag-widget post-tag-container mb-5 mt-5">
+                <div class="tagcloud">
+                    <% if(article.tags != null) {  %>
+                        <% for(var tag in strutil.split(article.tags, ",")) {  %>
+                            <a href="#" class="tag-cloud-link">${tag}</a>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%include("../common/footer/footer.html"){}%>

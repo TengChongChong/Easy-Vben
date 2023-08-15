@@ -1,0 +1,353 @@
+<%include("./common/header/header.html"){}%>
+
+<div class="hero-wrap">
+    <div class="overlay"></div>
+    <div class="container-fluid">
+        <div class="slider-text d-md-flex align-items-center" data-scrollax-parent="true">
+
+            <div class="one-forth ftco-animate align-self-md-center" data-scrollax=" properties: { translateY: '70%' }">
+                <h1 class="mb-4">
+                    <strong class="typewrite" data-period="4000"
+                            data-type='[ "${site.name}" ]'>
+                        <span class="wrap"></span>
+                    </strong>
+                </h1>
+                <p class="mb-md-5 mb-sm-3" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
+                    基于SpringBoot、Druid、Quartz、MyBatis-Plus、Vue3、Vite等技术，通用管理系统快速开发框架
+                </p>
+                <p data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
+                    <a href="http://ev-doc.easy-frame.top/guide/getting-started.html" class="btn btn-primary px-4 py-3">快速开始</a>
+                </p>
+            </div>
+            <div class="one-half align-self-md-end align-self-sm-center">
+                <div class="slider-carousel owl-carousel">
+                    <div class="item">
+                        <img src="#" class="img-fluid img" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="#" class="img-fluid img" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="#" class="img-fluid img" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section ftco-section-2">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h3 class="heading-white">助力开发者「更快捷」的完成产品开发，少掉些头发~</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-services">
+    <div class="container">
+        <div class="row justify-content-center mb-5 pb-5">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <h2 class="mb-2">项目特性</h2>
+                <span class="subheading">我们分析业务开发中常用的功能与组件进行封装，以提高开发效率并保障权限安全</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+                <div class="media block-6 services d-block text-center">
+                    <div class="d-flex justify-content-center">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                <g fill="none" stroke-linecap="round" stroke-width="4">
+                                    <path fill="#2F88FF" stroke="#000" stroke-linejoin="round"
+                                          d="M31 4H16L10 27H18L14 44L40 16H28L31 4Z"/>
+                                    <path stroke="#fff" d="M21 11L19 19"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="media-body p-2 mt-3">
+                        <h3 class="heading">敏捷开发</h3>
+                        <p>提供可视化代码生成&对前后端常用方法进行封装</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+                <div class="media block-6 services d-block text-center">
+                    <div class="d-flex justify-content-center">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                <g fill="none" stroke-linejoin="round" stroke-width="4">
+                                    <rect width="24" height="18" x="12" y="20" fill="#2F88FF" stroke="#000" rx="2"/>
+                                    <path stroke="#000" stroke-linecap="round"
+                                          d="M18 20V14C18 10.3181 20.6863 8 24 8C27.3137 8 30 10.3181 30 14V20"/>
+                                    <path stroke="#fff" stroke-linecap="round" d="M24 28V30"/>
+                                    <path stroke="#000" stroke-linecap="round" d="M6 18V30"/>
+                                    <path stroke="#000" stroke-linecap="round" d="M42 18V30"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="media-body p-2 mt-3">
+                        <h3 class="heading">权限管理</h3>
+                        <p>按钮级别权限控制，提供前后端快捷验证</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+                <div class="media block-6 services d-block text-center">
+                    <div class="d-flex justify-content-center">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                <g fill="#2F88FF" stroke="#000" stroke-linejoin="round" stroke-width="4">
+                                    <path d="M18 6H8C6.89543 6 6 6.89543 6 8V18C6 19.1046 6.89543 20 8 20H18C19.1046 20 20 19.1046 20 18V8C20 6.89543 19.1046 6 18 6Z"/>
+                                    <path d="M18 28H8C6.89543 28 6 28.8954 6 30V40C6 41.1046 6.89543 42 8 42H18C19.1046 42 20 41.1046 20 40V30C20 28.8954 19.1046 28 18 28Z"/>
+                                    <path d="M40 6H30C28.8954 6 28 6.89543 28 8V18C28 19.1046 28.8954 20 30 20H40C41.1046 20 42 19.1046 42 18V8C42 6.89543 41.1046 6 40 6Z"/>
+                                    <path d="M40 28H30C28.8954 28 28 28.8954 28 30V40C28 41.1046 28.8954 42 30 42H40C41.1046 42 42 41.1046 42 40V30C42 28.8954 41.1046 28 40 28Z"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="media-body p-2 mt-3">
+                        <h3 class="heading">丰富组件</h3>
+                        <p>对日常使用频率较高的组件二次封装，满足常见工作需求</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-wrap mt-5">
+        <div class="row d-flex no-gutters">
+            <div class="col-md-6 img ftco-animate" style="background-image: url(${themeUrl}/assets/image/code-generation.jpg);background-size: 80%;">
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="services-wrap">
+                    <div class="heading-section mb-5 ftco-animate">
+                        <h2 class="mb-2">代码生成</h2>
+                        <span class="subheading">可视化代码生成工具，可以生成快速CRUD、导入、导出、排序等功能所需的前&后端代码。同时我们提供了3种不同的表单页面模版，以适用于不同复杂度的业务。</span>
+                    </div>
+                    <div class="list-services d-flex ftco-animate">
+                        <div class="icon d-flex justify-content-center align-items-center">
+                            <span>1</span>
+                        </div>
+                        <div class="text">
+                            <h3>Modal - 对话框</h3>
+                            <p>模态对话框，适用于简单的表单，1~8个字段</p>
+                        </div>
+                    </div>
+                    <div class="list-services d-flex ftco-animate">
+                        <div class="icon d-flex justify-content-center align-items-center">
+                            <span>2</span>
+                        </div>
+                        <div class="text">
+                            <h3>Drawer - 抽屉</h3>
+                            <p>适用于常规表单，6个及以上字段</p>
+                        </div>
+                    </div>
+                    <div class="list-services d-flex ftco-animate">
+                        <div class="icon d-flex justify-content-center align-items-center">
+                            <span>3</span>
+                        </div>
+                        <div class="text">
+                            <h3>Page - 页面</h3>
+                            <p>使用富复杂表单，使用新标签页打开</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-section-2">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h3 class="heading-white">集成多个优秀「开源框架」，下载即用~</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-work">
+    <div class="container">
+        <div class="row justify-content-center mb-2 pb-5">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <h2 class="mb-2">开源框架</h2>
+                <span class="subheading">我们集成了SpringBoot、Druid、Quartz、MyBatis-Plus、Apache Shiro、Hutool等多个开源框架</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 ftco-animate">
+                <div class="work-entry">
+                    <a href="#" class="img" style="background-image: url(${themeUrl}/assets/image/spring.png);">
+                        <div class="text d-flex justify-content-center align-items-center">
+                            <div class="p-3">
+                                <span>简化spring应用的创建及部署</span>
+                                <h3>Spring Boot</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 ftco-animate">
+                <div class="work-entry">
+                    <a href="#" class="img" style="background-image: url(${themeUrl}/assets/image/apache-shiro.png);">
+                        <div class="text d-flex justify-content-center align-items-center">
+                            <div class="p-3">
+                                <span>功能强大且易于使用的Java 安全框架</span>
+                                <h3>Apache Shiro</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 ftco-animate">
+                <div class="work-entry">
+                    <a href="#" class="img" style="background-image: url(${themeUrl}/assets/image/mybatis-plus.png);background-size: 35%">
+                        <div class="text d-flex justify-content-center align-items-center">
+                            <div class="p-3">
+                                <span>MyBatis 的增强工具</span>
+                                <h3>MyBatis-Plus</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 ftco-animate">
+                <div class="work-entry">
+                    <a href="#" class="img" style="background-image: url(${themeUrl}/assets/image/activiti.png);">
+                        <div class="text d-flex justify-content-center align-items-center">
+                            <div class="p-3">
+                                <span>业务流程管理(BPM)和工作流系统</span>
+                                <h3>Activiti</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 ftco-animate">
+                <div class="work-entry">
+                    <a href="#" class="img" style="background-image: url(${themeUrl}/assets/image/quartz.jpg);">
+                        <div class="text d-flex justify-content-center align-items-center">
+                            <div class="p-3">
+                                <span>作业调度框架</span>
+                                <h3>Quartz</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 ftco-animate">
+                <div class="work-entry">
+                    <a href="#" class="img" style="background-image: url(${themeUrl}/assets/image/hutool.png);">
+                        <div class="text d-flex justify-content-center align-items-center">
+                            <div class="p-3">
+                                <span>小而全的Java工具类库</span>
+                                <h3>Hutool</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-quote">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 pr-md-5 aside-stretch py-5 choose">
+                <div class="heading-section heading-section-white mb-5 ftco-animate">
+                    <h2 class="mb-2">优化&问题反馈 </h2>
+                </div>
+                <div class="ftco-animate">
+                    <p>如果发现任何问题或有任何关于如何改进的想法，请向我们提供反馈</p>
+                    <ul class="un-styled my-5">
+                        <li><span class="icon-check"></span>使用过程中遇到的异常&设计不合理</li>
+                        <li><span class="icon-check"></span>期望集成的框架&实现的功能</li>
+                        <li><span class="icon-check"></span>优化意见</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6 py-5 pl-md-5">
+                <div class="heading-section mb-5 ftco-animate">
+                    <h2 class="mb-2">反馈信息</h2>
+                </div>
+                <form action="#" class="ftco-animate">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" name="nickname" class="form-control" placeholder="昵称">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" name="email" class="form-control" placeholder="邮箱">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" name="phoneNumber" class="form-control" placeholder="手机号">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea name="content" cols="30" rows="7" class="form-control" placeholder="反馈内容"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="submit" value="提交" class="btn btn-primary py-3 px-5">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center mb-2 pb-3">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <h2 class="mb-2">使用教程</h2>
+                <span class="subheading">常见问题&使用帮助</span>
+            </div>
+        </div>
+        <div class="row">
+            <%for(article in ArticleUtil.selectArticle(site.id, "course", 3)){%>
+                <div class="col-md-4 ftco-animate">
+                    <div class="blog-entry">
+                        <a href="${article.url}" class="block-20 blog-cover">
+                            <img alt="" src="${baseUrl}${article.coverUrl}" />
+                        </a>
+                        <div class="text py-2">
+                            <div class="meta mb-2">
+                                <div><a href="#">${article.releaseDate, "yyyy-MM-dd HH:mm"}</a></div>
+                                <div><a href="#">${article.author}</a></div>
+                            </div>
+                            <h3 class="heading"><a href="#">${article.title}</a></h3>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+    </div>
+</section>
+
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen">
+    <svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"></circle>
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00"></circle>
+    </svg>
+</div>
+
+<%include("./common/footer/footer.html"){}%>

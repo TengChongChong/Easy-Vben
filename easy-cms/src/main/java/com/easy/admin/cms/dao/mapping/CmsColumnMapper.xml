@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsColumn">
         <result column="id" property="id" />
-        <result column="p_id" property="pId" />
+        <result column="parent_id" property="parentId" />
         <result column="site_id" property="siteId" />
         <result column="name" property="name" />
         <result column="slug" property="slug" />
@@ -23,62 +23,93 @@
         <result column="edit_user" property="editUser" />
         <result column="edit_date" property="editDate" />
     </resultMap>
-    <delete id="deleteBySiteId">
-        delete from cms_column where site_id = #{siteId}
-    </delete>
-    <select id="selectByPId" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id, t.p_id,t.name as title,
-               (case when (select count(1) from cms_column where p_id = t.id) > 0 then 'false' else 'true' end ) as isLeaf
+    <select id="select" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.id, t.site_id, t.parent_id, t.name, t.slug, t.type, t.is_release,
+               t.status, su_edit_user.nickname as edit_user, t.edit_date
         from cms_column t
-        where t.p_id = #{pId} and t.site_id = #{siteId}
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
         order by t.order_no
     </select>
-    <select id="selectInfo" resultType="com.easy.admin.cms.model.CmsColumn">
-        select t.id, t.p_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.cover_proportion_width, t.cover_proportion_height,
-               t.description, t.remarks, t.status, cc.name as parentName
+
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.parent_id, t.name as title, t.id as `key`
         from cms_column t
-        left join cms_column cc on cc.id = t.p_id
-        where t.id= #{id}
+        where t.site_id = #{siteId} and t.status = #{status}
+        order by t.order_no
     </select>
-    <select id="selectOrderInfo" resultType="com.easy.admin.cms.model.CmsColumn">
-        select t.id,t.name,t.order_no
+
+    <select id="getById" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.id, t.parent_id, t.site_id, t.name, t.slug, t.type, t.is_release,
+               t.description, t.remarks, t.order_no, t.status, t.version
         from cms_column t
-        where t.p_id = #{pId} and t.site_id = #{siteId} order by t.order_no
-        <if test="str != null and length != null">
-            limit #{str},#{length}
-        </if>
-    </select>
-    <select id="selectByTitle" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id, t.p_id,t.name as title
-        from cms_column t
-        where (t.name like #{title} or t.slug like #{title}) and t.site_id = #{siteId} order by t.p_id,t.order_no
+        where t.id = #{id}
     </select>
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0)
         from cms_column t
-        where t.p_id = #{pId} and t.site_id = #{siteId}
+        where t.parent_id = #{parentId}
     </select>
-    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id, t.p_id,t.name as title
-        from cms_column t
-        where t.status = #{status} and t.site_id = #{siteId}
-        order by t.order_no
-    </select>
-    <select id="selectBySlug" resultType="com.easy.admin.cms.model.CmsColumn">
-        select t.id, t.p_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.cover_proportion_width, t.cover_proportion_height,
-               t.description, t.remarks, t.status, cc.name as parentName
-        from cms_column t
-                 left join cms_column cc on cc.id = t.p_id
-        where t.slug= #{slug} and t.site_id = #{siteId}
-    </select>
+    <update id="updateOrderBatch">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update cms_column
+            <set>
+                parent_id = #{item.parentId},
+                order_no = #{item.orderNo}
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+    <update id="updateDuplicateData">
+        update sys_import_excel_temporary
+        set verification_results = concat(ifnull(verification_results, ''), '业务中已存在（', field3, '）数据;'),
+            verification_status  = #{status}
+        where id in (
+            select id from (
+               select siet.id
+               from cms_column cc
+                        left join sys_import_excel_temporary siet on siet.field1 = cc.site_id and siet.field3 = cc.slug
+               where siet.template_id = #{templateId} and siet.field3 is not null
+           ) t
+        );
+    </update>
+
+    <update id="updateAfterImport">
+        update cms_column set create_user = #{userId}, create_date = #{date}, edit_user = #{userId}, edit_date = #{date} where create_user is null
+    </update>
     <select id="selectAllColumn" resultType="com.easy.admin.cms.model.CmsColumn">
-        select t.id, t.p_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.cover_proportion_width, t.cover_proportion_height, t.description,
-               t.remarks, t.order_no, t.status
+        select t.id, t.parent_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.description,
+        t.remarks, t.order_no, t.status
         from cms_column t
         where t.status = #{status}
         <if test="siteId != null">
             and t.site_id = #{siteId}
         </if>
+    </select>
+    <select id="exportData" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.site_id, cc.slug as parent_id, t.name, t.slug, t.type, sd_is_release.name as is_release,
+               t.description, t.remarks, t.order_no, sd_status.name as status
+        from cms_column t
+        left join cms_column cc on cc.site_id = t.site_id and cc.id = t.parent_id
+        left join sys_dict sd_is_release on sd_is_release.code = t.is_release and sd_is_release.dict_type = 'whether'
+        left join sys_dict sd_status on sd_status.code = t.status and sd_status.dict_type = 'commonStatus'
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="selectNeedUpdateParentInfo" resultType="com.easy.admin.cms.model.CmsColumn">
+        select cc.id, pcc.id as parent_id
+        from cms_column cc
+        left join cms_column pcc on pcc.slug = cc.parent_id and pcc.site_id = cc.site_id
+        where cc.parent_id is not null and cc.create_user is null and pcc.id is not null
+    </select>
+    <select id="selectBySlug" resultType="com.easy.admin.cms.model.CmsColumn">
+        select t.id, t.parent_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.description, t.remarks, t.status, cc.name as parentName
+        from cms_column t
+            left join cms_column cc on cc.id = t.parent_id
+        where t.slug= #{slug} and t.site_id = #{siteId}
     </select>
     <select id="selectColumns" resultType="com.easy.admin.cms.model.CmsColumn">
         select t.id, t.site_id, t.name from cms_column t

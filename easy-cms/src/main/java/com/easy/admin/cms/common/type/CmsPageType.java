@@ -4,7 +4,7 @@ package com.easy.admin.cms.common.type;
  * 发布类型
  *
  * @author TengChongChong
- * @date 2021/11/19
+ * @date 2021-11-19
  */
 
 public enum CmsPageType {
@@ -37,8 +37,8 @@ public enum CmsPageType {
      * @param code code
      * @return CmsPageType
      */
-    public static CmsPageType getCmsPageType(String code){
-        switch (code){
+    public static CmsPageType getCmsPageType(String code) {
+        switch (code) {
             case "index":
                 return CmsPageType.INDEX;
             case "search":

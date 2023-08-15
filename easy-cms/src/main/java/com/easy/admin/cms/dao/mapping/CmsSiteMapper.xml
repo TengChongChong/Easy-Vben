@@ -5,55 +5,69 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsSite">
         <result column="id" property="id" />
-        <result column="p_id" property="pId" />
+        <result column="parent_id" property="parentId" />
         <result column="name" property="name" />
-        <result column="keywords" property="keywords" />
+        <result column="keyword" property="keyword" />
         <result column="description" property="description" />
         <result column="domain_name" property="domainName" />
         <result column="deployment_path" property="deploymentPath" />
+        <result column="theme" property="theme" />
         <result column="status" property="status" />
         <result column="order_no" property="orderNo" />
+        <result column="tenant_id" property="tenantId" />
         <result column="version" property="version" />
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
         <result column="edit_user" property="editUser" />
         <result column="edit_date" property="editDate" />
     </resultMap>
-    <select id="selectByPId" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id, t.p_id,t.name as title,
-               (case when (select count(1) from cms_site where p_id = t.id) > 0 then 'false' else 'true' end ) as isLeaf
+    <select id="select" resultType="com.easy.admin.cms.model.CmsSite">
+        select t.id, t.parent_id, t.name, t.domain_name, t.deployment_path, t.theme, t.status, t.order_no, su_edit_user.nickname as edit_user, t.edit_date
         from cms_site t
-        where t.p_id = #{pId}
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
         order by t.order_no
     </select>
-    <select id="selectInfo" resultType="com.easy.admin.cms.model.CmsSite">
-        select t.id, t.p_id, t.name, t.keywords, t.description, t.domain_name, t.deployment_path, t.theme, t.status from cms_site t where t.id= #{id}
-    </select>
-    <select id="selectOrderInfo" resultType="com.easy.admin.cms.model.CmsSite">
-        select t.id,t.name,t.order_no
+
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.parent_id, t.name as title, t.id as `key`
         from cms_site t
-        where t.p_id = #{pId} order by t.order_no
-        <if test="str != null and length != null">
-            limit #{str},#{length}
-        </if>
+        where t.status = '${@com.easy.admin.common.core.common.status.CommonStatus@ENABLE.code}'
+        order by t.order_no
     </select>
-    <select id="selectByTitle" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id, t.p_id,t.name as title
+    <select id="selectAllSite" resultType="com.easy.admin.cms.model.CmsSite">
+        select t.id, t.parent_id, t.name, t.keyword, t.description, t.domain_name, t.deployment_path, t.status, t.theme
+        from cms_site t where t.status = #{status}
+    </select>
+    <select id="getById" resultType="com.easy.admin.cms.model.CmsSite">
+        select t.id, t.parent_id, t.name, t.keyword, t.description, t.domain_name, t.deployment_path, t.theme, t.status, t.order_no, t.tenant_id, t.version
         from cms_site t
-        where t.name like #{title} order by t.p_id,t.order_no
+        where t.id = #{id}
     </select>
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0)
         from cms_site t
-        where t.p_id = #{pId}
+        where t.parent_id = #{parentId}
     </select>
-    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id, t.p_id,t.name as title
+    <update id="updateOrderBatch">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update cms_site
+            <set>
+                parent_id = #{item.parentId},
+                order_no = #{item.orderNo}
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="exportData" resultType="com.easy.admin.cms.model.CmsSite">
+        select t.name, t.keyword, t.description, t.domain_name, t.deployment_path, t.theme, sd_status.name as status, t.order_no
         from cms_site t
-        where t.status = #{status}
-        order by t.order_no
-    </select>
-    <select id="selectAllSite" resultType="com.easy.admin.cms.model.CmsSite">
-        select t.id, t.p_id, t.name, t.keywords, t.description, t.domain_name, t.deployment_path, t.status, t.theme from cms_site t where t.status = #{status}
+        left join sys_dict sd_status on sd_status.code = t.status and sd_status.dict_type = 'commonStatus'
+        <where>
+            ${ew.sqlSegment}
+        </where>
     </select>
 </mapper>

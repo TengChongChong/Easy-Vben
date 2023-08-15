@@ -6,26 +6,26 @@ import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.common.core.common.tree.Tree;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * 栏目
  *
- * @author TengChongChong
- * @date 2021-11-18
+ * @author 系统管理员
+ * @date 2023-06-19
  */
 public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     /**
-     * 根据父id查询数据
+     * 查询数据（无分页）
      *
-     * @param siteId 站点id
-     * @param pId    父id
-     * @return List<JsTree>
+     * @param queryWrapper 查询条件
+     * @return List<CmsColumn>
      */
-    List<Tree> selectByPId(@Param("siteId") String siteId, @Param("pId") String pId);
+    List<CmsColumn> select(@Param("ew") QueryWrapper<CmsColumn> queryWrapper);
 
     /**
-     * 获取所有数据
+     * 查询所有数据（Tree）
      *
      * @param siteId 站点id
      * @param status 状态
@@ -34,12 +34,70 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     List<Tree> selectAll(@Param("siteId") String siteId, @Param("status") String status);
 
     /**
-     * 查询栏目数据 for 网站发布
+     * 查询详情
+     *
+     * @param id id
+     * @return CmsColumn
+     */
+    CmsColumn getById(@Param("id") String id);
+
+    /**
+     * 根据站点id与别名获取栏目信息
+     *
+     * @param siteId 站点id
+     * @param slug   别名
+     * @return CmsColumn
+     */
+    CmsColumn selectBySlug(@Param("siteId") String siteId, @Param("slug") String slug);
+
+    /**
+     * 获取parentId下子级最大排序值
+     *
+     * @param parentId parentId
+     * @return int
+     */
+    int getMaxOrderNo(@Param("parentId") String parentId);
+
+    /**
+     * 保存排序&结构
+     *
+     * @param list 数据
+     * @return 更新条数
+     */
+    Integer updateOrderBatch(List<CmsColumn> list);
+
+    /**
+     * 导入时验证业务表中是否已存在
+     *
+     * @param templateId 导入模板id
+     * @param status     状态
+     * @return 更新条数
+     */
+    Integer updateDuplicateData(@Param("templateId") String templateId, @Param("status") String status);
+
+    /**
+     * 导入后查询需要更新父id的数据
+     *
+     * @return List<CmsColumn>
+     */
+    List<CmsColumn> selectNeedUpdateParentInfo();
+
+    /**
+     * 导入后设置父栏目id、创建人、创建时间等信息
+     *
+     * @param userId 用户id
+     * @param date   时间
+     * @return 更新条数
+     */
+    Integer updateAfterImport(@Param("userId") String userId, @Param("date") Date date);
+
+    /**
+     * 查询导出数据
      *
      * @param queryWrapper 查询条件
      * @return List<CmsColumn>
      */
-    List<CmsColumn> selectColumns(@Param("ew") QueryWrapper<CmsColumn> queryWrapper);
+    List<CmsColumn> exportData(@Param("ew") QueryWrapper<CmsColumn> queryWrapper);
 
     /**
      * 查询所有栏目
@@ -51,57 +109,11 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     List<CmsColumn> selectAllColumn(@Param("siteId") String siteId, @Param("status") String status);
 
     /**
-     * 获取详情信息
+     * 查询栏目数据 for 网站发布
      *
-     * @param id id
-     * @return CmsColumn
+     * @param queryWrapper 查询条件
+     * @return List<CmsColumn>
      */
-    CmsColumn selectInfo(@Param("id") String id);
-
-    /**
-     * 获取详情信息
-     *
-     * @param siteId 站点id
-     * @param slug   slug
-     * @return CmsColumn
-     */
-    CmsColumn selectBySlug(@Param("siteId") String siteId, @Param("slug") String slug);
-
-    /**
-     * 查询指定数据
-     *
-     * @param siteId 站点id
-     * @param pId    父id
-     * @param str    开始位置
-     * @param length 长度
-     * @return List<T>
-     */
-    List<CmsColumn> selectOrderInfo(@Param("siteId") String siteId, @Param("pId") String pId, @Param("str") Integer str, @Param("length") Integer length);
-
-    /**
-     * 根据关键字搜索数据
-     *
-     * @param siteId 站点id
-     * @param title 关键字
-     * @return List<JsTree>
-     */
-    List<Tree> selectByTitle(@Param("siteId") String siteId, @Param("title") String title);
-
-    /**
-     * 获取最大排序值
-     *
-     * @param siteId 站点id
-     * @param id 父Id
-     * @return Integer
-     */
-    Integer getMaxOrderNo(@Param("siteId") String siteId, @Param("pId") String id);
-
-    /**
-     * 根据站点id删除
-     *
-     * @param siteId 站点id
-     * @return true/false
-     */
-    int deleteBySiteId(@Param("siteId") String siteId);
+    List<CmsColumn> selectColumns(@Param("ew") QueryWrapper<CmsColumn> queryWrapper);
 
 }

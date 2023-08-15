@@ -9,16 +9,16 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 发布列队
+ * 发布列队详情
  *
- * @author TengChongChong
- * @date 2021-11-24
+ * @author 系统管理员
+ * @date 2023-07-12
  */
 public interface CmsReleaseQueueMapper extends BaseMapper<CmsReleaseQueue> {
     /**
-     * 获取列表数据
+     * 查询数据
      *
-     * @param page 分页
+     * @param page         分页
      * @param queryWrapper 查询条件
      * @return List<CmsReleaseQueue>
      */
@@ -27,16 +27,16 @@ public interface CmsReleaseQueueMapper extends BaseMapper<CmsReleaseQueue> {
     /**
      * 获取列队数据
      *
-     * @param pId    父id
-     * @param status 状态
+     * @param parentId 父id
+     * @param status   状态
      * @return 列队
      */
-    List<CmsReleaseQueue> selectQueue(@Param("pId") String pId, @Param("status") String status);
+    List<CmsReleaseQueue> selectQueue(@Param("parentId") String parentId, @Param("status") String status);
 
     /**
      * 获取单个发布数据
      *
-     * @param id    id
+     * @param id id
      * @return CmsReleaseQueue
      */
     CmsReleaseQueue getQueueById(@Param("id") String id);
@@ -44,9 +44,10 @@ public interface CmsReleaseQueueMapper extends BaseMapper<CmsReleaseQueue> {
     /**
      * 查询任务完成数量
      *
-     * @param pId    任务id
-     * @param status 状态
+     * @param parentId 任务id
+     * @param status   状态
      * @return count
      */
-    long selectDoneCount(@Param("pId") String pId, @Param("status") String status);
+    long selectDoneCount(@Param("parentId") String parentId, @Param("status") String status);
+
 }

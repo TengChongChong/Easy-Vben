@@ -14,7 +14,7 @@ import java.util.List;
  * 文章工具类
  *
  * @author TengChongChong
- * @date 2021/11/18
+ * @date 2023-07-03
  */
 @Component
 public class CmsArticleUtil {
@@ -49,7 +49,7 @@ public class CmsArticleUtil {
         if (containContent) {
             cmsArticle.setAppendField("t.content");
         }
-        Page<CmsArticle> result = cmsArticleService.selectForUtil(cmsArticle, new Page<>(1, pageSize));
+        Page<CmsArticle> result = cmsArticleService.selectArticle(cmsArticle, new Page<>(1, pageSize));
         return initArticle(result.getRecords());
     }
 

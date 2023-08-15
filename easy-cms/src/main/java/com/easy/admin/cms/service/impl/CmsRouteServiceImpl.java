@@ -1,5 +1,6 @@
 package com.easy.admin.cms.service.impl;
 
+import com.easy.admin.cms.config.beetl.BeetlProperties;
 import com.easy.admin.cms.model.CmsColumn;
 import com.easy.admin.cms.model.CmsPage;
 import com.easy.admin.cms.model.CmsSite;
@@ -10,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.io.File;
+
 /**
  * CMS 路由
  *
  * @author tengchong
- * @date 2021/11/23
+ * @date 2023-07-03
  */
 @Service
 public class CmsRouteServiceImpl implements CmsRouteService {
@@ -22,14 +25,13 @@ public class CmsRouteServiceImpl implements CmsRouteService {
     @Autowired
     private ProjectProperties projectProperties;
 
-    /**
-     * 主题目录
-     */
-    private static final String ROOT_PATH = "themes/";
+
+    @Autowired
+    private BeetlProperties beetlProperties;
 
     @Override
     public String getIndexViewPath(CmsSite cmsSite) {
-        String path = ROOT_PATH + cmsSite.getTheme() + "/index.html";
+        String path = cmsSite.getTheme() + "/index.html";
         if (checkExists(path)) {
             return path;
         }
@@ -39,12 +41,12 @@ public class CmsRouteServiceImpl implements CmsRouteService {
     @Override
     public String getColumnListViewPath(CmsSite cmsSite, CmsColumn cmsColumn) {
         // 默认栏目列表 /column/column-xxx.html
-        String path = ROOT_PATH + cmsSite.getTheme() + "/column/column-" + cmsColumn.getSlug() + ".html";
+        String path = cmsSite.getTheme() + "/column/column-" + cmsColumn.getSlug() + ".html";
         if (checkExists(path)) {
             return path;
         }
         // 默认栏目列表 /column/column.html
-        path = ROOT_PATH + cmsSite.getTheme() + "/column/column.html";
+        path = cmsSite.getTheme() + "/column/column.html";
         if (checkExists(path)) {
             return path;
         }
@@ -56,13 +58,13 @@ public class CmsRouteServiceImpl implements CmsRouteService {
         // 默认栏目列表 /article/article-xxx.html
         String path;
         if (cmsColumn != null) {
-            path = ROOT_PATH + cmsSite.getTheme() + "/article/article-" + cmsColumn.getSlug() + ".html";
+            path = cmsSite.getTheme() + "/article/article-" + cmsColumn.getSlug() + ".html";
             if (checkExists(path)) {
                 return path;
             }
         }
         // 默认栏目列表 /article/article.html
-        path = ROOT_PATH + cmsSite.getTheme() + "/article/article.html";
+        path = cmsSite.getTheme() + "/article/article.html";
         if (checkExists(path)) {
             return path;
         }
@@ -71,10 +73,10 @@ public class CmsRouteServiceImpl implements CmsRouteService {
 
     @Override
     public String getPageViewPath(CmsSite cmsSite, CmsPage cmsPage) {
-        if(cmsPage == null){
+        if (cmsPage == null) {
             throw new EasyException("页面不存在");
         }
-        String path = ROOT_PATH + cmsSite.getTheme() + "/page/" + cmsPage.getTemplate();
+        String path = cmsSite.getTheme() + "/page/" + cmsPage.getTemplate();
         if (checkExists(path)) {
             return path;
         }
@@ -87,8 +89,10 @@ public class CmsRouteServiceImpl implements CmsRouteService {
         model.addAttribute("themeUrl", "/static/" + cmsSite.getTheme());
         model.addAttribute("baseUrl", projectProperties.getProjectUrl());
 
-        // 站点
+        // 站点信息
         model.addAttribute("site", cmsSite);
+        model.addAttribute("keywords", cmsSite.getKeyword());
+        model.addAttribute("description", cmsSite.getDescription());
     }
 
     /**
@@ -98,6 +102,6 @@ public class CmsRouteServiceImpl implements CmsRouteService {
      * @return true/false
      */
     private boolean checkExists(String path) {
-        return getClass().getClassLoader().getResourceAsStream(path) != null;
+        return new File(beetlProperties.getThemeRoot() + path).exists();
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.cms.dao.CmsFeedbackMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsFeedback">
+        <result column="id" property="id" />
+        <result column="site_id" property="siteId" />
+        <result column="nickname" property="nickname" />
+        <result column="email" property="email" />
+        <result column="phone_number" property="phoneNumber" />
+        <result column="content" property="content" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+    <select id="select" resultType="com.easy.admin.cms.model.CmsFeedback">
+        select t.id, t.site_id, t.nickname, t.email, t.phone_number, t.content, t.status, su_edit_user.nickname as edit_user, t.edit_date, t.create_date
+        from cms_feedback t
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getById" resultType="com.easy.admin.cms.model.CmsFeedback">
+        select t.id, t.site_id, t.nickname, t.email, t.phone_number, t.content, t.status, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from cms_feedback t
+        where t.id = #{id}
+    </select>
+
+    <select id="exportData" resultType="com.easy.admin.cms.model.CmsFeedback">
+        select t.site_id, t.nickname, t.email, t.phone_number, t.content, sd_status.name as status
+        from cms_feedback t
+        left join sys_dict sd_status on sd_status.code = t.status and sd_status.dict_type = 'commonStatus'
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

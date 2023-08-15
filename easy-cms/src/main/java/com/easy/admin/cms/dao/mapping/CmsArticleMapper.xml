@@ -7,7 +7,6 @@
         <result column="id" property="id" />
         <result column="site_id" property="siteId" />
         <result column="column_id" property="columnId" />
-        <result column="order_no" property="orderNo" />
         <result column="title" property="title" />
         <result column="title_font_family" property="titleFontFamily" />
         <result column="title_color" property="titleColor" />
@@ -18,9 +17,9 @@
         <result column="content" property="content" />
         <result column="keyword" property="keyword" />
         <result column="description" property="description" />
+        <result column="tags" property="tags" />
         <result column="source" property="source" />
         <result column="author" property="author" />
-        <result column="tags" property="tags" />
         <result column="release_type" property="releaseType" />
         <result column="release_date" property="releaseDate" />
         <result column="offline_date" property="offlineDate" />
@@ -28,6 +27,7 @@
         <result column="type" property="type" />
         <result column="url" property="url" />
         <result column="dept_id" property="deptId" />
+        <result column="order_no" property="orderNo" />
         <result column="status" property="status" />
         <result column="version" property="version" />
         <result column="create_user" property="createUser" />
@@ -35,57 +35,38 @@
         <result column="edit_user" property="editUser" />
         <result column="edit_date" property="editDate" />
     </resultMap>
-    <delete id="deleteBySiteId">
-        delete from cms_article where site_id = #{siteId}
-    </delete>
     <select id="select" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.subtitle, t.excerpt,
-               t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
-               t.release_date, t.offline_date, t.view_count, t.url, t.status, su.nickname as edit_user, t.edit_date,
-               sf.path as coverPath, cc.name as columnName
+        select t.id, t.site_id, t.title, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author,
+               t.release_date, t.offline_date, t.order_no, t.status, su_edit_user.nickname as edit_user, t.edit_date,
+               cc.name as column_name, sf.path as cover_url
         from cms_article t
         left join cms_column cc on cc.id = t.column_id
-        left join sys_user su on su.id = t.edit_user
-        left join sys_file sf on sf.p_id = t.id and sf.type = #{sysFileType}
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        left join sys_file sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}'
         <where>
             ${ew.sqlSegment}
         </where>
     </select>
-    <select id="selectForUtil" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.column_id, t.order_no, t.title, t.subtitle, t.excerpt,
-               t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author, t.tags,
-        t.release_date, t.offline_date, t.view_count, t.url, t.status, su.nickname as edit_user, t.edit_date,
-        sf.path as coverPath, cc.name as columnName
+    <select id="selectArticle" resultType="com.easy.admin.cms.model.CmsArticle">
+        select t.id, t.site_id, t.column_id, t.title, t.subtitle, t.excerpt, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size,
+               t.source, t.author, t.tags, t.release_date, t.offline_date, t.order_no, t.view_count, cc.name as column_name, sf.path as cover_url
         <if test="appendField != null and appendField != null">
             , ${appendField}
         </if>
         from cms_article t
         left join cms_column cc on cc.id = t.column_id
-        left join sys_user su on su.id = t.edit_user
-        left join sys_file sf on sf.p_id = t.id and sf.type = #{sysFileType}
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        left join sys_file sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}'
         <where>
             ${ew.sqlSegment}
         </where>
     </select>
     <select id="getById" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.column_id, t.order_no, t.title,
-               t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size,
-               t.subtitle, t.excerpt, t.content, t.keyword, t.description, t.source, t.author, t.tags, t.release_type,
-               t.release_date, t.offline_date, t.view_count, t.type, t.url, t.dept_id, t.status
+        select t.id, t.site_id, t.column_id, t.title, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size,
+               t.subtitle, t.excerpt, t.content, t.keyword, t.description, t.tags, t.source, t.author, t.release_type,
+               t.release_date, t.offline_date, t.view_count, t.type, t.url, t.dept_id, t.order_no, t.status, t.version
         from cms_article t
         where t.id = #{id}
-    </select>
-    <select id="selectSiteIds" resultType="java.lang.String">
-        select t.site_id from cms_article t
-        <where>
-            ${ew.sqlSegment}
-        </where>
-    </select>
-    <select id="selectCmsArticle" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id from cms_article t
-        <where>
-            ${ew.sqlSegment}
-        </where>
     </select>
     <select id="selectArticleByColumnIds" resultType="com.easy.admin.cms.model.CmsArticle">
         select t.id, t.site_id, t.title from cms_article t
@@ -93,30 +74,13 @@
             ${ew.sqlSegment}
         </where>
     </select>
-    <select id="selectColumnIdByArticleId" resultType="com.easy.admin.cms.model.CmsColumn">
-        select cc.id, cc.site_id from cms_article t
-        left join cms_column cc on cc.id = t.column_id
-        <where>
-            ${ew.sqlSegment}
-        </where>
-    </select>
     <select id="getColumnByArticleId" resultType="com.easy.admin.cms.model.CmsColumn">
         select cc.id, cc.site_id, cc.name, cc.slug from cms_article t
-        left join cms_column cc on cc.id = t.column_id
+            left join cms_column cc on cc.id = t.column_id
         where t.id = #{id}
     </select>
     <select id="selectCountByColumnId" resultType="java.lang.Integer">
         select count(1) from cms_article where column_id = #{columnId}
     </select>
-    <select id="selectAllArticleForElasticsearch" resultType="com.easy.admin.cms.model.CmsArticle">
-        select t.id, t.site_id, t.column_id, t.title, concat( ifnull(t.subtitle, ''), ifnull(t.excerpt, ''), ifnull(t.content, '')) as content,
-               t.source, t.author, t.tags, t.release_date, t.url, sf.path as coverPath, cc.name as columnName
-        from cms_article t
-        left join cms_column cc on cc.id = t.column_id
-        left join sys_user su on su.id = t.edit_user
-        left join sys_file sf on sf.p_id = t.id and sf.type = #{sysFileType}
-        <where>
-            ${ew.sqlSegment}
-        </where>
-    </select>
+
 </mapper>

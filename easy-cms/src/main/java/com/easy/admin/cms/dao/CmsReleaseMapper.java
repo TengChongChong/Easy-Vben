@@ -12,12 +12,12 @@ import java.util.List;
 /**
  * 网站发布
  *
- * @author TengChongChong
- * @date 2021-11-29
+ * @author 系统管理员
+ * @date 2023-07-12
  */
 public interface CmsReleaseMapper extends BaseMapper<CmsRelease> {
     /**
-     * 获取列表数据
+     * 查询数据
      *
      * @param page         分页
      * @param queryWrapper 查询条件
@@ -25,13 +25,6 @@ public interface CmsReleaseMapper extends BaseMapper<CmsRelease> {
      */
     List<CmsRelease> select(Page<CmsRelease> page, @Param("ew") QueryWrapper<CmsRelease> queryWrapper);
 
-    /**
-     * 查询详细信息
-     *
-     * @param id id
-     * @return CmsRelease
-     */
-    CmsRelease getById(@Param("id") String id);
 
     /**
      * 获取发布进度

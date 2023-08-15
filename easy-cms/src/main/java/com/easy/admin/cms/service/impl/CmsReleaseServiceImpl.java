@@ -2,10 +2,9 @@ package com.easy.admin.cms.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,37 +13,34 @@ import com.easy.admin.cms.common.status.CmsReleaseStatus;
 import com.easy.admin.cms.common.type.CmsPageType;
 import com.easy.admin.cms.common.type.CmsReleaseType;
 import com.easy.admin.cms.config.beetl.BeetlConfiguration;
+import com.easy.admin.cms.config.beetl.BeetlProperties;
 import com.easy.admin.cms.dao.CmsReleaseMapper;
-import com.easy.admin.cms.es.service.ElasticsearchCmsArticleService;
 import com.easy.admin.cms.model.*;
+import com.easy.admin.cms.model.vo.ReleaseProgressVO;
 import com.easy.admin.cms.service.*;
 import com.easy.admin.cms.utils.CmsColumnUtil;
 import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.tree.Tree;
-import com.easy.admin.common.core.common.tree.TreeUtil;
+import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.properties.ProjectProperties;
-import com.easy.admin.util.ToolUtil;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
- * 发布
+ * 网站发布
  *
- * @author tengchong
- * @date 2021/11/24
+ * @author 系统管理员
+ * @date 2023-07-12
  */
 @Service
 public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRelease> implements CmsReleaseService {
@@ -53,13 +49,19 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
     private ProjectProperties projectProperties;
 
     @Autowired
+    private BeetlProperties beetlProperties;
+
+    @Autowired
     private CmsRouteService cmsRouteService;
 
     @Autowired
-    private CmsPageService cmsPageService;
+    private CmsSiteService cmsSiteService;
 
     @Autowired
     private CmsColumnService cmsColumnService;
+
+    @Autowired
+    private CmsPageService cmsPageService;
 
     @Autowired
     private CmsArticleService cmsArticleService;
@@ -68,35 +70,51 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
     private CmsReleaseQueueService cmsReleaseQueueService;
 
     @Autowired
-    private ElasticsearchCmsArticleService elasticsearchCmsArticleService;
-
-    @Autowired
     private BeetlConfiguration beetlConfiguration;
 
     @Override
-    public Page<CmsRelease> select(CmsRelease object, Page<CmsRelease> page) {
-        QueryWrapper<CmsRelease> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
-            // 查询条件
-            // 状态
-            if (Validator.isNotEmpty(object.getStatus())) {
-                queryWrapper.eq("t.status", object.getStatus());
-            }
-        }
-        if (object == null || StrUtil.isBlank(object.getSiteId())) {
-            queryWrapper.eq("t.site_id", CmsSiteUtil.getCurrentEditSiteId());
-        } else {
-            queryWrapper.eq("t.site_id", object.getSiteId());
-        }
-        page.setDefaultDesc("t.create_date");
+    public Page<CmsRelease> select(CmsRelease cmsRelease, Page<CmsRelease> page) {
+        QueryWrapper<CmsRelease> queryWrapper = getQueryWrapper(cmsRelease);
+        page.setDefaultDesc("t.release_date");
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
+    }
 
+    private QueryWrapper<CmsRelease> getQueryWrapper(CmsRelease cmsRelease) {
+        QueryWrapper<CmsRelease> queryWrapper = new QueryWrapper<>();
+        if (cmsRelease != null) {
+            // 查询条件
+            // 是否发布栏目下文章
+            if (Validator.isNotEmpty(cmsRelease.getReleaseArticle())) {
+                if (cmsRelease.getReleaseArticle().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.release_article", cmsRelease.getReleaseArticle().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.release_article", cmsRelease.getReleaseArticle());
+                }
+            }
+            // 发布时间 - 开始时间
+            if (Validator.isNotEmpty(cmsRelease.getStartReleaseDate())) {
+                queryWrapper.ge("t.release_date", cmsRelease.getStartReleaseDate());
+            }
+            // 发布时间 - 结束时间
+            if (Validator.isNotEmpty(cmsRelease.getEndReleaseDate())) {
+                queryWrapper.le("t.release_date", cmsRelease.getEndReleaseDate());
+            }
+            // 状态
+            if (Validator.isNotEmpty(cmsRelease.getStatus())) {
+                if (cmsRelease.getStatus().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.status", cmsRelease.getStatus().split(CommonConst.SPLIT));
+                } else {
+                    queryWrapper.eq("t.status", cmsRelease.getStatus());
+                }
+            }
+        }
+        return queryWrapper;
     }
 
     @Override
     public List<Tree> selectReleaseAssets() {
-        List<Tree> columnTreeList = cmsColumnService.selectAll(false);
+        List<Tree> columnTreeList = cmsColumnService.selectAll();
         List<Tree> pageTreeList = cmsPageService.selectAll();
 
         List<Tree> assets = new ArrayList<>();
@@ -104,8 +122,8 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         String baseSiteId = "0", basePageId = "ignore_page_0", baseColumnId = "ignore_column_0";
 
         // 网站 base
-        CmsSite cmsSite = CmsSiteUtil.getCurrentEditSite();
-        assets.add(new Tree(baseSiteId, "#", cmsSite.getName()));
+        CmsSite cmsSite = CmsSiteUtil.getUserActiveSite();
+        assets.add(new Tree(baseSiteId, null, cmsSite.getName()));
         // 页面文件夹以及公共页面
         assets.add(new Tree(basePageId, baseSiteId, CmsReleaseType.PAGE.getMessage()));
         assets.add(new Tree(CmsPageType.INDEX.getCode(), basePageId, CmsPageType.INDEX.getMessage(), CmsReleaseType.PAGE.getCode()));
@@ -123,7 +141,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
         if (columnTreeList != null && columnTreeList.size() > 0) {
             for (Tree tree : columnTreeList) {
-                tree.setParentId(TreeUtil.BASE_ID.equals(tree.getParentId()) ? baseColumnId : tree.getParentId());
+                tree.setParentId(tree.getParentId() == null ? baseColumnId : tree.getParentId());
                 tree.setType(CmsReleaseType.COLUMN.getCode());
                 assets.add(tree);
             }
@@ -132,11 +150,12 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         return assets;
     }
 
+    @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public CmsRelease saveRelease(CmsRelease cmsRelease) {
-        ToolUtil.checkParams(cmsRelease);
+    public CmsRelease saveData(CmsRelease cmsRelease) {
         // 是否未指定发布资源
-        boolean noCheckAssets = (cmsRelease.getColumnIds() == null || cmsRelease.getColumnIds().length() == 0) && (cmsRelease.getPageIds() == null || cmsRelease.getPageIds().length() == 0);
+        boolean noCheckAssets = (cmsRelease.getColumnIds() == null || cmsRelease.getColumnIds().length() == 0) &&
+                (cmsRelease.getPageIds() == null || cmsRelease.getPageIds().length() == 0);
         if (noCheckAssets) {
             // 未选择要发布的资源
             throw new EasyException("请选择要发布的资源");
@@ -146,11 +165,12 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         if (StrUtil.isNotBlank(cmsRelease.getId())) {
             return cmsRelease;
         }
-        cmsRelease.setSiteId(CmsSiteUtil.getCurrentEditSiteId());
+        cmsRelease.setSiteId(CmsSiteUtil.getUserActiveSiteId());
         cmsRelease.setStatus(CmsReleaseStatus.TO_BE_RELEASED.getCode());
         cmsRelease.setDone(0L);
         cmsRelease.setFail(0L);
-        cmsRelease.setId(UUID.randomUUID().toString(true));
+        cmsRelease.setId(IdUtil.fastSimpleUUID());
+        cmsRelease.setReleaseDate(new Date());
 
         // 保存列队数据
         List<CmsReleaseQueue> queueList = new ArrayList<>();
@@ -193,38 +213,36 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         if (isSuccess) {
             // 更新任务汇总数据
             UpdateWrapper<CmsRelease> updateStatistics = new UpdateWrapper<>();
-            updateStatistics.eq("id", queue.getpId())
-                    .set("done", cmsReleaseQueueService.selectCount(queue.getpId(), CmsReleaseStatus.PUBLISHED.getCode()))
-                    .set("fail", cmsReleaseQueueService.selectCount(queue.getpId(), CmsReleaseStatus.FAIL.getCode()));
+            updateStatistics.eq("id", queue.getParentId())
+                    .set("done", cmsReleaseQueueService.selectCount(queue.getParentId(), CmsReleaseStatus.PUBLISHED.getCode()))
+                    .set("fail", cmsReleaseQueueService.selectCount(queue.getParentId(), CmsReleaseStatus.FAIL.getCode()));
             update(updateStatistics);
         }
         return isSuccess;
     }
 
     @Override
-    public JSONObject cancelRelease(String id) {
+    public ReleaseProgressVO cancelRelease(String id) {
         RedisUtil.set(getReleaseStatusKey(id), CmsReleaseStatus.CANCELLED.getCode());
         return getReleaseProgress(id);
     }
 
     @Override
-    public JSONObject getReleaseProgress(String id) {
-        JSONObject res = new JSONObject();
+    public ReleaseProgressVO getReleaseProgress(String id) {
         String status = (String) RedisUtil.get(getReleaseStatusKey(id));
         if (StrUtil.isBlank(status) || !CmsReleaseStatus.PUBLISHING.getCode().equals(status)) {
             // 状态为空或者不是发布中，说明任务已停止，从数据库中获取进度
             CmsRelease cmsRelease = baseMapper.getReleaseProgress(id);
-            res.set("isEnd", true);
-            res.set("done", cmsRelease.getDone());
-            res.set("fail", cmsRelease.getFail());
+            return new ReleaseProgressVO(true, cmsRelease.getDone(), cmsRelease.getFail());
         } else {
             Long done = (Long) RedisUtil.get(getReleaseDoneKey(id));
             Long fail = (Long) RedisUtil.get(getReleaseFailKey(id));
-            res.set("isEnd", false);
-            res.set("done", done == null ? 0L : done);
-            res.set("fail", fail == null ? 0L : fail);
+            return new ReleaseProgressVO(
+                    false,
+                    done == null ? 0L : done,
+                    fail == null ? 0L : fail
+            );
         }
-        return res;
     }
 
     /**
@@ -320,12 +338,13 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
     @Override
     public boolean releaseAssets(String siteId) {
-        CmsSite cmsSite = CmsSiteUtil.getSiteById(siteId);
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        CmsSite cmsSite = cmsSiteService.getCmsSiteUseCache(siteId);
         try {
-            Resource resource = resolver.getResource("themes/" + cmsSite.getTheme() + "/assets");
-            FileUtil.copy(resource.getFile(), new File(cmsSite.getDeploymentPath()), true);
-        } catch (RuntimeException | IOException e) {
+            File file = new File(beetlProperties.getThemeRoot() + cmsSite.getTheme() + "/assets");
+            if (file.exists()) {
+                FileUtil.copy(file, new File(cmsSite.getDeploymentPath()), true);
+            }
+        } catch (RuntimeException e) {
             throw new EasyException("拷贝主题资源目录失败" + e.getMessage());
         }
         return false;
@@ -335,7 +354,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
     public boolean releaseHome(String siteId) {
         Map<String, Object> params = new HashMap<>();
 
-        CmsSite cmsSite = CmsSiteUtil.getSiteById(siteId);
+        CmsSite cmsSite = cmsSiteService.getCmsSiteUseCache(siteId);
         setCommonAttribute(params, cmsSite);
 
         // 页面 title
@@ -365,7 +384,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
         Map<String, Object> params = new HashMap<>();
 
-        CmsSite cmsSite = CmsSiteUtil.getSiteById(siteId);
+        CmsSite cmsSite = cmsSiteService.getCmsSiteUseCache(siteId);
         setCommonAttribute(params, cmsSite);
 
         CmsPage cmsPage = cmsPageService.get(id);
@@ -379,13 +398,13 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
     }
 
     @Override
-    public boolean releaseColumn(String siteId, String slug) {
-        return releaseColumn(CmsSiteUtil.getSiteById(siteId), CmsColumnUtil.getBySlug(siteId, slug));
+    public boolean releaseColumn(String siteId, String columnId) {
+        return releaseColumn(cmsSiteService.getCmsSiteUseCache(siteId), CmsColumnUtil.getById(siteId, columnId));
     }
 
     @Override
     public boolean releaseColumnById(String siteId, String columnId) {
-        return releaseColumn(CmsSiteUtil.getSiteById(siteId), CmsColumnUtil.getById(siteId, columnId));
+        return releaseColumn(cmsSiteService.getCmsSiteUseCache(siteId), CmsColumnUtil.getById(siteId, columnId));
     }
 
     private boolean releaseColumn(CmsSite cmsSite, CmsColumn cmsColumn) {
@@ -395,7 +414,6 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
         params.put("column", cmsColumn);
         params.put("currentPage", "column-" + cmsColumn.getSlug());
-
         params.put("title", cmsColumn.getName() + " | " + cmsSite.getName());
 
         generateFile(params, cmsRouteService.getColumnListViewPath(cmsSite, cmsColumn), getColumnFilePath(cmsSite, cmsColumn));
@@ -406,7 +424,7 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
     public boolean releaseArticle(String siteId, String articleId) {
         Map<String, Object> params = new HashMap<>();
 
-        CmsSite cmsSite = CmsSiteUtil.getSiteById(siteId);
+        CmsSite cmsSite = cmsSiteService.getCmsSiteUseCache(siteId);
         setCommonAttribute(params, cmsSite);
 
         CmsColumn cmsColumn = cmsArticleService.getColumnByArticleId(articleId);
@@ -415,11 +433,16 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
 
         CmsArticle cmsArticle = cmsArticleService.get(articleId);
         params.put("article", cmsArticle);
-
+        if (StrUtil.isNotBlank(cmsArticle.getKeyword())) {
+            params.put("keywords", cmsArticle.getKeyword());
+        }
+        if (StrUtil.isNotBlank(cmsArticle.getDescription())) {
+            params.put("description", cmsArticle.getDescription());
+        }
         params.put("title", cmsArticle.getTitle() + " | " + cmsSite.getName());
 
         // 更新索引
-        elasticsearchCmsArticleService.saveOrUpdate(cmsArticle);
+//        elasticsearchCmsArticleService.saveOrUpdate(cmsArticle);
 
         generateFile(params, cmsRouteService.getArticleViewPath(cmsSite, cmsColumn), getArticleFilePath(cmsSite, cmsArticle));
         return true;
@@ -496,7 +519,8 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
         // 主题base path
         params.put("themeUrl", "");
         params.put("baseUrl", projectProperties.getProjectUrl());
-
+        params.put("keywords", cmsSite.getKeyword());
+        params.put("description", cmsSite.getDescription());
         // 站点
         params.put("site", cmsSite);
     }

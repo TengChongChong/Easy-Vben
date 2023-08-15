@@ -5,19 +5,28 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsRelease">
         <result column="id" property="id" />
+        <result column="site_id" property="siteId" />
         <result column="page_ids" property="pageIds" />
         <result column="column_ids" property="columnIds" />
         <result column="release_article" property="releaseArticle" />
-        <result column="status" property="status" />
         <result column="total" property="total" />
         <result column="done" property="done" />
         <result column="fail" property="fail" />
-        <result column="receipt" property="receipt" />
         <result column="release_date" property="releaseDate" />
         <result column="end_date" property="endDate" />
+        <result column="receipt" property="receipt" />
+        <result column="status" property="status" />
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
     </resultMap>
+    <select id="select" resultType="com.easy.admin.cms.model.CmsRelease">
+        select t.id, t.page_ids, t.column_ids, t.release_article, t.total, t.done, t.fail, t.release_date, t.end_date, t.status
+        from cms_release t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
     <update id="setStartStatus">
         update cms_release
         set status = #{status}, release_date = #{releaseDate}
@@ -28,23 +37,10 @@
         set status = #{status}, end_date = #{endDate}, done = #{done}, fail = #{fail}
         where id = #{id}
     </update>
-    <select id="select" resultType="com.easy.admin.cms.model.CmsRelease">
-        select t.id, t.site_id, t.page_ids, t.column_ids, t.release_article, t.status, t.total, t.done, t.fail, t.receipt,
-               t.release_date, t.end_date, su.nickname as create_user
-        from cms_release t
-        left join sys_user su on su.id = t.create_user
-        <where>
-            ${ew.sqlSegment}
-        </where>
-    </select>
-    <select id="getById" resultType="com.easy.admin.cms.model.CmsRelease">
-        select t.id, t.page_ids, t.column_ids, t.release_article, t.status, t.total, t.done, t.fail, t.receipt, t.create_user, t.create_date
-        from cms_release t
-        where t.id = #{id}
-    </select>
     <select id="getReleaseProgress" resultType="com.easy.admin.cms.model.CmsRelease">
         select t.id, t.status, t.total, t.done, t.fail
         from cms_release t
         where t.id = #{id}
     </select>
+
 </mapper>

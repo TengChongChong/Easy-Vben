@@ -4,7 +4,7 @@ package com.easy.admin.cms.common.status;
  * 发布状态
  *
  * @author tengchong
- * @date 2021/11/29
+ * @date 2021-11-29
  */
 public enum CmsReleaseStatus {
     // 待发布

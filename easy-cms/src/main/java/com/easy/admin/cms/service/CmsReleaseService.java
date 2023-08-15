@@ -1,7 +1,7 @@
 package com.easy.admin.cms.service;
 
-import cn.hutool.json.JSONObject;
 import com.easy.admin.cms.model.CmsRelease;
+import com.easy.admin.cms.model.vo.ReleaseProgressVO;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.tree.Tree;
 
@@ -10,19 +10,18 @@ import java.util.List;
 /**
  * 网站发布
  *
- * @author tengchong
- * @date 2021/11/24
+ * @author 系统管理员
+ * @date 2023-07-12
  */
 public interface CmsReleaseService {
-
     /**
-     * 列表
+     * 查询数据
      *
-     * @param object 查询条件
-     * @param page   分页
+     * @param cmsRelease 查询条件
+     * @param page       分页
      * @return Page<CmsRelease>
      */
-    Page<CmsRelease> select(CmsRelease object, Page<CmsRelease> page);
+    Page<CmsRelease> select(CmsRelease cmsRelease, Page<CmsRelease> page);
 
     /**
      * 获取发布资源
@@ -32,12 +31,12 @@ public interface CmsReleaseService {
     List<Tree> selectReleaseAssets();
 
     /**
-     * 保存发布
+     * 保存/修改
      *
-     * @param cmsRelease 要发布的资源
+     * @param cmsRelease 表单内容
      * @return CmsRelease
      */
-    CmsRelease saveRelease(CmsRelease cmsRelease);
+    CmsRelease saveData(CmsRelease cmsRelease);
 
     /**
      * 开始发布
@@ -50,7 +49,7 @@ public interface CmsReleaseService {
     /**
      * 发布单个列队数据
      *
-     * @param id    id
+     * @param id id
      * @return true/false
      */
     boolean releaseQueue(String id);
@@ -59,17 +58,17 @@ public interface CmsReleaseService {
      * 取消发布
      *
      * @param id id
-     * @return {done: 0, fail: 0}
+     * @return 发布进度
      */
-    JSONObject cancelRelease(String id);
+    ReleaseProgressVO cancelRelease(String id);
 
     /**
      * 获取已发布数量
      *
      * @param id id
-     * @return {done: 0, fail: 0}
+     * @return 发布进度
      */
-    JSONObject getReleaseProgress(String id);
+    ReleaseProgressVO getReleaseProgress(String id);
 
     /**
      * 发布资源

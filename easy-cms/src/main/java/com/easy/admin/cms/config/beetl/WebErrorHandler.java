@@ -14,7 +14,7 @@ import java.io.Writer;
  * Beetl 异常处理器
  *
  * @author tengchong
- * @date 2021/12/7
+ * @date 2021-12-07
  */
 public class WebErrorHandler extends ConsoleErrorHandler {
 
@@ -109,6 +109,6 @@ public class WebErrorHandler extends ConsoleErrorHandler {
             w.write(DEV_MODEL_ERROR.replace("[title]", title).replace("[message]", msg));
         } catch (IOException e) {
         }
-        throw new EasyException(title +  msg);
+        throw new EasyException(title + msg);
     }
 }

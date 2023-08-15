@@ -8,25 +8,98 @@ import java.util.List;
 /**
  * 栏目
  *
- * @author TengChongChong
- * @date 2021-11-18
+ * @author 系统管理员
+ * @date 2023-06-19
  */
 public interface CmsColumnService {
     /**
-     * 根据父id获取数据
+     * 查询数据（无分页）
      *
-     * @param pId 父id
-     * @return List<JsTree>
+     * @param cmsColumn 查询条件
+     * @return List<CmsColumn>
      */
-    List<Tree> selectByPId(String pId);
+    List<CmsColumn> select(CmsColumn cmsColumn);
 
     /**
-     * 获取所有数据
+     * 查询所有数据（Tree）
      *
-     * @param containBaseNode 包含根节点
-     * @return List<JsTree>
+     * @return List<Tree>
      */
-    List<Tree> selectAll(boolean containBaseNode);
+    List<Tree> selectAll();
+
+    /**
+     * 查询指定站点下栏目数量
+     *
+     * @param siteIds 站点ids
+     * @return 文章数量
+     */
+    long countBySiteId(String siteIds);
+
+    /**
+     * 查询详情
+     *
+     * @param id id
+     * @return CmsColumn
+     */
+    CmsColumn get(String id);
+
+    /**
+     * 查询详情，优先从缓存获取
+     *
+     * @param siteId 站点id
+     * @param id     id
+     * @return CmsColumn
+     */
+    CmsColumn getCmsColumnUseCache(String siteId, String id);
+
+    /**
+     * 根据站点id与别名获取栏目信息
+     *
+     * @param siteId 站点id
+     * @param slug   别名
+     * @return CmsColumn
+     */
+    CmsColumn getBySlug(String siteId, String slug);
+
+    /**
+     * 新增或新增下级
+     *
+     * @param parentId 上级id
+     * @return CmsColumn
+     */
+    CmsColumn add(String parentId);
+
+    /**
+     * 删除
+     *
+     * @param ids 数据ids
+     * @return true/false
+     */
+    boolean remove(String ids);
+
+    /**
+     * 保存排序
+     *
+     * @param cmsColumnList 排序
+     * @return true/false
+     */
+    boolean saveOrder(List<CmsColumn> cmsColumnList);
+
+    /**
+     * 保存/修改
+     *
+     * @param cmsColumn 表单内容
+     * @return CmsColumn
+     */
+    CmsColumn saveData(CmsColumn cmsColumn);
+
+    /**
+     * 导出数据
+     *
+     * @param cmsColumn 查询条件
+     * @return 文件下载id
+     */
+    String exportData(CmsColumn cmsColumn);
 
     /**
      * 查询栏目数据 for 网站发布
@@ -36,106 +109,4 @@ public interface CmsColumnService {
      */
     List<CmsColumn> selectCmsColumns(String[] ids);
 
-    /**
-     * 详情
-     *
-     * @param id id
-     * @return CmsColumn
-     */
-    CmsColumn get(String id);
-
-    /**
-     * 详情
-     *
-     * @param siteId 站点id
-     * @param slug   别名
-     * @return CmsColumn
-     */
-    CmsColumn getBySlug(String siteId, String slug);
-
-    /**
-     * 新增
-     *
-     * @param pId 上级id
-     * @return CmsColumn
-     */
-    CmsColumn add(String pId);
-
-    /**
-     * 删除
-     *
-     * @param id id
-     * @return true/false
-     */
-    boolean remove(String id);
-
-    /**
-     * 根据站点id删除
-     *
-     * @param siteId 站点id
-     * @return true/false
-     */
-    boolean removeBySiteId(String siteId);
-
-    /**
-     * 设置状态
-     *
-     * @param ids    角色id
-     * @param status 状态
-     * @return true/false
-     */
-    boolean setStatus(String ids, String status);
-
-    /**
-     * 复制节点到目标id
-     *
-     * @param nodeIds  String 复制的节点ids [1,2,3]
-     * @param targetId String 目标节点id
-     * @return List<CmsColumn>
-     */
-    List<CmsColumn> copyNode(String nodeIds, String targetId);
-
-    /**
-     * 保存
-     *
-     * @param object 表单内容
-     * @return CmsColumn
-     */
-    CmsColumn saveData(CmsColumn object);
-
-    /**
-     * 拖动改变目录或顺序
-     *
-     * @param id          拖动的id
-     * @param parent      拖动后的父id
-     * @param oldParent   拖动前的id
-     * @param position    拖动前的下标
-     * @param oldPosition 拖动后的下标
-     * @return true/false
-     */
-    boolean move(String id, String parent, String oldParent, Integer position, Integer oldPosition);
-
-    /**
-     * 根据关键字搜索
-     *
-     * @param title 关键字
-     * @return List<JsTree>
-     */
-    List<Tree> selectByTitle(String title);
-
-    /**
-     * 检查是否已存在
-     *
-     * @param name 名称
-     * @return true/false
-     */
-    boolean checkMenuIsHaving(String name);
-
-    /**
-     * 刷新缓存数据
-     *
-     * @param siteId 站点id
-     * @return true/false
-     */
-    boolean refreshCache(String siteId);
 }

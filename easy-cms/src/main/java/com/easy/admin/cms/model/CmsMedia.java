@@ -1,22 +1,19 @@
 package com.easy.admin.cms.model;
 
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.admin.sys.model.SysFile;
-import com.easy.admin.util.file.FileUtil;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 资源管理
+ * 资源
  *
- * @author TengChongChong
- * @date 2021-11-21
+ * @author 系统管理员
+ * @date 2023-06-21
  */
 @TableName("cms_media")
 public class CmsMedia extends Model<CmsMedia> {
@@ -24,7 +21,7 @@ public class CmsMedia extends Model<CmsMedia> {
     /**
      * 主键
      */
-    @TableId(value = "id")
+    @TableId
     private String id;
     /**
      * 站点id
@@ -33,10 +30,12 @@ public class CmsMedia extends Model<CmsMedia> {
     /**
      * 名称
      */
+    @NotBlank(message = "名称不能为空")
     private String name;
     /**
      * 类型
      */
+    @NotBlank(message = "类型不能为空")
     private String type;
     /**
      * 状态
@@ -45,6 +44,7 @@ public class CmsMedia extends Model<CmsMedia> {
     /**
      * 乐观锁
      */
+    @Version
     private Integer version;
     /**
      * 创建人
@@ -66,16 +66,20 @@ public class CmsMedia extends Model<CmsMedia> {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
-    //
 
+    // 非表字段
+    /**
+     * 附件
+     */
     @TableField(exist = false)
+    @NotNull(message = "文件不能为空")
     private SysFile file;
 
     /**
-     * 文件路径
+     * 附件路径
      */
     @TableField(exist = false)
-    private String filePath;
+    private String fileUrl;
 
     @Override
     public Serializable pkVal() {
@@ -89,6 +93,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getSiteId() {
         return siteId;
     }
@@ -96,6 +101,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
+
     public String getName() {
         return name;
     }
@@ -103,6 +109,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getType() {
         return type;
     }
@@ -110,6 +117,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setType(String type) {
         this.type = type;
     }
+
     public String getStatus() {
         return status;
     }
@@ -117,6 +125,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public Integer getVersion() {
         return version;
     }
@@ -124,6 +133,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
     public String getCreateUser() {
         return createUser;
     }
@@ -131,6 +141,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -138,6 +149,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
     public String getEditUser() {
         return editUser;
     }
@@ -145,6 +157,7 @@ public class CmsMedia extends Model<CmsMedia> {
     public void setEditUser(String editUser) {
         this.editUser = editUser;
     }
+
     public Date getEditDate() {
         return editDate;
     }
@@ -161,15 +174,12 @@ public class CmsMedia extends Model<CmsMedia> {
         this.file = file;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFileUrl() {
+        return fileUrl;
     }
 
-    public void setFilePath(String filePath) {
-        if (StrUtil.isNotBlank(filePath)) {
-            this.filePath = FileUtil.getUrl(filePath);
-        } else {
-            this.filePath = null;
-        }
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
+
 }

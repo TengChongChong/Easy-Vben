@@ -9,35 +9,27 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 资源管理
+ * 资源
  *
- * @author TengChongChong
- * @date 2021-11-21
+ * @author 系统管理员
+ * @date 2023-06-21
  */
 public interface CmsMediaMapper extends BaseMapper<CmsMedia> {
     /**
-     * 获取列表数据
+     * 查询数据
      *
      * @param page         分页
      * @param queryWrapper 查询条件
-     * @param sysFileType  文件类型
      * @return List<CmsMedia>
      */
-    List<CmsMedia> select(Page<CmsMedia> page, @Param("ew") QueryWrapper<CmsMedia> queryWrapper, @Param("sysFileType") String sysFileType);
+    List<CmsMedia> select(Page<CmsMedia> page, @Param("ew") QueryWrapper<CmsMedia> queryWrapper);
 
     /**
-     * 查询详细信息
+     * 查询详情
      *
      * @param id id
      * @return CmsMedia
      */
     CmsMedia getById(@Param("id") String id);
 
-    /**
-     * 根据站点id删除
-     *
-     * @param siteId 站点id
-     * @return true/false
-     */
-    int deleteBySiteId(@Param("siteId") String siteId);
 }

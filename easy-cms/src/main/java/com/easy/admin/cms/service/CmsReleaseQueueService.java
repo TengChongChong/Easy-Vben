@@ -1,35 +1,34 @@
 package com.easy.admin.cms.service;
 
-import com.easy.admin.cms.model.CmsReleaseQueue;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.cms.model.CmsReleaseQueue;
 
 import java.util.List;
 
 /**
- * 发布列队
+ * 发布列队详情
  *
- * @author TengChongChong
- * @date 2021-11-24
+ * @author 系统管理员
+ * @date 2023-07-12
  */
 public interface CmsReleaseQueueService {
-
     /**
-     * 列表
+     * 查询数据
      *
-     * @param object 查询条件
-     * @param page   分页
+     * @param cmsReleaseQueue 查询条件
+     * @param page            分页
      * @return Page<CmsReleaseQueue>
      */
-    Page<CmsReleaseQueue> select(CmsReleaseQueue object, Page<CmsReleaseQueue> page);
+    Page<CmsReleaseQueue> select(CmsReleaseQueue cmsReleaseQueue, Page<CmsReleaseQueue> page);
 
     /**
      * 获取列队数据
      *
-     * @param pId    父id
-     * @param status 状态
+     * @param parentId 父id
+     * @param status   状态
      * @return 列队
      */
-    List<CmsReleaseQueue> selectQueue(String pId, String status);
+    List<CmsReleaseQueue> selectQueue(String parentId, String status);
 
     /**
      * 获取单个发布数据
@@ -51,23 +50,23 @@ public interface CmsReleaseQueueService {
     /**
      * 获取页面列队
      *
-     * @param pId     任务id
-     * @param siteId  站点id
-     * @param pageIds 页面ids
+     * @param parentId 任务id
+     * @param siteId   站点id
+     * @param pageIds  页面ids
      * @return List<CmsReleaseQueue>
      */
-    List<CmsReleaseQueue> generatePageQueue(String pId, String siteId, String[] pageIds);
+    List<CmsReleaseQueue> generatePageQueue(String parentId, String siteId, String[] pageIds);
 
     /**
      * 获取栏目列队
      *
-     * @param pId            任务id
+     * @param parentId       任务id
      * @param siteId         站点id
      * @param columnIds      栏目ids
      * @param releaseArticle 是否发布栏目下文章
      * @return List<CmsReleaseQueue>
      */
-    List<CmsReleaseQueue> generateColumnQueue(String pId, String siteId, String[] columnIds, boolean releaseArticle);
+    List<CmsReleaseQueue> generateColumnQueue(String parentId, String siteId, String[] columnIds, boolean releaseArticle);
 
     /**
      * 保存列队
@@ -88,9 +87,10 @@ public interface CmsReleaseQueueService {
     /**
      * 查询任务数量
      *
-     * @param pId    任务id
-     * @param status 状态
+     * @param parentId 任务id
+     * @param status   状态
      * @return count
      */
-    long selectCount(String pId, String status);
+    long selectCount(String parentId, String status);
+
 }

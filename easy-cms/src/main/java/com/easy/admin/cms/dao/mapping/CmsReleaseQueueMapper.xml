@@ -5,35 +5,34 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.cms.model.CmsReleaseQueue">
         <result column="id" property="id" />
-        <result column="p_id" property="pId" />
-        <result column="title" property="title" />
-        <result column="type" property="type" />
+        <result column="parent_id" property="parentId" />
         <result column="site_id" property="siteId" />
-        <result column="weight" property="weight" />
+        <result column="type" property="type" />
         <result column="data_id" property="dataId" />
-        <result column="status" property="status" />
+        <result column="title" property="title" />
+        <result column="weight" property="weight" />
         <result column="receipt" property="receipt" />
         <result column="duration" property="duration" />
-
+        <result column="status" property="status" />
     </resultMap>
-    <select id="selectQueue" resultType="com.easy.admin.cms.model.CmsReleaseQueue">
-        select t.id, t.p_id, t.title, t.type, t.site_id, t.weight, t.data_id
-        from cms_release_queue t
-        where t.p_id = #{pId} and t.status = #{status}
-        order by t.weight desc
-    </select>
-    <select id="selectDoneCount" resultType="java.lang.Long">
-        select count(1) from cms_release_queue where p_id = #{pId} and status = #{status}
-    </select>
     <select id="select" resultType="com.easy.admin.cms.model.CmsReleaseQueue">
-        select t.id, t.p_id, t.title, t.type, t.site_id, t.weight, t.data_id, t.status, t.receipt, t.duration
+        select t.id, t.type, t.title, t.weight, t.duration, t.status, t.receipt
         from cms_release_queue t
         <where>
             ${ew.sqlSegment}
         </where>
     </select>
+    <select id="selectQueue" resultType="com.easy.admin.cms.model.CmsReleaseQueue">
+        select t.id, t.parent_id, t.title, t.type, t.site_id, t.weight, t.data_id
+        from cms_release_queue t
+        where t.parent_id = #{parentId} and t.status = #{status}
+        order by t.weight desc
+    </select>
+    <select id="selectDoneCount" resultType="java.lang.Long">
+        select count(1) from cms_release_queue where parent_id = #{parentId} and status = #{status}
+    </select>
     <select id="getQueueById" resultType="com.easy.admin.cms.model.CmsReleaseQueue">
-        select t.id, t.p_id, t.title, t.type, t.site_id, t.weight, t.data_id
+        select t.id, t.parent_id, t.title, t.type, t.site_id, t.weight, t.data_id
         from cms_release_queue t
         where t.id = #{id}
     </select>

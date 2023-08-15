@@ -1,9 +1,7 @@
 package com.easy.admin.cms.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.NotBlank;
@@ -13,33 +11,38 @@ import java.util.Date;
 /**
  * 栏目
  *
- * @author TengChongChong
- * @date 2021-11-18
+ * @author 系统管理员
+ * @date 2023-06-19
  */
 @TableName("cms_column")
-public class CmsColumn extends Model<CmsColumn> implements Cloneable {
+public class CmsColumn extends Model<CmsColumn> {
 
     /**
      * 主键
      */
-    @TableId(value = "id")
+    @TableId
     private String id;
-    /**
-     * 父id
-     */
-    private String pId;
     /**
      * 站点id
      */
+    @Excel(name = "站点id", width = 20, orderNum = "0")
     private String siteId;
+    /**
+     * 父id
+     */
+    @Excel(name = "父栏目别名", width = 20, orderNum = "1")
+    private String parentId;
     /**
      * 名称
      */
+    @Excel(name = "名称", width = 20, orderNum = "2")
     @NotBlank(message = "名称不能为空")
     private String name;
     /**
      * 别名
      */
+    @Excel(name = "别名", width = 15, orderNum = "3")
+    @NotBlank(message = "别名不能为空")
     private String slug;
     /**
      * 类型
@@ -48,34 +51,42 @@ public class CmsColumn extends Model<CmsColumn> implements Cloneable {
     /**
      * 是否可以发布文章
      */
+    @Excel(name = "是否可以发布文章", width = 25, orderNum = "4")
+    @NotBlank(message = "是否可以发布文章不能为空")
     private String isRelease;
     /**
-     * 封面比例 - 宽
+     * 封面比例-宽
      */
     private Integer coverProportionWidth;
     /**
-     * 封面比例 - 高
+     * 封面比例-宽
      */
     private Integer coverProportionHeight;
     /**
      * 描述
      */
+    @Excel(name = "描述", width = 25, orderNum = "7")
     private String description;
     /**
      * 备注
      */
+    @Excel(name = "备注", width = 25, orderNum = "8")
     private String remarks;
     /**
      * 排序值
      */
+    @Excel(name = "排序值", width = 10, orderNum = "9")
     private Integer orderNo;
     /**
      * 状态
      */
+    @Excel(name = "状态", width = 9, orderNum = "10")
+    @NotBlank(message = "状态不能为空")
     private String status;
     /**
      * 乐观锁
      */
+    @Version
     private Integer version;
     /**
      * 创建人
@@ -97,33 +108,8 @@ public class CmsColumn extends Model<CmsColumn> implements Cloneable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
-    //
 
-    /**
-     * 父站点名称
-     */
-    @TableField(exist = false)
-    private String parentName;
-
-
-    public CmsColumn() {
-    }
-
-    public CmsColumn(String id, Integer orderNo) {
-        this.id = id;
-        this.orderNo = orderNo;
-    }
-
-    public CmsColumn(String id, String pId, Integer orderNo) {
-        this.id = id;
-        this.pId = pId;
-        this.orderNo = orderNo;
-    }
-
-    @Override
-    public CmsColumn clone() throws CloneNotSupportedException {
-        return (CmsColumn) super.clone();
-    }
+    // 非表字段
 
     @Override
     public Serializable pkVal() {
@@ -138,12 +124,12 @@ public class CmsColumn extends Model<CmsColumn> implements Cloneable {
         this.id = id;
     }
 
-    public String getpId() {
-        return pId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getSiteId() {
@@ -274,11 +260,5 @@ public class CmsColumn extends Model<CmsColumn> implements Cloneable {
         this.editDate = editDate;
     }
 
-    public String getParentName() {
-        return parentName;
-    }
 
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
 }

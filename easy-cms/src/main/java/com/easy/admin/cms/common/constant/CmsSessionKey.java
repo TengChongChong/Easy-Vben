@@ -4,7 +4,7 @@ package com.easy.admin.cms.common.constant;
  * 存放到session中的key
  *
  * @author TengChongChong
- * @date 2021/11/18
+ * @date 2021-11-18
  */
 public class CmsSessionKey {
     /**

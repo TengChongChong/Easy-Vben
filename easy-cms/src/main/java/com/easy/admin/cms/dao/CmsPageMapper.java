@@ -10,16 +10,16 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 页面管理
+ * 页面
  *
- * @author TengChongChong
- * @date 2021-11-24
+ * @author 系统管理员
+ * @date 2023-06-27
  */
 public interface CmsPageMapper extends BaseMapper<CmsPage> {
     /**
-     * 获取列表数据
+     * 查询数据
      *
-     * @param page 分页
+     * @param page         分页
      * @param queryWrapper 查询条件
      * @return List<CmsPage>
      */
@@ -29,10 +29,17 @@ public interface CmsPageMapper extends BaseMapper<CmsPage> {
      * 查询所有页面，用于网站发布
      *
      * @param siteId 站点id
-     * @param status 状态
      * @return List<Tree>
      */
-    List<Tree> selectAll(@Param("siteId")String siteId, @Param("status") String status);
+    List<Tree> selectAll(@Param("siteId") String siteId);
+
+    /**
+     * 查询详情
+     *
+     * @param id id
+     * @return CmsPage
+     */
+    CmsPage getById(@Param("id") String id);
 
     /**
      * 查询页面数据 for 网站发布
@@ -41,29 +48,4 @@ public interface CmsPageMapper extends BaseMapper<CmsPage> {
      * @return List<CmsPage>
      */
     List<CmsPage> selectPages(@Param("ew") QueryWrapper<CmsPage> queryWrapper);
-
-    /**
-     * 查询详细信息
-     *
-     * @param id id
-     * @return CmsPage
-     */
-    CmsPage getById(@Param("id") String id);
-
-    /**
-     * 根据别名获取页面
-     *
-     * @param siteId 站点id
-     * @param slug 别名
-     * @return CmsPage
-     */
-    CmsPage getBySlug(@Param("siteId")String siteId, @Param("slug") String slug);
-
-    /**
-     * 根据站点id删除
-     *
-     * @param siteId 站点id
-     * @return true/false
-     */
-    int deleteBySiteId(@Param("siteId") String siteId);
 }

@@ -1,23 +1,18 @@
 package com.easy.admin.cms.model;
 
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.admin.sys.model.SysFile;
-import com.easy.admin.util.file.FileUtil;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 文章管理
+ * 文章
  *
- * @author TengChongChong
- * @date 2021-11-19
+ * @author 系统管理员
+ * @date 2023-06-21
  */
 @TableName("cms_article")
 public class CmsArticle extends Model<CmsArticle> {
@@ -25,7 +20,7 @@ public class CmsArticle extends Model<CmsArticle> {
     /**
      * 主键
      */
-    @TableId(value = "id")
+    @TableId
     private String id;
     /**
      * 站点id
@@ -34,11 +29,8 @@ public class CmsArticle extends Model<CmsArticle> {
     /**
      * 栏目id
      */
+    @NotBlank(message = "栏目不能为空")
     private String columnId;
-    /**
-     * 排序值
-     */
-    private Integer orderNo;
     /**
      * 标题
      */
@@ -81,6 +73,10 @@ public class CmsArticle extends Model<CmsArticle> {
      */
     private String description;
     /**
+     * 标签
+     */
+    private String tags;
+    /**
      * 信息来源
      */
     private String source;
@@ -88,10 +84,6 @@ public class CmsArticle extends Model<CmsArticle> {
      * 作者
      */
     private String author;
-    /**
-     * 标签
-     */
-    private String tags;
     /**
      * 发布方式 1.手动 2.定时
      */
@@ -121,12 +113,17 @@ public class CmsArticle extends Model<CmsArticle> {
      */
     private String deptId;
     /**
+     * 排序值
+     */
+    private Integer orderNo;
+    /**
      * 状态
      */
     private String status;
     /**
      * 乐观锁
      */
+    @Version
     private Integer version;
     /**
      * 创建人
@@ -148,16 +145,34 @@ public class CmsArticle extends Model<CmsArticle> {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
-    //
 
-    @TableField(exist = false)
-    private SysFile cover;
-
+    // 非表字段
     /**
-     * 封面路径
+     * 发布时间 - 开始时间
      */
     @TableField(exist = false)
-    private String coverPath;
+    private Date startReleaseDate;
+    /**
+     * 发布时间 - 结束时间
+     */
+    @TableField(exist = false)
+    private Date endReleaseDate;
+    /**
+     * 下线时间 - 开始时间
+     */
+    @TableField(exist = false)
+    private Date startOfflineDate;
+    /**
+     * 下线时间 - 结束时间
+     */
+    @TableField(exist = false)
+    private Date endOfflineDate;
+
+    /**
+     * 封面
+     */
+    @TableField(exist = false)
+    private SysFile cover;
 
     /**
      * 栏目别名
@@ -171,6 +186,12 @@ public class CmsArticle extends Model<CmsArticle> {
     @TableField(exist = false)
     private String columnName;
 
+    /**
+     * 封面路径
+     */
+    @TableField(exist = false)
+    private String coverUrl;
+
     @TableField(exist = false)
     private String appendField;
 
@@ -180,12 +201,6 @@ public class CmsArticle extends Model<CmsArticle> {
     public CmsArticle(String siteId, String columnSlug) {
         this.siteId = siteId;
         this.columnSlug = columnSlug;
-    }
-
-    public CmsArticle(String siteId, String columnSlug, String status) {
-        this.siteId = siteId;
-        this.columnSlug = columnSlug;
-        this.status = status;
     }
 
     @Override
@@ -215,14 +230,6 @@ public class CmsArticle extends Model<CmsArticle> {
 
     public void setColumnId(String columnId) {
         this.columnId = columnId;
-    }
-
-    public Integer getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Integer orderNo) {
-        this.orderNo = orderNo;
     }
 
     public String getTitle() {
@@ -305,6 +312,14 @@ public class CmsArticle extends Model<CmsArticle> {
         this.description = description;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
     public String getSource() {
         return source;
     }
@@ -319,14 +334,6 @@ public class CmsArticle extends Model<CmsArticle> {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
     }
 
     public String getReleaseType() {
@@ -385,6 +392,14 @@ public class CmsArticle extends Model<CmsArticle> {
         this.deptId = deptId;
     }
 
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -433,6 +448,39 @@ public class CmsArticle extends Model<CmsArticle> {
         this.editDate = editDate;
     }
 
+
+    public Date getStartReleaseDate() {
+        return startReleaseDate;
+    }
+
+    public void setStartReleaseDate(Date startReleaseDate) {
+        this.startReleaseDate = startReleaseDate;
+    }
+
+    public Date getEndReleaseDate() {
+        return endReleaseDate;
+    }
+
+    public void setEndReleaseDate(Date endReleaseDate) {
+        this.endReleaseDate = endReleaseDate;
+    }
+
+    public Date getStartOfflineDate() {
+        return startOfflineDate;
+    }
+
+    public void setStartOfflineDate(Date startOfflineDate) {
+        this.startOfflineDate = startOfflineDate;
+    }
+
+    public Date getEndOfflineDate() {
+        return endOfflineDate;
+    }
+
+    public void setEndOfflineDate(Date endOfflineDate) {
+        this.endOfflineDate = endOfflineDate;
+    }
+
     public SysFile getCover() {
         return cover;
     }
@@ -441,16 +489,20 @@ public class CmsArticle extends Model<CmsArticle> {
         this.cover = cover;
     }
 
-    public String getCoverPath() {
-        return coverPath;
+    public String getColumnName() {
+        return columnName;
     }
 
-    public void setCoverPath(String coverPath) {
-        if (StrUtil.isNotBlank(coverPath)) {
-            this.coverPath = FileUtil.getUrl(coverPath);
-        } else {
-            this.coverPath = null;
-        }
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public String getColumnSlug() {
@@ -467,13 +519,5 @@ public class CmsArticle extends Model<CmsArticle> {
 
     public void setAppendField(String appendField) {
         this.appendField = appendField;
-    }
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
     }
 }

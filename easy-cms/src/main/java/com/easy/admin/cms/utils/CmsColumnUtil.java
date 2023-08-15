@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * 栏目工具类
  *
  * @author TengChongChong
- * @date 2021/11/18
+ * @date 2021-11-18
  */
 @Component
 public class CmsColumnUtil {

@@ -10,41 +10,42 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 文章管理
+ * 文章
  *
- * @author TengChongChong
- * @date 2021-11-19
+ * @author 系统管理员
+ * @date 2023-06-21
  */
 public interface CmsArticleMapper extends BaseMapper<CmsArticle> {
     /**
-     * 获取列表数据
+     * 查询数据
      *
      * @param page         分页
      * @param queryWrapper 查询条件
-     * @param sysFileType  文件类型
      * @return List<CmsArticle>
      */
-    List<CmsArticle> select(
-            Page<CmsArticle> page,
-            @Param("ew") QueryWrapper<CmsArticle> queryWrapper,
-            @Param("sysFileType") String sysFileType
-    );
+    List<CmsArticle> select(Page<CmsArticle> page, @Param("ew") QueryWrapper<CmsArticle> queryWrapper);
 
     /**
-     * 获取列表数据
+     * 查询文章数据，用于网站预览&发布
      *
      * @param page         分页
      * @param queryWrapper 查询条件
-     * @param sysFileType  文件类型
      * @param appendField  追加查询字段
      * @return List<CmsArticle>
      */
-    List<CmsArticle> selectForUtil(
+    List<CmsArticle> selectArticle(
             Page<CmsArticle> page,
             @Param("ew") QueryWrapper<CmsArticle> queryWrapper,
-            @Param("sysFileType") String sysFileType,
             @Param("appendField") String appendField
     );
+
+    /**
+     * 查询详情
+     *
+     * @param id id
+     * @return CmsArticle
+     */
+    CmsArticle getById(@Param("id") String id);
 
     /**
      * 根据栏目ids获取已发布的文章 for 网站发布
@@ -53,46 +54,6 @@ public interface CmsArticleMapper extends BaseMapper<CmsArticle> {
      * @return List<CmsArticle>
      */
     List<CmsArticle> selectArticleByColumnIds(@Param("ew") QueryWrapper<CmsArticle> queryWrapper);
-
-    /**
-     * 查询详细信息
-     *
-     * @param id id
-     * @return CmsArticle
-     */
-    CmsArticle getById(@Param("id") String id);
-
-    /**
-     * 根据站点id删除
-     *
-     * @param siteId 站点id
-     * @return true/false
-     */
-    int deleteBySiteId(@Param("siteId") String siteId);
-
-    /**
-     * 查询站点ids
-     *
-     * @param queryWrapper 查询条件
-     * @return 站点ids
-     */
-    List<String> selectSiteIds(@Param("ew") QueryWrapper<CmsArticle> queryWrapper);
-
-    /**
-     * 查询要发布的文章数据
-     *
-     * @param queryWrapper 查询条件
-     * @return 文章数据
-     */
-    List<CmsArticle> selectCmsArticle(@Param("ew") QueryWrapper<CmsArticle> queryWrapper);
-
-    /**
-     * 根据文章ids获取文章所属栏目
-     *
-     * @param queryWrapper 查询条件
-     * @return List<CmsColumn>
-     */
-    List<CmsColumn> selectColumnIdByArticleId(@Param("ew") QueryWrapper<CmsArticle> queryWrapper);
 
     /**
      * 根据文章id获取文章所属栏目
@@ -110,15 +71,5 @@ public interface CmsArticleMapper extends BaseMapper<CmsArticle> {
      */
     int selectCountByColumnId(@Param("columnId") String columnId);
 
-    /**
-     * 查询所有已发布文章
-     *
-     * @param queryWrapper 查询条件
-     * @param sysFileType  文件类型
-     * @return List<CmsArticle>
-     */
-    List<CmsArticle> selectAllArticleForElasticsearch(
-            @Param("ew") QueryWrapper<CmsArticle> queryWrapper,
-            @Param("sysFileType") String sysFileType
-    );
+
 }

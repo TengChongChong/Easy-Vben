@@ -4,7 +4,8 @@ import com.easy.admin.cms.model.CmsSite;
 import com.easy.admin.cms.service.CmsSiteService;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.core.annotation.ResponseResult;
-import com.easy.admin.sys.model.DragVO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,13 @@ import java.util.List;
 /**
  * 站点
  *
- * @author TengChongChong
- * @date 2021-11-18
+ * @author 系统管理员
+ * @date 2023-06-19
  */
+@Tag(name = "站点")
 @RestController
 @ResponseResult
-@RequestMapping("/auth/cms/site")
+@RequestMapping("/api/auth/cms/site")
 public class CmsSiteController {
 
     /**
@@ -30,94 +32,24 @@ public class CmsSiteController {
     private CmsSiteService service;
 
     /**
-     * 新增
+     * 查询数据（无分页）
      *
-     * @param pId 上级 id
-     * @return CmsSite
-     */
-    @GetMapping("/add/{pId}")
-    public CmsSite add(@PathVariable("pId") String pId) {
-        return service.add(pId);
-    }
-
-    /**
-     * 删除
-     *
-     * @param id id
-     * @return true/false
-     */
-    @DeleteMapping("{id}")
-    @RequiresPermissions("cms:site:remove")
-    public boolean remove(@PathVariable("id") String id) {
-        return service.remove(id);
-    }
-
-    /**
-     * 设置状态
-     *
-     * @param ids    ids
-     * @param status 状态
-     * @return true/false
-     */
-    @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("cms:site:status")
-    public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
-        return service.setStatus(ids, status);
-    }
-
-    /**
-     * 复制节点到目标id
-     *
-     * @param nodeIds  复制的节点ids [1,2,3]
-     * @param targetId 目标节点id
+     * @param cmsSite 查询条件
      * @return List<CmsSite>
      */
-    @PostMapping("copy/{nodeIds}/to/{targetId}")
-    @RequiresPermissions("cms:site:save")
-    public List<CmsSite> copyNodes(@PathVariable("nodeIds") String nodeIds, @PathVariable("targetId") String targetId) {
-        return service.copyNode(nodeIds, targetId);
-    }
-
-    /**
-     * 保存
-     *
-     * @param object 表单内容
-     * @return CmsSite
-     */
-    @PostMapping
-    @RequiresPermissions("cms:site:save")
-    public CmsSite save(@RequestBody @Valid CmsSite object) {
-        return service.saveData(object);
-    }
-
-    /**
-     * 详情
-     *
-     * @param id id
-     * @return CmsSite
-     */
-    @GetMapping("{id}")
-    public CmsSite get(@PathVariable("id") String id) {
-        return service.get(id);
-    }
-
-    /**
-     * 根据pId获取数据
-     *
-     * @param pId 父id
-     * @return List<JsTree>
-     */
-    @GetMapping("pId")
+    @Operation(summary = "查询数据（无分页）")
+    @GetMapping()
     @RequiresPermissions("cms:site:select")
-    public List<Tree> selectByPId(@RequestParam(value = "pId", required = false) String pId) {
-        return service.selectByPId(pId);
+    public List<CmsSite> select(CmsSite cmsSite) {
+        return service.select(cmsSite);
     }
 
     /**
-     * 获取全部数据
+     * 查询所有数据（Tree）
      *
-     * @return List<JsTree>
+     * @return List<Tree>
      */
+    @Operation(summary = "查询所有数据（Tree）")
     @GetMapping("all")
     @RequiresPermissions("cms:site:select")
     public List<Tree> selectAll() {
@@ -125,37 +57,101 @@ public class CmsSiteController {
     }
 
     /**
-     * 搜索
+     * 查询详情
      *
-     * @param title 标题
-     * @return List<JsTree>
+     * @param id id
+     * @return CmsSite
      */
-    @GetMapping("title")
+    @Operation(summary = "查询详情")
+    @GetMapping("{id}")
     @RequiresPermissions("cms:site:select")
-    public List<Tree> selectByTitle(@RequestParam("title") String title) {
-        return service.selectByTitle(title);
-    }
-
-
-    /**
-     * 拖动改变目录或顺序
-     *
-     * @param dragVO 拖动信息
-     * @return true/false
-     */
-    @PostMapping("move")
-    @RequiresPermissions("cms:site:move")
-    public boolean move(@RequestBody DragVO dragVO) {
-        return service.move(dragVO.getId(), dragVO.getParent(), dragVO.getOldParent(), dragVO.getPosition(), dragVO.getOldPosition());
+    public CmsSite get(@PathVariable("id") String id) {
+        return service.get(id);
     }
 
     /**
-     * 刷新缓存数据
+     * 新增或新增下级
      *
+     * @param parentId 上级id
+     * @return CmsSite
+     */
+    @Operation(summary = "新增或新增下级")
+    @GetMapping({"/add/{parentId}", "/add"})
+    @RequiresPermissions("cms:site:save")
+    public CmsSite add(@PathVariable(value = "parentId", required = false) String parentId) {
+        return service.add(parentId);
+    }
+
+    /**
+     * 删除
+     *
+     * @param ids 数据ids
      * @return true/false
      */
-    @PostMapping("refresh/cache")
-    public boolean refreshCache() {
-        return service.refreshCache();
+    @Operation(summary = "删除")
+    @DeleteMapping("{ids}")
+    @RequiresPermissions("cms:site:remove")
+    public boolean delete(@PathVariable("ids") String ids) {
+        return service.remove(ids);
     }
+
+    /**
+     * 保存/修改
+     *
+     * @param cmsSite 表单内容
+     * @return CmsSite
+     */
+    @Operation(summary = "保存/修改")
+    @PostMapping()
+    @RequiresPermissions("cms:site:save")
+    public CmsSite saveData(@Valid @RequestBody CmsSite cmsSite) {
+        return service.saveData(cmsSite);
+    }
+
+    /**
+     * 保存排序&结构
+     *
+     * @param cmsSiteList 排序&结构
+     * @return true/false
+     */
+    @PostMapping("order")
+    @RequiresPermissions("cms:site:save")
+    public boolean saveOrder(@RequestBody List<CmsSite> cmsSiteList) {
+        return service.saveOrder(cmsSiteList);
+    }
+
+    /**
+     * 设置用户选中站点
+     *
+     * @param cmsSite 站点
+     * @return true/false
+     */
+    @PostMapping("set/user/active/site")
+    public boolean setUserActiveSite(@RequestBody CmsSite cmsSite) {
+        return service.setUserActiveSite(cmsSite);
+    }
+
+    /**
+     * 获取用户当前选中站点
+     *
+     * @return 站点信息
+     */
+    @GetMapping("get/user/active/site")
+    public CmsSite getUserActiveSite() {
+        return service.getUserActiveSite();
+    }
+
+    /**
+     * 导出数据
+     *
+     * @param cmsSite 查询条件
+     * @return 文件下载id
+     */
+    @Operation(summary = "导出数据")
+    @GetMapping("export/data")
+    @RequiresPermissions("cms:site:select")
+    public String exportData(CmsSite cmsSite) {
+        return service.exportData(cmsSite);
+    }
+
 }

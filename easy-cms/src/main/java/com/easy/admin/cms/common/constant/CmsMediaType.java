@@ -1,10 +1,10 @@
 package com.easy.admin.cms.common.constant;
 
 /**
- * 媒体文件类型
+ * 资源文件类型
  *
  * @author TengChongChong
- * @date 2021/11/21
+ * @date 2021-11-21
  */
 public class CmsMediaType {
     /**
