@@ -287,7 +287,7 @@ public class GeneratorServiceImpl implements GeneratorService {
             connection = (DruidPooledConnection) dynamicRoutingDataSource.getDataSource(dataSource).getConnection();
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             // 获取表
-            rs = databaseMetaData.getTables(null, null, null, new String[]{"TABLE"});
+            rs = databaseMetaData.getTables(connection.getCatalog(), null, null, new String[]{"TABLE"});
             while (rs.next()) {
                 String tableName = rs.getString("TABLE_NAME");
                 String remarks = rs.getString("REMARKS");
