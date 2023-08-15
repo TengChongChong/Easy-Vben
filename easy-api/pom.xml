@@ -39,10 +39,10 @@
             <groupId>com.easy.admin</groupId>
             <artifactId>easy-sample</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.easy.admin</groupId>-->
-<!--            <artifactId>easy-cms</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-cms</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
