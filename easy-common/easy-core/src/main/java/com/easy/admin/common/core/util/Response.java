@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import cn.hutool.json.JSONObject;
+import com.easy.admin.common.core.constant.helper.NodePropertiesConstantsHelper;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.servlet.http.HttpServletResponse;
@@ -71,10 +72,10 @@ public class Response implements Serializable {
     private String traceId;
 
     /**
-     * 方便后端故障排除：当前访问服务器的主机，保留字段
+     * 方便后端故障排除：当前访问服务器的主机
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String host;
+    private String host = NodePropertiesConstantsHelper.node;
 
     /**
      * 时间戳

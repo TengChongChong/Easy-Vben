@@ -5,6 +5,7 @@ project:
   front-end-url: http://localhost:3100
   # 文件上传路径(不要写以~开头的路径会导致无法访问)
   file-upload-path: /Users/tengchong/development/easy-vben
+  node: 127.0.0.1:${server.port}
 springdoc:
   api-docs:
     #是否开启文档功能
@@ -56,9 +57,24 @@ spring:
     dynamic:
       datasource:
         master:
-          url: jdbc:mariadb://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
+#          url: jdbc:mariadb://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
+#          username: ${DB_USERNAME:root}
+#          password: ${DB_PASSWORD:123456}
+          url: jdbc:mariadb://${DB_HOST:47.100.2.79}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
           username: ${DB_USERNAME:root}
-          password: ${DB_PASSWORD:tengchong}
+          password: ${DB_PASSWORD:Yun1993.}
+# oss 对象存储
+oss:
+  # 对象存储类型，暂时仅支持 minio
+  type: minio
+  # oss api
+  endpoint: http://127.0.0.1:9000
+  # accessKey
+  access-key: JnUz8rIdAAI7hE4Yx2Hh
+  # secretKey
+  secret-key: ZVTDqueDJfLs025b2zyZVUYdmrl5Vr7I6p478LTZ
+  # bucket
+  bucket: easy-vben
 # 打印sql语句,调试用
 mybatis-plus:
   configuration:

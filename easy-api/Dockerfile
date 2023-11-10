@@ -10,4 +10,4 @@ EXPOSE 80
 
 ENV TZ=Asia/Shanghai JAVA_OPTS="-Xms1024m -Xmx2048m -Djava.security.egd=file:/dev/./urandom"
 
-CMD java $JAVA_OPTS -jar app.jar
+CMD java $JAVA_OPTS -jar --project.node=${projectNode} app.jar
