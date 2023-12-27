@@ -1,6 +1,6 @@
 package com.easy.admin.activiti.controller;
 
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.springframework.beans.factory.annotation.Autowired;

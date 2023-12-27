@@ -2,6 +2,7 @@ package com.easy.admin.auth.service;
 
 import cn.hutool.json.JSONObject;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.file.model.FileInfo;
 
 /**
  * 个人中心
@@ -21,10 +22,10 @@ public interface SysUserPersonalCenterService {
     /**
      * 保存头像
      *
-     * @param url url
+     * @param avatar 头像
      * @return url
      */
-    String saveUserAvatar(String url);
+    boolean saveUserAvatar(FileInfo avatar);
 
     /**
      * 保存当前用户信息

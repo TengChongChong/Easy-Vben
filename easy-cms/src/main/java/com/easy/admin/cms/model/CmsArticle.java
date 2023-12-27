@@ -2,7 +2,7 @@ package com.easy.admin.cms.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.easy.admin.sys.model.SysFile;
+import com.easy.admin.file.model.FileInfo;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * 文章
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-21
  */
 @TableName("cms_article")
@@ -172,7 +172,7 @@ public class CmsArticle extends Model<CmsArticle> {
      * 封面
      */
     @TableField(exist = false)
-    private SysFile cover;
+    private FileInfo cover;
 
     /**
      * 栏目别名
@@ -481,11 +481,11 @@ public class CmsArticle extends Model<CmsArticle> {
         this.endOfflineDate = endOfflineDate;
     }
 
-    public SysFile getCover() {
+    public FileInfo getCover() {
         return cover;
     }
 
-    public void setCover(SysFile cover) {
+    public void setCover(FileInfo cover) {
         this.cover = cover;
     }
 

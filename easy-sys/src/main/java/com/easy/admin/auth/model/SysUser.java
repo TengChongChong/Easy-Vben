@@ -2,6 +2,7 @@ package com.easy.admin.auth.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.easy.admin.file.model.FileInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -67,10 +68,6 @@ public class SysUser extends Model<SysUser> implements Serializable {
      * 生日
      */
     private Date birthday;
-    /**
-     * 头像
-     */
-    private String avatar;
     /**
      * 状态(1.正常 2.冻结 0.已删除)
      */
@@ -152,13 +149,7 @@ public class SysUser extends Model<SysUser> implements Serializable {
      * 头像缩略图
      */
     @TableField(exist = false)
-    private String avatarLg;
-    @TableField(exist = false)
-    private String avatarMd;
-    @TableField(exist = false)
-    private String avatarSm;
-    @TableField(exist = false)
-    private String avatarXs;
+    private FileInfo avatar;
 
     /**
      * 邮箱是否验证
@@ -262,14 +253,6 @@ public class SysUser extends Model<SysUser> implements Serializable {
         this.birthday = birthday;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -366,36 +349,12 @@ public class SysUser extends Model<SysUser> implements Serializable {
         this.permissionList = permissionList;
     }
 
-    public String getAvatarLg() {
-        return avatarLg;
+    public FileInfo getAvatar() {
+        return avatar;
     }
 
-    public void setAvatarLg(String avatarLg) {
-        this.avatarLg = avatarLg;
-    }
-
-    public String getAvatarMd() {
-        return avatarMd;
-    }
-
-    public void setAvatarMd(String avatarMd) {
-        this.avatarMd = avatarMd;
-    }
-
-    public String getAvatarSm() {
-        return avatarSm;
-    }
-
-    public void setAvatarSm(String avatarSm) {
-        this.avatarSm = avatarSm;
-    }
-
-    public String getAvatarXs() {
-        return avatarXs;
-    }
-
-    public void setAvatarXs(String avatarXs) {
-        this.avatarXs = avatarXs;
+    public void setAvatar(FileInfo avatar) {
+        this.avatar = avatar;
     }
 
     public boolean isMailIsVerifies() {

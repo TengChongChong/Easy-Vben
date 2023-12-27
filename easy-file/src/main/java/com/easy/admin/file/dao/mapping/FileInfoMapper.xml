@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.file.dao.FileInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.file.model.FileInfo">
+        <result column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="type" property="type" />
+        <result column="display_name" property="displayName" />
+        <result column="bucket_name" property="bucketName" />
+        <result column="object_name" property="objectName" />
+        <result column="url" property="url" />
+        <result column="size" property="size" />
+        <result column="content_type" property="contentType" />
+        <result column="order_no" property="orderNo" />
+        <result column="remarks" property="remarks" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+
+    <select id="select" resultType="com.easy.admin.file.model.FileInfo">
+        select id, parent_id, type, display_name, bucket_name, object_name, url, size, content_type, order_no, remarks, status, version
+        from file_info t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

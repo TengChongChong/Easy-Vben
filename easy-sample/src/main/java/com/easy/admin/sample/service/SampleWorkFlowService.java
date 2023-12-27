@@ -6,7 +6,7 @@ import com.easy.admin.sample.model.SampleWorkFlow;
 /**
  * 流程示例
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2022-07-08
  */
 public interface SampleWorkFlowService {

@@ -4,21 +4,23 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailUtil;
 import cn.hutool.json.JSONObject;
 import com.easy.admin.auth.common.constant.SessionConst;
+import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.service.SysUserPersonalCenterService;
+import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.core.mail.MailTemplate;
+import com.easy.admin.file.model.FileInfo;
+import com.easy.admin.file.service.FileInfoService;
+import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.util.file.ImageUtil;
 import com.easy.admin.sys.common.constant.MailConst;
 import com.easy.admin.sys.model.SysMailVerification;
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysMailVerificationService;
-import com.easy.admin.auth.service.SysUserPersonalCenterService;
-import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.file.FileUtil;
-import com.easy.admin.util.file.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,14 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     @Autowired
     private SysMailVerificationService sysMailVerifiesService;
 
+    @Autowired
+    private FileInfoService fileInfoService;
+
+    /**
+     * 文件存储
+     */
+    @Autowired
+    private FileStorageFactory fileStorageFactory;
 
     @Override
     public SysUser getCurrentUser() {
@@ -64,48 +74,37 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public String saveUserAvatar(String url) {
-        if (StrUtil.isBlank(url)) {
-            throw new EasyException("获取头像路径失败");
-        }
-        String path = FileUtil.getPath(url);
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new EasyException("头像文件不存在");
-        }
-        if (file.exists() && FileUtil.inFormalPath(path)) {
-            return url;
-        }
-        SysUser sysUser = ShiroUtil.getCurrentUser();
-        // 以前设置了头像
-        String oldAvatar = null;
-        if (StrUtil.isNotBlank(sysUser.getAvatar())) {
-            oldAvatar = sysUser.getAvatar();
-        }
-        // 将新头像移动到正式目录
-        path = FileUtil.moveToFormal(path);
-        // 更新数据库
-        url = FileUtil.getUrl(path);
-        boolean isSuccess = sysUserService.updateAvatar(url);
-        if (isSuccess) {
-            if (StrUtil.isNotBlank(oldAvatar)) {
-                // 删除原头像以及缩略图
-                ImageUtil.delThumbnail(new File(FileUtil.getPath(oldAvatar)));
-                FileUtil.del(oldAvatar);
-            }
-            // 生成缩略图
-            ImageUtil.generateThumbnail(new File(path));
-            // 更新redis中用户信息
-            sysUser.setAvatar(url);
-            sysUser = FileUtil.initAvatar(sysUser);
-            ShiroUtil.setCurrentUser(sysUser);
-            return url;
-        } else {
-            // 更新失败了,把移动到正式目录的图片删掉
-            cn.hutool.core.io.FileUtil.del(new File(path));
-            throw new EasyException("更新数据失败");
+    public boolean saveUserAvatar(FileInfo avatar) {
+        if (fileStorageFactory.getFileStorage().inFormalPath(avatar.getObjectName())) {
+            // 未修改头像
+            return true;
         }
 
+        SysUser sysUser = ShiroUtil.getCurrentUser();
+        // 删除原头像
+        fileInfoService.delete(sysUser.getId(), "avatar");
+
+        if (avatar.getSize() > 1024 * 100) {
+            // 超过100kb，压缩
+
+            // 下载文件到本地
+            String fullFilePath = fileStorageFactory.getFileStorage().downloadToLocalTemporaryPath(avatar.getBucketName(), avatar.getObjectName());
+            // 压缩文件
+            String thumbnailFile = ImageUtil.generateThumbnail(new File(fullFilePath), 300);
+            // 上传文件到存储
+            fileStorageFactory.getFileStorage().uploadFile(avatar.getBucketName(), avatar.getObjectName(), thumbnailFile);
+            // 文件大小
+            avatar.setSize(new File(thumbnailFile).length());
+        }
+
+        // 保存头像
+        fileInfoService.saveData(sysUser.getId(), "avatar", avatar);
+
+        sysUser.setAvatar(avatar);
+
+        ShiroUtil.setCurrentUser(sysUser);
+
+        return true;
     }
 
     @Override
@@ -121,7 +120,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         currentUser.setSex(sysUser.getSex());
         currentUser.setBirthday(sysUser.getBirthday());
         ShiroUtil.setCurrentUser(currentUser);
-        if (StrUtil.isNotBlank(sysUser.getAvatar())) {
+        if (sysUser.getAvatar() != null) {
             saveUserAvatar(sysUser.getAvatar());
         }
         return currentUser;

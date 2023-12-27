@@ -3,7 +3,7 @@ package com.easy.admin.activiti.controller;
 import cn.hutool.json.JSONObject;
 import com.easy.admin.activiti.model.ActivitiProcessDefinitionVO;
 import com.easy.admin.activiti.service.ActivitiProcessDefinitionService;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

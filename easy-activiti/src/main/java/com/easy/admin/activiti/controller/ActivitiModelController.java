@@ -3,7 +3,7 @@ package com.easy.admin.activiti.controller;
 import com.easy.admin.activiti.model.ActivitiModel;
 import com.easy.admin.activiti.service.ActivitiModelService;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.activiti.engine.impl.persistence.entity.ModelEntity;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

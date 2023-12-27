@@ -19,7 +19,7 @@
         select t.id, t.site_id, t.name, t.type, t.status, su_edit_user.nickname as edit_user, t.edit_date, sf.path as file_url
         from cms_media t
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
-        left join sys_file sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@MEDIA_FILE.code}'
+        left join file_info sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@MEDIA_FILE.code}'
         <where>
             ${ew.sqlSegment}
         </where>

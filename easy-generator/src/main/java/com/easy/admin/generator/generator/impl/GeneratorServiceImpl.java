@@ -16,7 +16,7 @@ import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.FieldConfig;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.sys.service.ImportService;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

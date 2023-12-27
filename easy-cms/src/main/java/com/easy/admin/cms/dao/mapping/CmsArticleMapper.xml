@@ -42,7 +42,7 @@
         from cms_article t
         left join cms_column cc on cc.id = t.column_id
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
-        left join sys_file sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}'
+        left join file_info sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}'
         <where>
             ${ew.sqlSegment}
         </where>
@@ -56,7 +56,7 @@
         from cms_article t
         left join cms_column cc on cc.id = t.column_id
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
-        left join sys_file sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}'
+        left join file_info sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}'
         <where>
             ${ew.sqlSegment}
         </where>

@@ -20,7 +20,7 @@ import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

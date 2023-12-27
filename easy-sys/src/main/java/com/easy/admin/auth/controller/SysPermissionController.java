@@ -4,7 +4,7 @@ import com.easy.admin.auth.model.SysPermission;
 import com.easy.admin.auth.service.SysPermissionService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.tree.Tree;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

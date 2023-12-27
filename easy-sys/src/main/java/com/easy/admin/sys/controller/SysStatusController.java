@@ -1,7 +1,7 @@
 package com.easy.admin.sys.controller;
 
 import cn.hutool.system.*;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

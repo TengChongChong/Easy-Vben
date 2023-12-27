@@ -11,9 +11,8 @@ import com.easy.admin.cms.service.CmsMediaService;
 import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.sys.service.SysFileService;
-import com.easy.admin.util.ToolUtil;
-import com.easy.admin.util.file.FileUtil;
+import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.file.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +23,14 @@ import java.util.List;
 /**
  * 资源
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-21
  */
 @Service
 public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> implements CmsMediaService {
 
     @Autowired
-    private SysFileService sysFileService;
+    private FileInfoService fileInfoService;
 
     @Override
     public Page<CmsMedia> select(CmsMedia cmsMedia, Page<CmsMedia> page) {
@@ -43,7 +42,7 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
         List<CmsMedia> cmsMediaList = baseMapper.select(page, queryWrapper);
         for (CmsMedia media : cmsMediaList) {
             if (StrUtil.isNotBlank(media.getFileUrl())) {
-                media.setFileUrl(FileUtil.getUrl(media.getFileUrl()));
+                //media.setFileUrl(FileUtil.getUrl(media.getFileUrl()));
             }
         }
         page.setRecords(cmsMediaList);
@@ -83,7 +82,7 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
         ToolUtil.checkParams(id);
         CmsMedia cmsMedia = baseMapper.getById(id);
         if (cmsMedia != null) {
-            cmsMedia.setFile(sysFileService.selectOne(id, CmsFileType.MEDIA_FILE.getCode()));
+            cmsMedia.setFile(fileInfoService.selectOne(id, CmsFileType.MEDIA_FILE.getCode()));
         }
         return cmsMedia;
     }
@@ -102,7 +101,7 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
-            sysFileService.delete(ids);
+            fileInfoService.delete(ids);
         }
         return isSuccess;
     }
@@ -129,12 +128,12 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
      * @param cmsMedia 资源库信息
      */
     private void handleFile(CmsMedia cmsMedia) {
-        if (cmsMedia.getFile() != null && StrUtil.isNotBlank(cmsMedia.getFile().getUrl()) && FileUtil.inTemporaryPath(cmsMedia.getFile().getUrl())) {
-            sysFileService.delete(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode());
-            cmsMedia.getFile().setPath(FileUtil.getPath(cmsMedia.getFile().getUrl()));
-            cmsMedia.getFile().setParentId(cmsMedia.getId());
-            cmsMedia.getFile().setType(CmsFileType.MEDIA_FILE.getCode());
-            sysFileService.saveData(cmsMedia.getFile());
-        }
+        //if (cmsMedia.getFile() != null && StrUtil.isNotBlank(cmsMedia.getFile().getUrl()) && FileUtil.inTemporaryPath(cmsMedia.getFile().getUrl())) {
+        //    fileInfoService.delete(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode());
+        //    cmsMedia.getFile().setPath(FileUtil.getPath(cmsMedia.getFile().getUrl()));
+        //    cmsMedia.getFile().setParentId(cmsMedia.getId());
+        //    cmsMedia.getFile().setType(CmsFileType.MEDIA_FILE.getCode());
+        //    fileInfoService.saveData(cmsMedia.getFile());
+        //}
     }
 }

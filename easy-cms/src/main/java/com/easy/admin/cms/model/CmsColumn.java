@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * 栏目
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-19
  */
 @TableName("cms_column")

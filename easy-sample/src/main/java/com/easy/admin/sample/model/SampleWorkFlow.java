@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * 流程示例
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2022-07-08
  */
 @TableName("sample_work_flow")

@@ -25,7 +25,7 @@ import com.easy.admin.sys.common.constant.SexConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -330,14 +330,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return baseMapper.selectCount(queryWrapper);
     }
 
-    @Override
-    public boolean updateAvatar(String url) {
-        UpdateWrapper<SysUser> updateWrapper = new UpdateWrapper<>();
-        SysUser sysUser = ShiroUtil.getCurrentUser();
-        updateWrapper.set("avatar", url);
-        updateWrapper.eq("id", sysUser.getId());
-        return update(updateWrapper);
-    }
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)

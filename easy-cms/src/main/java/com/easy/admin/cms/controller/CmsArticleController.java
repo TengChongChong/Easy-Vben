@@ -4,7 +4,7 @@ import com.easy.admin.cms.common.status.CmsArticleStatus;
 import com.easy.admin.cms.model.CmsArticle;
 import com.easy.admin.cms.service.CmsArticleService;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 /**
  * 文章
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-21
  */
 @Tag(name = "文章")

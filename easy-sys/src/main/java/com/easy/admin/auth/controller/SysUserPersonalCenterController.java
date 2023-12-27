@@ -2,7 +2,7 @@ package com.easy.admin.auth.controller;
 
 import cn.hutool.json.JSONObject;
 import com.easy.admin.common.core.base.BaseController;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.service.SysUserPersonalCenterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +43,6 @@ public class SysUserPersonalCenterController extends BaseController {
     @PostMapping("change/password")
     public boolean changePassword(@RequestBody JSONObject json) {
         return service.changePassword(json);
-    }
-
-    /**
-     * 保存用户头像
-     *
-     * @param json {url: ''}
-     * @return url
-     */
-    @PostMapping("user/avatar")
-    public String saveUserAvatar(@RequestBody JSONObject json) {
-        return service.saveUserAvatar(json.getStr("url"));
     }
 
     /**

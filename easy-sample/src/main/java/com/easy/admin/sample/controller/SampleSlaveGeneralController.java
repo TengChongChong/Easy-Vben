@@ -3,7 +3,7 @@ package com.easy.admin.sample.controller;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -18,7 +18,7 @@ import com.easy.admin.sample.service.SampleSlaveGeneralService;
 /**
  * 从库示例
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2022-06-23
  */
 @RestController

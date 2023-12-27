@@ -139,14 +139,6 @@ public interface SysUserService {
     long countUser(String deptIds);
 
     /**
-     * 更新头像
-     *
-     * @param url 访问地址
-     * @return true/false
-     */
-    boolean updateAvatar(String url);
-
-    /**
      * 设置用户邮箱
      *
      * @param userId 用户id

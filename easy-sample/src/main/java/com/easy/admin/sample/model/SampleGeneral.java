@@ -1,5 +1,7 @@
 package com.easy.admin.sample.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
 import java.util.Date;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -17,13 +19,17 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2022-07-18
+ * @date 2023-12-27
  */
 @TableName("sample_general")
 public class SampleGeneral extends Model<SampleGeneral> {
 
     @TableId
     private String id;
+    /**
+     * 父id
+     */
+    private String parentId;
     /**
      * 姓名
      */
@@ -48,6 +54,10 @@ public class SampleGeneral extends Model<SampleGeneral> {
      * 状态
      */
     private String status;
+    /**
+     * 排序值
+     */
+    private Integer orderNo;
     /**
      * 地址
      */
@@ -93,6 +103,15 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
     public String getName() {
         return name;
     }
@@ -100,6 +119,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getSex() {
         return sex;
     }
@@ -107,6 +127,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setSex(String sex) {
         this.sex = sex;
     }
+
     public Integer getAge() {
         return age;
     }
@@ -114,6 +135,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setAge(Integer age) {
         this.age = age;
     }
+
     public String getPhone() {
         return phone;
     }
@@ -121,6 +143,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
     public String getStatus() {
         return status;
     }
@@ -128,6 +151,15 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -135,6 +167,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setAddress(String address) {
         this.address = address;
     }
+
     public Integer getVersion() {
         return version;
     }
@@ -142,6 +175,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
     public String getCreateUser() {
         return createUser;
     }
@@ -149,6 +183,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -156,6 +191,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
     public String getEditUser() {
         return editUser;
     }
@@ -163,6 +199,7 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setEditUser(String editUser) {
         this.editUser = editUser;
     }
+
     public Date getEditDate() {
         return editDate;
     }
@@ -170,5 +207,6 @@ public class SampleGeneral extends Model<SampleGeneral> {
     public void setEditDate(Date editDate) {
         this.editDate = editDate;
     }
+
 
 }

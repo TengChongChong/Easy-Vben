@@ -8,7 +8,7 @@ import com.easy.admin.auth.model.SysDeptTypeRole;
 import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.service.SysDeptTypeRoleService;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

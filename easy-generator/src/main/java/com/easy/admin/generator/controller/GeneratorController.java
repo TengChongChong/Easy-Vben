@@ -2,7 +2,7 @@ package com.easy.admin.generator.controller;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.select.Select;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.service.GeneratorService;
 import org.apache.shiro.authz.annotation.RequiresRoles;

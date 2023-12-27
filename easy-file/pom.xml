@@ -14,11 +14,48 @@
 
     <description>文件相关功能</description>
 
+
     <dependencies>
+        <!-- str:common -->
         <dependency>
             <groupId>com.easy.admin</groupId>
-            <artifactId>easy-sys</artifactId>
+            <artifactId>easy-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-swagger</artifactId>
+        </dependency>
+        <!-- end:common -->
+        <!--shiro-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <resources>

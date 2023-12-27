@@ -10,7 +10,7 @@ import com.easy.admin.sys.dao.SysMessageDetailMapper;
 import com.easy.admin.sys.model.SysMessageDetail;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

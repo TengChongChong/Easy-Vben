@@ -14,11 +14,11 @@ spring:
       # 上传文件总的最大值
       max-request-size: 1000MB
       # 单个文件的最大值
-      max-file-size: 100MB
+      max-file-size: 1000MB
   web:
     resources:
       static-locations:
-        [ "classpath:/static/", "classpath:/themes/", "file:${project.file-upload-path}/", "file:${beetl.theme-root}/" ]
+        [ "classpath:/static/", "classpath:/themes/", "file:${file.storage.local.path}", "file:${beetl.theme-root}/" ]
   datasource:
     druid:
       web-stat-filter:

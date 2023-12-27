@@ -3,7 +3,7 @@ package com.easy.admin.activiti.controller;
 import com.easy.admin.activiti.model.ActivitiHistoric;
 import com.easy.admin.activiti.model.ActivitiTask;
 import com.easy.admin.activiti.service.ActivitiHistoricService;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

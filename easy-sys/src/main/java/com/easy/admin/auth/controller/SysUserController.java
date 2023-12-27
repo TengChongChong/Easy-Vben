@@ -4,7 +4,7 @@ import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.core.annotation.SysLog;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

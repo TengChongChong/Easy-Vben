@@ -13,7 +13,7 @@ import com.easy.admin.sys.dao.SysExceptionMapper;
 import com.easy.admin.sys.model.SysException;
 import com.easy.admin.sys.service.SysExceptionService;
 import com.easy.admin.util.SysConfigUtil;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

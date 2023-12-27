@@ -7,7 +7,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.scheduler.dao.SchedulerJobLogMapper;
 import com.easy.admin.scheduler.model.SchedulerJobLog;
 import com.easy.admin.scheduler.service.SchedulerJobLogService;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

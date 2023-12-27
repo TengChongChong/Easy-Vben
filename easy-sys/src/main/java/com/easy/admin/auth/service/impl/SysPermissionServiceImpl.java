@@ -17,7 +17,7 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.sys.common.constant.OpenModeConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

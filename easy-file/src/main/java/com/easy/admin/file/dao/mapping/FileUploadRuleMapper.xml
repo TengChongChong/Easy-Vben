@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.file.dao.FileUploadRuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.file.model.FileUploadRule">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="slug" property="slug" />
+        <result column="category" property="category" />
+        <result column="bucket" property="bucket" />
+        <result column="lower_limit" property="lowerLimit" />
+        <result column="upper_limit" property="upperLimit" />
+        <result column="suffix" property="suffix" />
+        <result column="status" property="status" />
+        <result column="tenant_id" property="tenantId" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+    <select id="select" resultType="com.easy.admin.file.model.FileUploadRule">
+        select t.id, t.name, t.slug, t.category, t.bucket, t.lower_limit, t.upper_limit, t.status, su_edit_user.nickname as edit_user, t.edit_date
+        from file_upload_rule t
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getBySlug" resultType="com.easy.admin.file.model.FileUploadRule">
+        select t.id, t.name, t.slug, t.category, t.bucket, t.lower_limit, t.upper_limit, t.suffix, t.status
+        from file_upload_rule t
+        where t.slug = #{slug}
+    </select>
+
+    <select id="getById" resultType="com.easy.admin.file.model.FileUploadRule">
+        select t.id, t.name, t.slug, t.category, t.bucket, t.lower_limit, t.upper_limit, t.suffix, t.status, t.tenant_id,
+               t.version
+        from file_upload_rule t
+        where t.id = #{id}
+    </select>
+    <select id="selectAllBucket" resultType="java.lang.String">
+        select bucket from file_upload_rule group by bucket
+    </select>
+
+</mapper>

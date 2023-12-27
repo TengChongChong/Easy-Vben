@@ -89,7 +89,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
 
     @Override
     public ${basicsConfig.modelName} get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
 
@@ -123,7 +122,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
@@ -133,7 +131,6 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public ${basicsConfig.modelName} saveData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}) {
-        ToolUtil.checkParams(${strUtil.lowerFirst(basicsConfig.modelName)});
         if (Validator.isEmpty(${strUtil.lowerFirst(basicsConfig.modelName)}.getId())) {
             // 新增,设置默认值
         }

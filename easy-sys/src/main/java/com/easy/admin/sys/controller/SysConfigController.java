@@ -2,7 +2,7 @@ package com.easy.admin.sys.controller;
 
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysConfig;
 import com.easy.admin.sys.service.SysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

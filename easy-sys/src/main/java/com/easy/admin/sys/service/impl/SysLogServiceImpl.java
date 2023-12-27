@@ -12,7 +12,7 @@ import com.easy.admin.sys.dao.SysLogMapper;
 import com.easy.admin.sys.model.SysLog;
 import com.easy.admin.sys.service.SysLogService;
 import com.easy.admin.util.SysConfigUtil;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

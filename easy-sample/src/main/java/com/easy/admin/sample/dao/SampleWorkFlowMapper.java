@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 流程示例
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2022-07-08
  */
 public interface SampleWorkFlowMapper extends BaseMapper<SampleWorkFlow> {

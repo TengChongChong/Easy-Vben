@@ -8,14 +8,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.file.model.BaseFileInfo;
+import com.easy.admin.file.model.FileDownload;
+import com.easy.admin.file.service.FileDownloadService;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.dao.SysImportExcelTemplateMapper;
 import com.easy.admin.sys.model.SysDict;
-import com.easy.admin.sys.model.SysDownload;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
-import com.easy.admin.sys.service.*;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.sys.service.SysDictService;
+import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
+import com.easy.admin.sys.service.SysImportExcelTemplateService;
+import com.easy.admin.sys.service.SysImportExcelTemporaryService;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +48,7 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     private SysImportExcelTemporaryService temporaryService;
 
     @Autowired
-    private SysDownloadService sysDownloadService;
+    private FileDownloadService fileDownloadService;
 
     @Autowired
     private SysDictService sysDictService;
@@ -189,11 +194,14 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
             // 如果模板中包含字典，则设置select
             dictionaries = sysDictService.selectDictionaries(ArrayUtil.toArray(dictTypes, String.class));
         }
-        String path = ExcelUtil.writFile(sysImportExcelTemplate.getName(), details, dictionaries);
+        
+        BaseFileInfo baseFileInfo = ExcelUtil.writFile(sysImportExcelTemplate.getName(), details, dictionaries);
 
-        return sysDownloadService.saveData(new SysDownload(
+        // 待完善
+        return fileDownloadService.saveData(new FileDownload(
                 sysImportExcelTemplate.getName() + ExcelUtil.EXCEL_SUFFIX_XLSX,
-                path
+                baseFileInfo.getBucketName(),
+                baseFileInfo.getObjectName()
         )).getId();
     }
 

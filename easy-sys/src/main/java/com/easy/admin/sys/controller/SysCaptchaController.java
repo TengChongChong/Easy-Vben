@@ -1,7 +1,7 @@
 package com.easy.admin.sys.controller;
 
 import com.anji.captcha.model.vo.CaptchaVO;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.service.SysCaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

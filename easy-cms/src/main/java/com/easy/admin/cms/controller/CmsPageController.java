@@ -4,7 +4,7 @@ import com.easy.admin.cms.model.CmsPage;
 import com.easy.admin.cms.service.CmsPageService;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 页面
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-27
  */
 @Tag(name = "页面")

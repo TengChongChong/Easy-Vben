@@ -16,7 +16,7 @@ import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.util.office.ImportExportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

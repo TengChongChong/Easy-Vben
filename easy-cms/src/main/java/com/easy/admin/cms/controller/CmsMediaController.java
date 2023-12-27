@@ -3,7 +3,7 @@ package com.easy.admin.cms.controller;
 import com.easy.admin.cms.model.CmsMedia;
 import com.easy.admin.cms.service.CmsMediaService;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 /**
  * 资源
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-21
  */
 @Tag(name = "资源")

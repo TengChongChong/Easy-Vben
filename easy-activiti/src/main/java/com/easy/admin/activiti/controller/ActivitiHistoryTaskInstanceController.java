@@ -3,7 +3,7 @@ package com.easy.admin.activiti.controller;
 import com.easy.admin.activiti.model.ActivitiHistoryTaskInstance;
 import com.easy.admin.activiti.service.ActivitiHistoryTaskInstanceService;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

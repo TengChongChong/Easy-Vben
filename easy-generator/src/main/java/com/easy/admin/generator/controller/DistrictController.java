@@ -1,6 +1,6 @@
 package com.easy.admin.generator.controller;
 
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.generator.model.CascaderDistrict;
 import com.easy.admin.generator.model.District;
 import com.easy.admin.generator.service.DistrictService;

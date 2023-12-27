@@ -1,7 +1,7 @@
 package com.easy.admin.sample.controller;
 
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sample.model.SampleWorkFlow;
 import com.easy.admin.sample.service.SampleWorkFlowService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 /**
  * 流程示例
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2022-07-08
  */
 @RestController

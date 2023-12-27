@@ -47,4 +47,9 @@ public class RedisPrefix {
      * 绑定手机号短信验证码
      */
     public static final String BINDING_PHONE_VERIFICATION_CODE = "binding:phone:verification:code";
+
+    /**
+     * 文件上传规则
+     */
+    public static final String FILE_UPLOAD_RULE = "file:upload:rule:";
 }

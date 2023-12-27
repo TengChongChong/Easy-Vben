@@ -1,6 +1,6 @@
 package com.easy.admin.sys.controller;
 
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysRedisVO;
 import com.easy.admin.sys.service.SysRedisService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

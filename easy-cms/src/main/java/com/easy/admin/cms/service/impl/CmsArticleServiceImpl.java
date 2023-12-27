@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.cms.common.constant.CmsConfigConst;
 import com.easy.admin.cms.common.status.CmsArticleStatus;
 import com.easy.admin.cms.common.type.CmsArticleReleaseType;
 import com.easy.admin.cms.common.type.CmsFileType;
@@ -17,17 +16,13 @@ import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.sys.service.SysFileService;
+import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.file.service.FileInfoService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.SysConfigUtil;
-import com.easy.admin.util.ToolUtil;
-import com.easy.admin.util.file.FileUtil;
-import com.easy.admin.util.file.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -35,14 +30,14 @@ import java.util.List;
 /**
  * 文章
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-21
  */
 @Service
 public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArticle> implements CmsArticleService {
 
     @Autowired
-    private SysFileService sysFileService;
+    private FileInfoService fileInfoService;
 
     @Override
     public Page<CmsArticle> select(CmsArticle cmsArticle, Page<CmsArticle> page) {
@@ -54,7 +49,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         List<CmsArticle> cmsArticleList = baseMapper.select(page, queryWrapper);
         for (CmsArticle article : cmsArticleList) {
             if (StrUtil.isNotBlank(article.getCoverUrl())) {
-                article.setCoverUrl(FileUtil.getUrl(article.getCoverUrl()));
+                //article.setCoverUrl(FileUtil.getUrl(article.getCoverUrl()));
             }
         }
         page.setRecords(cmsArticleList);
@@ -89,7 +84,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         List<CmsArticle> cmsArticleList = baseMapper.selectArticle(page.getPageSize() == -1 ? null : page, queryWrapper, cmsArticle.getAppendField());
         for (CmsArticle article : cmsArticleList) {
             if (StrUtil.isNotBlank(article.getCoverUrl())) {
-                article.setCoverUrl(FileUtil.getUrl(article.getCoverUrl()));
+                //article.setCoverUrl(FileUtil.getUrl(article.getCoverUrl()));
             }
         }
         page.setRecords(cmsArticleList);
@@ -169,7 +164,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         CmsArticle cmsArticle = baseMapper.getById(id);
         if (cmsArticle != null) {
             // 封面
-            cmsArticle.setCover(sysFileService.selectOne(id, CmsFileType.ARTICLE_COVER.getCode()));
+            cmsArticle.setCover(fileInfoService.selectOne(id, CmsFileType.ARTICLE_COVER.getCode()));
         }
         return cmsArticle;
     }
@@ -190,7 +185,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
-            sysFileService.delete(ids);
+            fileInfoService.delete(ids);
         }
         return isSuccess;
     }
@@ -221,22 +216,22 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
      * @param cmsArticle 文章信息
      */
     private void handleCover(CmsArticle cmsArticle) {
-        if (cmsArticle.getCover() != null && StrUtil.isNotBlank(cmsArticle.getCover().getUrl()) && FileUtil.inTemporaryPath(cmsArticle.getCover().getUrl())) {
-            sysFileService.delete(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode());
-            String path = FileUtil.getPath(cmsArticle.getCover().getUrl());
-            // 检查文件大小，如果太大需压缩
-            if (new File(path).length() > (Long) SysConfigUtil.get(CmsConfigConst.CMS_ARTICLE_COVER_MAX_SIZE) * 1024) {
-                try {
-                    path = ImageUtil.generateThumbnail(new File(path), 1200);
-                } catch (EasyException e) {
-                    // ignore
-                }
-            }
-            cmsArticle.getCover().setPath(path);
-            cmsArticle.getCover().setParentId(cmsArticle.getId());
-            cmsArticle.getCover().setType(CmsFileType.ARTICLE_COVER.getCode());
-            sysFileService.saveData(cmsArticle.getCover());
-        }
+        //if (cmsArticle.getCover() != null && StrUtil.isNotBlank(cmsArticle.getCover().getUrl()) && FileUtil.inTemporaryPath(cmsArticle.getCover().getUrl())) {
+        //    fileInfoService.delete(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode());
+        //    String path = FileUtil.getPath(cmsArticle.getCover().getUrl());
+        //    // 检查文件大小，如果太大需压缩
+        //    if (new File(path).length() > (Long) SysConfigUtil.get(CmsConfigConst.CMS_ARTICLE_COVER_MAX_SIZE) * 1024) {
+        //        try {
+        //            path = ImageUtil.generateThumbnail(new File(path), 1200);
+        //        } catch (EasyException e) {
+        //            // ignore
+        //        }
+        //    }
+        //    cmsArticle.getCover().setPath(path);
+        //    cmsArticle.getCover().setParentId(cmsArticle.getId());
+        //    cmsArticle.getCover().setType(CmsFileType.ARTICLE_COVER.getCode());
+        //    fileInfoService.saveData(cmsArticle.getCover());
+        //}
     }
 
     @Override

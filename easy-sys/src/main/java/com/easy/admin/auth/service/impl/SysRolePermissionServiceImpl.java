@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.auth.dao.SysRolePermissionMapper;
 import com.easy.admin.auth.model.SysRolePermission;
 import com.easy.admin.auth.service.SysRolePermissionService;

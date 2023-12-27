@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import com.easy.admin.sample.dao.SampleSlaveGeneralMapper;
 /**
  * 从库示例
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2022-06-23
  */
 @Service

@@ -10,13 +10,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.SpringContextHolder;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.exception.BusinessException;
+import com.easy.admin.file.model.BaseFileInfo;
+import com.easy.admin.file.model.FileDownload;
+import com.easy.admin.file.service.FileDownloadService;
+import com.easy.admin.file.storage.FileStorageFactory;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.dao.SysImportExcelDataMapper;
 import com.easy.admin.sys.model.*;
 import com.easy.admin.sys.service.*;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.ToolUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import com.easy.admin.util.office.ImportExportUtil;
 import org.apache.shiro.SecurityUtils;
@@ -45,7 +49,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private SysDownloadService sysDownloadService;
+    private FileDownloadService fileDownloadService;
 
     /**
      * 导入模板
@@ -69,6 +73,10 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      */
     @Autowired
     private SysDictService sysDictService;
+
+    @Autowired
+    private FileStorageFactory fileStorageFactory;
+
     /**
      * 导入数据mapper
      */
@@ -82,10 +90,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean analysis(String templateId, String path) {
-        logger.debug("解析文件:{}", path);
-        ToolUtil.checkParams(templateId);
-        ToolUtil.checkParams(path);
+    public boolean analysis(String templateId, String bucketName, String objectName) {
         // 检查模板信息
         SysImportExcelTemplate importExcelTemplate = importExcelTemplateService.get(templateId);
         if (importExcelTemplate == null) {
@@ -105,10 +110,8 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
             logger.debug("模板[{}]未配置导入规则", importExcelTemplate.getImportCode());
             throw new EasyException("模板[" + importExcelTemplate.getImportCode() + "]未配置导入规则");
         }
-        File file = new File(path);
-        checkFile(file);
         // 读取Excel
-        ExcelReader reader = cn.hutool.poi.excel.ExcelUtil.getReader(path);
+        ExcelReader reader = cn.hutool.poi.excel.ExcelUtil.getReader(fileStorageFactory.getFileStorage().getObject(bucketName, objectName));
         List<List<Object>> data = reader.read();
         // 最小行
         int minDataRow = 3;
@@ -494,10 +497,13 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         detail.setTitle("验证结果");
         detail.setFieldLength(128);
         configs.add(detail);
-        String path = ExcelUtil.writFile(importExcelTemplate.getName() + "验证失败数据", configs, dictionaries, rows);
-        return sysDownloadService.saveData(new SysDownload(
+
+        BaseFileInfo baseFileInfo = ExcelUtil.writFile(importExcelTemplate.getName() + "验证失败数据", configs, dictionaries, rows);
+
+        return fileDownloadService.saveData(new FileDownload(
                 importExcelTemplate.getName() + "验证失败数据" + DateUtil.today() + ExcelUtil.EXCEL_SUFFIX_XLSX,
-                path
+                baseFileInfo.getBucketName(),
+                baseFileInfo.getObjectName()
         )).getId();
 
     }

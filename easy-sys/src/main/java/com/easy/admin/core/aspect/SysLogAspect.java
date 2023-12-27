@@ -5,7 +5,7 @@ import com.easy.admin.sys.model.SysLog;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysLogService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.http.IpUtil;
+import com.easy.admin.common.core.util.http.IpUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;

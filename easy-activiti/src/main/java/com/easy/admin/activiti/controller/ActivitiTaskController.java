@@ -5,7 +5,7 @@ import com.easy.admin.activiti.model.ActivitiTask;
 import com.easy.admin.activiti.model.ActivitiTaskInfo;
 import com.easy.admin.activiti.service.ActivitiTaskService;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

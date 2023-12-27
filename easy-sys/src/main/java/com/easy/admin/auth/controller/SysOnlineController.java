@@ -1,7 +1,7 @@
 package com.easy.admin.auth.controller;
 
 import com.easy.admin.common.core.base.BaseController;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.auth.model.SysUserOnline;
 import com.easy.admin.auth.service.SysUserOnlineService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

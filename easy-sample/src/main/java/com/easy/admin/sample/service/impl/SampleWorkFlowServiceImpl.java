@@ -8,7 +8,7 @@ import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.sample.dao.SampleWorkFlowMapper;
 import com.easy.admin.sample.model.SampleWorkFlow;
 import com.easy.admin.sample.service.SampleWorkFlowService;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 流程示例
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2022-07-08
  */
 @Service

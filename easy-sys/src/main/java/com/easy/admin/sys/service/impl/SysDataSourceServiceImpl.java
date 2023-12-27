@@ -16,7 +16,7 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.sys.dao.SysDataSourceMapper;
 import com.easy.admin.sys.model.SysDataSource;
 import com.easy.admin.sys.service.SysDataSourceService;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

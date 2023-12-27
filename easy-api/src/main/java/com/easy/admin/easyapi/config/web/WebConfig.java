@@ -1,6 +1,6 @@
 package com.easy.admin.easyapi.config.web;
 
-import com.easy.admin.core.interceptor.ResponseResultInterceptor;
+import com.easy.admin.common.core.interceptor.ResponseResultInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

@@ -1,7 +1,7 @@
 package com.easy.admin.sys.controller;
 
 import com.easy.admin.common.core.base.BaseController;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

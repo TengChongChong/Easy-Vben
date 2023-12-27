@@ -1,7 +1,7 @@
 package com.easy.admin.auth.controller;
 
 import com.easy.admin.auth.service.AuthService;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.core.annotation.SysLog;
 import com.easy.admin.sys.model.LoginVO;
 import io.swagger.v3.oas.annotations.Operation;

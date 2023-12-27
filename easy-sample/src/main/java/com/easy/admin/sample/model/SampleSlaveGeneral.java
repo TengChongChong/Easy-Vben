@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * 从库示例
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2022-06-23
  */
 @TableName("sample_slave_general")

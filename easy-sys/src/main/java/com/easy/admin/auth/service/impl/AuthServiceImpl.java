@@ -14,7 +14,6 @@ import com.easy.admin.sys.model.LoginVO;
 import com.easy.admin.sys.service.SysCaptchaService;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.SysConfigUtil;
-import com.easy.admin.util.file.FileUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -65,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
             shiroService.kickOutSession(sysUser);
         }
         // 用户信息放在session里
-        ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, FileUtil.initAvatar(sysUser));
+        ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, sysUser);
         return subject;
     }
 

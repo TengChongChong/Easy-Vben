@@ -1,10 +1,8 @@
 project:
-  # 项目访问url
-  url: http://127.0.0.1
+  # 项目访问url，无需 / 结尾
+  url: http://127.0.0.1:8888
   # 前端访问url
   front-end-url: http://localhost:3100
-  # 文件上传路径(不要写以~开头的路径会导致无法访问)
-  file-upload-path: /Users/tengchong/development/easy-vben
   node: 127.0.0.1:${server.port}
 springdoc:
   api-docs:
@@ -14,7 +12,7 @@ springdoc:
   packagesToScan: com.easy.admin
 server:
   # 端口号
-  port: 80
+  port: 8888
 logging:
   file:
     path: logs
@@ -57,24 +55,34 @@ spring:
     dynamic:
       datasource:
         master:
-#          url: jdbc:mariadb://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
-#          username: ${DB_USERNAME:root}
-#          password: ${DB_PASSWORD:123456}
-          url: jdbc:mariadb://${DB_HOST:47.100.2.79}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
+          url: jdbc:mariadb://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
           username: ${DB_USERNAME:root}
-          password: ${DB_PASSWORD:Yun1993.}
+          password: ${DB_PASSWORD:123456}
+#          url: jdbc:mariadb://${DB_HOST:47.100.2.79}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
+#          username: ${DB_USERNAME:root}
+#          password: ${DB_PASSWORD:Yun1993.}
 # oss 对象存储
-oss:
-  # 对象存储类型，暂时仅支持 minio
-  type: minio
-  # oss api
-  endpoint: http://127.0.0.1:9000
-  # accessKey
-  access-key: JnUz8rIdAAI7hE4Yx2Hh
-  # secretKey
-  secret-key: ZVTDqueDJfLs025b2zyZVUYdmrl5Vr7I6p478LTZ
-  # bucket
-  bucket: easy-vben
+file:
+  storage:
+    # 文件存储方式：local - 本地存储 / oss - 对象存储
+#    type: oss
+    type: local
+    # 文件存放（local - 默认文件夹名称 / oss - 默认bucket名称）,命名规范：只能包括小写字母、数字和短划线（-）；必须以小写字母或者数字开头和结尾；长度为3~63个字符。
+    default-bucket: easy-default
+    # local - 本地存储
+    local:
+      # 用于存放上传的文件、临时文件等，以目录分隔符结尾(不要写以~开头的路径会导致无法访问)
+      path: /Users/tengchong/development/easy-vben/
+    # oss - 对象存储
+    oss:
+      # 对象存储类型，暂时仅支持 minio
+      type: minio
+      # oss api
+      endpoint: http://127.0.0.1:9000
+      # accessKey
+      access-key: tZje4eJbaR52LU5Ynmgl
+      # secretKey
+      secret-key: LSYcLw9iLDwLrLTN8znE8xC5oG4AO2Fw12dPhfmX
 # 打印sql语句,调试用
 mybatis-plus:
   configuration:

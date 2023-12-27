@@ -1,6 +1,5 @@
 package com.easy.admin.activiti.service.impl;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -13,8 +12,9 @@ import com.easy.admin.activiti.service.ActivitiModelService;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.sys.model.SysDownload;
-import com.easy.admin.sys.service.SysDownloadService;
+import com.easy.admin.file.model.FileDownload;
+import com.easy.admin.file.service.FileDownloadService;
+import com.easy.admin.file.storage.FileStorageFactory;
 import com.easy.admin.util.ShiroUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,10 +64,17 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
     private RepositoryService repositoryService;
 
     @Autowired
-    private SysDownloadService sysDownloadService;
+    private FileDownloadService fileDownloadService;
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    /**
+     * 文件存储
+     */
+    @Autowired
+    private FileStorageFactory fileStorageFactory;
+
 
     @Override
     public Page<ActivitiModel> select(ActivitiModel activitiModel, Page<ActivitiModel> page) {
@@ -348,13 +355,23 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
         BpmnModel bpmnModel = jsonConverter.convertToBpmnModel(editorNode);
         BpmnXMLConverter xmlConverter = new BpmnXMLConverter();
         byte[] bpmnModelXmlByte = xmlConverter.convertToXML(bpmnModel);
-        // 写入文件
-        String bpmnPath = com.easy.admin.util.file.FileUtil.getTemporaryPath() + IdUtil.randomUUID() + ".bpmn20.xml";
-        FileUtil.writeBytes(bpmnModelXmlByte, new File(bpmnPath));
 
-        SysDownload sysDownload = new SysDownload();
-        sysDownload.setName(model.getName() + "(" + model.getKey() + ") v." + +model.getVersion() + ".bpmn20.xml");
-        sysDownload.setPath(bpmnPath);
-        return sysDownloadService.saveData(sysDownload).getId();
+        InputStream inputStream = new ByteArrayInputStream(bpmnModelXmlByte);
+        String objectName = fileStorageFactory.getFileStorage().getTemporaryPath() + IdUtil.randomUUID() + ".bpmn20.xml";
+        // 保存文件
+        fileStorageFactory.getFileStorage().uploadFile(
+                fileStorageFactory.getFileStorageProperties().getDefaultBucket(),
+                objectName,
+                inputStream
+        );
+
+        // 保存下载信息
+        return fileDownloadService.saveData(
+                new FileDownload(
+                        model.getName() + "(" + model.getKey() + ") v." + model.getVersion() + ".bpmn20.xml",
+                        fileStorageFactory.getFileStorageProperties().getDefaultBucket(),
+                        objectName
+                )
+        ).getId();
     }
 }

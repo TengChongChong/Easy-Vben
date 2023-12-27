@@ -3,7 +3,7 @@ package com.easy.admin.cms.controller;
 import com.easy.admin.cms.model.CmsSite;
 import com.easy.admin.cms.service.CmsSiteService;
 import com.easy.admin.common.core.common.tree.Tree;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 站点
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-19
  */
 @Tag(name = "站点")

@@ -20,6 +20,10 @@
             <groupId>com.easy.admin</groupId>
             <artifactId>easy-sys</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-file</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

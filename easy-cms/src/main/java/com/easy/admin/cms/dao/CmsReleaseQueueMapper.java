@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 发布列队详情
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-07-12
  */
 public interface CmsReleaseQueueMapper extends BaseMapper<CmsReleaseQueue> {

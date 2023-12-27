@@ -61,20 +61,22 @@ public class ProjectProperties {
     private String cacheType = "redis";
 
     /**
-     * 模式
+     * profiles
      */
     @Value("${spring.profiles.active}")
     private String profilesActive;
+
     /**
      * 下换线转驼峰
      * 用于页面传回的排序字段驼峰转下划线
      */
     @Value("${mybatis-plus.configuration.map-underscore-to-camel-case}")
     private boolean underscoreToCamelCase;
+
     /**
      * 文件上传路径
      */
-    @Value("${project.file-upload-path}")
+    @Value("${file.storage.local.path}")
     private String fileUploadPath;
 
     public String getFileUploadPath() {
@@ -84,7 +86,8 @@ public class ProjectProperties {
             }
             File file = new File(fileUploadPath);
             if (!file.exists() && !file.mkdirs()) {
-                logger.warn("创建文件上传保存目录失败");
+                logger.error("创建文件上传保存目录失败，{}", fileUploadPath);
+                throw new EasyException("创建文件上传保存目录失败，" + fileUploadPath);
             }
             return fileUploadPath;
         } else {

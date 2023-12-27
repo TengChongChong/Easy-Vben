@@ -2,7 +2,8 @@ package com.easy.admin.sys.controller;
 
 import cn.hutool.json.JSONObject;
 import com.easy.admin.common.core.base.BaseController;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
+import com.easy.admin.file.model.BaseFileInfo;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.service.SysImportExcelDataService;
@@ -47,20 +48,20 @@ public class SysImportExcelDataController extends BaseController {
      * @return true/false
      */
     @GetMapping("check/last/data/{templateId}")
-    public boolean checkLastData(@PathVariable("templateId") String templateId){
+    public boolean checkLastData(@PathVariable("templateId") String templateId) {
         return service.checkLastData(templateId);
     }
 
     /**
      * 验证并解析文件
      *
-     * @param templateId 模板id
-     * @param json       {path:xxx}
+     * @param templateId   模板id
+     * @param baseFileInfo baseFileInfo
      * @return true/false
      */
     @PostMapping("analysis/{templateId}")
-    public boolean analysis(@PathVariable("templateId") String templateId, @RequestBody JSONObject json) {
-        return service.analysis(templateId, json.getStr("path"));
+    public boolean analysis(@PathVariable("templateId") String templateId, @RequestBody BaseFileInfo baseFileInfo) {
+        return service.analysis(templateId, baseFileInfo.getBucketName(), baseFileInfo.getObjectName());
     }
 
     /**
@@ -93,7 +94,7 @@ public class SysImportExcelDataController extends BaseController {
      */
     @GetMapping("export/verification/fail/data/{templateId}")
     public String exportVerificationFailData(@PathVariable("templateId") String templateId,
-                                                                         HttpServletRequest request) {
+                                             HttpServletRequest request) {
         return service.exportVerificationFailData(templateId, request);
     }
 }

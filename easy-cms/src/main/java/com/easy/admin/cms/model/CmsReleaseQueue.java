@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * 发布列队详情
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-07-12
  */
 @TableName("cms_release_queue")

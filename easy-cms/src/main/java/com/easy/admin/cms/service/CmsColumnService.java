@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 栏目
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-19
  */
 public interface CmsColumnService {

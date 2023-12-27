@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sample.dao.SampleFileMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.sample.model.SampleFile">
+        <result column="id" property="id" />
+        <result column="remarks" property="remarks" />
+        <result column="status" property="status" />
+        <result column="tenant_id" property="tenantId" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+    <select id="select" resultType="com.easy.admin.sample.model.SampleFile">
+        select t.id, t.remarks, t.status, su_edit_user.nickname as edit_user, t.edit_date, sf.display_name
+        from sample_file t
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        left join file_info sf on sf.parent_id = t.id and sf.type = 'file' and sf.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getById" resultType="com.easy.admin.sample.model.SampleFile">
+        select t.id, t.remarks, t.status, t.tenant_id, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from sample_file t
+        where t.id = #{id}
+    </select>
+
+</mapper>

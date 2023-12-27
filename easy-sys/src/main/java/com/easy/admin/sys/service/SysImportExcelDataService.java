@@ -24,10 +24,11 @@ public interface SysImportExcelDataService {
      * 验证并解析文件
      *
      * @param templateId 模板id
-     * @param path       excel文件路径
+     * @param bucketName local - 文件夹名称 / oss - bucket名称
+     * @param objectName local - 文件路径 /  oss - objectName
      * @return true/false
      */
-    boolean analysis(String templateId, String path);
+    boolean analysis(String templateId, String bucketName, String objectName);
 
     /**
      * 查询指定导入汇总信息

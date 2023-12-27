@@ -6,7 +6,7 @@ import com.easy.admin.cms.model.CmsMedia;
 /**
  * 资源
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-21
  */
 public interface CmsMediaService {

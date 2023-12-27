@@ -20,7 +20,7 @@ import com.easy.admin.scheduler.service.SchedulerJobLogService;
 import com.easy.admin.scheduler.service.SchedulerJobService;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.util.ToolUtil;
+import com.easy.admin.common.core.util.ToolUtil;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -313,7 +313,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
                     schedulerJobLogService.saveData(new SchedulerJobLog(schedulerJob.getId(),
                             startDate, System.currentTimeMillis() - startDate.getTime()));
                 } catch (IllegalAccessException | InvocationTargetException e) {
-                    throw new EasyException("调用定时任务[" + schedulerJob.getName() + "] method[" + schedulerJob.getMethod() + "]失败(" + e.getMessage() + ")");
+                    throw new EasyException(schedulerJob.getName() + "失败[" + e.getCause().getMessage() + "]");
                 }
             } catch (NoSuchMethodException e) {
                 throw new EasyException("定时任务[" + schedulerJob.getName() + "]获取method[" + schedulerJob.getMethod() + "]失败");

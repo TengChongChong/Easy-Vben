@@ -272,6 +272,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         sysPermissions.setComponent(component);
         sysPermissions.setType(type);
         sysPermissions.setStatus(CommonStatus.ENABLE.getCode());
+        sysPermissions.setExternal(WhetherConst.NO);
         sysPermissions.setDisplay(display);
         // 打开方式
         sysPermissions.setOpenMode(OpenModeConst.DEFAULT);

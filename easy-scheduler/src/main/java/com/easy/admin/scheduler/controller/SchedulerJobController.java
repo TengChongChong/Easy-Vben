@@ -1,7 +1,7 @@
 package com.easy.admin.scheduler.controller;
 
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.core.annotation.ResponseResult;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.scheduler.model.SchedulerJob;
 import com.easy.admin.scheduler.service.SchedulerJobService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

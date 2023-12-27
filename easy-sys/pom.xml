@@ -33,6 +33,10 @@
             <groupId>com.easy.admin</groupId>
             <artifactId>easy-swagger</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-file</artifactId>
+        </dependency>
         <!-- end:common -->
         <!--shiro-->
         <dependency>
@@ -49,7 +53,7 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- shiro ehcache -->
+
     </dependencies>
     <build>
         <resources>

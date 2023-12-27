@@ -17,6 +17,7 @@ import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.shiro.service.ShiroService;
 import com.easy.admin.config.shiro.session.RedisSessionDAO;
 import com.easy.admin.exception.BusinessException;
+import com.easy.admin.file.service.FileInfoService;
 import com.easy.admin.sys.common.constant.SysConst;
 import com.easy.admin.util.PasswordUtil;
 import org.apache.shiro.session.Session;
@@ -54,6 +55,9 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Autowired
     private RedisSessionDAO sessionDAO;
+
+    @Autowired
+    private FileInfoService fileInfoService;
 
     /**
      * 获取用户剩余尝试次数
@@ -177,6 +181,8 @@ public class ShiroServiceImpl implements ShiroService {
             throw new EasyException(Response.SHOW_TYPE_WARNING, "部门[" + sysUser.getDept().getName() + "]未设置类型，请联系管理员");
         }
         sysDeptTypeService.checkDeptTypeIsDisabled(sysUser.getDept().getTypeCode());
+
+        sysUser.setAvatar(fileInfoService.selectOne(sysUser.getId(), "avatar"));
 
         return sysUser;
     }

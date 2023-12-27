@@ -2,7 +2,7 @@ package com.easy.admin.cms.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.easy.admin.sys.model.SysFile;
+import com.easy.admin.file.model.FileInfo;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * 资源
  *
- * @author 系统管理员
+ * @author tengchongchong
  * @date 2023-06-21
  */
 @TableName("cms_media")
@@ -73,7 +73,7 @@ public class CmsMedia extends Model<CmsMedia> {
      */
     @TableField(exist = false)
     @NotNull(message = "文件不能为空")
-    private SysFile file;
+    private FileInfo file;
 
     /**
      * 附件路径
@@ -166,11 +166,11 @@ public class CmsMedia extends Model<CmsMedia> {
         this.editDate = editDate;
     }
 
-    public SysFile getFile() {
+    public FileInfo getFile() {
         return file;
     }
 
-    public void setFile(SysFile file) {
+    public void setFile(FileInfo file) {
         this.file = file;
     }
 
