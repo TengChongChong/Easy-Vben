@@ -80,6 +80,16 @@ public class CmsMedia extends Model<CmsMedia> {
      */
     @TableField(exist = false)
     private String fileUrl;
+    /**
+     * local - 文件夹名称 / oss - bucket名称
+     */
+    @TableField(exist = false)
+    protected String fileBucketName;
+    /**
+     * local - 文件路径 /  oss - objectName
+     */
+    @TableField(exist = false)
+    protected String fileObjectName;
 
     @Override
     public Serializable pkVal() {
@@ -182,4 +192,19 @@ public class CmsMedia extends Model<CmsMedia> {
         this.fileUrl = fileUrl;
     }
 
+    public String getFileBucketName() {
+        return fileBucketName;
+    }
+
+    public void setFileBucketName(String fileBucketName) {
+        this.fileBucketName = fileBucketName;
+    }
+
+    public String getFileObjectName() {
+        return fileObjectName;
+    }
+
+    public void setFileObjectName(String fileObjectName) {
+        this.fileObjectName = fileObjectName;
+    }
 }

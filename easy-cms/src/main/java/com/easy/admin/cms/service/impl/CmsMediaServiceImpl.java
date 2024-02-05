@@ -13,6 +13,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.file.service.FileInfoService;
+import com.easy.admin.file.storage.FileStorageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,9 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
     @Autowired
     private FileInfoService fileInfoService;
 
+    @Autowired
+    private FileStorageFactory fileStorageFactory;
+
     @Override
     public Page<CmsMedia> select(CmsMedia cmsMedia, Page<CmsMedia> page) {
         if (StrUtil.isBlank(CmsSiteUtil.getUserActiveSiteId())) {
@@ -39,13 +43,7 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
         }
         QueryWrapper<CmsMedia> queryWrapper = getQueryWrapper(cmsMedia);
         page.setDefaultDesc("t.create_date");
-        List<CmsMedia> cmsMediaList = baseMapper.select(page, queryWrapper);
-        for (CmsMedia media : cmsMediaList) {
-            if (StrUtil.isNotBlank(media.getFileUrl())) {
-                //media.setFileUrl(FileUtil.getUrl(media.getFileUrl()));
-            }
-        }
-        page.setRecords(cmsMediaList);
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -128,12 +126,10 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
      * @param cmsMedia 资源库信息
      */
     private void handleFile(CmsMedia cmsMedia) {
-        //if (cmsMedia.getFile() != null && StrUtil.isNotBlank(cmsMedia.getFile().getUrl()) && FileUtil.inTemporaryPath(cmsMedia.getFile().getUrl())) {
-        //    fileInfoService.delete(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode());
-        //    cmsMedia.getFile().setPath(FileUtil.getPath(cmsMedia.getFile().getUrl()));
-        //    cmsMedia.getFile().setParentId(cmsMedia.getId());
-        //    cmsMedia.getFile().setType(CmsFileType.MEDIA_FILE.getCode());
-        //    fileInfoService.saveData(cmsMedia.getFile());
-        //}
+        if (cmsMedia.getFile() != null && fileStorageFactory.getFileStorage().inTemporaryPath(cmsMedia.getFile().getObjectName())) {
+            fileInfoService.delete(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode());
+
+            fileInfoService.saveData(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode(), cmsMedia.getFile());
+        }
     }
 }

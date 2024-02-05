@@ -38,25 +38,25 @@
     <select id="select" resultType="com.easy.admin.cms.model.CmsArticle">
         select t.id, t.site_id, t.title, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size, t.source, t.author,
                t.release_date, t.offline_date, t.order_no, t.status, su_edit_user.nickname as edit_user, t.edit_date,
-               cc.name as column_name, sf.path as cover_url
+               cc.name as column_name, fi.url as cover_url
         from cms_article t
         left join cms_column cc on cc.id = t.column_id
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
-        left join file_info sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}'
+        left join file_info fi on fi.parent_id = t.id and fi.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}' and fi.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         <where>
             ${ew.sqlSegment}
         </where>
     </select>
     <select id="selectArticle" resultType="com.easy.admin.cms.model.CmsArticle">
         select t.id, t.site_id, t.column_id, t.title, t.subtitle, t.excerpt, t.title_font_family, t.title_color, t.title_font_weight, t.title_font_size,
-               t.source, t.author, t.tags, t.release_date, t.offline_date, t.order_no, t.view_count, cc.name as column_name, sf.path as cover_url
+               t.source, t.author, t.tags, t.release_date, t.offline_date, t.order_no, t.view_count, cc.name as column_name, fi.url as cover_url
         <if test="appendField != null and appendField != null">
             , ${appendField}
         </if>
         from cms_article t
         left join cms_column cc on cc.id = t.column_id
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
-        left join file_info sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}'
+        left join file_info fi on fi.parent_id = t.id and fi.type = '${@com.easy.admin.cms.common.type.CmsFileType@ARTICLE_COVER.code}' and fi.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         <where>
             ${ew.sqlSegment}
         </where>

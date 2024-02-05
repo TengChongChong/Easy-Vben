@@ -16,10 +16,11 @@
         <result column="edit_date" property="editDate" />
     </resultMap>
     <select id="select" resultType="com.easy.admin.cms.model.CmsMedia">
-        select t.id, t.site_id, t.name, t.type, t.status, su_edit_user.nickname as edit_user, t.edit_date, sf.path as file_url
+        select t.id, t.site_id, t.name, t.type, t.status, su_edit_user.nickname as edit_user, t.edit_date,
+               fi.url as file_url, fi.bucket_name as file_bucket_name, fi.object_name as file_object_name
         from cms_media t
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
-        left join file_info sf on sf.parent_id = t.id and sf.type = '${@com.easy.admin.cms.common.type.CmsFileType@MEDIA_FILE.code}'
+        left join file_info fi on fi.parent_id = t.id and fi.type = '${@com.easy.admin.cms.common.type.CmsFileType@MEDIA_FILE.code}' and fi.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         <where>
             ${ew.sqlSegment}
         </where>

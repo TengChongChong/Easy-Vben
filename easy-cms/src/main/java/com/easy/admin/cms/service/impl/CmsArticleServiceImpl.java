@@ -18,6 +18,8 @@ import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.file.service.FileInfoService;
+import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.util.file.EditorUtil;
 import com.easy.admin.util.ShiroUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,9 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
     @Autowired
     private FileInfoService fileInfoService;
 
+    @Autowired
+    private FileStorageFactory fileStorageFactory;
+
     @Override
     public Page<CmsArticle> select(CmsArticle cmsArticle, Page<CmsArticle> page) {
         if (StrUtil.isBlank(CmsSiteUtil.getUserActiveSiteId())) {
@@ -46,13 +51,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         }
         QueryWrapper<CmsArticle> queryWrapper = getQueryWrapper(cmsArticle);
         page.setDefaultDesc("t.create_date");
-        List<CmsArticle> cmsArticleList = baseMapper.select(page, queryWrapper);
-        for (CmsArticle article : cmsArticleList) {
-            if (StrUtil.isNotBlank(article.getCoverUrl())) {
-                //article.setCoverUrl(FileUtil.getUrl(article.getCoverUrl()));
-            }
-        }
-        page.setRecords(cmsArticleList);
+        page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
@@ -193,13 +192,14 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public CmsArticle saveData(CmsArticle cmsArticle) {
-        ToolUtil.checkParams(cmsArticle);
         if (Validator.isEmpty(cmsArticle.getId())) {
             // 新增,设置默认值
             cmsArticle.setSiteId(CmsSiteUtil.getUserActiveSiteId());
             // 状态
             cmsArticle.setStatus(CmsArticleStatus.DRAFT.getCode());
         }
+        // 处理内容
+        cmsArticle.setContent(EditorUtil.moveToFormal(cmsArticle.getContent()));
         // 手动发布
         cmsArticle.setReleaseType(CmsArticleReleaseType.MANUAL.getCode());
         boolean isSuccess = saveOrUpdate(cmsArticle);
@@ -216,22 +216,10 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
      * @param cmsArticle 文章信息
      */
     private void handleCover(CmsArticle cmsArticle) {
-        //if (cmsArticle.getCover() != null && StrUtil.isNotBlank(cmsArticle.getCover().getUrl()) && FileUtil.inTemporaryPath(cmsArticle.getCover().getUrl())) {
-        //    fileInfoService.delete(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode());
-        //    String path = FileUtil.getPath(cmsArticle.getCover().getUrl());
-        //    // 检查文件大小，如果太大需压缩
-        //    if (new File(path).length() > (Long) SysConfigUtil.get(CmsConfigConst.CMS_ARTICLE_COVER_MAX_SIZE) * 1024) {
-        //        try {
-        //            path = ImageUtil.generateThumbnail(new File(path), 1200);
-        //        } catch (EasyException e) {
-        //            // ignore
-        //        }
-        //    }
-        //    cmsArticle.getCover().setPath(path);
-        //    cmsArticle.getCover().setParentId(cmsArticle.getId());
-        //    cmsArticle.getCover().setType(CmsFileType.ARTICLE_COVER.getCode());
-        //    fileInfoService.saveData(cmsArticle.getCover());
-        //}
+        if (cmsArticle.getCover() != null && fileStorageFactory.getFileStorage().inTemporaryPath(cmsArticle.getCover().getObjectName())) {
+            fileInfoService.delete(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode());
+            fileInfoService.saveData(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode(), cmsArticle.getCover());
+        }
     }
 
     @Override
