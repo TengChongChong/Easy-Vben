@@ -133,6 +133,7 @@ public class FileInfoServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> i
         // 检查文件是否在临时目录
         if (fileStorageFactory.getFileStorage().inTemporaryPath(fileInfo.getObjectName())) {
             fileInfo.setObjectName(fileStorageFactory.getFileStorage().moveToFormal(fileInfo.getBucketName(), fileInfo.getObjectName()));
+            fileInfo.setUrl(fileStorageFactory.getFileStorage().getFileUrl(fileInfo.getBucketName(), fileInfo.getObjectName()));
         }
 
         fileInfo.setStatus(FileInfoStatusConst.NORMAL);

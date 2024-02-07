@@ -101,7 +101,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         sysPermission.setStatus(CommonStatus.ENABLE.getCode());
         sysPermission.setDisplay(WhetherConst.YES);
         sysPermission.setExternal(WhetherConst.NO);
-        sysPermission.setType(PermissionType.CATALOGUE.getCode());
+        sysPermission.setType(PermissionType.MENU.getCode());
         sysPermission.setOpenMode(OpenModeConst.DEFAULT);
         sysPermission.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
         return sysPermission;

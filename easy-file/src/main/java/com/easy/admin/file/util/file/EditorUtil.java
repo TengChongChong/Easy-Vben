@@ -1,8 +1,10 @@
 package com.easy.admin.file.util.file;
 
+import cn.hutool.core.util.StrUtil;
 import com.easy.admin.file.storage.FileStorageFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,8 +47,7 @@ public class EditorUtil {
      */
     public static String moveToFormal(String html) {
         Document document = Jsoup.parse(html);
-        handleImage(document)
-        ;
+        handleImage(document);
         return document.toString();
     }
 
@@ -57,30 +58,29 @@ public class EditorUtil {
      */
     private static void handleImage(Document document) {
         Elements elements = document.select(IMAGE_SELECTOR);
-        if (elements.size() == 0) {
+        if (elements.isEmpty()) {
             return;
         }
-        // todo: 待调整
-        //for (Element element : elements) {
-        //    String url = element.attr("src");
-        //    if (StrUtil.isNotBlank(url) && fileStorageFactory.getFileStorage().inTemporaryPath(url)) {
-        //        String path = FileUtil.getPath(url);
-        //        File file = new File(path);
-        //        if (file.exists()) {
-        //            // 如果文件过大，将文件压缩
-        //            if (file.length() > MAX_IMAGE_LENGTH) {
-        //                Integer width = getThumbnailWidth(file);
-        //                if(width != null){
-        //                    path = ImageUtil.generateThumbnail(file, width);
-        //                }
-        //            }
-        //
-        //            // 文件存在
-        //            path = fileStorageFactory.getFileStorage().moveToFormal(path);
-        //            element.attr("src", SysConst.projectProperties.getProjectUrl() + FileUtil.getUrl(path));
-        //        }
-        //    }
-        //}
+
+        for (Element element : elements) {
+            String url = element.attr("src");
+            String bucketName = element.attr("data-bucket-name");
+            String objectName = element.attr("data-object-name");
+            if (StrUtil.isNotBlank(url) && fileStorageFactory.getFileStorage().inTemporaryPath(objectName)) {
+                //    // 如果文件过大，将文件压缩
+                //    if (file.length() > MAX_IMAGE_LENGTH) {
+                //        Integer width = getThumbnailWidth(file);
+                //        if(width != null){
+                //            path = ImageUtil.generateThumbnail(file, width);
+                //        }
+                //    }
+
+                // 文件存在
+                objectName = fileStorageFactory.getFileStorage().moveToFormal(bucketName, objectName);
+                url = fileStorageFactory.getFileStorage().getFileUrl(bucketName, objectName);
+                element.attr("src", url);
+            }
+        }
     }
 
     /**
