@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
@@ -113,7 +114,7 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
         // 10mb
         fileUploadRule.setUpperLimit(10240);
         //fileUploadRule.setCategory("default");
-        //fileUploadRule.setStatus(CommonStatus.ENABLE.getCode());
+        fileUploadRule.setStatus(CommonStatus.ENABLE.getCode());
         // 桶
         fileUploadRule.setBucket(fileStorageProperties.getDefaultBucket());
         return fileUploadRule;
