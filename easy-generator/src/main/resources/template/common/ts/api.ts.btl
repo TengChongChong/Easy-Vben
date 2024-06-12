@@ -1,11 +1,11 @@
 import { ${basicsConfig.modelName} } from '${modelTsPath}';
 <% if(basicsConfig.generatorMethodsSelect){ %>
-import { Page } from '/@/api/model/pageModel';
+import { Page } from '@/api/model/pageModel';
 <% } %>
 <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
-import { TreeNodeModel } from '/@/api/model/treeModel';
+import { TreeNodeModel } from '@/api/model/treeModel';
 <% } %>
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp } from '@/utils/http/axios';
 
 // base url
 const BASE_URL = '/api${basicsConfig.controllerMapping}';

@@ -34,6 +34,6 @@ public class GeneratorApiTs extends GeneratorFile {
 
     @Override
     public void binding() {
-        getPageTemplate().binding("modelTsPath", "/@" + GeneratorTsUtil.convertImportPath(GeneratorUtil.getModelTsPath(generatorConfig.getBasicsConfig())));
+        getPageTemplate().binding("modelTsPath", "@" + GeneratorTsUtil.convertImportPath(GeneratorUtil.getModelTsPath(generatorConfig.getBasicsConfig())));
     }
 }

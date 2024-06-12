@@ -35,7 +35,7 @@ public class GeneratorList extends GeneratorFile {
     @Override
     public void binding() {
         if (this.generatorConfig.getBasicsConfig().isGeneratorFileApi()) {
-            this.getPageTemplate().binding("modelTsPath", "/@" + GeneratorTsUtil.convertImportPath(GeneratorUtil.getModelTsPath(generatorConfig.getBasicsConfig())));
+            this.getPageTemplate().binding("modelTsPath", "@" + GeneratorTsUtil.convertImportPath(GeneratorUtil.getModelTsPath(generatorConfig.getBasicsConfig())));
             this.getPageTemplate().binding("apiTsPath", GeneratorTsUtil.convertImportPath(this.generatorConfig.getBasicsConfig().getApiPath()));
         }
 

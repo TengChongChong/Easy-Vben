@@ -18,9 +18,9 @@
 </template>
 <script lang="ts">
   import { defineComponent, nextTick, ref } from 'vue';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { AButtonSave, AButtonCancel } from '/@/components/Button';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { AButtonSave, AButtonCancel } from '@/components/Button';
   import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
   import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
   import { message } from 'ant-design-vue';

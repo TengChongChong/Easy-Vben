@@ -16,12 +16,12 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, unref, onMounted, nextTick } from 'vue';
-  import { PageWrapper } from '/@/components/Page';
-  import { Loading } from '/@/components/Loading';
+  import { PageWrapper } from '@/components/Page';
+  import { Loading } from '@/components/Loading';
   import { useRouter } from 'vue-router';
-  import { useTabs } from '/@/hooks/web/useTabs';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { AButtonSave } from '/@/components/Button';
+  import { useTabs } from '@/hooks/web/useTabs';
+  import { BasicForm, useForm } from '@/components/Form';
+  import { AButtonSave } from '@/components/Button';
   import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
   import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
   import { message } from 'ant-design-vue';

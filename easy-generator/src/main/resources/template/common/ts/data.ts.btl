@@ -1,4 +1,4 @@
-import { BasicColumn, FormSchema } from '/@/components/Table';
+import { BasicColumn, FormSchema } from '@/components/Table';
 <% if(GeneratorTsUtil.needDayJs(queryConfig)){ %>
 import dayjs from 'dayjs';
 <% } %>
@@ -22,11 +22,11 @@ export const searchFormSchema: FormSchema[] = [
     componentProps: {
       allowEmpty: [true, true],
       showTime: true,
-      ranges: {
-        今天: [dayjs().startOf('day'), dayjs().endOf('day')],
-        本周: [dayjs().startOf('week'), dayjs().endOf('week')],
-        本月: [dayjs().startOf('month'), dayjs().endOf('month')],
-      },
+      presets: [
+        { label: '今天', value: [dayjs().startOf('day'), dayjs().endOf('day')] },
+        { label: '本周', value: [dayjs().startOf('week'), dayjs().endOf('week')] },
+        { label: '本月', value: [dayjs().startOf('month'), dayjs().endOf('month')] },
+      ],
     },
     colProps: { xxl: 12, xl: 16, md: 24 },
     <% } %>

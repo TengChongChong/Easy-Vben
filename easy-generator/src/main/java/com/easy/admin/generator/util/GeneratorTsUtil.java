@@ -82,6 +82,6 @@ public class GeneratorTsUtil {
     }
 
     public static String convertImportPath(String path){
-        return path.replace("/src", "/@").replace(".ts", "");
+        return path.replace("/src", "@").replace(".ts", "");
     }
 }

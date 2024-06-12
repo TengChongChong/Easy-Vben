@@ -31,10 +31,11 @@ public class GeneratorUtil {
     public static String getModelTsPath(BasicsConfig basicsConfig) {
         String fileName = StrUtil.lowerFirst(basicsConfig.getModelName()) + "Model.ts";
         String path = File.separator + "api" + File.separator;
+        String table = basicsConfig.getTable().toLowerCase();
         if (basicsConfig.getTable().contains(CommonConst.TABLE_SEPARATE)) {
-            path += basicsConfig.getTable().substring(0, basicsConfig.getTable().indexOf("_"));
+            path += table.substring(0, basicsConfig.getTable().indexOf("_"));
         } else {
-            path += basicsConfig.getTable();
+            path += table;
         }
         path += File.separator + "model" + File.separator + fileName;
         return path;
@@ -48,10 +49,11 @@ public class GeneratorUtil {
      */
     public static String getDataTsName(BasicsConfig basicsConfig) {
         String fileName;
+        String table = basicsConfig.getTable().toLowerCase();
         if (basicsConfig.getTable().contains(CommonConst.TABLE_SEPARATE)) {
-            fileName = basicsConfig.getTable().substring(basicsConfig.getTable().lastIndexOf(CommonConst.TABLE_SEPARATE) + 1);
+            fileName = table.substring(basicsConfig.getTable().lastIndexOf(CommonConst.TABLE_SEPARATE) + 1);
         } else {
-            fileName = basicsConfig.getTable();
+            fileName = table;
         }
         fileName += ".data.ts";
         return fileName;

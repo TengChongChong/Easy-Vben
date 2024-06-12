@@ -80,23 +80,23 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, reactive${basicsConfig.formGeneratorTemplate == 'page' ? ', onActivated' : ''} } from 'vue';
-  import { PageWrapper } from '/@/components/Page';
-  import { BasicTable, useTable } from '/@/components/Table';
-  import { clearTreeEmptyChildren, listToTree } from '/@/utils/helper/treeHelper';
+  import { PageWrapper } from '@/components/Page';
+  import { BasicTable, useTable } from '@/components/Table';
+  import { clearTreeEmptyChildren, listToTree } from '@/utils/helper/treeHelper';
   import { searchFormSchema, columns } from '${dataTsPath}';
-  import { Icon } from '/@/components/Icon';
-  import { useDrawer } from '/@/components/Drawer';
-  import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '/@/components/Button';
+  import { Icon } from '@/components/Icon';
+  import { useDrawer } from '@/components/Drawer';
+  import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '@/components/Button';
   <% if(basicsConfig.isGeneratorMethodsExport){ %>
-  import { downloadFileById } from '/@/utils/file/download';
+  import { downloadFileById } from '@/utils/file/download';
   <% } %>
-  import { Authority } from '/@/components/Authority';
+  import { Authority } from '@/components/Authority';
   import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
   <% if(basicsConfig.formGeneratorTemplate == 'drawer' || basicsConfig.formGeneratorTemplate == 'modal'){ %>
   import ${basicsConfig.modelName}Input from '${viewPath}/Input.vue';
   <% } %>
   <% if(basicsConfig.formGeneratorTemplate == 'page'){ %>
-  import { useGo } from '/@/hooks/web/usePage';
+  import { useGo } from '@/hooks/web/usePage';
   <% } %>
   import ${basicsConfig.modelName}Order from '${viewPath}/Order.vue';
 

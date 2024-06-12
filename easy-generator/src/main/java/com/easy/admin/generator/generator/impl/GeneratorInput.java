@@ -36,7 +36,7 @@ public class GeneratorInput extends GeneratorFile {
     public void binding() {
         if (this.generatorConfig.getBasicsConfig().isGeneratorFileApi()) {
             this.getPageTemplate().binding("apiTsPath", GeneratorTsUtil.convertImportPath(this.generatorConfig.getBasicsConfig().getApiPath()));
-            this.getPageTemplate().binding("modelTsPath", "/@" + GeneratorTsUtil.convertImportPath(GeneratorUtil.getModelTsPath(generatorConfig.getBasicsConfig())));
+            this.getPageTemplate().binding("modelTsPath", "@" + GeneratorTsUtil.convertImportPath(GeneratorUtil.getModelTsPath(generatorConfig.getBasicsConfig())));
         }
 
         this.getPageTemplate().binding("dataTsPath", GeneratorTsUtil.convertImportPath(this.generatorConfig.getBasicsConfig().getViewPath() + "/" + GeneratorUtil.getDataTsName(generatorConfig.getBasicsConfig())));
