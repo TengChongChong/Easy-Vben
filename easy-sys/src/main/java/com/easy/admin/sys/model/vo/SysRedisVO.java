@@ -1,4 +1,4 @@
-package com.easy.admin.sys.model;
+package com.easy.admin.sys.model.vo;
 
 /**
  * redis

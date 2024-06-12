@@ -104,19 +104,6 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     }
 
     /**
-     * 新增
-     *
-     * @return 默认值
-     */
-    @Override
-    public SysImportExcelTemplate add() {
-        SysImportExcelTemplate sysImportExcelTemplate = new SysImportExcelTemplate();
-        sysImportExcelTemplate.setStartRow(1);
-        // 设置默认值
-        return sysImportExcelTemplate;
-    }
-
-    /**
      * 删除
      *
      * @param ids 数据ids
@@ -185,7 +172,7 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
         List<String> dictTypes = new ArrayList<>();
         for (SysImportExcelTemplateDetail detail : details) {
             if (ImportConst.SYS_DICT.equals(detail.getReplaceTable())) {
-                // 收集所需的字典类别数据
+                // 收集所需的字典类型数据
                 dictTypes.add(detail.getReplaceTableDictType());
             }
         }
@@ -197,7 +184,6 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
         
         BaseFileInfo baseFileInfo = ExcelUtil.writFile(sysImportExcelTemplate.getName(), details, dictionaries);
 
-        // 待完善
         return fileDownloadService.saveData(new FileDownload(
                 sysImportExcelTemplate.getName() + ExcelUtil.EXCEL_SUFFIX_XLSX,
                 baseFileInfo.getBucketName(),

@@ -38,13 +38,6 @@ public interface SysImportExcelTemplateService {
     SysImportExcelTemplate getByImportCode(String importCode);
 
     /**
-     * 新增
-     *
-     * @return SysImportExcelTemplate
-     */
-    SysImportExcelTemplate add();
-
-    /**
      * 删除
      *
      * @param ids 数据ids

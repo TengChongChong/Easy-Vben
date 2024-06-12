@@ -1,8 +1,10 @@
 package com.easy.admin.sys.service;
 
 import com.easy.admin.sys.model.SysImportSummary;
+import com.easy.admin.sys.model.vo.SysImportExcelDataVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 数据导入
@@ -21,14 +23,22 @@ public interface SysImportExcelDataService {
     boolean checkLastData(String templateId);
 
     /**
+     * 解析文件
+     *
+     * @param bucketName local - 文件夹名称 / oss - bucket名称
+     * @param objectName local - 文件路径 /  oss - objectName
+     * @return List<List<Object>>
+     */
+    List<List<Object>> analysisExcel(String bucketName, String objectName);
+
+    /**
      * 验证并解析文件
      *
      * @param templateId 模板id
-     * @param bucketName local - 文件夹名称 / oss - bucket名称
-     * @param objectName local - 文件路径 /  oss - objectName
+     * @param sysImportExcelData 导入文件以及规则
      * @return true/false
      */
-    boolean analysis(String templateId, String bucketName, String objectName);
+    boolean analysis(String templateId, SysImportExcelDataVO sysImportExcelData);
 
     /**
      * 查询指定导入汇总信息

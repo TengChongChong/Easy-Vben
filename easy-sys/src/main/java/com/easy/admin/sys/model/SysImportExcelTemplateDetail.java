@@ -108,6 +108,12 @@ public class SysImportExcelTemplateDetail extends Model<SysImportExcelTemplateDe
     @TableField(exist = false)
     private boolean isNumber;
 
+    /**
+     * 导入时Excel 字段下标
+     */
+    @TableField(exist = false)
+    private Integer index;
+
     public String getId() {
         return id;
     }
@@ -264,4 +270,11 @@ public class SysImportExcelTemplateDetail extends Model<SysImportExcelTemplateDe
                 ImportExportUtil.isDouble(this.fieldType);
     }
 
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
 }
