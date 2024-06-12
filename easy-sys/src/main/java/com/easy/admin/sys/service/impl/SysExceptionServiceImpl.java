@@ -42,20 +42,23 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
         if (object != null) {
             // 查询条件
             // 错误代码
+            if (Validator.isNotEmpty(object.getId())) {
+                queryWrapper.eq("id", object.getId());
+            }
             if (Validator.isNotEmpty(object.getCode())) {
-                queryWrapper.like("code", object.getCode());
+                queryWrapper.like("t.code", object.getCode());
             }
             // 异常类型
             if (Validator.isNotEmpty(object.getType())) {
-                queryWrapper.like("type", object.getType());
+                queryWrapper.like("t.type", object.getType());
             }
             // 请求地址
             if (Validator.isNotEmpty(object.getUrl())) {
-                queryWrapper.like("url", object.getUrl());
+                queryWrapper.like("t.url", object.getUrl());
             }
             // 错误信息
             if (Validator.isNotEmpty(object.getMessage())) {
-                queryWrapper.like("message", object.getMessage());
+                queryWrapper.like("t.message", object.getMessage());
             }
             // 触发用户
             if (Validator.isNotEmpty(object.getNickname())) {
@@ -63,14 +66,14 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
             }
             // 触发时间 - 开始
             if (Validator.isNotEmpty(object.getStartTriggerTime())) {
-                queryWrapper.ge("trigger_time", object.getStartTriggerTime());
+                queryWrapper.ge("t.trigger_time", object.getStartTriggerTime());
             }
             // 触发时间 - 结束
             if (Validator.isNotEmpty(object.getEndTriggerTime())) {
-                queryWrapper.le("trigger_time", object.getEndTriggerTime());
+                queryWrapper.le("t.trigger_time", object.getEndTriggerTime());
             }
         }
-        page.setDefaultDesc("trigger_time");
+        page.setDefaultDesc("t.trigger_time");
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }

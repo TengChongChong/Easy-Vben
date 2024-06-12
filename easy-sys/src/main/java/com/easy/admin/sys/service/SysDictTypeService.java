@@ -55,9 +55,16 @@ public interface SysDictTypeService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDictType 表单内容
      * @return SysDictType
      */
-    SysDictType saveData(SysDictType object);
+    SysDictType saveData(SysDictType sysDictType);
 
+    /**
+     * 导出数据
+     *
+     * @param sysDictType 查询条件
+     * @return 文件下载id
+     */
+    String exportData(SysDictType sysDictType);
 }

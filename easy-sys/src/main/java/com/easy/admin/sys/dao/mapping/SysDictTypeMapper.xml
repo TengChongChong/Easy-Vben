@@ -37,4 +37,27 @@
             ${ew.sqlSegment}
         </where>
     </select>
+    <select id="exportData" resultType="com.easy.admin.sys.model.SysDictType">
+        select t.name, t.type, sys_dict.name as sys, status_dict.name as status
+        from sys_dict_type t
+        left join sys_dict sys_dict on sys_dict.code = t.sys and sys_dict.dict_type = 'whether'
+        left join sys_dict status_dict on status_dict.code = t.status and status_dict.dict_type = 'commonStatus'
+        <where>
+            ${ew.sqlSegment}
+        </where>
+        order by t.type
+    </select>
+    <update id="updateDuplicateData">
+        update sys_import_excel_temporary
+        set verification_results = concat(ifnull(verification_results, ''), '字典类型已存在（', field2, '）数据;'),
+            verification_status  = #{status}
+        where id in (
+            select id from (
+               select siet.id
+               from sys_dict_type sdt
+               left join sys_import_excel_temporary siet on siet.field2 = sdt.type
+               where siet.template_id = #{templateId} and siet.field2 is not null
+           ) t
+        );
+    </update>
 </mapper>

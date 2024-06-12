@@ -47,6 +47,10 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
         if (sysConfig != null) {
             // 查询条件
+            // category
+            if (Validator.isNotEmpty(sysConfig.getCategory())) {
+                queryWrapper.like("t.category", sysConfig.getCategory());
+            }
             // key
             if (Validator.isNotEmpty(sysConfig.getSysKey())) {
                 queryWrapper.like("t.sys_key", sysConfig.getSysKey());

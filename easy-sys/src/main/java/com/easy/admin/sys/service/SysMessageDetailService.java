@@ -1,5 +1,8 @@
 package com.easy.admin.sys.service;
 
+import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.sys.model.SysMessageDetail;
+
 import java.util.List;
 
 /**
@@ -9,6 +12,16 @@ import java.util.List;
  * @date 2019-06-06
  */
 public interface SysMessageDetailService {
+
+    /**
+     * 查看消息读取情况
+     *
+     * @param sysMessage 查询条件
+     * @param page 分页
+     * @return Page<SysMessageDetail>
+     */
+    Page<SysMessageDetail> selectMessageReceiverUserDetail(SysMessageDetail sysMessage, Page<SysMessageDetail> page);
+
     /**
      * 根据消息id查询收信人列表
      *

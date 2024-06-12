@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.SysConfig">
         <id column="id" property="id" />
+        <result column="category" property="category" />
         <result column="sys_key" property="sysKey" />
         <result column="value" property="value" />
         <result column="type" property="type" />
@@ -17,7 +18,8 @@
         <result column="edit_user" property="editUser" />
     </resultMap>
     <select id="select" resultType="com.easy.admin.sys.model.SysConfig">
-        select t.id, t.sys_key, t.value, t.type, t.sys, t.remarks, t.edit_date, su.nickname as edit_user from sys_config t
+        select t.id, t.category, t.sys_key, t.value, t.type, t.sys, t.remarks, t.edit_date, su.nickname as edit_user
+        from sys_config t
             left join sys_user su on su.id = t.edit_user
         <where>
             ${ew.sqlSegment}

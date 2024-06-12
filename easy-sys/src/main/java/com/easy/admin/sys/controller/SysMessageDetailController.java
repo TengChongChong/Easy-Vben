@@ -1,7 +1,9 @@
 package com.easy.admin.sys.controller;
 
-import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.annotation.ResponseResult;
+import com.easy.admin.common.core.base.BaseController;
+import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.sys.model.SysMessageDetail;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,18 @@ public class SysMessageDetailController extends BaseController {
     private SysMessageDetailService service;
 
     /**
+     * 查看消息读取情况
+     *
+     * @param sysMessage 查询条件
+     * @param page 分页
+     * @return Page<SysMessageDetail>
+     */
+    @GetMapping("message/receiver/user/detail")
+    public Page<SysMessageDetail> selectMessageReceiverUserDetail(SysMessageDetail sysMessage, Page<SysMessageDetail> page) {
+        return service.selectMessageReceiverUserDetail(sysMessage, page);
+    }
+
+    /**
      * 设置消息标星/取消标星
      *
      * @param id   接受消息id
@@ -36,7 +50,7 @@ public class SysMessageDetailController extends BaseController {
     /**
      * 根据接收消息id删除
      *
-     * @param ids              消息ids
+     * @param ids 消息ids
      * @return true/false
      */
     @DeleteMapping("{ids}")
@@ -60,7 +74,7 @@ public class SysMessageDetailController extends BaseController {
      *
      * @return true/false
      */
-    @PostMapping( "read")
+    @PostMapping("read")
     public boolean setRead() {
         return service.setRead(null);
     }

@@ -1,6 +1,6 @@
 package com.easy.admin.auth.service;
 
-import com.easy.admin.sys.model.LoginVO;
+import com.easy.admin.auth.model.vo.LoginVO;
 import org.apache.shiro.subject.Subject;
 
 /**

@@ -1,16 +1,19 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.dao.SysMessageDetailMapper;
 import com.easy.admin.sys.model.SysMessageDetail;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,30 @@ import java.util.List;
  */
 @Service
 public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMapper, SysMessageDetail> implements SysMessageDetailService {
+
+    @Override
+    public Page<SysMessageDetail> selectMessageReceiverUserDetail(SysMessageDetail sysMessage, Page<SysMessageDetail> page) {
+        if (sysMessage == null || StrUtil.isBlank(sysMessage.getMessageId())){
+            throw new EasyException("未指定消息ID");
+        }
+        QueryWrapper<SysMessageDetail> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("d.message_id", sysMessage.getMessageId());
+
+        if(Validator.isNotEmpty(sysMessage.getStatus())) {
+            queryWrapper.eq("d.status", sysMessage.getStatus());
+        }
+        // 接收人
+        if(Validator.isNotEmpty(sysMessage.getReceiverUser())) {
+            queryWrapper.like("su.nickname", sysMessage.getReceiverUser());
+        }
+        // 接收人所在部门
+        if(Validator.isNotEmpty(sysMessage.getReceiverUserDeptName())) {
+            queryWrapper.like("sd.name", sysMessage.getReceiverUserDeptName());
+        }
+        page.setRecords(baseMapper.selectMessageReceiverUserDetail(page, queryWrapper));
+        return page;
+    }
+
     @Override
     public List<String> selectReceiverUser(String messageId) {
         return baseMapper.selectReceiverUser(messageId);

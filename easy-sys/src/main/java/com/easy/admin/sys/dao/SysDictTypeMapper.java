@@ -18,7 +18,6 @@ public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
     /**
      * 获取列表数据
      *
-     * @param page 分页
      * @param queryWrapper 查询条件
      * @return List<SysDictType>
      */
@@ -39,4 +38,20 @@ public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
      */
     int countDict(@Param("ew") QueryWrapper<SysDictType> queryWrapper);
 
+    /**
+     * 查询导出数据
+     *
+     * @param queryWrapper 查询条件
+     * @return List<SysDictType>
+     */
+    List<SysDictType> exportData(@Param("ew") QueryWrapper<SysDictType> queryWrapper);
+
+    /**
+     * 导入时验证业务表中是否已存在
+     *
+     * @param templateId 导入模板id
+     * @param status     状态
+     * @return 更新条数
+     */
+    Integer updateDuplicateData(@Param("templateId") String templateId, @Param("status") String status);
 }

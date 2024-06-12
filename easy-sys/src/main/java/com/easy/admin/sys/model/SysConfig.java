@@ -21,6 +21,11 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
     private String id;
 
     /**
+     * category
+     */
+    @NotBlank(message = "参数分类不能为空")
+    private String category;
+    /**
      * key
      */
     @NotBlank(message = "key不能为空")
@@ -86,6 +91,14 @@ public class SysConfig extends Model<SysConfig> implements Serializable{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getSysKey() {

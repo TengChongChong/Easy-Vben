@@ -1,11 +1,12 @@
 package com.easy.admin.sys.controller;
 
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
-import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.service.SysDictService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -117,4 +118,16 @@ public class SysDictController extends BaseController {
         return service.refresh();
     }
 
+    /**
+     * 导出数据
+     *
+     * @param sysDict 查询条件
+     * @return 文件下载id
+     */
+    @Operation(summary ="导出数据")
+    @GetMapping("export/data")
+    @RequiresPermissions("sys:dict:select")
+    public String exportData(SysDict sysDict){
+        return service.exportData(sysDict);
+    }
 }

@@ -12,9 +12,19 @@
         <result column="star" property="star" />
     </resultMap>
 
+    <select id="selectMessageReceiverUserDetail" resultType="com.easy.admin.sys.model.SysMessageDetail">
+        select d.id, d.message_id, su.nickname as receiver_user, sd.name as receiver_user_dept_name,
+               d.read_date, d.status, d.star
+        from sys_message_detail d
+                 left join sys_user su on su.id = d.receiver_user
+                 left join sys_dept sd on sd.id = su.dept_id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
     <!-- 通用查询结果列 -->
     <select id="selectReceiverUser" resultType="java.lang.String">
         select d.receiver_user from sys_message_detail d where d.message_id = #{messageId}
     </select>
-
 </mapper>

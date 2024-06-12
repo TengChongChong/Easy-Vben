@@ -48,4 +48,21 @@ public interface SysDictMapper extends BaseMapper<SysDict> {
      * @return List<SysDict>
      */
     List<SysDict> selectAll(@Param("status") String status);
+
+    /**
+     * 查询导出数据
+     *
+     * @param queryWrapper 查询条件
+     * @return List<SysDict>
+     */
+    List<SysDict> exportData(@Param("ew") QueryWrapper<SysDict> queryWrapper);
+
+    /**
+     * 导入时验证业务表中是否已存在
+     *
+     * @param templateId 导入模板id
+     * @param status     状态
+     * @return 更新条数
+     */
+    Integer updateDuplicateData(@Param("templateId") String templateId, @Param("status") String status);
 }

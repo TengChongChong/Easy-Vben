@@ -1,11 +1,12 @@
 package com.easy.admin.sys.controller;
 
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
-import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysDictType;
 import com.easy.admin.sys.service.SysDictTypeService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -85,13 +86,25 @@ public class SysDictTypeController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDictType 表单内容
      * @return SysDictType
      */
     @PostMapping
     @RequiresPermissions("sys:dict:type:save")
-    public SysDictType save(@RequestBody @Valid SysDictType object) {
-        return service.saveData(object);
+    public SysDictType save(@RequestBody @Valid SysDictType sysDictType) {
+        return service.saveData(sysDictType);
     }
 
+    /**
+     * 导出数据
+     *
+     * @param sysDictType 查询条件
+     * @return 文件下载id
+     */
+    @Operation(summary ="导出数据")
+    @GetMapping("export/data")
+    @RequiresPermissions("sys:dict:type:select")
+    public String exportData(SysDictType sysDictType){
+        return service.exportData(sysDictType);
+    }
 }

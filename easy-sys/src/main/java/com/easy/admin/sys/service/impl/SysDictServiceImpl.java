@@ -3,22 +3,27 @@ package com.easy.admin.sys.service.impl;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.common.constant.SysRoleConst;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.dao.SysDictMapper;
 import com.easy.admin.sys.model.SysDict;
+import com.easy.admin.sys.service.ImportService;
 import com.easy.admin.sys.service.SysDictService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +36,17 @@ import java.util.*;
  * @date 2018/11/4
  */
 @Service
-public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
+public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService, ImportService {
 
     @Override
     public Page<SysDict> select(SysDict sysDict, Page<SysDict> page) {
+        QueryWrapper<SysDict> queryWrapper = getQueryWrapper(sysDict);
+        page.setDefaultAsc("t.dict_type, t.order_no");
+        page.setRecords(baseMapper.select(page, queryWrapper));
+        return page;
+    }
+
+    private QueryWrapper<SysDict> getQueryWrapper(SysDict sysDict){
         QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
         if (sysDict != null) {
             if (Validator.isNotEmpty(sysDict.getName())) {
@@ -58,9 +70,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("dt.sys", WhetherConst.NO);
         }
-        page.setDefaultAsc("t.dict_type, t.order_no");
-        page.setRecords(baseMapper.select(page, queryWrapper));
-        return page;
+        return queryWrapper;
     }
 
     @Override
@@ -193,6 +203,38 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     @Override
     public boolean refresh() {
         RedisUtil.del(RedisPrefix.SYS_DICT);
+        return true;
+    }
+
+    @Override
+    public String exportData(SysDict sysDict) {
+        QueryWrapper<SysDict> queryWrapper = getQueryWrapper(sysDict);
+        List<SysDict> list = baseMapper.exportData(queryWrapper);
+        return ExcelUtil.writeAndGetDownloadId("字典", "字典", list, SysDict.class);
+    }
+
+    @Override
+    public boolean verificationData(String templateId, String userId) {
+        baseMapper.updateDuplicateData(templateId, ImportConst.VERIFICATION_STATUS_FAIL);
+        return true;
+    }
+
+    @Override
+    public boolean beforeImport(String templateId, String userId) {
+        return verificationData(templateId, userId);
+    }
+
+    @Override
+    public boolean afterImport() {
+        // 导入成功后设置一些默认信息此处仅作示例
+        UpdateWrapper<SysDict> setDefaultValue = new UpdateWrapper<>();
+        Date now = new Date();
+        SysUser currentUser = ShiroUtil.getCurrentUser();
+        setDefaultValue.set("create_date", now);
+        setDefaultValue.set("edit_date", now);
+        setDefaultValue.set("create_user", currentUser.getId());
+        setDefaultValue.set("edit_user", currentUser.getId());
+        update(setDefaultValue);
         return true;
     }
 }

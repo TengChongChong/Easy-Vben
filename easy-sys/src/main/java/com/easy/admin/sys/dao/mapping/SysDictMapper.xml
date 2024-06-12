@@ -18,7 +18,6 @@
         <result column="edit_user" property="editUser"/>
         <result column="edit_date" property="editDate"/>
     </resultMap>
-
     <select id="selectByDictType" resultType="com.easy.admin.common.core.common.select.Select">
         select code as value, name as label from sys_dict
         where dict_type = #{dictType} and status = #{status} order by id
@@ -41,4 +40,26 @@
         select t.code, t.parent_code, t.name, t.dict_type, t.icon, t.display_type from sys_dict t
         where t.status = #{status} order by dict_type, order_no
     </select>
+    <select id="exportData" resultType="com.easy.admin.sys.model.SysDict">
+        select t.id, t.name, t.code, t.parent_code, t.dict_type, t.icon, t.display_type, stauts_dict.name as status, t.remarks, t.order_no
+        from sys_dict t
+        left join sys_dict stauts_dict on stauts_dict.dict_type = 'commonStatus' and stauts_dict.code = t.status
+        <where>
+            ${ew.sqlSegment}
+        </where>
+        order by t.dict_type, t.order_no
+    </select>
+    <update id="updateDuplicateData">
+        update sys_import_excel_temporary
+        set verification_results = concat(ifnull(verification_results, ''), '字典类型下已存在（', field2, '）字典;'),
+            verification_status  = #{status}
+        where id in (
+            select id from (
+               select siet.id
+               from sys_dict sd
+               left join sys_import_excel_temporary siet on siet.field2 = sd.code and siet.field4 = sd.dict_type
+               where siet.template_id = #{templateId} and siet.field2 is not null
+           ) t
+        );
+    </update>
 </mapper>

@@ -102,4 +102,12 @@ public interface SysDictService {
      * @return true/false
      */
     boolean refresh();
+
+    /**
+     * 导出数据
+     *
+     * @param sysDict 查询条件
+     * @return 文件下载id
+     */
+    String exportData(SysDict sysDict);
 }

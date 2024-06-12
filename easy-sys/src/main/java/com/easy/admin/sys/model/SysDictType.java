@@ -1,5 +1,6 @@
 package com.easy.admin.sys.model;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
@@ -20,23 +21,27 @@ public class SysDictType extends Model<SysDictType> {
     @TableId(value = "id")
     private String id;
     /**
-     * 类别名称
+     * 类型名称
      */
-    @NotBlank(message = "名称不能为空")
+    @Excel(name = "类型名称", width = 30, orderNum = "0")
+    @NotBlank(message = "类型名称不能为空")
     private String name;
     /**
      * 字典类型
      */
-    @NotBlank(message = "类型不能为空")
+    @Excel(name = "字典类型", width = 30, orderNum = "1")
+    @NotBlank(message = "字典类型不能为空")
     private String type;
     /**
      * 状态
      */
+    @Excel(name = "状态", width = 15, orderNum = "2")
     @NotNull(message = "状态不能为空")
     private String status;
     /**
      * 是否系统
      */
+    @Excel(name = "是否系统", width = 15, orderNum = "3")
     private String sys;
     /**
      * 乐观锁

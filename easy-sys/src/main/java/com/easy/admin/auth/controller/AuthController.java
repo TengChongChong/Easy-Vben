@@ -3,7 +3,7 @@ package com.easy.admin.auth.controller;
 import com.easy.admin.auth.service.AuthService;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.core.annotation.SysLog;
-import com.easy.admin.sys.model.LoginVO;
+import com.easy.admin.auth.model.vo.LoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

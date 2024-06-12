@@ -1,6 +1,6 @@
 package com.easy.admin.sys.service;
 
-import com.easy.admin.sys.model.SysRedisVO;
+import com.easy.admin.sys.model.vo.SysRedisVO;
 
 import java.util.Set;
 

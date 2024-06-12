@@ -1,5 +1,6 @@
 package com.easy.admin.sys.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -48,6 +49,12 @@ public class SysMessageDetail extends Model<SysMessageDetail> implements Seriali
 
     //
 
+    /**
+     * 接收人所在部门
+     */
+    @TableField(exist = false)
+    private String receiverUserDeptName;
+
     public String getId() {
         return id;
     }
@@ -94,5 +101,13 @@ public class SysMessageDetail extends Model<SysMessageDetail> implements Seriali
 
     public void setStar(Integer star) {
         this.star = star;
+    }
+
+    public String getReceiverUserDeptName() {
+        return receiverUserDeptName;
+    }
+
+    public void setReceiverUserDeptName(String receiverUserDeptName) {
+        this.receiverUserDeptName = receiverUserDeptName;
     }
 }

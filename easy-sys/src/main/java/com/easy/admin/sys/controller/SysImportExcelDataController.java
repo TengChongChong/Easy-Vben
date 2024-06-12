@@ -1,17 +1,17 @@
 package com.easy.admin.sys.controller;
 
-import cn.hutool.json.JSONObject;
-import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.annotation.ResponseResult;
-import com.easy.admin.file.model.BaseFileInfo;
+import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.SysImportSummary;
+import com.easy.admin.sys.model.vo.SysImportExcelDataVO;
 import com.easy.admin.sys.service.SysImportExcelDataService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 数据导入
@@ -53,15 +53,27 @@ public class SysImportExcelDataController extends BaseController {
     }
 
     /**
+     * 解析文件
+     *
+     * @param bucketName local - 文件夹名称 / oss - bucket名称
+     * @param objectName local - 文件路径 /  oss - objectName
+     * @return List<List<Object>>
+     */
+    @GetMapping("analysis/excel")
+    public List<List<Object>> analysisExcel(String bucketName, String objectName){
+        return service.analysisExcel(bucketName, objectName);
+    }
+
+    /**
      * 验证并解析文件
      *
      * @param templateId   模板id
-     * @param baseFileInfo baseFileInfo
+     * @param sysImportExcelData 导入文件以及规则
      * @return true/false
      */
     @PostMapping("analysis/{templateId}")
-    public boolean analysis(@PathVariable("templateId") String templateId, @RequestBody BaseFileInfo baseFileInfo) {
-        return service.analysis(templateId, baseFileInfo.getBucketName(), baseFileInfo.getObjectName());
+    public boolean analysis(@PathVariable("templateId") String templateId, @RequestBody SysImportExcelDataVO sysImportExcelData) {
+        return service.analysis(templateId, sysImportExcelData);
     }
 
     /**

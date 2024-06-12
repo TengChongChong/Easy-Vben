@@ -2,23 +2,29 @@ package com.easy.admin.sys.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.common.constant.SysRoleConst;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.dao.SysDictTypeMapper;
 import com.easy.admin.sys.model.SysDictType;
+import com.easy.admin.sys.service.ImportService;
 import com.easy.admin.sys.service.SysDictTypeService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,14 +34,21 @@ import java.util.List;
  * @date 2018/11/4
  */
 @Service
-public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictType> implements SysDictTypeService {
+public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictType> implements SysDictTypeService, ImportService {
 
     @Override
     public Page<SysDictType> select(SysDictType sysDictType, Page<SysDictType> page) {
+        QueryWrapper<SysDictType> queryWrapper = getQueryWrapper(sysDictType);
+        page.setDefaultAsc("t.type");
+        page.setRecords(baseMapper.select(page, queryWrapper));
+        return page;
+    }
+
+    private QueryWrapper<SysDictType> getQueryWrapper(SysDictType sysDictType) {
         QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
         if (sysDictType != null) {
             if (Validator.isNotEmpty(sysDictType.getName())) {
-                queryWrapper.like("t.name", sysDictType.getName());
+                queryWrapper.and(i -> i.like("t.name", sysDictType.getName()).or().like("t.type", sysDictType.getName()));
             }
             if (Validator.isNotEmpty(sysDictType.getType())) {
                 queryWrapper.like("t.type", sysDictType.getType());
@@ -51,9 +64,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
         if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("t.sys", WhetherConst.NO);
         }
-        page.setDefaultDesc("t.create_date");
-        page.setRecords(baseMapper.select(page, queryWrapper));
-        return page;
+        return queryWrapper;
     }
 
     @Override
@@ -107,5 +118,37 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
             throw new EasyException("字典类型代码 " + sysDictType.getType() + " 已存在");
         }
         return (SysDictType) ToolUtil.checkResult(saveOrUpdate(sysDictType), sysDictType);
+    }
+
+    @Override
+    public String exportData(SysDictType sysDictType) {
+        QueryWrapper<SysDictType> queryWrapper = getQueryWrapper(sysDictType);
+        List<SysDictType> list = baseMapper.exportData(queryWrapper);
+        return ExcelUtil.writeAndGetDownloadId("字典类型", "字典类型", list, SysDictType.class);
+    }
+
+    @Override
+    public boolean verificationData(String templateId, String userId) {
+        baseMapper.updateDuplicateData(templateId, ImportConst.VERIFICATION_STATUS_FAIL);
+        return true;
+    }
+
+    @Override
+    public boolean beforeImport(String templateId, String userId) {
+        return verificationData(templateId, userId);
+    }
+
+    @Override
+    public boolean afterImport() {
+        // 导入成功后设置一些默认信息此处仅作示例
+        UpdateWrapper<SysDictType> setDefaultValue = new UpdateWrapper<>();
+        Date now = new Date();
+        SysUser currentUser = ShiroUtil.getCurrentUser();
+        setDefaultValue.set("create_date", now);
+        setDefaultValue.set("edit_date", now);
+        setDefaultValue.set("create_user", currentUser.getId());
+        setDefaultValue.set("edit_user", currentUser.getId());
+        update(setDefaultValue);
+        return true;
     }
 }

@@ -1,7 +1,7 @@
 package com.easy.admin.sys.service.impl;
 
 import com.easy.admin.common.redis.util.RedisUtil;
-import com.easy.admin.sys.model.SysRedisVO;
+import com.easy.admin.sys.model.vo.SysRedisVO;
 import com.easy.admin.sys.service.SysRedisService;
 import org.springframework.stereotype.Service;
 
