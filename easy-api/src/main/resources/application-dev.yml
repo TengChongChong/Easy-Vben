@@ -58,9 +58,6 @@ spring:
           url: jdbc:mariadb://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
           username: ${DB_USERNAME:root}
           password: ${DB_PASSWORD:123456}
-#          url: jdbc:mariadb://${DB_HOST:47.100.2.79}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
-#          username: ${DB_USERNAME:root}
-#          password: ${DB_PASSWORD:Yun1993.}
 # oss 对象存储
 file:
   storage:
