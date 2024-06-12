@@ -1,11 +1,13 @@
 package com.easy.admin.easyapi.config.web;
 
 import cn.hutool.core.util.StrUtil;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.common.status.ResultCode;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.Response;
+import com.easy.admin.config.properties.ProjectProperties;
+import com.easy.admin.sys.common.status.ProfilesActiveStatus;
 import com.easy.admin.sys.model.SysException;
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysExceptionService;
 import com.easy.admin.util.ShiroUtil;
 import org.apache.shiro.authc.AuthenticationException;
@@ -38,6 +40,9 @@ import java.util.List;
 public class ExceptionControllerAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private ProjectProperties projectProperties;
 
     @Autowired
     private SysExceptionService sysExceptionService;
@@ -129,8 +134,13 @@ public class ExceptionControllerAdvice {
     public Object handleException(HttpServletRequest request, RuntimeException e) {
         logger.debug("未知异常", e);
         // 将异常记录到表中
-        saveLog(HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getMethod() + " " + request.getRequestURI(), e);
-        return Response.failError(e.getMessage());
+        SysException sysException = saveLog(HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getMethod() + " " + request.getRequestURI(), e);
+        if (ProfilesActiveStatus.DEV.getProfilesActive().equals(projectProperties.getProfilesActive())) {
+            return Response.failError(e.getMessage());
+        } else {
+            // 非开发环境不返回错误信息，防止泄露数据库或其他敏感信息
+            return Response.failError("操作失败，系统已记录错误信息，错误ID：" + sysException.getId());
+        }
     }
 
     /**
@@ -140,7 +150,7 @@ public class ExceptionControllerAdvice {
      * @param uri  请求地址
      * @param e    异常信息
      */
-    private void saveLog(int code, String uri, RuntimeException e) {
+    private SysException saveLog(int code, String uri, RuntimeException e) {
         SysException sysException = new SysException();
         sysException.setCode(code);
         sysException.setMessage(e.getMessage());
@@ -153,5 +163,6 @@ public class ExceptionControllerAdvice {
             sysException.setUserId(currentUser.getId());
         }
         sysExceptionService.saveData(sysException);
+        return sysException;
     }
 }
