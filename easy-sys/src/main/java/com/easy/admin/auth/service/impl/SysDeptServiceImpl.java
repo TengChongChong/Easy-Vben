@@ -61,31 +61,29 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
     @Override
     public SysDept get(String id) {
-        ToolUtil.checkParams(id);
         return getById(id);
     }
 
     @Override
     public SysDept add(String parentId, String typeCode) {
-        SysDept object = new SysDept();
+        SysDept sysDept = new SysDept();
         if (Validator.isNotEmpty(parentId)) {
             SysDept parentDept = getById(parentId);
             if (parentDept != null) {
-                object.setParentId(parentId);
-                object.setOrderNo(baseMapper.getMaxOrderNo(object.getParentId()) + 1);
+                sysDept.setParentId(parentId);
+                sysDept.setOrderNo(baseMapper.getMaxOrderNo(sysDept.getParentId()) + 1);
             }
         }
         if (Validator.isNotEmpty(typeCode)) {
-            object.setTypeCode(typeCode);
+            sysDept.setTypeCode(typeCode);
         }
-        object.setStatus(CommonStatus.ENABLE.getCode());
-        return object;
+        sysDept.setStatus(CommonStatus.ENABLE.getCode());
+        return sysDept;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         // 检查是否有子节点
         QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
@@ -104,26 +102,26 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysDept saveData(SysDept object) {
+    public SysDept saveData(SysDept sysDept) {
         // 部门编码不能重复
-        if (Validator.isNotEmpty(object.getCode())) {
+        if (Validator.isNotEmpty(sysDept.getCode())) {
             QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("code", object.getCode());
-            if (StrUtil.isNotBlank(object.getId())) {
-                queryWrapper.ne("id", object.getId());
+            queryWrapper.eq("code", sysDept.getCode());
+            if (StrUtil.isNotBlank(sysDept.getId())) {
+                queryWrapper.ne("id", sysDept.getId());
             }
             long count = baseMapper.selectCount(queryWrapper);
             if (count > 0) {
-                throw new EasyException("已存在编码为[" + object.getCode() + "]的部门，请修改后重试");
+                throw new EasyException("已存在编码为[" + sysDept.getCode() + "]的部门，请修改后重试");
             }
         }
-        if(StrUtil.isNotBlank(object.getParentId()) && object.getParentId().equals(object.getId())){
+        if (StrUtil.isNotBlank(sysDept.getParentId()) && sysDept.getParentId().equals(sysDept.getId())) {
             throw new EasyException("上级部门不能为自己");
         }
-        if (object.getOrderNo() == null) {
-            object.setOrderNo(baseMapper.getMaxOrderNo(object.getParentId()) + 1);
+        if (sysDept.getOrderNo() == null) {
+            sysDept.setOrderNo(baseMapper.getMaxOrderNo(sysDept.getParentId()) + 1);
         }
-        return (SysDept) ToolUtil.checkResult(saveOrUpdate(object), object);
+        return (SysDept) ToolUtil.checkResult(saveOrUpdate(sysDept), sysDept);
     }
 
     @Override
@@ -166,10 +164,9 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         return baseMapper.selectDepartments(queryWrapper);
     }
 
+    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean setStatus(String ids, String status) {
-        ToolUtil.checkParams(ids);
-        ToolUtil.checkParams(status);
         List<SysDept> deptList = new ArrayList<>();
         SysDept sysDept;
         for (String id : ids.split(CommonConst.SPLIT)) {

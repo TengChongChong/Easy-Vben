@@ -63,10 +63,10 @@ public interface SysDeptTypeService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDeptType 表单内容
      * @return SysDeptType
      */
-    SysDeptType saveData(SysDeptType object);
+    SysDeptType saveData(SysDeptType sysDeptType);
 
     /**
      * 保存排序

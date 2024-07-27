@@ -76,13 +76,13 @@ public class SysDeptTypeController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDeptType 表单内容
      * @return SysDeptType
      */
     @PostMapping
     @RequiresPermissions("sys:dept:type:save")
-    public SysDeptType save(@RequestBody @Valid SysDeptType object) {
-        return service.saveData(object);
+    public SysDeptType save(@RequestBody @Valid SysDeptType sysDeptType) {
+        return service.saveData(sysDeptType);
     }
 
     /**
@@ -116,7 +116,7 @@ public class SysDeptTypeController extends BaseController {
      */
     @PostMapping("order")
     @RequiresPermissions("sys:dept:type:save")
-    public boolean saveOrder(@RequestBody List<SysDeptType> sysDeptTypeList){
+    public boolean saveOrder(@RequestBody List<SysDeptType> sysDeptTypeList) {
         return service.saveOrder(sysDeptTypeList);
     }
 }

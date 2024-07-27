@@ -17,7 +17,7 @@ public interface SysRoleService {
      * 查询
      *
      * @param sysRole 查询条件
-     * @param page 分页
+     * @param page    分页
      * @return Page<SysRole>
      */
     Page<SysRole> select(SysRole sysRole, Page<SysRole> page);
@@ -64,10 +64,10 @@ public interface SysRoleService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysRole 表单内容
      * @return SysRole
      */
-    SysRole saveData(SysRole object);
+    SysRole saveData(SysRole sysRole);
 
     /**
      * 根据用户id获取角色标识

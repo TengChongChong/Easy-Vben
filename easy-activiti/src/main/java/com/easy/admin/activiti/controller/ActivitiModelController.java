@@ -28,14 +28,14 @@ public class ActivitiModelController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param activitiModel 查询条件
      * @return Page<ActivitiModel>
      */
     @RequestMapping()
     @ResponseResult
     @RequiresPermissions("activiti:model:select")
-    public Page<ActivitiModel> select(ActivitiModel object, Page<ActivitiModel> page) {
-        return service.select(object, page);
+    public Page<ActivitiModel> select(ActivitiModel activitiModel, Page<ActivitiModel> page) {
+        return service.select(activitiModel, page);
     }
 
     /**
@@ -80,23 +80,23 @@ public class ActivitiModelController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param activitiModel 表单内容
      * @return ModelEntity
      */
     @PostMapping()
     @ResponseResult
     @RequiresPermissions("activiti:model:save")
-    public ModelEntity saveData(@RequestBody @Valid ActivitiModel object) {
-        return service.saveData(object);
+    public ModelEntity saveData(@RequestBody @Valid ActivitiModel activitiModel) {
+        return service.saveData(activitiModel);
     }
 
     @PutMapping("{id}")
     @ResponseResult
     @RequiresPermissions("activiti:model:save")
     public boolean saveModel(@PathVariable("id") String id, String name,
-                          String description,
-                          @RequestParam("json_xml") String jsonXml,
-                          @RequestParam("svg_xml") String svgXml) {
+                             String description,
+                             @RequestParam("json_xml") String jsonXml,
+                             @RequestParam("svg_xml") String svgXml) {
         service.saveModel(id, name, description, jsonXml, svgXml);
         return true;
     }

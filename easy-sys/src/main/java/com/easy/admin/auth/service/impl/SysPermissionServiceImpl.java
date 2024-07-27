@@ -41,8 +41,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public List<SysPermission> select(SysPermission sysPermission) {
         QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
         if (sysPermission != null) {
+            // 名称
             if (Validator.isNotEmpty(sysPermission.getTitle())) {
                 queryWrapper.like("t.title", sysPermission.getTitle());
+            }
+            // 标识
+            if (Validator.isNotEmpty(sysPermission.getCode())) {
+                queryWrapper.like("t.code", sysPermission.getCode());
             }
             // 状态
             if (Validator.isNotEmpty(sysPermission.getStatus())) {
@@ -110,7 +115,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         // 检查是否有子权限
         QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
@@ -132,7 +136,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         UpdateWrapper<SysPermission> setStatus = new UpdateWrapper<>();
         setStatus.set("status", status).eq("id", id);
         boolean isSuccess = update(setStatus);
-        if(isSuccess && PermissionType.MENU.getCode().equals(type)){
+        if (isSuccess && PermissionType.MENU.getCode().equals(type)) {
             // 如果是菜单，同时修改子级的状态
             UpdateWrapper<SysPermission> setChildStatus = new UpdateWrapper<>();
             setChildStatus.set("status", status).eq("parent_id", id);
@@ -144,8 +148,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SysPermission saveData(SysPermission sysPermission) {
-        ToolUtil.checkParams(sysPermission);
-
         if (StrUtil.isBlank(sysPermission.getId()) && sysPermission.getOrderNo() == null) {
             sysPermission.setOrderNo(baseMapper.getMaxOrderNo(sysPermission.getParentId()) + 1);
         }

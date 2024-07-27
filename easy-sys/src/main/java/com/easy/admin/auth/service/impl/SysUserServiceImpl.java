@@ -12,6 +12,7 @@ import com.easy.admin.auth.common.status.SysDeptStatus;
 import com.easy.admin.auth.common.status.SysUserStatus;
 import com.easy.admin.auth.dao.SysUserMapper;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.service.SysRoleDataPermissionService;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -46,6 +47,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    private SysRoleDataPermissionService sysRoleDataPermissionService;
 
     @Override
     public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
@@ -125,7 +129,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public SysUser get(String id) {
-        ToolUtil.checkParams(id);
         SysUser sysUser = baseMapper.getById(id);
         if (sysUser != null) {
             sysUser.setRoleIdList(baseMapper.selectRoles(id));
@@ -138,7 +141,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public SysUser add(String deptId) {
-        ToolUtil.checkParams(deptId);
         SysUser sysUser = new SysUser();
         sysUser.setDeptId(deptId);
         sysUser.setStatus(SysUserStatus.ENABLE.getCode());
@@ -150,19 +152,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
             // 删除分配给用户的权限
-            sysUserRoleService.deleteUserRoleByUserIds(ids);
+            sysUserRoleService.removeUserRoleByUserIds(ids);
         }
         return isSuccess;
     }
 
     @Override
     public SysUser saveData(SysUser sysUser, boolean updateAuthorization) {
-        ToolUtil.checkParams(sysUser);
         // 账号不能重复
         if (checkHaving(sysUser.getId(), "username", sysUser.getUsername())) {
             throw new EasyException(BusinessException.USER_REGISTERED);
@@ -310,6 +310,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (sysUser.getPermissionList() == null) {
             // 设置角色
             sysUser.setRoleList(sysUserRoleService.selectRoleByUserId(sysUser.getId()));
+            // 设置角色权限
+            sysUser.setDataPermissionList(sysRoleDataPermissionService.convertToDataPermission(sysUser.getRoleList()));
             // 设置菜单
             sysUser.setPermissionList(sysUserRoleService.selectPermissionByUserId(sysUser.getId()));
             ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, sysUser);

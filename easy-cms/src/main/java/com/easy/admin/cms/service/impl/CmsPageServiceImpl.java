@@ -86,7 +86,6 @@ public class CmsPageServiceImpl extends ServiceImpl<CmsPageMapper, CmsPage> impl
 
     @Override
     public CmsPage get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
 
@@ -100,7 +99,6 @@ public class CmsPageServiceImpl extends ServiceImpl<CmsPageMapper, CmsPage> impl
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
@@ -108,7 +106,6 @@ public class CmsPageServiceImpl extends ServiceImpl<CmsPageMapper, CmsPage> impl
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public CmsPage saveData(CmsPage cmsPage) {
-        ToolUtil.checkParams(cmsPage);
         if (Validator.isEmpty(cmsPage.getId())) {
             // 新增,设置默认值
             cmsPage.setSiteId(CmsSiteUtil.getUserActiveSiteId());
@@ -162,6 +159,7 @@ public class CmsPageServiceImpl extends ServiceImpl<CmsPageMapper, CmsPage> impl
         return themeArray;
     }
 
+    @Override
     public List<CmsPage> selectPages(String[] ids) {
         QueryWrapper<CmsPage> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("t.id", ids);

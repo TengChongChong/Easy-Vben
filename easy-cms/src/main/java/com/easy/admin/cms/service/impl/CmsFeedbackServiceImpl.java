@@ -74,14 +74,12 @@ public class CmsFeedbackServiceImpl extends ServiceImpl<CmsFeedbackMapper, CmsFe
 
     @Override
     public CmsFeedback get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
@@ -89,7 +87,6 @@ public class CmsFeedbackServiceImpl extends ServiceImpl<CmsFeedbackMapper, CmsFe
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public CmsFeedback saveData(CmsFeedback cmsFeedback) {
-        ToolUtil.checkParams(cmsFeedback);
         if (Validator.isEmpty(cmsFeedback.getId())) {
             // 新增,设置默认值
             cmsFeedback.setStatus(CommonStatus.ENABLE.getCode());

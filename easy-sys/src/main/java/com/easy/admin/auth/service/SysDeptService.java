@@ -40,7 +40,7 @@ public interface SysDeptService {
     /**
      * 新增
      *
-     * @param parentId      上级id
+     * @param parentId 上级id
      * @param typeCode 类型
      * @return SysDept
      */
@@ -53,6 +53,7 @@ public interface SysDeptService {
      * @return true/false
      */
     boolean remove(String ids);
+
     /**
      * 设置状态
      *
@@ -61,13 +62,14 @@ public interface SysDeptService {
      * @return true/false
      */
     boolean setStatus(String ids, String status);
+
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDept 表单内容
      * @return SysDept
      */
-    SysDept saveData(SysDept object);
+    SysDept saveData(SysDept sysDept);
 
     /**
      * 保存排序

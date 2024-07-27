@@ -5,12 +5,10 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.common.constant.SysRoleConst;
+import com.easy.admin.auth.common.type.DataPermissionType;
 import com.easy.admin.auth.dao.SysRoleMapper;
 import com.easy.admin.auth.model.SysRole;
-import com.easy.admin.auth.service.SysDeptTypeRoleService;
-import com.easy.admin.auth.service.SysRolePermissionService;
-import com.easy.admin.auth.service.SysRoleService;
-import com.easy.admin.auth.service.SysUserRoleService;
+import com.easy.admin.auth.service.*;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
@@ -46,6 +44,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Autowired
     private SysDeptTypeRoleService sysDeptTypeRoleService;
+
+    @Autowired
+    private SysRoleDataPermissionService sysRoleDataPermissionService;
 
     @Override
     public Page<SysRole> select(SysRole sysRole, Page<SysRole> page) {
@@ -89,8 +90,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public SysRole get(String id) {
         SysRole sysRole = baseMapper.getById(id);
-        if(sysRole != null){
+        if (sysRole != null) {
             sysRole.setPermissionIds(baseMapper.selectPermissions(id));
+            sysRole.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
         }
         return sysRole;
     }
@@ -108,7 +110,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         // 检查是否有子节点
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
@@ -119,18 +120,21 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
+            // 删除已经分配给角色的角色权限
+            sysRolePermissionsService.removeByRoleId(ids);
             // 删除已经分配给用户的角色
-            sysUserRoleService.deleteUserRole(ids);
+            sysUserRoleService.removeUserRole(ids);
             // 删除部门类型可分配的角色
             sysDeptTypeRoleService.removeDeptTypeRole(ids);
+            // 删除部门自定义数据权限
+            sysRoleDataPermissionService.removeByRoleId(ids);
         }
         return isSuccess;
     }
 
+    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean setStatus(String ids, String status) {
-        ToolUtil.checkParams(ids);
-        ToolUtil.checkParams(status);
         List<SysRole> roleList = new ArrayList<>();
         SysRole sysRole;
         for (String id : ids.split(CommonConst.SPLIT)) {
@@ -145,18 +149,25 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysRole saveData(SysRole object) {
-        ToolUtil.checkParams(object);
-        if (object.getOrderNo() == null) {
-            object.setOrderNo(baseMapper.getMaxOrderNo() + 1);
+    public SysRole saveData(SysRole sysRole) {
+        if (sysRole.getOrderNo() == null) {
+            sysRole.setOrderNo(baseMapper.getMaxOrderNo() + 1);
         }
-        boolean isSuccess = saveOrUpdate(object);
+        boolean isSuccess = saveOrUpdate(sysRole);
         if (isSuccess) {
             // 删除授权信息,下次请求资源重新授权
             RedisUtil.delByPrefix(RedisPrefix.SHIRO_AUTHORIZATION);
-            sysRolePermissionsService.saveRolePermissions(object.getId(), object.getPermissionIds());
+            sysRolePermissionsService.saveRolePermissions(sysRole.getId(), sysRole.getPermissionIds());
+
+            DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRole.getDataPermission().toUpperCase());
+            if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
+                // 保存自定义数据权限
+                sysRoleDataPermissionService.saveBatchData(sysRole.getId(), sysRole.getDataPermissionDeptIds());
+            } else {
+                sysRoleDataPermissionService.removeByRoleId(sysRole.getId());
+            }
         }
-        return (SysRole) ToolUtil.checkResult(isSuccess, object);
+        return sysRole;
     }
 
     @Override

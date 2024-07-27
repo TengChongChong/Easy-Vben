@@ -30,13 +30,13 @@ public class SysUserController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysUser 查询条件
      * @return Page<SysUser>
      */
     @GetMapping
     @RequiresPermissions("sys:user:select")
-    public Page<SysUser> select(SysUser object, Page<SysUser> page) {
-        return service.select(object, page);
+    public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
+        return service.select(sysUser, page);
     }
 
     /**
@@ -91,13 +91,13 @@ public class SysUserController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysUser 表单内容
      * @return SysUser
      */
     @PostMapping
     @RequiresPermissions("sys:user:save")
-    public SysUser save(@RequestBody @Valid SysUser object) {
-        return service.saveData(object, true);
+    public SysUser save(@RequestBody @Valid SysUser sysUser) {
+        return service.saveData(sysUser, true);
     }
 
     /**
@@ -129,7 +129,7 @@ public class SysUserController extends BaseController {
      *
      * @param keyword 关键字
      * @param range   数据范围，可以选择哪些用户 'all' | 'currentDept'
-     * @param deptId 部门id，如传入range='currentDept'，此参数无效
+     * @param deptId  部门id，如传入range='currentDept'，此参数无效
      * @return Page<SysUser>
      */
     @GetMapping("search")

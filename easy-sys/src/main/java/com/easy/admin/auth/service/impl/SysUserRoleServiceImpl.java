@@ -68,12 +68,12 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
 
     @Override
-    public boolean deleteUserRoleByUserIds(String userIds) {
+    public boolean removeUserRoleByUserIds(String userIds) {
         return remove(new QueryWrapper<SysUserRole>().in("user_id", userIds.split(CommonConst.SPLIT)));
     }
 
     @Override
-    public boolean deleteUserRole(String roles) {
+    public boolean removeUserRole(String roles) {
         return remove(new QueryWrapper<SysUserRole>().in("role_id", roles.split(CommonConst.SPLIT)));
     }
 

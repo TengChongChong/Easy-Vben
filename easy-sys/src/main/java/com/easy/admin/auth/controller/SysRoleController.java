@@ -30,7 +30,7 @@ public class SysRoleController extends BaseController {
      * 查询数据
      *
      * @param sysRole 查询条件
-     * @param page 分页
+     * @param page    分页
      * @return Page<SysRole>
      */
     @GetMapping()
@@ -89,13 +89,13 @@ public class SysRoleController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysRole 表单内容
      * @return SysRole
      */
     @PostMapping
     @RequiresPermissions("sys:role:save")
-    public SysRole save(@RequestBody @Valid SysRole object) {
-        return service.saveData(object);
+    public SysRole save(@RequestBody @Valid SysRole sysRole) {
+        return service.saveData(sysRole);
     }
 
     /**

@@ -92,13 +92,13 @@ public class SysPermissionController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysPermission 表单内容
      * @return SysPermissions
      */
     @PostMapping
     @RequiresPermissions("sys:permission:save")
-    public SysPermission save(@RequestBody @Valid SysPermission object) {
-        return service.saveData(object);
+    public SysPermission save(@RequestBody @Valid SysPermission sysPermission) {
+        return service.saveData(sysPermission);
     }
 
     /**

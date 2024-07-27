@@ -27,7 +27,6 @@ public class SysDeptTypeRoleServiceImpl extends ServiceImpl<SysDeptTypeRoleMappe
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean saveDeptTypeRole(String deptTypeId, List<String> roles) {
-        ToolUtil.checkParams(deptTypeId);
         // 删除原权限
         remove(new QueryWrapper<SysDeptTypeRole>().eq("dept_type_id", deptTypeId));
         if (Validator.isNotEmpty(roles)) {

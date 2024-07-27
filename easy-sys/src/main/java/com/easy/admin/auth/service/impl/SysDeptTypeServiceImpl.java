@@ -85,7 +85,6 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         // 检查是否有子部门
         QueryWrapper<SysDeptType> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
@@ -109,8 +108,6 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
 
     @Override
     public boolean setStatus(String ids, String status) {
-        ToolUtil.checkParams(ids);
-        ToolUtil.checkParams(status);
         UpdateWrapper<SysDeptType> updateWrapper = new UpdateWrapper<>();
         updateWrapper.in("id", ids.split(CommonConst.SPLIT));
         updateWrapper.set("status", status);
@@ -120,40 +117,39 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysDeptType saveData(SysDeptType object) {
-        ToolUtil.checkParams(object);
+    public SysDeptType saveData(SysDeptType sysDeptType) {
         // 是否是修改了编码
         boolean isModifyCode = false;
         SysDeptType oldDeptType = null;
-        if (StrUtil.isNotBlank(object.getId())) {
-            oldDeptType = getById(object.getId());
+        if (StrUtil.isNotBlank(sysDeptType.getId())) {
+            oldDeptType = getById(sysDeptType.getId());
             if (oldDeptType != null) {
-                isModifyCode = !oldDeptType.getCode().equals(object.getCode());
+                isModifyCode = !oldDeptType.getCode().equals(sysDeptType.getCode());
             }
         }
         // 部门类型代码不能重复
         QueryWrapper<SysDeptType> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("code", object.getCode());
-        if (Validator.isNotEmpty(object.getId())) {
-            queryWrapper.ne("id", object.getId());
+        queryWrapper.eq("code", sysDeptType.getCode());
+        if (Validator.isNotEmpty(sysDeptType.getId())) {
+            queryWrapper.ne("id", sysDeptType.getId());
         }
         long count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
-            throw new EasyException("部门类型代码 " + object.getCode() + " 已存在");
+            throw new EasyException("部门类型代码 " + sysDeptType.getCode() + " 已存在");
         }
 
-        if (object.getOrderNo() == null) {
-            object.setOrderNo(baseMapper.getMaxOrderNo(object.getParentId()) + 1);
+        if (sysDeptType.getOrderNo() == null) {
+            sysDeptType.setOrderNo(baseMapper.getMaxOrderNo(sysDeptType.getParentId()) + 1);
         }
-        boolean isSuccess = saveOrUpdate(object);
+        boolean isSuccess = saveOrUpdate(sysDeptType);
         if (isSuccess) {
-            departmentTypeRoleService.saveDeptTypeRole(object.getId(), object.getRoleIdList());
+            departmentTypeRoleService.saveDeptTypeRole(sysDeptType.getId(), sysDeptType.getRoleIdList());
             // 如果修改了部门类型代码，需要将sys_dept(部门)表中的typeCode一并修改
             if (isModifyCode) {
-                sysDeptService.updateDeptTypeCode(oldDeptType.getCode(), object.getCode());
+                sysDeptService.updateDeptTypeCode(oldDeptType.getCode(), sysDeptType.getCode());
             }
         }
-        return (SysDeptType) ToolUtil.checkResult(isSuccess, object);
+        return (SysDeptType) ToolUtil.checkResult(isSuccess, sysDeptType);
     }
 
     @Override

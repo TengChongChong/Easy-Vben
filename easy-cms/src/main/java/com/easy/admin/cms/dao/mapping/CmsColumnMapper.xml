@@ -18,6 +18,7 @@
         <result column="order_no" property="orderNo" />
         <result column="status" property="status" />
         <result column="version" property="version" />
+        <result column="dept_id" property="deptId" />
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
         <result column="edit_user" property="editUser" />
@@ -43,7 +44,7 @@
 
     <select id="getById" resultType="com.easy.admin.cms.model.CmsColumn">
         select t.id, t.parent_id, t.site_id, t.name, t.slug, t.type, t.is_release,
-               t.description, t.remarks, t.order_no, t.status, t.version
+               t.description, t.remarks, t.order_no, t.status, t.version, t.dept_id
         from cms_column t
         where t.id = #{id}
     </select>
@@ -77,7 +78,7 @@
     </update>
 
     <update id="updateAfterImport">
-        update cms_column set create_user = #{userId}, create_date = #{date}, edit_user = #{userId}, edit_date = #{date} where create_user is null
+        update cms_column set dept_id = #{deptId}, create_user = #{userId}, create_date = #{date}, edit_user = #{userId}, edit_date = #{date} where create_user is null
     </update>
     <select id="selectAllColumn" resultType="com.easy.admin.cms.model.CmsColumn">
         select t.id, t.parent_id, t.site_id, t.name, t.slug, t.type, t.is_release, t.description,

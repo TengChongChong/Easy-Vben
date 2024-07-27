@@ -16,7 +16,6 @@ import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.file.service.FileInfoService;
 import com.easy.admin.file.storage.FileStorageFactory;
 import com.easy.admin.file.util.file.EditorUtil;
@@ -159,7 +158,6 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
 
     @Override
     public CmsArticle get(String id) {
-        ToolUtil.checkParams(id);
         CmsArticle cmsArticle = baseMapper.getById(id);
         if (cmsArticle != null) {
             // 封面
@@ -180,7 +178,6 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {

@@ -26,7 +26,6 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean saveRolePermissions(String roleId, List<String> permissions) {
-        ToolUtil.checkParams(roleId);
         // 删除原权限
         remove(new QueryWrapper<SysRolePermission>().eq("role_id", roleId));
         if (Validator.isNotEmpty(permissions)) {
@@ -41,6 +40,11 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
             saveBatch(sysRolePermissions);
         }
         return true;
+    }
+
+    @Override
+    public boolean removeByRoleId(String roleIds) {
+        return remove(new QueryWrapper<SysRolePermission>().in("role_id", roleIds.split(CommonConst.SPLIT)));
     }
 
     @Override

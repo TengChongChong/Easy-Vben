@@ -11,7 +11,6 @@ import com.easy.admin.cms.service.CmsMediaService;
 import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.file.service.FileInfoService;
 import com.easy.admin.file.storage.FileStorageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +76,6 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
 
     @Override
     public CmsMedia get(String id) {
-        ToolUtil.checkParams(id);
         CmsMedia cmsMedia = baseMapper.getById(id);
         if (cmsMedia != null) {
             cmsMedia.setFile(fileInfoService.selectOne(id, CmsFileType.MEDIA_FILE.getCode()));
@@ -95,7 +93,6 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
@@ -107,7 +104,6 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public CmsMedia saveData(CmsMedia cmsMedia) {
-        ToolUtil.checkParams(cmsMedia);
         if (Validator.isEmpty(cmsMedia.getId())) {
             // 新增,设置默认值
             cmsMedia.setSiteId(CmsSiteUtil.getUserActiveSiteId());

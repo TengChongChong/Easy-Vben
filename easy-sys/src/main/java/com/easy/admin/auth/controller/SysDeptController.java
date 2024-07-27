@@ -29,13 +29,13 @@ public class SysDeptController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysDept 查询条件
      * @return List<SysDept>
      */
     @GetMapping
     @RequiresPermissions("sys:dept:select")
-    public List<SysDept> select(SysDept object) {
-        return service.select(object);
+    public List<SysDept> select(SysDept sysDept) {
+        return service.select(sysDept);
     }
 
     /**
@@ -51,7 +51,7 @@ public class SysDeptController extends BaseController {
     /**
      * 新增
      *
-     * @param parentId      上级 id
+     * @param parentId 上级 id
      * @param typeCode 部门类型
      * @return SysDept
      */
@@ -89,13 +89,13 @@ public class SysDeptController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDept 表单内容
      * @return SysDept
      */
     @PostMapping
     @RequiresPermissions("sys:dept:save")
-    public SysDept save(@RequestBody @Valid SysDept object) {
-        return service.saveData(object);
+    public SysDept save(@RequestBody @Valid SysDept sysDept) {
+        return service.saveData(sysDept);
     }
 
     /**
@@ -106,7 +106,7 @@ public class SysDeptController extends BaseController {
      */
     @PostMapping("order")
     @RequiresPermissions("sys:dept:save")
-    public boolean saveOrder(@RequestBody List<SysDept> sysDeptList){
+    public boolean saveOrder(@RequestBody List<SysDept> sysDeptList) {
         return service.saveOrder(sysDeptList);
     }
 

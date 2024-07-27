@@ -175,7 +175,6 @@ public class CmsSiteServiceImpl extends ServiceImpl<CmsSiteMapper, CmsSite> impl
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public CmsSite saveData(CmsSite cmsSite) {
-        ToolUtil.checkParams(cmsSite);
         // 新增时设置排序值
         if (StrUtil.isBlank(cmsSite.getId()) && cmsSite.getOrderNo() == null) {
             cmsSite.setOrderNo(baseMapper.getMaxOrderNo(cmsSite.getParentId()) + 1);

@@ -85,11 +85,12 @@ public interface CmsColumnMapper extends BaseMapper<CmsColumn> {
     /**
      * 导入后设置父栏目id、创建人、创建时间等信息
      *
+     * @param deptId 部门id
      * @param userId 用户id
      * @param date   时间
      * @return 更新条数
      */
-    Integer updateAfterImport(@Param("userId") String userId, @Param("date") Date date);
+    Integer updateAfterImport(@Param("deptId") String deptId, @Param("userId") String userId, @Param("date") Date date);
 
     /**
      * 查询导出数据

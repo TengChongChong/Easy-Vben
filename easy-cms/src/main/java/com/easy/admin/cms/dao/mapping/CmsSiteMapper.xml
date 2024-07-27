@@ -16,6 +16,7 @@
         <result column="order_no" property="orderNo" />
         <result column="tenant_id" property="tenantId" />
         <result column="version" property="version" />
+        <result column="dept_id" property="deptId" />
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
         <result column="edit_user" property="editUser" />
@@ -42,7 +43,7 @@
         from cms_site t where t.status = #{status}
     </select>
     <select id="getById" resultType="com.easy.admin.cms.model.CmsSite">
-        select t.id, t.parent_id, t.name, t.keyword, t.description, t.domain_name, t.deployment_path, t.theme, t.status, t.order_no, t.tenant_id, t.version
+        select t.id, t.parent_id, t.name, t.keyword, t.description, t.domain_name, t.deployment_path, t.theme, t.status, t.order_no, t.tenant_id, t.version, t.dept_id
         from cms_site t
         where t.id = #{id}
     </select>

@@ -21,6 +21,14 @@ public interface SysRolePermissionService {
     boolean saveRolePermissions(String roleId, List<String> permissions);
 
     /**
+     * 根据角色删除角色权限
+     *
+     * @param roleIds 角色ids
+     * @return true/false
+     */
+    boolean removeByRoleId(String roleIds);
+
+    /**
      * 删除角色中的权限
      *
      * @param permissionIds 权限ids 1,2,3,4

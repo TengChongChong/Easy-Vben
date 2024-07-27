@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.cms.common.constant.CmsRedisKeyPrefix;
 import com.easy.admin.cms.dao.CmsColumnMapper;
 import com.easy.admin.cms.model.CmsColumn;
@@ -20,7 +21,6 @@ import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.service.ImportService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -172,7 +172,6 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public CmsColumn saveData(CmsColumn cmsColumn) {
-        ToolUtil.checkParams(cmsColumn);
         // 新增时设置排序值
         if (StrUtil.isBlank(cmsColumn.getId())) {
             cmsColumn.setSiteId(CmsSiteUtil.getUserActiveSiteId());
@@ -253,12 +252,14 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
      * @return true/false
      */
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public boolean afterImport() {
         // 1.关联父栏目
         List<CmsColumn> cmsColumnList = baseMapper.selectNeedUpdateParentInfo();
         updateBatchById(cmsColumnList);
         // 2.设置创建时间等信息
-        baseMapper.updateAfterImport(ShiroUtil.getCurrentUser().getId(), new Date());
+        SysUser currentUser = ShiroUtil.getCurrentUser();
+        baseMapper.updateAfterImport(currentUser.getDeptId(), currentUser.getId(), new Date());
         return true;
     }
 

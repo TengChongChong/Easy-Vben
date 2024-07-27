@@ -16,6 +16,7 @@
         <result column="end_date" property="endDate" />
         <result column="receipt" property="receipt" />
         <result column="status" property="status" />
+        <result column="dept_id" property="deptId" />
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
     </resultMap>
