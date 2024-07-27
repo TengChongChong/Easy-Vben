@@ -30,7 +30,6 @@ public class SysImportExcelTemplateDetailServiceImpl extends ServiceImpl<SysImpo
      */
     @Override
     public List<SysImportExcelTemplateDetail> selectDetails(String templateId) {
-        ToolUtil.checkParams(templateId);
         QueryWrapper<SysImportExcelTemplateDetail> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("template_id", templateId);
         queryWrapper.orderByAsc("order_no");

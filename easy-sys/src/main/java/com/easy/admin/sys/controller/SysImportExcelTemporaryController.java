@@ -35,13 +35,13 @@ public class SysImportExcelTemporaryController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
-     * @param page   page
+     * @param sysImportExcelTemporary 查询条件
+     * @param page                    page
      * @return Page<SysImportExcelTemporary>
      */
     @GetMapping()
-    public Page<SysImportExcelTemporary> select(SysImportExcelTemporary object, Page<SysImportExcelTemporary> page) {
-        return service.select(object, page);
+    public Page<SysImportExcelTemporary> select(SysImportExcelTemporary sysImportExcelTemporary, Page<SysImportExcelTemporary> page) {
+        return service.select(sysImportExcelTemporary, page);
     }
 
     /**
@@ -62,12 +62,12 @@ public class SysImportExcelTemporaryController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysImportExcelTemporary 表单内容
      * @return SysImportExcelTemporary
      */
     @PostMapping()
-    public SysImportExcelTemporary saveData(@RequestBody @Valid SysImportExcelTemporary object) {
-        return service.saveData(object);
+    public SysImportExcelTemporary saveData(@RequestBody @Valid SysImportExcelTemporary sysImportExcelTemporary) {
+        return service.saveData(sysImportExcelTemporary);
     }
 
     /**

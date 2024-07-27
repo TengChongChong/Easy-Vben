@@ -17,11 +17,11 @@ public interface SysImportExcelTemporaryService {
     /**
      * 列表
      *
-     * @param object 查询条件
-     * @param page   分页
+     * @param sysImportExcelTemporary 查询条件
+     * @param page                    分页
      * @return Page<SysImportExcelTemporary>
      */
-    Page<SysImportExcelTemporary> select(SysImportExcelTemporary object, Page<SysImportExcelTemporary> page);
+    Page<SysImportExcelTemporary> select(SysImportExcelTemporary sysImportExcelTemporary, Page<SysImportExcelTemporary> page);
 
     /**
      * 详情
@@ -81,10 +81,10 @@ public interface SysImportExcelTemporaryService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysImportExcelTemporary 表单内容
      * @return SysImportExcelTemporary
      */
-    SysImportExcelTemporary saveData(SysImportExcelTemporary object);
+    SysImportExcelTemporary saveData(SysImportExcelTemporary sysImportExcelTemporary);
 
     /**
      * 批量插入

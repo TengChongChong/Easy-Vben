@@ -2,6 +2,7 @@ package com.easy.admin.sys.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -13,10 +14,11 @@ import java.util.List;
  * @author TengChong
  * @date 2019-04-10
  */
- @TableName("sys_import_excel_template")
+@Data
+@TableName("sys_import_excel_template")
 public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
 
-    @TableId(value = "id")
+    @TableId
     private String id;
 
     /**
@@ -66,9 +68,9 @@ public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
     @TableField(fill = FieldFill.INSERT)
     private Date createDate;
     @TableField(fill = FieldFill.INSERT)
-    private  String createUser;
+    private String createUser;
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private  String editUser;
+    private String editUser;
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
 
@@ -76,113 +78,6 @@ public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
     /**
      * 导入配置
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     private List<SysImportExcelTemplateDetail> detailList;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getImportTable() {
-        return importTable;
-    }
-
-    public void setImportTable(String importTable) {
-        this.importTable = importTable;
-    }
-    public Integer getStartRow() {
-        return startRow;
-    }
-
-    public void setStartRow(Integer startRow) {
-        this.startRow = startRow;
-    }
-    public String getCallback() {
-        return callback;
-    }
-
-    public void setCallback(String callback) {
-        this.callback = callback;
-    }
-    public String getImportCode() {
-        return importCode;
-    }
-
-    public void setImportCode(String importCode) {
-        this.importCode = importCode;
-    }
-
-    public String getPermissionCode() {
-        return permissionCode;
-    }
-
-    public void setPermissionCode(String permissionCode) {
-        this.permissionCode = permissionCode;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public  String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public List<SysImportExcelTemplateDetail> getDetailList() {
-        return detailList;
-    }
-
-    public void setDetailList(List<SysImportExcelTemplateDetail> detailList) {
-        this.detailList = detailList;
-    }
 }

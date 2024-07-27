@@ -88,7 +88,6 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
      */
     @Override
     public SysImportExcelTemplate get(String id) {
-        ToolUtil.checkParams(id);
         return getById(id);
     }
 
@@ -112,7 +111,6 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
@@ -144,7 +142,6 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SysImportExcelTemplate saveData(SysImportExcelTemplate sysImportExcelTemplate) {
-        ToolUtil.checkParams(sysImportExcelTemplate);
         if (checkHav(sysImportExcelTemplate.getImportCode(), sysImportExcelTemplate.getId())) {
             throw new EasyException("模板代码 " + sysImportExcelTemplate.getImportCode() + " 中已存在，请修改后重试");
         }
@@ -160,7 +157,6 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
 
     @Override
     public String downloadTemplate(String importCode, HttpServletRequest request) {
-        ToolUtil.checkParams(importCode);
         QueryWrapper<SysImportExcelTemplate> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("id, name");
         queryWrapper.eq("import_code", importCode);
@@ -181,7 +177,7 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
             // 如果模板中包含字典，则设置select
             dictionaries = sysDictService.selectDictionaries(ArrayUtil.toArray(dictTypes, String.class));
         }
-        
+
         BaseFileInfo baseFileInfo = ExcelUtil.writFile(sysImportExcelTemplate.getName(), details, dictionaries);
 
         return fileDownloadService.saveData(new FileDownload(

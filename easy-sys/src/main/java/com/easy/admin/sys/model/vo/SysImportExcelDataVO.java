@@ -1,6 +1,7 @@
 package com.easy.admin.sys.model.vo;
 
 import com.easy.admin.file.model.BaseFileInfo;
+import lombok.Data;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author TengChongChong
  * @date 2024-05-14
  **/
+@Data
 public class SysImportExcelDataVO {
 
     /**
@@ -26,30 +28,6 @@ public class SysImportExcelDataVO {
      * 配置的导入规则
      */
     private List<SysImportExcelTemplateDetailVO> templateDetailList;
-
-    public Integer getStartRow() {
-        return startRow;
-    }
-
-    public void setStartRow(Integer startRow) {
-        this.startRow = startRow;
-    }
-
-    public BaseFileInfo getBaseFileInfo() {
-        return baseFileInfo;
-    }
-
-    public void setBaseFileInfo(BaseFileInfo baseFileInfo) {
-        this.baseFileInfo = baseFileInfo;
-    }
-
-    public List<SysImportExcelTemplateDetailVO> getTemplateDetailList() {
-        return templateDetailList;
-    }
-
-    public void setTemplateDetailList(List<SysImportExcelTemplateDetailVO> templateDetailList) {
-        this.templateDetailList = templateDetailList;
-    }
 
 
 }

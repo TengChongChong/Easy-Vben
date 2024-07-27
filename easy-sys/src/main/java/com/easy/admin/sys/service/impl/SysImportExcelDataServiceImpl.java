@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.SpringContextHolder;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.exception.BusinessException;
 import com.easy.admin.file.model.BaseFileInfo;
 import com.easy.admin.file.model.FileDownload;
@@ -180,7 +179,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      */
     private void checkOnly(List<SysImportExcelTemplateDetail> configs, String templateId, String userId) {
         for (SysImportExcelTemplateDetail config : configs) {
-            if (config.getOnly() != null && config.getOnly()) {
+            if (config.getDataOnly() != null && config.getDataOnly()) {
                 importExcelTemporaryService.updateDuplicateData("field" + config.getOrderNo(), templateId, userId);
             }
         }
@@ -188,7 +187,6 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
 
     @Override
     public SysImportSummary selectSummary(String templateId) {
-        ToolUtil.checkParams(templateId);
         return importExcelTemporaryService.selectImportSummary(templateId);
     }
 
@@ -339,9 +337,9 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
                 // 当前单元格配置
                 SysImportExcelTemplateDetail cellConfig = configs.get(configLength);
                 boolean addVerificationResults = false;
-                if(cellConfig.getIndex() == null){
+                if (cellConfig.getIndex() == null) {
                     // 模版中不包含此字段
-                    if(cellConfig.getRequired()){
+                    if (cellConfig.getDataRequired()) {
                         // 必填
                         addVerificationResults = true;
                     }
@@ -353,7 +351,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
                     verificationResults.append(cellConfig.getTitle()).append("不能为空;");
                 } else {
                     // 将单元格数据转为string
-                    String cell =  objectToString(data.size() > cellConfig.getIndex() ? data.get(cellConfig.getIndex()) : null);
+                    String cell = objectToString(data.size() > cellConfig.getIndex() ? data.get(cellConfig.getIndex()) : null);
                     if (StrUtil.isNotBlank(cell)) {
                         // 转换数据 name to code/id
                         try {
@@ -445,7 +443,6 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public int insertData(String templateId) {
-        ToolUtil.checkParams(templateId);
         SysUser sysUser = ShiroUtil.getCurrentUser();
         SysImportExcelTemplate importExcelTemplate = importExcelTemplateService.get(templateId);
         // 检查是否有权限访问
@@ -499,7 +496,6 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
 
     @Override
     public String exportVerificationFailData(String templateId, HttpServletRequest request) {
-        ToolUtil.checkParams(templateId);
         SysImportExcelTemplate importExcelTemplate = importExcelTemplateService.get(templateId);
         // 导入规则
         List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());

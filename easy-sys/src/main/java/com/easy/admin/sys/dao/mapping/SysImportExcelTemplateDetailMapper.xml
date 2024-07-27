@@ -15,12 +15,8 @@
         <result column="replace_table_field_value" property="replaceTableFieldValue"/>
         <result column="replace_table_dict_type" property="replaceTableDictType"/>
         <result column="order_no" property="orderNo"/>
-        <result column="required" property="required"/>
-        <result column="only" property="only"/>
-        <result column="create_date" property="createDate" />
-        <result column="create_user" property="createUser" />
-        <result column="edit_date" property="editDate" />
-        <result column="edit_user" property="editUser" />
+        <result column="data_required" property="dataRequired"/>
+        <result column="data_only" property="dataOnly"/>
     </resultMap>
 
 </mapper>
