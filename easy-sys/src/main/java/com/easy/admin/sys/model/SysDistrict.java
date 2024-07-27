@@ -3,19 +3,21 @@ package com.easy.admin.sys.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
 
 /**
  * 行政区划
+ *
  * @author TengChongChong
  */
+@Data
 @TableName("sys_district")
 public class SysDistrict extends Model<SysDictType> {
 
-    @TableId(value = "id")
+    @TableId
     private String id;
     /**
      * 名称
@@ -75,99 +77,6 @@ public class SysDistrict extends Model<SysDictType> {
     public SysDistrict(String id, String parentId, Integer orderNo) {
         this.id = id;
         this.parentId = parentId;
-        this.orderNo = orderNo;
-    }
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getInitial() {
-        return initial;
-    }
-
-    public void setInitial(String initial) {
-        this.initial = initial;
-    }
-
-    public String getInitials() {
-        return initials;
-    }
-
-    public void setInitials(String initials) {
-        this.initials = initials;
-    }
-
-    public String getPinyin() {
-        return pinyin;
-    }
-
-    public void setPinyin(String pinyin) {
-        this.pinyin = pinyin;
-    }
-
-    public String getExtra() {
-        return extra;
-    }
-
-    public void setExtra(String extra) {
-        this.extra = extra;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getAreaCode() {
-        return areaCode;
-    }
-
-    public void setAreaCode(String areaCode) {
-        this.areaCode = areaCode;
-    }
-
-    public Integer getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Integer orderNo) {
         this.orderNo = orderNo;
     }
 }

@@ -4,10 +4,10 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,12 +16,13 @@ import java.util.Date;
  * @author TengChongChong
  * @date 2018/11/4
  */
+@Data
 @TableName("sys_dict")
 public class SysDict extends Model<SysDict> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id")
+    @TableId
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String id;
     /**
@@ -102,154 +103,14 @@ public class SysDict extends Model<SysDict> {
     /**
      * 父字典名称
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String parentName;
     /**
      * 字典类型名称
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String dictTypeName;
 
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
-    }
-
-    public String getDictType() {
-        return dictType;
-    }
-
-    public void setDictType(String dictType) {
-        this.dictType = dictType;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public Integer getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Integer orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
-
-    public String getDictTypeName() {
-        return dictTypeName;
-    }
-
-    public void setDictTypeName(String dictTypeName) {
-        this.dictTypeName = dictTypeName;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getDisplayType() {
-        return displayType;
-    }
-
-    public void setDisplayType(String displayType) {
-        this.displayType = displayType;
-    }
 }

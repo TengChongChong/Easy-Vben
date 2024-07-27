@@ -46,8 +46,8 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     @Override
     public Page<SysMessage> select(SysMessage sysMessage, Page<SysMessage> page) {
         QueryWrapper<SysMessage> queryWrapper = commonQuery(sysMessage);
-        if (sysMessage != null){
-            if(Validator.isNotEmpty(sysMessage.getStatus())) {
+        if (sysMessage != null) {
+            if (Validator.isNotEmpty(sysMessage.getStatus())) {
                 queryWrapper.eq("m.status", sysMessage.getStatus());
             }
             // 发送时间 - 开始
@@ -142,7 +142,6 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
@@ -156,7 +155,6 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SysMessage saveData(SysMessage sysMessage) {
-        ToolUtil.checkParams(sysMessage);
         boolean isAdd = StrUtil.isBlank(sysMessage.getId());
         if (isAdd) {
             if (StrUtil.isBlank(sysMessage.getStatus())) {
@@ -187,7 +185,6 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
 
     @Override
     public boolean send(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         UpdateWrapper<SysMessage> send = new UpdateWrapper<>();
         send.set("status", MessageConst.STATUS_HAS_BEEN_SENT);

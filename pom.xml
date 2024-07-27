@@ -40,7 +40,7 @@
         <javax.mail.version>1.4.7</javax.mail.version>
         <poi.version>5.2.2</poi.version>
         <easypoi.version>4.4.0</easypoi.version>
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <druid.version>1.2.16</druid.version>
         <mysql-connector-java.version>8.0.32</mysql-connector-java.version>
         <mariadb-java-client.version>3.0.10</mariadb-java-client.version>
@@ -54,6 +54,15 @@
         <captcha.version>1.3.0</captcha.version>
         <minio.version>8.4.3</minio.version>
     </properties>
+
+    <dependencies>
+        <!--Lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>

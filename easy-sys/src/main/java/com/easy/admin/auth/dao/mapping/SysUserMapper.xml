@@ -66,7 +66,7 @@
         where t.id = #{id}
     </select>
     <select id="selectRoles" resultType="java.lang.String">
-        select role_id from sys_user_role ur where ur.user_id = #{id}
+        select role_id from sys_user_role sur where sur.user_id = #{id}
     </select>
     <select id="search" resultType="com.easy.admin.auth.model.SysUser">
         select u.id, u.username, u.nickname, u.email, u.phone_number, sd.name as deptName

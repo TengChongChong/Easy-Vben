@@ -55,7 +55,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <!-- json -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

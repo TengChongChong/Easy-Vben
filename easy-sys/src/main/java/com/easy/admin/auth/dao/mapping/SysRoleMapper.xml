@@ -18,7 +18,7 @@
     </resultMap>
 
     <select id="select" resultType="com.easy.admin.auth.model.SysRole">
-        select t.id, t.name, t.code, t.sys, t.status, t.order_no, t.remarks, t.tenant_id, t.version, t.edit_date, su.nickname as edit_user
+        select t.id, t.name, t.code, t.data_permission, t.sys, t.status, t.order_no, t.remarks, t.tenant_id, t.version, t.edit_date, su.nickname as edit_user
         from sys_role t
         left join sys_user su on su.id = t.edit_user
         <where>
@@ -26,7 +26,7 @@
         </where>
     </select>
     <select id="getById" resultType="com.easy.admin.auth.model.SysRole">
-        select t.id, t.name, t.code, t.sys, t.status, t.order_no, t.remarks, t.tenant_id, t.version
+        select t.id, t.name, t.code, t.data_permission, t.sys, t.status, t.order_no, t.remarks, t.tenant_id, t.version
         from sys_role t
         where t.id= #{id}
     </select>
@@ -52,6 +52,6 @@
         </where>
     </select>
     <select id="selectAll" resultType="com.easy.admin.auth.model.SysRole">
-        select t.id, t.name, t.code from sys_role t where t.status = #{status} order by t.order_no
+        select t.id, t.name, t.code, t.data_permission from sys_role t where t.status = #{status} order by t.order_no
     </select>
 </mapper>

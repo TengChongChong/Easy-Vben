@@ -1,7 +1,7 @@
 package com.easy.admin.generator.generator.impl;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.easy.admin.generator.constant.GeneratorTemplateConst;
+import com.easy.admin.generator.constant.GeneratorTemplatePathConst;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.util.GeneratorUtil;
@@ -28,7 +28,7 @@ public class GeneratorModelTs extends GeneratorFile {
     @Override
     public void init() {
         // 设置模板
-        this.setTemplate(GeneratorTemplateConst.MODEL_TS);
+        this.setTemplate(GeneratorTemplatePathConst.MODEL_TS);
         // 设置文件路径
         initFilePath();
     }

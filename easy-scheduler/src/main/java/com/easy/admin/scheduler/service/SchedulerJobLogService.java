@@ -14,7 +14,7 @@ public interface SchedulerJobLogService {
      * 列表
      *
      * @param schedulerJobLog 查询条件
-     * @param page   分页
+     * @param page            分页
      * @return Page<SchedulerJobLog>
      */
     Page<SchedulerJobLog> select(SchedulerJobLog schedulerJobLog, Page<SchedulerJobLog> page);
@@ -23,8 +23,8 @@ public interface SchedulerJobLogService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param schedulerJobLog 表单内容
      * @return 保存后信息
      */
-    SchedulerJobLog saveData(SchedulerJobLog object);
+    SchedulerJobLog saveData(SchedulerJobLog schedulerJobLog);
 }

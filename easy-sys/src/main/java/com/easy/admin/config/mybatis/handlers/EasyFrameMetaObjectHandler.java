@@ -1,4 +1,4 @@
-package com.easy.admin.core.mybatis;
+package com.easy.admin.config.mybatis.handlers;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.easy.admin.auth.model.SysUser;
@@ -17,6 +17,10 @@ import java.util.Date;
  */
 @Component
 public class EasyFrameMetaObjectHandler implements MetaObjectHandler {
+    /**
+     * 创建人所在部门Id
+     */
+    private static final String DEPT_ID = "deptId";
     /**
      * 创建人
      */
@@ -46,6 +50,7 @@ public class EasyFrameMetaObjectHandler implements MetaObjectHandler {
             // 设置创建人&编辑人
             this.setFieldValByName(CREATE_USER, sysUser.getId(), metaObject);
             this.setFieldValByName(EDIT_USER, sysUser.getId(), metaObject);
+            this.setFieldValByName(DEPT_ID, sysUser.getDeptId(), metaObject);
         }
         Date now = new Date();
         this.setFieldValByName(CREATE_DATE, now, metaObject);

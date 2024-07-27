@@ -15,11 +15,11 @@ public interface SchedulerJobService {
     /**
      * 列表
      *
-     * @param object 查询条件
-     * @param page 分页
+     * @param schedulerJob 查询条件
+     * @param page         分页
      * @return 数据集合
      */
-    Page<SchedulerJob> select(SchedulerJob object, Page<SchedulerJob> page);
+    Page<SchedulerJob> select(SchedulerJob schedulerJob, Page<SchedulerJob> page);
 
     /**
      * 查询所有定时任务
@@ -54,10 +54,10 @@ public interface SchedulerJobService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param schedulerJob 表单内容
      * @return 保存后信息
      */
-    SchedulerJob saveData(SchedulerJob object);
+    SchedulerJob saveData(SchedulerJob schedulerJob);
 
     /**
      * 更新最后执行时间

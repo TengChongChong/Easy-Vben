@@ -9,7 +9,7 @@ import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
 import com.easy.admin.generator.constant.GeneratorPackageConst;
-import com.easy.admin.generator.constant.GeneratorTemplateConst;
+import com.easy.admin.generator.constant.GeneratorTemplatePathConst;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -40,7 +40,7 @@ public class GeneratorController extends GeneratorFile {
     @Override
     public void init() {
         // 设置模板
-        this.setTemplate(GeneratorTemplateConst.CONTROLLER);
+        this.setTemplate(GeneratorTemplatePathConst.CONTROLLER);
         // 设置导入包
         this.setImports(initImports());
         // 设置文件路径

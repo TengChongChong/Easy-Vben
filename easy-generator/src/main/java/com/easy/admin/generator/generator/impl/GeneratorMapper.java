@@ -7,7 +7,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorPackageConst;
-import com.easy.admin.generator.constant.GeneratorTemplateConst;
+import com.easy.admin.generator.constant.GeneratorTemplatePathConst;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
 import org.apache.ibatis.annotations.Param;
@@ -34,7 +34,7 @@ public class GeneratorMapper extends GeneratorFile {
     @Override
     public void init() {
         // 设置模板
-        this.setTemplate(GeneratorTemplateConst.MAPPER);
+        this.setTemplate(GeneratorTemplatePathConst.MAPPER);
         // 设置导入包
         this.setImports(initImports());
         // 设置文件路径
@@ -46,7 +46,7 @@ public class GeneratorMapper extends GeneratorFile {
      *
      * @return 导入类
      */
-    private List<Class<?>> initImports(){
+    private List<Class<?>> initImports() {
         List<Class<?>> imports = new ArrayList<>();
         imports.add(QueryWrapper.class);
         imports.add(BaseMapper.class);

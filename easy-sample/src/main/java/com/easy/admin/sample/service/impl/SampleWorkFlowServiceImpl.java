@@ -29,7 +29,7 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
      * 列表
      *
      * @param sampleWorkFlow 查询条件
-     * @param page   分页
+     * @param page           分页
      * @return Page<SampleWorkFlow>
      */
     @Override
@@ -46,9 +46,9 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
      * @param sampleWorkFlow 查询条件
      * @return QueryWrapper<SampleWorkFlow>
      */
-    private QueryWrapper<SampleWorkFlow> getQueryWrapper(SampleWorkFlow sampleWorkFlow){
+    private QueryWrapper<SampleWorkFlow> getQueryWrapper(SampleWorkFlow sampleWorkFlow) {
         QueryWrapper<SampleWorkFlow> queryWrapper = new QueryWrapper<>();
-        if(sampleWorkFlow != null){
+        if (sampleWorkFlow != null) {
             // 查询条件
             // 请假类型
             if (Validator.isNotEmpty(sampleWorkFlow.getLeaveType())) {
@@ -90,7 +90,6 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
      */
     @Override
     public SampleWorkFlow get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
 
@@ -115,7 +114,6 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
@@ -129,7 +127,6 @@ public class SampleWorkFlowServiceImpl extends ServiceImpl<SampleWorkFlowMapper,
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SampleWorkFlow saveData(SampleWorkFlow sampleWorkFlow) {
-        ToolUtil.checkParams(sampleWorkFlow);
         if (Validator.isEmpty(sampleWorkFlow.getId())) {
             // 新增,设置默认值
         }

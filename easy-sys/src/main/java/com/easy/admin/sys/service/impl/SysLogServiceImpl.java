@@ -100,7 +100,6 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
      */
     @Override
     public SysLog get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
 

@@ -2,6 +2,7 @@ package com.easy.admin.sys.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -15,13 +16,14 @@ import java.util.List;
  * @author TengChong
  * @date 2019-06-02
  */
+@Data
 @TableName("sys_message")
 public class SysMessage extends Model<SysMessage> implements Serializable {
 
     /**
      * id
      */
-    @TableId(value = "id")
+    @TableId
     private String id;
 
     /**
@@ -146,188 +148,4 @@ public class SysMessage extends Model<SysMessage> implements Serializable {
      */
     @TableField(exist = false)
     private Date endSendDate;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getSendDate() {
-        return sendDate;
-    }
-
-    public void setSendDate(Date sendDate) {
-        this.sendDate = sendDate;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getImportant() {
-        return important;
-    }
-
-    public void setImportant(String important) {
-        this.important = important;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
-
-    public String getStar() {
-        return star;
-    }
-
-    public void setStar(String star) {
-        this.star = star;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getDetailsStatus() {
-        return detailsStatus;
-    }
-
-    public void setDetailsStatus(String detailsStatus) {
-        this.detailsStatus = detailsStatus;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public List<String> getReceivers() {
-        return receivers;
-    }
-
-    public void setReceivers(List<String> receivers) {
-        this.receivers = receivers;
-    }
-
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
-    }
-
-    public String getReadDate() {
-        return readDate;
-    }
-
-    public void setReadDate(String readDate) {
-        this.readDate = readDate;
-    }
-
-    public Date getStartSendDate() {
-        return startSendDate;
-    }
-
-    public void setStartSendDate(Date startSendDate) {
-        this.startSendDate = startSendDate;
-    }
-
-    public Date getEndSendDate() {
-        return endSendDate;
-    }
-
-    public void setEndSendDate(Date endSendDate) {
-        this.endSendDate = endSendDate;
-    }
 }

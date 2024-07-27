@@ -7,6 +7,7 @@ import com.easy.admin.auth.dao.SysDeptMapper;
 import com.easy.admin.auth.dao.SysUserMapper;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.service.SysDeptTypeService;
+import com.easy.admin.auth.service.SysRoleDataPermissionService;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.common.status.ResultCode;
@@ -52,6 +53,9 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Autowired
     private SysDeptTypeService sysDeptTypeService;
+
+    @Autowired
+    private SysRoleDataPermissionService sysRoleDataPermissionService;
 
     @Autowired
     private RedisSessionDAO sessionDAO;
@@ -196,6 +200,9 @@ public class ShiroServiceImpl implements ShiroService {
     public SysUser queryUserPermissions(SysUser sysUser) {
         // 设置角色
         sysUser.setRoleList(sysUserRoleService.selectRoleByUserId(sysUser.getId()));
+
+        // 设置角色权限
+        sysUser.setDataPermissionList(sysRoleDataPermissionService.convertToDataPermission(sysUser.getRoleList()));
 
         // 设置菜单
         sysUser.setPermissionList(sysUserRoleService.selectPermissionByUserId(sysUser.getId()));

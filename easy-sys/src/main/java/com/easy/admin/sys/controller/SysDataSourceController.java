@@ -32,13 +32,13 @@ public class SysDataSourceController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysDataSource 查询条件
      * @return Page<SysDataSource>
      */
     @GetMapping()
     @RequiresPermissions("sys:data:source:select")
-    public Page<SysDataSource> select(SysDataSource object, Page<SysDataSource> page){
-        return service.select(object, page);
+    public Page<SysDataSource> select(SysDataSource sysDataSource, Page<SysDataSource> page) {
+        return service.select(sysDataSource, page);
     }
 
     /**
@@ -79,13 +79,13 @@ public class SysDataSourceController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDataSource 表单内容
      * @return SysDataSource
      */
     @PostMapping()
     @RequiresPermissions("sys:data:source:save")
-    public SysDataSource saveData(@Valid @RequestBody SysDataSource object){
-        return service.saveData(object);
+    public SysDataSource saveData(@Valid @RequestBody SysDataSource sysDataSource) {
+        return service.saveData(sysDataSource);
     }
 
     /**
@@ -95,7 +95,7 @@ public class SysDataSourceController {
      */
     @GetMapping("select/options")
     @RequiresPermissions("sys:data:source:select")
-    public List<Select> selectOptions(){
+    public List<Select> selectOptions() {
         return service.selectOptions();
     }
 }

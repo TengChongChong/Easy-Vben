@@ -24,7 +24,7 @@ public class SchedulerJobLogServiceImpl extends ServiceImpl<SchedulerJobLogMappe
      * 列表
      *
      * @param schedulerJobLog 查询条件
-     * @param page   分页
+     * @param page            分页
      * @return 数据集合
      */
     @Override
@@ -41,12 +41,12 @@ public class SchedulerJobLogServiceImpl extends ServiceImpl<SchedulerJobLogMappe
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param schedulerJobLog 表单内容
      * @return 保存后信息
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SchedulerJobLog saveData(SchedulerJobLog object) {
-        return (SchedulerJobLog) ToolUtil.checkResult(saveOrUpdate(object), object);
+    public SchedulerJobLog saveData(SchedulerJobLog schedulerJobLog) {
+        return (SchedulerJobLog) ToolUtil.checkResult(saveOrUpdate(schedulerJobLog), schedulerJobLog);
     }
 }

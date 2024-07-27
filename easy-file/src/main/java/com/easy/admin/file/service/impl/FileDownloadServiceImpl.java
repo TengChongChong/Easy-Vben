@@ -50,7 +50,6 @@ public class FileDownloadServiceImpl extends ServiceImpl<FileDownloadMapper, Fil
      */
     @Override
     public FileDownload get(String id) {
-        ToolUtil.checkParams(id);
         return getById(id);
     }
 

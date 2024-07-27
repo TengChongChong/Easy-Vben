@@ -1,11 +1,14 @@
 package com.easy.admin.sys.model.vo;
 
+import lombok.Data;
+
 /**
  * redis
  *
  * @author TengChongChong
  * @date 2019-01-25
  */
+@Data
 public class SysRedisVO {
     /**
      * 键
@@ -22,37 +25,4 @@ public class SysRedisVO {
      * 值
      */
     private Object value;
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public Long getExpire() {
-        return expire;
-    }
-
-    public void setExpire(Long expire) {
-        this.expire = expire;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "SysRedisVO{" +
-                "key='" + key + '\'' +
-                ", expire=" + expire +
-                ", value=" + value +
-                '}';
-    }
 }

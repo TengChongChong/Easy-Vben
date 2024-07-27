@@ -4,26 +4,27 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.generator.model.District">
-        <result column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="parent_id" property="parentId" />
-        <result column="initial" property="initial" />
-        <result column="initials" property="initials" />
-        <result column="pinyin" property="pinyin" />
-        <result column="extra" property="extra" />
-        <result column="suffix" property="suffix" />
-        <result column="code" property="code" />
-        <result column="area_code" property="areaCode" />
-        <result column="order" property="order" />
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="initial" property="initial"/>
+        <result column="initials" property="initials"/>
+        <result column="pinyin" property="pinyin"/>
+        <result column="extra" property="extra"/>
+        <result column="suffix" property="suffix"/>
+        <result column="code" property="code"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="order_no" property="orderNo"/>
     </resultMap>
+
     <select id="select" resultType="com.easy.admin.generator.model.District">
         select t.id, t.name, t.parent_id, t.initial, t.initials, t.pinyin, t.extra, t.suffix, t.code, t.area_code
         from district t
-        order by t.parent_id, t.`order`
+        order by t.parent_id, t.order_no
     </select>
     <select id="selectCascaderDistrict" resultType="com.easy.admin.generator.model.CascaderDistrict">
         select t.id, t.parent_id, t.code as value, concat(t.name, ifnull(t.extra, ''), ifnull(t.suffix, '')) as label
         from district t
-        order by t.parent_id, t.`order`;
+        order by t.parent_id, t.order_no;
     </select>
 </mapper>

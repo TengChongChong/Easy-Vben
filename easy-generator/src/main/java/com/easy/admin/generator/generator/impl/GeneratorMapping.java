@@ -2,7 +2,7 @@ package com.easy.admin.generator.generator.impl;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.generator.constant.GeneratorPackageConst;
-import com.easy.admin.generator.constant.GeneratorTemplateConst;
+import com.easy.admin.generator.constant.GeneratorTemplatePathConst;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
 
@@ -25,7 +25,7 @@ public class GeneratorMapping extends GeneratorFile {
     @Override
     public void init() {
         // 设置模板
-        this.setTemplate(GeneratorTemplateConst.MAPPING);
+        this.setTemplate(GeneratorTemplatePathConst.MAPPING);
         // 设置文件路径
         this.setFilePath(this.backEndPathBasePath + GeneratorPackageConst.MAPPING + generatorConfig.getBasicsConfig().getModelName() + "Mapper.xml");
     }

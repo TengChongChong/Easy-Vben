@@ -11,7 +11,7 @@ import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
 import com.easy.admin.generator.constant.GeneratorPackageConst;
-import com.easy.admin.generator.constant.GeneratorTemplateConst;
+import com.easy.admin.generator.constant.GeneratorTemplatePathConst;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.FieldConfig;
 import com.easy.admin.generator.model.GeneratorConfig;
@@ -44,7 +44,7 @@ public class GeneratorServiceImpl extends GeneratorFile {
     @Override
     public void init() {
         // 设置模板
-        this.setTemplate(GeneratorTemplateConst.SERVICE_IMPL);
+        this.setTemplate(GeneratorTemplatePathConst.SERVICE_IMPL);
         // 设置导入包
         this.setImports(initImports());
         // 设置文件路径
@@ -62,9 +62,7 @@ public class GeneratorServiceImpl extends GeneratorFile {
         imports.add(QueryWrapper.class);
         imports.add(ServiceImpl.class);
         imports.add(Page.class);
-        if (hasDict()) {
-            imports.add(CommonConst.class);
-        }
+        imports.add(CommonConst.class);
         // 导入
         if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.IMPORT_DATA)) {
             imports.add(ImportService.class);

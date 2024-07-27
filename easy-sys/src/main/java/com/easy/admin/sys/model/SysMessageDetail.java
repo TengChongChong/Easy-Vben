@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,13 +15,14 @@ import java.util.Date;
  * @author TengChong
  * @date 2019-06-06
  */
+@Data
 @TableName("sys_message_detail")
 public class SysMessageDetail extends Model<SysMessageDetail> implements Serializable {
 
     /**
      * id
      */
-    @TableId(value = "id")
+    @TableId
     private String id;
 
     /**
@@ -54,60 +56,4 @@ public class SysMessageDetail extends Model<SysMessageDetail> implements Seriali
      */
     @TableField(exist = false)
     private String receiverUserDeptName;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
-    }
-
-    public String getReceiverUser() {
-        return receiverUser;
-    }
-
-    public void setReceiverUser(String receiverUser) {
-        this.receiverUser = receiverUser;
-    }
-
-    public Date getReadDate() {
-        return readDate;
-    }
-
-    public void setReadDate(Date readDate) {
-        this.readDate = readDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getStar() {
-        return star;
-    }
-
-    public void setStar(Integer star) {
-        this.star = star;
-    }
-
-    public String getReceiverUserDeptName() {
-        return receiverUserDeptName;
-    }
-
-    public void setReceiverUserDeptName(String receiverUserDeptName) {
-        this.receiverUserDeptName = receiverUserDeptName;
-    }
 }

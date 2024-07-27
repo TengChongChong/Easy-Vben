@@ -15,11 +15,12 @@ import java.util.List;
 public interface SysDataSourceService {
     /**
      * 列表
-     * @param object 查询条件
-     * @param page   分页
+     *
+     * @param sysDataSource 查询条件
+     * @param page          分页
      * @return Page<SysDataSource>
      */
-    Page<SysDataSource> select(SysDataSource object, Page<SysDataSource> page);
+    Page<SysDataSource> select(SysDataSource sysDataSource, Page<SysDataSource> page);
 
     /**
      * 获取所有数据源
@@ -61,10 +62,10 @@ public interface SysDataSourceService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDataSource 表单内容
      * @return SysDataSource
      */
-    SysDataSource saveData(SysDataSource object);
+    SysDataSource saveData(SysDataSource sysDataSource);
 
     /**
      * 添加数据源

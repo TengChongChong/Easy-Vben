@@ -54,45 +54,45 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     /**
      * 列表
      *
-     * @param object 查询条件
-     * @param page 分页
+     * @param schedulerJob 查询条件
+     * @param page         分页
      * @return 数据集合
      */
     @Override
-    public Page<SchedulerJob> select(SchedulerJob object, Page<SchedulerJob> page) {
+    public Page<SchedulerJob> select(SchedulerJob schedulerJob, Page<SchedulerJob> page) {
         QueryWrapper<SchedulerJob> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
+        if (schedulerJob != null) {
             // 查询条件
             // 名称
-            if (Validator.isNotEmpty(object.getName())) {
-                queryWrapper.like("name", object.getName());
+            if (Validator.isNotEmpty(schedulerJob.getName())) {
+                queryWrapper.like("name", schedulerJob.getName());
             }
             // cron表达式
-            if (Validator.isNotEmpty(object.getCode())) {
-                queryWrapper.like("code", object.getCode());
+            if (Validator.isNotEmpty(schedulerJob.getCode())) {
+                queryWrapper.like("code", schedulerJob.getCode());
             }
             // bean
-            if (Validator.isNotEmpty(object.getBean())) {
-                queryWrapper.like("bean", object.getBean());
+            if (Validator.isNotEmpty(schedulerJob.getBean())) {
+                queryWrapper.like("bean", schedulerJob.getBean());
             }
             // 方法
-            if (Validator.isNotEmpty(object.getMethod())) {
-                queryWrapper.like("method", object.getMethod());
+            if (Validator.isNotEmpty(schedulerJob.getMethod())) {
+                queryWrapper.like("method", schedulerJob.getMethod());
             }
             // 状态
-            if (Validator.isNotEmpty(object.getStatus())) {
-                if (object.getStatus().contains(CommonConst.SPLIT)) {
-                    queryWrapper.in("status", object.getStatus().split(CommonConst.SPLIT));
+            if (Validator.isNotEmpty(schedulerJob.getStatus())) {
+                if (schedulerJob.getStatus().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("status", schedulerJob.getStatus().split(CommonConst.SPLIT));
                 } else {
-                    queryWrapper.eq("status", object.getStatus());
+                    queryWrapper.eq("status", schedulerJob.getStatus());
                 }
             }
             // 系统
-            if (Validator.isNotEmpty(object.getSys())) {
-                if (object.getSys().contains(CommonConst.SPLIT)) {
-                    queryWrapper.in("sys", object.getSys().split(CommonConst.SPLIT));
+            if (Validator.isNotEmpty(schedulerJob.getSys())) {
+                if (schedulerJob.getSys().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("sys", schedulerJob.getSys().split(CommonConst.SPLIT));
                 } else {
-                    queryWrapper.eq("sys", object.getSys());
+                    queryWrapper.eq("sys", schedulerJob.getSys());
                 }
             }
         }
@@ -120,7 +120,6 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
      */
     @Override
     public SchedulerJob get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
 
@@ -131,11 +130,11 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
      */
     @Override
     public SchedulerJob add() {
-        SchedulerJob object = new SchedulerJob();
+        SchedulerJob schedulerJob = new SchedulerJob();
         // 默认开启
-        object.setStatus(SchedulerStatus.ENABLE.getCode());
-        object.setSys(WhetherConst.NO);
-        return object;
+        schedulerJob.setStatus(SchedulerStatus.ENABLE.getCode());
+        schedulerJob.setSys(WhetherConst.NO);
+        return schedulerJob;
     }
 
     /**
@@ -147,7 +146,6 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         QueryWrapper<SchedulerJob> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", idList);
@@ -165,48 +163,47 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param schedulerJob 表单内容
      * @return 保存后信息
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SchedulerJob saveData(SchedulerJob object) {
-        ToolUtil.checkParams(object);
+    public SchedulerJob saveData(SchedulerJob schedulerJob) {
         SysUser currentUser = ShiroUtil.getCurrentUser();
         // 更新前的任务名称
         String jobJobCode = null;
-        object.setEditDate(new Date());
-        object.setEditUser(currentUser.getId());
+        schedulerJob.setEditDate(new Date());
+        schedulerJob.setEditUser(currentUser.getId());
         //
         QueryWrapper<SchedulerJob> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("code", object.getCode());
-        if (object.getId() != null) {
-            queryWrapper.ne("id", object.getId());
+        queryWrapper.eq("code", schedulerJob.getCode());
+        if (schedulerJob.getId() != null) {
+            queryWrapper.ne("id", schedulerJob.getId());
         }
         if (count(queryWrapper) > 0) {
-            throw new EasyException("code[" + object.getCode() + "]已存在");
+            throw new EasyException("code[" + schedulerJob.getCode() + "]已存在");
         }
 
-        if (StrUtil.isBlank(object.getId())) {
+        if (StrUtil.isBlank(schedulerJob.getId())) {
             // 新增,设置默认值
-            object.setCreateDate(new Date());
-            object.setCreateUser(currentUser.getId());
+            schedulerJob.setCreateDate(new Date());
+            schedulerJob.setCreateUser(currentUser.getId());
         } else {
-            jobJobCode = baseMapper.getJobCodeById(object.getId());
+            jobJobCode = baseMapper.getJobCodeById(schedulerJob.getId());
 
         }
-        boolean isSuccess = saveOrUpdate(object);
+        boolean isSuccess = saveOrUpdate(schedulerJob);
         if (isSuccess) {
             // 如果是新增直接添加任务,如果是修改则删除原任务后重新添加
             if (StrUtil.isNotBlank(jobJobCode)) {
                 quartzService.operateJob(new SchedulerJob(jobJobCode), SchedulerStatus.DELETE);
             }
-            if (SchedulerStatus.ENABLE.getCode().equals(object.getStatus())) {
+            if (SchedulerStatus.ENABLE.getCode().equals(schedulerJob.getStatus())) {
                 // 如果保存后是启用状态,添加到任务里
-                quartzService.addJob(object);
+                quartzService.addJob(schedulerJob);
             }
         }
-        return (SchedulerJob) ToolUtil.checkResult(isSuccess, object);
+        return (SchedulerJob) ToolUtil.checkResult(isSuccess, schedulerJob);
     }
 
     @Override
@@ -222,7 +219,6 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
 
     @Override
     public void start(String id) {
-        ToolUtil.checkParams(id);
         boolean updateSuccess = updateJobStatus(SchedulerStatus.ENABLE.getCode(), id);
         if (updateSuccess) {
             quartzService.operateJob(getById(id), SchedulerStatus.ENABLE);
@@ -233,7 +229,6 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
 
     @Override
     public void pause(String id) {
-        ToolUtil.checkParams(id);
         boolean updateSuccess = updateJobStatus(SchedulerStatus.DISABLE.getCode(), id);
         if (updateSuccess) {
             quartzService.operateJob(getById(id), SchedulerStatus.DISABLE);
@@ -298,15 +293,15 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
         if (StrUtil.isBlank(schedulerJob.getBean())) {
             throw new EasyException("该任务未设置Bean信息，请设置后重试");
         }
-        Object object = SpringContextHolder.getBean(schedulerJob.getBean());
-        if (object != null) {
+        Object bean = SpringContextHolder.getBean(schedulerJob.getBean());
+        if (bean != null) {
             try {
                 // 获取方法
-                Method method = object.getClass().getMethod(schedulerJob.getMethod());
+                Method method = bean.getClass().getMethod(schedulerJob.getMethod());
                 try {
                     Date startDate = new Date();
                     // 执行
-                    method.invoke(object);
+                    method.invoke(bean);
                     // 更新最后执行时间
                     updateLastRunDate(schedulerJob.getId());
                     // 保存执行日志

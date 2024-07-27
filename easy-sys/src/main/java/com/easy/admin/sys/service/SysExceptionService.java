@@ -12,11 +12,12 @@ import com.easy.admin.sys.model.SysException;
 public interface SysExceptionService {
     /**
      * 列表
-     * @param object 查询条件
-     * @param page 分页
+     *
+     * @param sysException 查询条件
+     * @param page         分页
      * @return Page<SysException>
      */
-    Page<SysException> select(SysException object, Page<SysException> page);
+    Page<SysException> select(SysException sysException, Page<SysException> page);
 
     /**
      * 详情
@@ -25,6 +26,7 @@ public interface SysExceptionService {
      * @return 详细信息
      */
     SysException get(String id);
+
     /**
      * 删除
      *
@@ -32,16 +34,18 @@ public interface SysExceptionService {
      * @return true/false
      */
     boolean remove(String ids);
+
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysException 表单内容
      * @return 保存后信息
      */
-    SysException saveData(SysException object);
+    SysException saveData(SysException sysException);
 
     /**
      * 清理异常日志表里的数据
+     *
      * @return true/false
      */
     boolean clean();

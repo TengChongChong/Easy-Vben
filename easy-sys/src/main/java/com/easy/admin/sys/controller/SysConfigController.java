@@ -30,13 +30,13 @@ public class SysConfigController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
-     * @param page   Page<SysConfig>
+     * @param sysConfig 查询条件
+     * @param page      Page<SysConfig>
      */
     @GetMapping("/api/auth/sys/config")
     @RequiresPermissions("sys:config:select")
-    public Page<SysConfig> select(SysConfig object, Page<SysConfig> page) {
-        return service.select(object, page);
+    public Page<SysConfig> select(SysConfig sysConfig, Page<SysConfig> page) {
+        return service.select(sysConfig, page);
     }
 
     /**
@@ -77,13 +77,13 @@ public class SysConfigController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysConfig 表单内容
      * @return SysConfig
      */
     @PostMapping("/api/auth/sys/config")
     @RequiresPermissions("sys:config:save")
-    public SysConfig save(@RequestBody @Valid SysConfig object) {
-        return service.saveData(object);
+    public SysConfig save(@RequestBody @Valid SysConfig sysConfig) {
+        return service.saveData(sysConfig);
     }
 
     /**

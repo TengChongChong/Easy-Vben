@@ -31,13 +31,13 @@ public class SysDictController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysDict 查询条件
      * @return Page<SysDict>
      */
     @GetMapping
     @RequiresPermissions("sys:dict:select")
-    public Page<SysDict> select(SysDict object, Page<SysDict> page) {
-        return service.select(object, page);
+    public Page<SysDict> select(SysDict sysDict, Page<SysDict> page) {
+        return service.select(sysDict, page);
     }
 
     /**
@@ -80,13 +80,13 @@ public class SysDictController extends BaseController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDict 表单内容
      * @return SysDict
      */
     @PostMapping
     @RequiresPermissions("sys:dict:save")
-    public SysDict save(@RequestBody @Valid SysDict object) {
-        return service.saveData(object);
+    public SysDict save(@RequestBody @Valid SysDict sysDict) {
+        return service.saveData(sysDict);
     }
 
     /**
@@ -124,10 +124,10 @@ public class SysDictController extends BaseController {
      * @param sysDict 查询条件
      * @return 文件下载id
      */
-    @Operation(summary ="导出数据")
+    @Operation(summary = "导出数据")
     @GetMapping("export/data")
     @RequiresPermissions("sys:dict:select")
-    public String exportData(SysDict sysDict){
+    public String exportData(SysDict sysDict) {
         return service.exportData(sysDict);
     }
 }

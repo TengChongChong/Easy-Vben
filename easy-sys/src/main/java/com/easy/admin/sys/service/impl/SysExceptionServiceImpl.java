@@ -33,44 +33,44 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysException 查询条件
      * @return 数据集合
      */
     @Override
-    public Page<SysException> select(SysException object, Page<SysException> page) {
+    public Page<SysException> select(SysException sysException, Page<SysException> page) {
         QueryWrapper<SysException> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
+        if (sysException != null) {
             // 查询条件
             // 错误代码
-            if (Validator.isNotEmpty(object.getId())) {
-                queryWrapper.eq("id", object.getId());
+            if (Validator.isNotEmpty(sysException.getId())) {
+                queryWrapper.eq("id", sysException.getId());
             }
-            if (Validator.isNotEmpty(object.getCode())) {
-                queryWrapper.like("t.code", object.getCode());
+            if (Validator.isNotEmpty(sysException.getCode())) {
+                queryWrapper.like("t.code", sysException.getCode());
             }
             // 异常类型
-            if (Validator.isNotEmpty(object.getType())) {
-                queryWrapper.like("t.type", object.getType());
+            if (Validator.isNotEmpty(sysException.getType())) {
+                queryWrapper.like("t.type", sysException.getType());
             }
             // 请求地址
-            if (Validator.isNotEmpty(object.getUrl())) {
-                queryWrapper.like("t.url", object.getUrl());
+            if (Validator.isNotEmpty(sysException.getUrl())) {
+                queryWrapper.like("t.url", sysException.getUrl());
             }
             // 错误信息
-            if (Validator.isNotEmpty(object.getMessage())) {
-                queryWrapper.like("t.message", object.getMessage());
+            if (Validator.isNotEmpty(sysException.getMessage())) {
+                queryWrapper.like("t.message", sysException.getMessage());
             }
             // 触发用户
-            if (Validator.isNotEmpty(object.getNickname())) {
-                queryWrapper.like("u.nickname", object.getNickname());
+            if (Validator.isNotEmpty(sysException.getNickname())) {
+                queryWrapper.like("u.nickname", sysException.getNickname());
             }
             // 触发时间 - 开始
-            if (Validator.isNotEmpty(object.getStartTriggerTime())) {
-                queryWrapper.ge("t.trigger_time", object.getStartTriggerTime());
+            if (Validator.isNotEmpty(sysException.getStartTriggerTime())) {
+                queryWrapper.ge("t.trigger_time", sysException.getStartTriggerTime());
             }
             // 触发时间 - 结束
-            if (Validator.isNotEmpty(object.getEndTriggerTime())) {
-                queryWrapper.le("t.trigger_time", object.getEndTriggerTime());
+            if (Validator.isNotEmpty(sysException.getEndTriggerTime())) {
+                queryWrapper.le("t.trigger_time", sysException.getEndTriggerTime());
             }
         }
         page.setDefaultDesc("t.trigger_time");
@@ -86,7 +86,6 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
      */
     @Override
     public SysException get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
 
@@ -99,7 +98,6 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         return removeByIds(idList);
     }
@@ -107,30 +105,29 @@ public class SysExceptionServiceImpl extends ServiceImpl<SysExceptionMapper, Sys
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysException 表单内容
      * @return 保存后信息
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysException saveData(SysException object) {
-        ToolUtil.checkParams(object);
-        if (StrUtil.isBlank(object.getId())) {
+    public SysException saveData(SysException sysException) {
+        if (StrUtil.isBlank(sysException.getId())) {
             // 新增,设置默认值
-            if (StrUtil.isBlank(object.getMessage()) && StrUtil.isNotBlank(object.getType())) {
+            if (StrUtil.isBlank(sysException.getMessage()) && StrUtil.isNotBlank(sysException.getType())) {
                 try {
-                    object.setMessage(object.getType().substring(object.getType().lastIndexOf(".") + 1));
+                    sysException.setMessage(sysException.getType().substring(sysException.getType().lastIndexOf(".") + 1));
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return (SysException) ToolUtil.checkResult(saveOrUpdate(object), object);
+        return (SysException) ToolUtil.checkResult(saveOrUpdate(sysException), sysException);
     }
 
     @Override
     public boolean clean() {
         QueryWrapper<SysException> clean = new QueryWrapper<>();
-        Date cleanDate = DateUtil.offsetDay(new Date(),  Convert.toInt(SysConfigUtil.get(SysConfigConst.CLEAN_EXCEPTION_LOG)) * -1);
+        Date cleanDate = DateUtil.offsetDay(new Date(), Convert.toInt(SysConfigUtil.get(SysConfigConst.CLEAN_EXCEPTION_LOG)) * -1);
         clean.lt("trigger_time", cleanDate);
         return remove(clean);
     }

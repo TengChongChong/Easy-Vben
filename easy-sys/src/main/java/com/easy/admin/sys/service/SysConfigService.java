@@ -13,11 +13,11 @@ public interface SysConfigService {
     /**
      * 列表
      *
-     * @param object 查询条件
-     * @param page   分页
+     * @param sysConfig 查询条件
+     * @param page      分页
      * @return Page
      */
-    Page<SysConfig> select(SysConfig object, Page<SysConfig> page);
+    Page<SysConfig> select(SysConfig sysConfig, Page<SysConfig> page);
 
     /**
      * 获取详情
@@ -38,10 +38,10 @@ public interface SysConfigService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysConfig 表单内容
      * @return 保存后信息
      */
-    SysConfig saveData(SysConfig object);
+    SysConfig saveData(SysConfig sysConfig);
 
     /**
      * 根据key获取系统参数value

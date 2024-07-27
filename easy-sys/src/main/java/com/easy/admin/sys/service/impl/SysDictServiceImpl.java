@@ -46,7 +46,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         return page;
     }
 
-    private QueryWrapper<SysDict> getQueryWrapper(SysDict sysDict){
+    private QueryWrapper<SysDict> getQueryWrapper(SysDict sysDict) {
         QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
         if (sysDict != null) {
             if (Validator.isNotEmpty(sysDict.getName())) {
@@ -94,7 +94,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
     @Override
     public SysDict get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.selectById(id);
     }
 
@@ -108,26 +107,25 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
     @Override
     public SysDict add(String parentId, String dictType) {
-        SysDict object = new SysDict();
-        object.setStatus(CommonStatus.ENABLE.getCode());
-        object.setDictType(dictType);
+        SysDict sysDict = new SysDict();
+        sysDict.setStatus(CommonStatus.ENABLE.getCode());
+        sysDict.setDictType(dictType);
         if (parentId != null) {
             SysDict parentDict = baseMapper.selectById(parentId);
-            object.setParentCode(parentDict.getCode());
+            sysDict.setParentCode(parentDict.getCode());
             // 如果点击的是新增下级字典,字典类型默认为父字典的字典类型
-            object.setDictType(parentDict.getDictType());
+            sysDict.setDictType(parentDict.getDictType());
         }
-        if (Validator.isNotEmpty(object.getDictType())) {
+        if (Validator.isNotEmpty(sysDict.getDictType())) {
             // 有字典类型,自动设置排序值
-            object.setOrderNo(baseMapper.getMaxOrderNo(object.getDictType()) + 1);
+            sysDict.setOrderNo(baseMapper.getMaxOrderNo(sysDict.getDictType()) + 1);
         }
-        return object;
+        return sysDict;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
@@ -139,7 +137,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SysDict saveData(SysDict sysDict) {
-        ToolUtil.checkParams(sysDict);
         // 同一类型下字典编码不能重复
         QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("dict_type", sysDict.getDictType());
@@ -166,6 +163,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     /**
      * 获取字典内容
      */
+    @Override
     public List<SysDict> selectAll() {
         if (RedisUtil.hasKey(RedisPrefix.SYS_DICT)) {
             return (List<SysDict>) RedisUtil.get(RedisPrefix.SYS_DICT);

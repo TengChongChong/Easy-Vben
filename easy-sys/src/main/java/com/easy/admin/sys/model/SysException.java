@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,10 +15,11 @@ import java.util.Date;
  * @author TengChong
  * @date 2019-04-08
  */
+@Data
 @TableName("sys_exception")
 public class SysException extends Model<SysException> implements Serializable {
 
-    @TableId(value = "id")
+    @TableId
     private String id;
 
     /**
@@ -59,12 +61,12 @@ public class SysException extends Model<SysException> implements Serializable {
     /**
      * 触发时间
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     private Date startTriggerTime;
     /**
      * 触发时间
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     private Date endTriggerTime;
 
     /**
@@ -72,92 +74,4 @@ public class SysException extends Model<SysException> implements Serializable {
      */
     @TableField(exist = false)
     private String nickname;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Date getTriggerTime() {
-        return triggerTime;
-    }
-
-    public void setTriggerTime(Date triggerTime) {
-        this.triggerTime = triggerTime;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getTrace() {
-        return trace;
-    }
-
-    public void setTrace(String trace) {
-        this.trace = trace;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public Date getStartTriggerTime() {
-        return startTriggerTime;
-    }
-
-    public void setStartTriggerTime(Date startTriggerTime) {
-        this.startTriggerTime = startTriggerTime;
-    }
-
-    public Date getEndTriggerTime() {
-        return endTriggerTime;
-    }
-
-    public void setEndTriggerTime(Date endTriggerTime) {
-        this.endTriggerTime = endTriggerTime;
-    }
 }

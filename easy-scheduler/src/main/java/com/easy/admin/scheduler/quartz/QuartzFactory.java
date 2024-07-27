@@ -33,15 +33,15 @@ public class QuartzFactory implements Job {
         // 获取定时任务
         SchedulerJob schedulerJob = (SchedulerJob) context.getMergedJobDataMap().get(SchedulerConst.SCHEDULER_JOB_KEY);
         if (StrUtil.isNotBlank(schedulerJob.getBean())) {
-            Object object = SpringContextHolder.getBean(schedulerJob.getBean());
-            if (object != null) {
+            Object bean = SpringContextHolder.getBean(schedulerJob.getBean());
+            if (bean != null) {
                 try {
                     // 获取方法
-                    Method method = object.getClass().getMethod(schedulerJob.getMethod());
+                    Method method = bean.getClass().getMethod(schedulerJob.getMethod());
                     try {
                         Date startDate = new Date();
                         // 执行
-                        method.invoke(object);
+                        method.invoke(bean);
                         // 更新最后执行时间
                         updateLastRunDate(schedulerJob.getId());
                         // 保存执行日志

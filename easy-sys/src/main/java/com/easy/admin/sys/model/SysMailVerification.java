@@ -3,6 +3,7 @@ package com.easy.admin.sys.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,10 +14,11 @@ import java.util.Date;
  * @author TengChong
  * @date 2019-03-24
  */
- @TableName("sys_mail_verification")
-public class SysMailVerification extends Model<SysMailVerification> implements Serializable{
+@Data
+@TableName("sys_mail_verification")
+public class SysMailVerification extends Model<SysMailVerification> implements Serializable {
 
-    @TableId(value = "id")
+    @TableId
     private String id;
 
     /**
@@ -44,47 +46,4 @@ public class SysMailVerification extends Model<SysMailVerification> implements S
      */
     private String type;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-    public Date getExpired() {
-        return expired;
-    }
-
-    public void setExpired(Date expired) {
-        this.expired = expired;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

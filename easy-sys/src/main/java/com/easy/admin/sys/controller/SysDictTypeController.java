@@ -31,13 +31,13 @@ public class SysDictTypeController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysDictType 查询条件
      * @return Page<SysDictType>
      */
     @GetMapping
     @RequiresPermissions("sys:dict:type:select")
-    public Page<SysDictType> select(SysDictType object, Page<SysDictType> page) {
-        return service.select(object, page);
+    public Page<SysDictType> select(SysDictType sysDictType, Page<SysDictType> page) {
+        return service.select(sysDictType, page);
     }
 
     /**
@@ -101,10 +101,10 @@ public class SysDictTypeController extends BaseController {
      * @param sysDictType 查询条件
      * @return 文件下载id
      */
-    @Operation(summary ="导出数据")
+    @Operation(summary = "导出数据")
     @GetMapping("export/data")
     @RequiresPermissions("sys:dict:type:select")
-    public String exportData(SysDictType sysDictType){
+    public String exportData(SysDictType sysDictType) {
         return service.exportData(sysDictType);
     }
 }

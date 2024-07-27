@@ -30,13 +30,13 @@ public class SchedulerJobController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param schedulerJob 查询条件
      * @return Page<SchedulerJob>
      */
     @GetMapping()
     @RequiresPermissions("scheduler:job:select")
-    public Page<SchedulerJob> select(SchedulerJob object, Page<SchedulerJob> page) {
-        return service.select(object, page);
+    public Page<SchedulerJob> select(SchedulerJob schedulerJob, Page<SchedulerJob> page) {
+        return service.select(schedulerJob, page);
     }
 
     /**
@@ -76,13 +76,13 @@ public class SchedulerJobController {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param schedulerJob 表单内容
      * @return SchedulerJob
      */
     @PostMapping()
     @RequiresPermissions("scheduler:job:save")
-    public SchedulerJob saveData(@Valid @RequestBody SchedulerJob object) {
-        return service.saveData(object);
+    public SchedulerJob saveData(@Valid @RequestBody SchedulerJob schedulerJob) {
+        return service.saveData(schedulerJob);
     }
 
     /**

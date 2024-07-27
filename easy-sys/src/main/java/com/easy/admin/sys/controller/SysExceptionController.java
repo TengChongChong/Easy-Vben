@@ -29,13 +29,13 @@ public class SysExceptionController extends BaseController {
     /**
      * 列表
      *
-     * @param object 查询条件
+     * @param sysException 查询条件
      * @return Page<SysException>
      */
     @GetMapping
     @RequiresPermissions("sys:exception:select")
-    public Page<SysException> select(SysException object, Page<SysException> page) {
-        return service.select(object, page);
+    public Page<SysException> select(SysException sysException, Page<SysException> page) {
+        return service.select(sysException, page);
     }
 
     /**

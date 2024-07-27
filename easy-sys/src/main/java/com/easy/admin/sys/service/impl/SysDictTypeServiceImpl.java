@@ -95,7 +95,6 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("dt.id", idList);

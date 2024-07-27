@@ -33,21 +33,21 @@ public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMap
 
     @Override
     public Page<SysMessageDetail> selectMessageReceiverUserDetail(SysMessageDetail sysMessage, Page<SysMessageDetail> page) {
-        if (sysMessage == null || StrUtil.isBlank(sysMessage.getMessageId())){
+        if (sysMessage == null || StrUtil.isBlank(sysMessage.getMessageId())) {
             throw new EasyException("未指定消息ID");
         }
         QueryWrapper<SysMessageDetail> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("d.message_id", sysMessage.getMessageId());
 
-        if(Validator.isNotEmpty(sysMessage.getStatus())) {
+        if (Validator.isNotEmpty(sysMessage.getStatus())) {
             queryWrapper.eq("d.status", sysMessage.getStatus());
         }
         // 接收人
-        if(Validator.isNotEmpty(sysMessage.getReceiverUser())) {
+        if (Validator.isNotEmpty(sysMessage.getReceiverUser())) {
             queryWrapper.like("su.nickname", sysMessage.getReceiverUser());
         }
         // 接收人所在部门
-        if(Validator.isNotEmpty(sysMessage.getReceiverUserDeptName())) {
+        if (Validator.isNotEmpty(sysMessage.getReceiverUserDeptName())) {
             queryWrapper.like("sd.name", sysMessage.getReceiverUserDeptName());
         }
         page.setRecords(baseMapper.selectMessageReceiverUserDetail(page, queryWrapper));
@@ -68,7 +68,6 @@ public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMap
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String messageIds) {
-        ToolUtil.checkParams(messageIds);
         List<String> idList = Arrays.asList(messageIds.split(","));
         QueryWrapper<SysMessageDetail> delete = new QueryWrapper<>();
         delete.in("message_id", idList);
@@ -77,7 +76,6 @@ public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMap
 
     @Override
     public boolean removeByIds(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         QueryWrapper<SysMessageDetail> delete = new QueryWrapper<>();
         delete.in("id", idList);

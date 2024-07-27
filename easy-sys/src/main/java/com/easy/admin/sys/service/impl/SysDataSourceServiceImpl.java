@@ -52,41 +52,41 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
     /**
      * 列表
      *
-     * @param object 查询条
-     * @param page   分页
+     * @param sysDataSource 查询条
+     * @param page          分页
      * @return Page<SysDataSource>
      */
     @Override
-    public Page<SysDataSource> select(SysDataSource object, Page<SysDataSource> page) {
+    public Page<SysDataSource> select(SysDataSource sysDataSource, Page<SysDataSource> page) {
         QueryWrapper<SysDataSource> queryWrapper = new QueryWrapper<>();
-        if (object != null) {
+        if (sysDataSource != null) {
             // 查询条件
             // 名称
-            if (Validator.isNotEmpty(object.getName())) {
-                queryWrapper.like("t.name", object.getName());
+            if (Validator.isNotEmpty(sysDataSource.getName())) {
+                queryWrapper.like("t.name", sysDataSource.getName());
             }
             // url
-            if (Validator.isNotEmpty(object.getUrl())) {
-                queryWrapper.like("t.url", object.getUrl());
+            if (Validator.isNotEmpty(sysDataSource.getUrl())) {
+                queryWrapper.like("t.url", sysDataSource.getUrl());
             }
             // 账号
-            if (Validator.isNotEmpty(object.getUsername())) {
-                queryWrapper.like("t.username", object.getUsername());
+            if (Validator.isNotEmpty(sysDataSource.getUsername())) {
+                queryWrapper.like("t.username", sysDataSource.getUsername());
             }
             // 密码
-            if (Validator.isNotEmpty(object.getPassword())) {
-                queryWrapper.like("t.password", object.getPassword());
+            if (Validator.isNotEmpty(sysDataSource.getPassword())) {
+                queryWrapper.like("t.password", sysDataSource.getPassword());
             }
             // 备注
-            if (Validator.isNotEmpty(object.getRemarks())) {
-                queryWrapper.like("t.remarks", object.getRemarks());
+            if (Validator.isNotEmpty(sysDataSource.getRemarks())) {
+                queryWrapper.like("t.remarks", sysDataSource.getRemarks());
             }
             // 状态
-            if (Validator.isNotEmpty(object.getStatus())) {
-                if (object.getStatus().contains(CommonConst.SPLIT)) {
-                    queryWrapper.in("t.status", object.getStatus().split(CommonConst.SPLIT));
+            if (Validator.isNotEmpty(sysDataSource.getStatus())) {
+                if (sysDataSource.getStatus().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.status", sysDataSource.getStatus().split(CommonConst.SPLIT));
                 } else {
-                    queryWrapper.eq("t.status", object.getStatus());
+                    queryWrapper.eq("t.status", sysDataSource.getStatus());
                 }
             }
         }
@@ -123,7 +123,6 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
      */
     @Override
     public SysDataSource get(String id) {
-        ToolUtil.checkParams(id);
         return baseMapper.getById(id);
     }
 
@@ -134,10 +133,10 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
      */
     @Override
     public SysDataSource add() {
-        SysDataSource object = new SysDataSource();
-        object.setStatus(CommonStatus.ENABLE.getCode());
+        SysDataSource sysDataSource = new SysDataSource();
+        sysDataSource.setStatus(CommonStatus.ENABLE.getCode());
         // 设置默认值
-        return object;
+        return sysDataSource;
     }
 
     /**
@@ -149,14 +148,13 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean remove(String ids) {
-        ToolUtil.checkParams(ids);
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
 
         // 移除数据源
         QueryWrapper<SysDataSource> selectNames = new QueryWrapper<>();
         selectNames.in("id", idList);
         List<String> names = baseMapper.selectName(selectNames);
-        if(CollUtil.isNotEmpty(names)){
+        if (CollUtil.isNotEmpty(names)) {
             names.forEach(name -> dynamicRoutingDataSource.removeDataSource(name));
         }
 
@@ -166,26 +164,25 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDataSource 表单内容
      * @return SysDataSource
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysDataSource saveData(SysDataSource object) {
-        ToolUtil.checkParams(object);
+    public SysDataSource saveData(SysDataSource sysDataSource) {
         SysDataSource oldDataSource = null;
-        if (Validator.isNotEmpty(object.getId())) {
-            oldDataSource = get(object.getId());
+        if (Validator.isNotEmpty(sysDataSource.getId())) {
+            oldDataSource = get(sysDataSource.getId());
         }
-        boolean isSuccess = saveOrUpdate(object);
+        boolean isSuccess = saveOrUpdate(sysDataSource);
         if (!isSuccess) {
             throw new EasyException("数据源保存失败");
         }
         if (oldDataSource != null) {
             dynamicRoutingDataSource.removeDataSource(oldDataSource.getName());
         }
-        addDataSource(object);
-        return object;
+        addDataSource(sysDataSource);
+        return sysDataSource;
     }
 
 

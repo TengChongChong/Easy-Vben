@@ -1,9 +1,11 @@
-package com.easy.admin.common.mybatis.config;
+package com.easy.admin.config.mybatis.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.easy.admin.config.mybatis.plugins.DataPermissionHandlerImpl;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +29,9 @@ public class MybatisPlusConfig {
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         // 乐观锁插件，https://baomidou.com/pages/0d93c0/#optimisticlockerinnerinterceptor
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        // 自定义数据权限
+        interceptor.addInnerInterceptor(new DataPermissionInterceptor(new DataPermissionHandlerImpl()));
+
         return interceptor;
     }
 }

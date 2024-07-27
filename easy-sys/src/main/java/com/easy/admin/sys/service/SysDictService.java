@@ -59,7 +59,7 @@ public interface SysDictService {
     /**
      * 新增
      *
-     * @param parentId      上级id
+     * @param parentId 上级id
      * @param dictType 字典类型
      * @return SysDict
      */
@@ -76,10 +76,10 @@ public interface SysDictService {
     /**
      * 保存
      *
-     * @param object 表单内容
+     * @param sysDict 表单内容
      * @return SysDict
      */
-    SysDict saveData(SysDict object);
+    SysDict saveData(SysDict sysDict);
 
     /**
      * 查询所有字典
@@ -92,7 +92,7 @@ public interface SysDictService {
      * 根据字典类型获取字典Map
      *
      * @param dictTypes 字典类型
-     * @return Map<String, List<SysDict>>
+     * @return Map<String, List < SysDict>>
      */
     Map<String, List<SysDict>> selectDictionaries(String[] dictTypes);
 
