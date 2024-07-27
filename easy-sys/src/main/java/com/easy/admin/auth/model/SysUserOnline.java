@@ -1,5 +1,7 @@
 package com.easy.admin.auth.model;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Date;
  * @author TengChongChong
  * @date 2018/9/12
  */
+@Data
 public class SysUserOnline extends SysUser {
     /**
      * sessionId
@@ -33,52 +36,4 @@ public class SysUserOnline extends SysUser {
      * 超时时间
      */
     private Long timeout;
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getSystemHost() {
-        return systemHost;
-    }
-
-    public void setSystemHost(String systemHost) {
-        this.systemHost = systemHost;
-    }
-
-    public Date getStartTimestamp() {
-        return startTimestamp;
-    }
-
-    public void setStartTimestamp(Date startTimestamp) {
-        this.startTimestamp = startTimestamp;
-    }
-
-    public Date getLastAccessTime() {
-        return lastAccessTime;
-    }
-
-    public void setLastAccessTime(Date lastAccessTime) {
-        this.lastAccessTime = lastAccessTime;
-    }
-
-    public Long getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Long timeout) {
-        this.timeout = timeout;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
 }

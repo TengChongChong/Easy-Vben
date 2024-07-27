@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.admin.cms.common.status.CmsReleaseStatus;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 /**
  * 发布列队详情
@@ -15,6 +15,7 @@ import java.io.Serializable;
  * @author tengchongchong
  * @date 2023-07-12
  */
+@Data
 @TableName("cms_release_queue")
 public class CmsReleaseQueue extends Model<CmsReleaseQueue> {
 
@@ -77,91 +78,6 @@ public class CmsReleaseQueue extends Model<CmsReleaseQueue> {
         this.title = title;
         this.weight = 0L;
         this.status = CmsReleaseStatus.TO_BE_RELEASED.getCode();
-    }
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getDataId() {
-        return dataId;
-    }
-
-    public void setDataId(String dataId) {
-        this.dataId = dataId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Long getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Long weight) {
-        this.weight = weight;
-    }
-
-    public String getReceipt() {
-        return receipt;
-    }
-
-    public void setReceipt(String receipt) {
-        this.receipt = receipt;
-    }
-
-    public Long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Long duration) {
-        this.duration = duration;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
 

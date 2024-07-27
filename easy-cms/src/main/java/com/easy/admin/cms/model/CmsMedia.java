@@ -3,10 +3,10 @@ package com.easy.admin.cms.model;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.admin.file.model.FileInfo;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,6 +15,7 @@ import java.util.Date;
  * @author tengchongchong
  * @date 2023-06-21
  */
+@Data
 @TableName("cms_media")
 public class CmsMedia extends Model<CmsMedia> {
 
@@ -46,6 +47,10 @@ public class CmsMedia extends Model<CmsMedia> {
      */
     @Version
     private Integer version;
+    /**
+     * 部门id
+     */
+    private String deptId;
     /**
      * 创建人
      */
@@ -90,121 +95,4 @@ public class CmsMedia extends Model<CmsMedia> {
      */
     @TableField(exist = false)
     protected String fileObjectName;
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
-
-    public FileInfo getFile() {
-        return file;
-    }
-
-    public void setFile(FileInfo file) {
-        this.file = file;
-    }
-
-    public String getFileUrl() {
-        return fileUrl;
-    }
-
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
-
-    public String getFileBucketName() {
-        return fileBucketName;
-    }
-
-    public void setFileBucketName(String fileBucketName) {
-        this.fileBucketName = fileBucketName;
-    }
-
-    public String getFileObjectName() {
-        return fileObjectName;
-    }
-
-    public void setFileObjectName(String fileObjectName) {
-        this.fileObjectName = fileObjectName;
-    }
 }

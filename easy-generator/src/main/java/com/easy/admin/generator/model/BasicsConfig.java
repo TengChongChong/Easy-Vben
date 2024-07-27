@@ -2,6 +2,7 @@ package com.easy.admin.generator.model;
 
 import com.easy.admin.generator.constant.GeneratorFileConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
+import lombok.Data;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author tengchong
  * @date 2022/6/20
  */
+@Data
 public class BasicsConfig {
     /**
      * 数据源
@@ -20,6 +22,18 @@ public class BasicsConfig {
      * 表
      */
     private String table;
+    /**
+     * 与主表关联字段
+     */
+    private String mainTableField;
+    /**
+     * 与主表关联属性
+     */
+    private String mainTableProperty;
+    /**
+     * 生成模版
+     */
+    private String generatorTemplate;
     /**
      * 生成模版 - 列表
      */
@@ -86,149 +100,6 @@ public class BasicsConfig {
      */
     private Boolean overwrite;
 
-    public String getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(String dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
-    }
-
-    public String getListGeneratorTemplate() {
-        return listGeneratorTemplate;
-    }
-
-    public void setListGeneratorTemplate(String listGeneratorTemplate) {
-        this.listGeneratorTemplate = listGeneratorTemplate;
-    }
-
-    public String getFormGeneratorTemplate() {
-        return formGeneratorTemplate;
-    }
-
-    public void setFormGeneratorTemplate(String formGeneratorTemplate) {
-        this.formGeneratorTemplate = formGeneratorTemplate;
-    }
-
-    public List<String> getGenMethod() {
-        return genMethod;
-    }
-
-    public void setGenMethod(List<String> genMethod) {
-        this.genMethod = genMethod;
-    }
-
-    public List<String> getGenFile() {
-        return genFile;
-    }
-
-    public void setGenFile(List<String> genFile) {
-        this.genFile = genFile;
-    }
-
-    public String getBackEndPath() {
-        return backEndPath;
-    }
-
-    public void setBackEndPath(String backEndPath) {
-        this.backEndPath = backEndPath;
-    }
-
-    public String getBusinessName() {
-        return businessName;
-    }
-
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
-    }
-
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public String getPermissionCode() {
-        return permissionCode;
-    }
-
-    public void setPermissionCode(String permissionCode) {
-        this.permissionCode = permissionCode;
-    }
-
-    public String getPackagePath() {
-        return packagePath;
-    }
-
-    public void setPackagePath(String packagePath) {
-        this.packagePath = packagePath;
-    }
-
-    public String getControllerMapping() {
-        return controllerMapping;
-    }
-
-    public void setControllerMapping(String controllerMapping) {
-        this.controllerMapping = controllerMapping;
-    }
-
-    public String getFrontEndPath() {
-        return frontEndPath;
-    }
-
-    public void setFrontEndPath(String frontEndPath) {
-        this.frontEndPath = frontEndPath;
-    }
-
-    public String getViewPath() {
-        return viewPath;
-    }
-
-    public void setViewPath(String viewPath) {
-        this.viewPath = viewPath;
-    }
-
-    public String getApiPath() {
-        return apiPath;
-    }
-
-    public void setApiPath(String apiPath) {
-        this.apiPath = apiPath;
-    }
-
-    public Boolean getOverwrite() {
-        return overwrite;
-    }
-
-    public void setOverwrite(Boolean overwrite) {
-        this.overwrite = overwrite;
-    }
 
     /**
      * 是否生成新增方法

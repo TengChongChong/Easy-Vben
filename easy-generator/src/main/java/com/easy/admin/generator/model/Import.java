@@ -1,6 +1,6 @@
 package com.easy.admin.generator.model;
 
-import cn.hutool.core.util.ArrayUtil;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +12,7 @@ import java.util.List;
  * @author TengChongChong
  * @date 2021/1/25
  */
+@Data
 public class Import {
     /**
      * 资源地址
@@ -48,45 +49,5 @@ public class Import {
         this.type = type;
         this.imp = new ArrayList<>(Arrays.asList(imp.split(",")));
         this.importType = importType;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public List<String> getImp() {
-        return imp;
-    }
-
-    public void setImp(List<String> imp) {
-        this.imp = imp;
-    }
-
-    public String getImportType() {
-        return importType;
-    }
-
-    public void setImportType(String importType) {
-        this.importType = importType;
-    }
-
-    public String getImps() {
-        return ArrayUtil.join(this.imp.toArray(), ", ");
-    }
-
-    public void setImps(String imps) {
-        this.imps = imps;
     }
 }

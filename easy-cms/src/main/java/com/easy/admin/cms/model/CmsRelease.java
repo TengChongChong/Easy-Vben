@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,6 +15,7 @@ import java.util.Date;
  * @author tengchongchong
  * @date 2023-07-12
  */
+@Data
 @TableName("cms_release")
 public class CmsRelease extends Model<CmsRelease> {
 
@@ -68,6 +69,10 @@ public class CmsRelease extends Model<CmsRelease> {
      */
     private String status;
     /**
+     * 部门id
+     */
+    private String deptId;
+    /**
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
@@ -89,139 +94,5 @@ public class CmsRelease extends Model<CmsRelease> {
      */
     @TableField(exist = false)
     private Date endReleaseDate;
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
-    }
-
-    public String getPageIds() {
-        return pageIds;
-    }
-
-    public void setPageIds(String pageIds) {
-        this.pageIds = pageIds;
-    }
-
-    public String getColumnIds() {
-        return columnIds;
-    }
-
-    public void setColumnIds(String columnIds) {
-        this.columnIds = columnIds;
-    }
-
-    public String getReleaseArticle() {
-        return releaseArticle;
-    }
-
-    public void setReleaseArticle(String releaseArticle) {
-        this.releaseArticle = releaseArticle;
-    }
-
-    public Long getTotal() {
-        return total;
-    }
-
-    public void setTotal(Long total) {
-        this.total = total;
-    }
-
-    public Long getDone() {
-        return done;
-    }
-
-    public void setDone(Long done) {
-        this.done = done;
-    }
-
-    public Long getFail() {
-        return fail;
-    }
-
-    public void setFail(Long fail) {
-        this.fail = fail;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getReceipt() {
-        return receipt;
-    }
-
-    public void setReceipt(String receipt) {
-        this.receipt = receipt;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-
-    public Date getStartReleaseDate() {
-        return startReleaseDate;
-    }
-
-    public void setStartReleaseDate(Date startReleaseDate) {
-        this.startReleaseDate = startReleaseDate;
-    }
-
-    public Date getEndReleaseDate() {
-        return endReleaseDate;
-    }
-
-    public void setEndReleaseDate(Date endReleaseDate) {
-        this.endReleaseDate = endReleaseDate;
-    }
 
 }

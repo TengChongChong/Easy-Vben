@@ -1,11 +1,14 @@
 package com.easy.admin.file.model;
 
+import lombok.Data;
+
 /**
  * BaseFile
  *
  * @author TengChongChong
  * @date 2023-12-27
  **/
+@Data
 public class BaseFileInfo {
     /**
      * local - 文件夹名称 / oss - bucket名称
@@ -24,19 +27,4 @@ public class BaseFileInfo {
         this.objectName = objectName;
     }
 
-    public String getBucketName() {
-        return bucketName;
-    }
-
-    public void setBucketName(String bucketName) {
-        this.bucketName = bucketName;
-    }
-
-    public String getObjectName() {
-        return objectName;
-    }
-
-    public void setObjectName(String objectName) {
-        this.objectName = objectName;
-    }
 }

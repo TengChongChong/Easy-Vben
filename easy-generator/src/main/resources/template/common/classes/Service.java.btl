@@ -11,9 +11,10 @@ import ${basicsConfig.packagePath}.model.${basicsConfig.modelName};
  * @author ${basicsConfig.author}
  * @date ${date}
  */
-public interface ${basicsConfig.modelName}Service {
+public interface ${basicsConfig.modelName}Service extends IService<${basicsConfig.modelName}> {
     <% if(basicsConfig.isGeneratorMethodsSelect){ %>
-    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table' || basicsConfig.generatorTemplate == 'sub-table'){ %>
+
     /**
      * 查询数据（无分页）
      *
@@ -21,6 +22,8 @@ public interface ${basicsConfig.modelName}Service {
      * @return List<${basicsConfig.modelName}>
      */
     List<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)});
+    <% } %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
 
     /**
      * 查询所有数据（Tree）
@@ -28,7 +31,9 @@ public interface ${basicsConfig.modelName}Service {
      * @return List<Tree>
      */
     List<Tree> selectAll();
-    <% } else { %>
+    <% } %>
+    <% if(basicsConfig.listGeneratorTemplate == 'table'){ %>
+
     /**
      * 查询数据
      *
@@ -46,10 +51,10 @@ public interface ${basicsConfig.modelName}Service {
      * @return ${basicsConfig.modelName}
      */
     ${basicsConfig.modelName} get(String id);
-
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsAdd){ %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+
     /**
      * 新增或新增下级
      * @param parentId 上级id
@@ -57,6 +62,7 @@ public interface ${basicsConfig.modelName}Service {
      */
     ${basicsConfig.modelName} add(String parentId);
     <% } else { %>
+
     /**
      * 新增
      * @return ${basicsConfig.modelName}
@@ -65,6 +71,7 @@ public interface ${basicsConfig.modelName}Service {
     <% } %>
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsRemove){ %>
+
     /**
      * 删除
      *
@@ -72,10 +79,20 @@ public interface ${basicsConfig.modelName}Service {
      * @return true/false
      */
     boolean remove(String ids);
+    <% if(basicsConfig.generatorTemplate == 'sub-table'){ %>
 
+    /**
+     * 根据${basicsConfig.mainTableProperty}删除
+     *
+     * @param ${basicsConfig.mainTableProperty} ${basicsConfig.mainTableProperty}
+     * @return true/false
+     */
+    boolean removeBy${strUtil.upperFirst(basicsConfig.mainTableProperty)}(String ${basicsConfig.mainTableProperty});
+    <% } %>
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsSave){ %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+
     /**
      * 保存排序
      *
@@ -84,6 +101,7 @@ public interface ${basicsConfig.modelName}Service {
      */
     boolean saveOrder(List<${basicsConfig.modelName}> ${strUtil.lowerFirst(basicsConfig.modelName)}List);
     <% } %>
+
     /**
      * 保存/修改
      *
@@ -91,9 +109,20 @@ public interface ${basicsConfig.modelName}Service {
      * @return ${basicsConfig.modelName}
      */
     ${basicsConfig.modelName} saveData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)});
+    <% if(basicsConfig.generatorTemplate == 'sub-table'){ %>
 
+    /**
+     * 批量保存
+     *
+     * @param ${basicsConfig.mainTableProperty} ${basicsConfig.mainTableProperty}
+     * @param ${strUtil.lowerFirst(basicsConfig.modelName)}List 表单内容
+     * @return true/false
+     */
+    boolean saveBatchData(String ${basicsConfig.mainTableProperty}, List<${basicsConfig.modelName}> ${strUtil.lowerFirst(basicsConfig.modelName)}List);
+    <% } %>
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsExport){ %>
+
     /**
      * 导出数据
      *
@@ -101,6 +130,5 @@ public interface ${basicsConfig.modelName}Service {
      * @return 文件下载id
      */
     String exportData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)});
-
     <% } %>
 }

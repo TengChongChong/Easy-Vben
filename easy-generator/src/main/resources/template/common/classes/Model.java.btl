@@ -13,8 +13,11 @@ import ${import.name};
  * @author ${basicsConfig.author}
  * @date ${date}
  */
+@Data
 @TableName("${tableInfo.name}")
-public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> {
+public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     <% for(item in tableInfo.fields){ %>
     <% if(strUtil.isNotBlank(item.comment)) { %>
@@ -53,45 +56,6 @@ public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> 
      */
     @TableField(exist=false)
     private Date end${strUtil.upperFirst(item.propertyName)};
-    <% } %>
-    <% } %>
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    <% for(item in tableInfo.fields){ %>
-    public ${item.propertyType} get${item.capitalName}() {
-        return ${item.propertyName};
-    }
-
-    public void set${item.capitalName}(${item.propertyType} ${item.propertyName}) {
-        this.${item.propertyName} = ${item.propertyName};
-    }
-
-    <% } %>
-
-    <% for(item in queryConfig){ %>
-    <% if(item.matchingMode == 'start_end'){ %>
-    <% propertyName = 'start' + strUtil.upperFirst(item.propertyName); %>
-    public ${item.propertyType} get${strUtil.upperFirst(propertyName)}() {
-        return ${propertyName};
-    }
-
-    public void set${strUtil.upperFirst(propertyName)}(${item.propertyType} ${propertyName}) {
-        this.${propertyName} = ${propertyName};
-    }
-
-    <% propertyName = 'end' + strUtil.upperFirst(item.propertyName); %>
-    public ${item.propertyType} get${strUtil.upperFirst(propertyName)}() {
-        return ${propertyName};
-    }
-
-    public void set${strUtil.upperFirst(propertyName)}(${item.propertyType} ${propertyName}) {
-        this.${propertyName} = ${propertyName};
-    }
-
     <% } %>
     <% } %>
 }

@@ -1,11 +1,14 @@
 package com.easy.admin.file.model;
 
+import lombok.Data;
+
 /**
  * 文件信息
  *
  * @author TengChongChong
  * @date 2023-12-27
  **/
+@Data
 public class StatObjectResponse extends BaseFileInfo {
     /**
      * 文件大小
@@ -18,14 +21,6 @@ public class StatObjectResponse extends BaseFileInfo {
     public StatObjectResponse(String bucketName, String objectName, long size) {
         this.bucketName = bucketName;
         this.objectName = objectName;
-        this.size = size;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
         this.size = size;
     }
 }

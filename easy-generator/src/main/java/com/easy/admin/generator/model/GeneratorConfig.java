@@ -83,7 +83,7 @@ public class GeneratorConfig {
         this.exportConfig = exportConfig;
     }
 
-    public boolean isGeneratorMethod(String method){
+    public boolean isGeneratorMethod(String method) {
         return basicsConfig.getGenMethod() != null && basicsConfig.getGenMethod().contains(method);
     }
 }

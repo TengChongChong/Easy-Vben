@@ -1,5 +1,7 @@
 package com.easy.admin.activiti.model;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Date;
  * @author TengChongChong
  * @date 2019-07-12
  */
+@Data
 public class ActivitiProcess {
 
     /**
@@ -69,115 +72,4 @@ public class ActivitiProcess {
      */
     private Date deployTime;
 
-    public String getProcessDefinitionId() {
-        return processDefinitionId;
-    }
-
-    public void setProcessDefinitionId(String processDefinitionId) {
-        this.processDefinitionId = processDefinitionId;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    public String getDeploymentId() {
-        return deploymentId;
-    }
-
-    public void setDeploymentId(String deploymentId) {
-        this.deploymentId = deploymentId;
-    }
-
-    public String getResourceName() {
-        return resourceName;
-    }
-
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
-    }
-
-    public String getDgrmResourceName() {
-        return dgrmResourceName;
-    }
-
-    public void setDgrmResourceName(String dgrmResourceName) {
-        this.dgrmResourceName = dgrmResourceName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getHasStartFormKey() {
-        return hasStartFormKey;
-    }
-
-    public void setHasStartFormKey(Integer hasStartFormKey) {
-        this.hasStartFormKey = hasStartFormKey;
-    }
-
-    public Integer getHasGraphicalNotation() {
-        return hasGraphicalNotation;
-    }
-
-    public void setHasGraphicalNotation(Integer hasGraphicalNotation) {
-        this.hasGraphicalNotation = hasGraphicalNotation;
-    }
-
-    public Integer getSuspensionState() {
-        return suspensionState;
-    }
-
-    public void setSuspensionState(Integer suspensionState) {
-        this.suspensionState = suspensionState;
-    }
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public Date getDeployTime() {
-        return deployTime;
-    }
-
-    public void setDeployTime(Date deployTime) {
-        this.deployTime = deployTime;
-    }
 }

@@ -1,11 +1,14 @@
 package com.easy.admin.cms.model.vo;
 
+import lombok.Data;
+
 /**
  * 发布进度
  *
  * @author tengchong
  * @date 2023/7/12
  */
+@Data
 public class ReleaseProgressVO {
     /**
      * 是否结束
@@ -32,45 +35,4 @@ public class ReleaseProgressVO {
         this.timeStamp = System.currentTimeMillis();
     }
 
-    public Boolean getEnd() {
-        return end;
-    }
-
-    public void setEnd(Boolean end) {
-        this.end = end;
-    }
-
-    public Long getDone() {
-        return done;
-    }
-
-    public void setDone(Long done) {
-        this.done = done;
-    }
-
-    public Long getFail() {
-        return fail;
-    }
-
-    public void setFail(Long fail) {
-        this.fail = fail;
-    }
-
-    public Long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(Long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    @Override
-    public String toString() {
-        return "ReleaseProgressVO{" +
-                "end=" + end +
-                ", done=" + done +
-                ", fail=" + fail +
-                ", timeStamp=" + timeStamp +
-                '}';
-    }
 }

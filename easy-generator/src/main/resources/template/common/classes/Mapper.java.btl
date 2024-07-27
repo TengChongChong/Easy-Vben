@@ -13,21 +13,26 @@ import ${basicsConfig.packagePath}.model.${basicsConfig.modelName};
  */
 public interface ${basicsConfig.modelName}Mapper extends BaseMapper<${basicsConfig.modelName}> {
     <% if(basicsConfig.isGeneratorMethodsSelect){ %>
-    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table' || basicsConfig.generatorTemplate == 'sub-table'){ %>
+
     /**
      * 查询数据（无分页）
      *
      * @param queryWrapper 查询条件
      * @return List<${basicsConfig.modelName}>
      */
-    List<${basicsConfig.modelName}> select(@Param("ew") QueryWrapper<${basicsConfig.modelName}> queryWrapper);
+    List<${basicsConfig.modelName}> selectWithoutPage(@Param("ew") QueryWrapper<${basicsConfig.modelName}> queryWrapper);
+    <% } %>
+    <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
 
     /**
      * 查询所有数据（Tree）
      * @return List<JsTree>
      */
     List<Tree> selectAll();
-    <% } else { %>
+    <% } %>
+    <% if(basicsConfig.listGeneratorTemplate == 'table'){ %>
+
     /**
      * 查询数据
      *
@@ -37,6 +42,7 @@ public interface ${basicsConfig.modelName}Mapper extends BaseMapper<${basicsConf
      */
     List<${basicsConfig.modelName}> select(Page<${basicsConfig.modelName}> page, @Param("ew") QueryWrapper<${basicsConfig.modelName}> queryWrapper);
     <% } %>
+
     /**
      * 查询详情
      *

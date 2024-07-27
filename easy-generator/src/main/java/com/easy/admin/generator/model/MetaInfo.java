@@ -1,5 +1,6 @@
 package com.easy.admin.generator.model;
 
+import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 
 /**
@@ -8,6 +9,7 @@ import org.apache.ibatis.type.JdbcType;
  * @author tengchong
  * @date 2023/3/23
  */
+@Data
 public class MetaInfo {
     /**
      * 长度
@@ -32,51 +34,4 @@ public class MetaInfo {
      */
     private JdbcType jdbcType;
 
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public boolean isNullable() {
-        return nullable;
-    }
-
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-    }
-
-    public int getScale() {
-        return scale;
-    }
-
-    public void setScale(int scale) {
-        this.scale = scale;
-    }
-
-    public JdbcType getJdbcType() {
-        return jdbcType;
-    }
-
-    public void setJdbcType(JdbcType jdbcType) {
-        this.jdbcType = jdbcType;
-    }
 }

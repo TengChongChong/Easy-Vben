@@ -2,6 +2,7 @@ package com.easy.admin.scheduler.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,13 +14,14 @@ import java.util.Date;
  * @author TengChong
  * @date 2019-05-11
  */
+@Data
 @TableName("scheduler_job")
 public class SchedulerJob extends Model<SchedulerJob> {
 
     /**
      * id
      */
-    @TableId(value = "id")
+    @TableId
     private String id;
 
     /**
@@ -109,123 +111,4 @@ public class SchedulerJob extends Model<SchedulerJob> {
         this.code = code;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCron() {
-        return cron;
-    }
-
-    public void setCron(String cron) {
-        this.cron = cron;
-    }
-
-    public String getBean() {
-        return bean;
-    }
-
-    public void setBean(String bean) {
-        this.bean = bean;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Date getLastRunDate() {
-        return lastRunDate;
-    }
-
-    public void setLastRunDate(Date lastRunDate) {
-        this.lastRunDate = lastRunDate;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public String getSys() {
-        return sys;
-    }
-
-    public void setSys(String sys) {
-        this.sys = sys;
-    }
 }

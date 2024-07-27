@@ -2,9 +2,11 @@ package com.easy.admin.auth.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.easy.admin.config.mybatis.plugins.model.DataPermission;
 import com.easy.admin.file.model.FileInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,12 +20,13 @@ import java.util.List;
  * @author TengChongChong
  * @date 2018/9/4
  */
+@Data
 @TableName("sys_user")
 public class SysUser extends Model<SysUser> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id")
+    @TableId
     private String id;
     /**
      * 部门id
@@ -82,7 +85,7 @@ public class SysUser extends Model<SysUser> implements Serializable {
      */
     private Date lastLoginDate;
     /**
-     * 租户id
+     * 租户Id
      */
     private String tenantId;
     /**
@@ -134,6 +137,11 @@ public class SysUser extends Model<SysUser> implements Serializable {
     @TableField(exist = false)
     private List<SysRole> roleList;
     /**
+     * 角色数据权限
+     */
+    @TableField(exist = false)
+    private List<DataPermission> dataPermissionList;
+    /**
      * 角色ids，修改时使用
      */
     @TableField(exist = false)
@@ -158,226 +166,5 @@ public class SysUser extends Model<SysUser> implements Serializable {
     private boolean mailIsVerifies = true;
 
     public SysUser() {
-    }
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
-    }
-
-    public String getPostId() {
-        return postId;
-    }
-
-    public void setPostId(String postId) {
-        this.postId = postId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public Date getLastLoginDate() {
-        return lastLoginDate;
-    }
-
-    public void setLastLoginDate(Date lastLoginDate) {
-        this.lastLoginDate = lastLoginDate;
-    }
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
-
-    public SysDept getDept() {
-        return dept;
-    }
-
-    public void setDept(SysDept dept) {
-        this.dept = dept;
-    }
-
-    public List<SysRole> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<SysRole> roleList) {
-        this.roleList = roleList;
-    }
-
-    public List<SysPermission> getPermissionList() {
-        return permissionList;
-    }
-
-    public void setPermissionList(List<SysPermission> permissionList) {
-        this.permissionList = permissionList;
-    }
-
-    public FileInfo getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(FileInfo avatar) {
-        this.avatar = avatar;
-    }
-
-    public boolean isMailIsVerifies() {
-        return mailIsVerifies;
-    }
-
-    public void setMailIsVerifies(boolean mailIsVerifies) {
-        this.mailIsVerifies = mailIsVerifies;
-    }
-
-    public List<String> getRoleIdList() {
-        return roleIdList;
-    }
-
-    public void setRoleIdList(List<String> roleIdList) {
-        this.roleIdList = roleIdList;
-    }
-
-    public String getDeptName() {
-        return deptName;
-    }
-
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
     }
 }

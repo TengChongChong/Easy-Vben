@@ -2,6 +2,7 @@ package com.easy.admin.file.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author tengchongchong
  * @date 2023-11-17
  */
+@Data
 @TableName("file_upload_rule")
 public class FileUploadRule extends Model<FileUploadRule> implements Serializable {
 
@@ -73,6 +75,11 @@ public class FileUploadRule extends Model<FileUploadRule> implements Serializabl
     @Version
     private Integer version;
     /**
+     * 部门Id
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private String deptId;
+    /**
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
@@ -99,137 +106,4 @@ public class FileUploadRule extends Model<FileUploadRule> implements Serializabl
      */
     @TableField(exist = false)
     private List<String> suffixArray;
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getBucket() {
-        return bucket;
-    }
-
-    public void setBucket(String bucket) {
-        this.bucket = bucket;
-    }
-
-    public Integer getLowerLimit() {
-        return lowerLimit;
-    }
-
-    public void setLowerLimit(Integer lowerLimit) {
-        this.lowerLimit = lowerLimit;
-    }
-
-    public Integer getUpperLimit() {
-        return upperLimit;
-    }
-
-    public void setUpperLimit(Integer upperLimit) {
-        this.upperLimit = upperLimit;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
-
-    public List<String> getSuffixArray() {
-        return suffixArray;
-    }
-
-    public void setSuffixArray(List<String> suffixArray) {
-        this.suffixArray = suffixArray;
-    }
 }

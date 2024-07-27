@@ -3,9 +3,9 @@ package com.easy.admin.cms.model;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,6 +14,7 @@ import java.util.Date;
  * @author tengchongchong
  * @date 2023-06-19
  */
+@Data
 @TableName("cms_column")
 public class CmsColumn extends Model<CmsColumn> {
 
@@ -89,6 +90,10 @@ public class CmsColumn extends Model<CmsColumn> {
     @Version
     private Integer version;
     /**
+     * 部门id
+     */
+    private String deptId;
+    /**
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
@@ -110,155 +115,6 @@ public class CmsColumn extends Model<CmsColumn> {
     private Date editDate;
 
     // 非表字段
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getIsRelease() {
-        return isRelease;
-    }
-
-    public void setIsRelease(String isRelease) {
-        this.isRelease = isRelease;
-    }
-
-    public Integer getCoverProportionWidth() {
-        return coverProportionWidth;
-    }
-
-    public void setCoverProportionWidth(Integer coverProportionWidth) {
-        this.coverProportionWidth = coverProportionWidth;
-    }
-
-    public Integer getCoverProportionHeight() {
-        return coverProportionHeight;
-    }
-
-    public void setCoverProportionHeight(Integer coverProportionHeight) {
-        this.coverProportionHeight = coverProportionHeight;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public Integer getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Integer orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
 
 
 }
