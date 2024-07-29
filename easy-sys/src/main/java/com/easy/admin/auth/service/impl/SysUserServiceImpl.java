@@ -162,6 +162,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public SysUser saveData(SysUser sysUser, boolean updateAuthorization) {
         // 账号不能重复
         if (checkHaving(sysUser.getId(), "username", sysUser.getUsername())) {

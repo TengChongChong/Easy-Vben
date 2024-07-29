@@ -337,14 +337,14 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
                 // 当前单元格配置
                 SysImportExcelTemplateDetail cellConfig = configs.get(configLength);
                 boolean addVerificationResults = false;
-                if (cellConfig.getIndex() == null) {
-                    // 模版中不包含此字段
-                    if (cellConfig.getDataRequired()) {
-                        // 必填
+                if (cellConfig.getDataRequired()) {
+                    // 必填
+                    if (cellConfig.getIndex() == null) {
+                        // 模版中不包含此字段
                         addVerificationResults = true;
+                    } else {
+                        addVerificationResults = Validator.isEmpty(data.size() > cellConfig.getIndex() ? data.get(cellConfig.getIndex()) : null);
                     }
-                } else {
-                    addVerificationResults = Validator.isEmpty(data.size() > cellConfig.getIndex() ? data.get(cellConfig.getIndex()) : null);
                 }
 
                 if (addVerificationResults) {

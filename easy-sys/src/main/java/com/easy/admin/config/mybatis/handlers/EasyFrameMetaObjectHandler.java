@@ -50,7 +50,10 @@ public class EasyFrameMetaObjectHandler implements MetaObjectHandler {
             // 设置创建人&编辑人
             this.setFieldValByName(CREATE_USER, sysUser.getId(), metaObject);
             this.setFieldValByName(EDIT_USER, sysUser.getId(), metaObject);
-            this.setFieldValByName(DEPT_ID, sysUser.getDeptId(), metaObject);
+            Object deptIdValue = this.getFieldValByName(DEPT_ID, metaObject);
+            if (deptIdValue == null) {
+                this.setFieldValByName(DEPT_ID, sysUser.getDeptId(), metaObject);
+            }
         }
         Date now = new Date();
         this.setFieldValByName(CREATE_DATE, now, metaObject);

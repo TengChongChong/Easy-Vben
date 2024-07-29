@@ -61,6 +61,10 @@ public class SysImportExcelTemplate extends Model<SysImportExcelTemplate> {
      */
     private String remarks;
     /**
+     * 状态
+     */
+    private String status;
+    /**
      * 乐观锁
      */
     @Version

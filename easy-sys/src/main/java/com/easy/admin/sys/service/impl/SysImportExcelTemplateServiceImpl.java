@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.ToolUtil;
@@ -142,6 +143,7 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SysImportExcelTemplate saveData(SysImportExcelTemplate sysImportExcelTemplate) {
+        sysImportExcelTemplate.setStatus(CommonStatus.ENABLE.getCode());
         if (checkHav(sysImportExcelTemplate.getImportCode(), sysImportExcelTemplate.getId())) {
             throw new EasyException("模板代码 " + sysImportExcelTemplate.getImportCode() + " 中已存在，请修改后重试");
         }
