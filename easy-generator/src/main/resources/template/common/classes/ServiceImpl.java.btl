@@ -52,9 +52,11 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
         QueryWrapper<${basicsConfig.modelName}> queryWrapper = new QueryWrapper<>();
         if(${strUtil.lowerFirst(basicsConfig.modelName)} != null){
             // 查询条件
+            <% if(basicsConfig.generatorTemplate == 'sub-table'){ %>
             if (Validator.isNotEmpty(${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(basicsConfig.mainTableProperty)}())) {
                 queryWrapper.eq("${basicsConfig.mainTableField}", ${strUtil.lowerFirst(basicsConfig.modelName)}.get${strUtil.upperFirst(basicsConfig.mainTableProperty)}());
             }
+            <% } %>
             <% if(queryConfig != null) { %>
             <% for(item in queryConfig){ %>
             <% queryField = GeneratorJavaUtil.getSelectField(item); %>

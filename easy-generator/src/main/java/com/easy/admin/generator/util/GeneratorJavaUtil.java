@@ -28,9 +28,9 @@ public class GeneratorJavaUtil {
      */
     public static String getSelectField(FieldConfig config) {
         if ("createUser".equals(config.getPropertyName()) || "editUser".equals(config.getPropertyName())) {
-            return "su_" + config.getName() + ".nickname";
+            return "su_" + config.getName().toLowerCase() + ".nickname";
         } else {
-            return "t." + config.getName();
+            return "t." + config.getName().toLowerCase();
         }
     }
 
@@ -81,7 +81,7 @@ public class GeneratorJavaUtil {
     }
 
     private static String generatorExport(TableCellConfig fieldSet, int index) {
-        if("Date".equals(fieldSet.getPropertyType())){
+        if ("Date".equals(fieldSet.getPropertyType())) {
             return addBr("@Excel(name = \"" + fieldSet.getTitle() + "\", width = 20, orderNum = \"" + index + "\", exportFormat = \"yyyy-MM-dd HH:mm:ss\")");
         }
         Integer width = getWidth(fieldSet);

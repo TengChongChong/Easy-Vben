@@ -37,7 +37,7 @@ public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> 
     <% } %>
     <% if("editUser" == item.propertyName || "editDate" == item.propertyName){ %>
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    <% } else if ("createUser" == item.propertyName || "createDate" == item.propertyName) { %>
+    <% } else if ("createUser" == item.propertyName || "createDate" == item.propertyName || "deptId" == item.propertyName) { %>
     @TableField(fill = FieldFill.INSERT)
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsExport){ %>${GeneratorJavaUtil.generatorExport(item.propertyName, exportConfig)}<% } %>${GeneratorJavaUtil.generatorVerification(item.propertyName, inputConfig)}private ${item.propertyType} ${item.propertyName};
