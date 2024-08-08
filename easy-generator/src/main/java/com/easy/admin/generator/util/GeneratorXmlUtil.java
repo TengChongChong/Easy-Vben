@@ -21,9 +21,9 @@ public class GeneratorXmlUtil {
      */
     public static String getSelectField(TableCellConfig config) {
         if ("createUser".equals(config.getPropertyName()) || "editUser".equals(config.getPropertyName())) {
-            return "su_" + config.getName() + ".nickname as " + config.getName();
+            return "su_" + config.getName().toLowerCase() + ".nickname as " + config.getName().toLowerCase();
         } else {
-            return "t." + config.getName();
+            return "t." + config.getName().toLowerCase();
         }
     }
 

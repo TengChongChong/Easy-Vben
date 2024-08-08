@@ -150,7 +150,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                 generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/List.vue"
         );
         basePermission.setParentId("0");
-        basePermission.setExternal(WhetherConst.NO);
+        basePermission.setExternalLink(WhetherConst.NO);
         basePermission.setType(PermissionType.MENU.getCode());
         sysPermissionsService.saveData(basePermission);
         if (StrUtil.isNotBlank(generatorConfig.getBasicsConfig().getPermissionCode())) {
@@ -272,8 +272,8 @@ public class GeneratorServiceImpl implements GeneratorService {
         sysPermissions.setComponent(component);
         sysPermissions.setType(type);
         sysPermissions.setStatus(CommonStatus.ENABLE.getCode());
-        sysPermissions.setExternal(WhetherConst.NO);
-        sysPermissions.setDisplay(display);
+        sysPermissions.setExternalLink(WhetherConst.NO);
+        sysPermissions.setShowInMenu(display);
         // 打开方式
         sysPermissions.setOpenMode(OpenModeConst.DEFAULT);
         return sysPermissions;

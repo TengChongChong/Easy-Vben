@@ -15,9 +15,10 @@ import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
+import com.easy.admin.common.redis.constant.RedisPrefix;
+import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.OpenModeConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
-import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,19 +67,19 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 }
             }
             // 外链
-            if (Validator.isNotEmpty(sysPermission.getExternal())) {
-                if (sysPermission.getExternal().contains(CommonConst.SPLIT)) {
-                    queryWrapper.in("t.external", sysPermission.getExternal().split(CommonConst.SPLIT));
+            if (Validator.isNotEmpty(sysPermission.getExternalLink())) {
+                if (sysPermission.getExternalLink().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.external", sysPermission.getExternalLink().split(CommonConst.SPLIT));
                 } else {
-                    queryWrapper.eq("t.external", sysPermission.getExternal());
+                    queryWrapper.eq("t.external", sysPermission.getExternalLink());
                 }
             }
             // 显示
-            if (Validator.isNotEmpty(sysPermission.getDisplay())) {
-                if (sysPermission.getDisplay().contains(CommonConst.SPLIT)) {
-                    queryWrapper.in("t.display", sysPermission.getDisplay().split(CommonConst.SPLIT));
+            if (Validator.isNotEmpty(sysPermission.getShowInMenu())) {
+                if (sysPermission.getShowInMenu().contains(CommonConst.SPLIT)) {
+                    queryWrapper.in("t.display", sysPermission.getShowInMenu().split(CommonConst.SPLIT));
                 } else {
-                    queryWrapper.eq("t.display", sysPermission.getDisplay());
+                    queryWrapper.eq("t.display", sysPermission.getShowInMenu());
                 }
             }
             if (Validator.isNotEmpty(sysPermission.getPath())) {
@@ -104,8 +105,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         SysPermission sysPermission = new SysPermission();
         sysPermission.setParentId(parentId);
         sysPermission.setStatus(CommonStatus.ENABLE.getCode());
-        sysPermission.setDisplay(WhetherConst.YES);
-        sysPermission.setExternal(WhetherConst.NO);
+        sysPermission.setShowInMenu(WhetherConst.YES);
+        sysPermission.setExternalLink(WhetherConst.NO);
         sysPermission.setType(PermissionType.MENU.getCode());
         sysPermission.setOpenMode(OpenModeConst.DEFAULT);
         sysPermission.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
@@ -127,6 +128,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (isSuccess) {
             // 同时删除已分配的权限
             sysRolePermissionsService.removeRolePermissions(ids);
+            // 删除缓存的角色数据
+            RedisUtil.delByPrefix(RedisPrefix.SYS_ROLE);
         }
         return isSuccess;
     }
@@ -141,6 +144,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             UpdateWrapper<SysPermission> setChildStatus = new UpdateWrapper<>();
             setChildStatus.set("status", status).eq("parent_id", id);
             update(setChildStatus);
+            // 删除缓存的角色数据
+            RedisUtil.delByPrefix(RedisPrefix.SYS_ROLE);
         }
         return isSuccess;
     }
@@ -151,13 +156,22 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (StrUtil.isBlank(sysPermission.getId()) && sysPermission.getOrderNo() == null) {
             sysPermission.setOrderNo(baseMapper.getMaxOrderNo(sysPermission.getParentId()) + 1);
         }
-
-        return (SysPermission) ToolUtil.checkResult(saveOrUpdate(sysPermission), sysPermission);
+        boolean isSuccess = saveOrUpdate(sysPermission);
+        if (isSuccess) {
+            // 删除缓存的角色数据
+            RedisUtil.delByPrefix(RedisPrefix.SYS_ROLE);
+        }
+        return sysPermission;
     }
 
     @Override
     public boolean saveOrder(List<SysPermission> sysPermissionList) {
-        return baseMapper.updateOrderBatch(sysPermissionList) > 0;
+        boolean isSuccess = baseMapper.updateOrderBatch(sysPermissionList) > 0;
+        if (isSuccess) {
+            // 删除缓存的角色数据
+            RedisUtil.delByPrefix(RedisPrefix.SYS_ROLE);
+        }
+        return isSuccess;
     }
 
     @Override

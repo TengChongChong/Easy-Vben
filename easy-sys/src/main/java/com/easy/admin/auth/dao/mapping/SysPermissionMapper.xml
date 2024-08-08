@@ -11,9 +11,9 @@
         <result column="icon" property="icon"/>
         <result column="path" property="path"/>
         <result column="component" property="component"/>
-        <result column="external" property="external"/>
+        <result column="external_link" property="externalLink"/>
         <result column="order_no" property="orderNo"/>
-        <result column="display" property="display"/>
+        <result column="hide_in_menu" property="showInMenu"/>
         <result column="open_mode" property="openMode"/>
         <result column="status" property="status"/>
         <result column="remarks" property="remarks"/>
@@ -24,7 +24,7 @@
         <result column="version" property="version"/>
     </resultMap>
     <select id="select" resultType="com.easy.admin.auth.model.SysPermission">
-        select t.id, t.parent_id, t.type, t.title, t.name, t.code, t.icon, t.order_no, t.path, t.component, t.external, t.display,
+        select t.id, t.parent_id, t.type, t.title, t.name, t.code, t.icon, t.order_no, t.path, t.component, t.external_link, t.show_in_menu,
                t.open_mode, t.status, su.nickname as edit_user
         from sys_permission t
             left join sys_user su on su.id = t.edit_user
@@ -34,7 +34,7 @@
         order by t.order_no
     </select>
     <select id="getById" resultType="com.easy.admin.auth.model.SysPermission">
-        select t.id, t.parent_id, t.type, t.title, t.name, t.code, t.icon, t.order_no, t.path, t.component, t.external, t.display,
+        select t.id, t.parent_id, t.type, t.title, t.name, t.code, t.icon, t.order_no, t.path, t.component, t.external_link, t.show_in_menu,
                t.open_mode, t.status, t.remarks, t.version
         from sys_permission t
         where t.id = #{id}
@@ -51,7 +51,7 @@
         </if>
     </select>
     <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
-        select t.id, t.parent_id, t.id as `key`, t.type, t.icon, t.display, t.title
+        select t.id, t.parent_id, t.id as `key`, t.type, t.icon, t.show_in_menu, t.title
         from sys_permission t
         where t.status = #{status}
         order by t.order_no
