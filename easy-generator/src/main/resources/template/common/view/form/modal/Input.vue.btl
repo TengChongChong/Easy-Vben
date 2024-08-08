@@ -4,7 +4,7 @@
     @register="registerModel"
     showFooter
     title="${basicsConfig.businessName}"
-    :width="720"
+    :width="960"
   >
     <BasicForm @register="registerForm" />
     <% if(basicsConfig.generatorMethodsAdd){ %>
@@ -139,7 +139,9 @@
         closeModal,
         registerForm,
         handleSave,
+        <% if(basicsConfig.generatorMethodsAdd){ %>
         handleSaveAndAdd,
+        <% } %>
       };
     },
   });

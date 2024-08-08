@@ -127,7 +127,14 @@
       }
 
       <% } %>
-      return { registerDrawer, registerForm, handleSave, handleSaveAndAdd };
+      return {
+        registerDrawer,
+        registerForm,
+        handleSave,
+        <% if(basicsConfig.generatorMethodsAdd){ %>
+        handleSaveAndAdd,
+        <% } %>
+      };
     },
   });
 </script>

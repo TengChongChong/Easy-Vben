@@ -148,7 +148,15 @@
       }
 
       <% } %>
-      return { loading, saveBtnLoading, registerForm, handleSave, handleSaveAndAdd };
+      return {
+        loading,
+        saveBtnLoading,
+        registerForm,
+        handleSave,
+        <% if(basicsConfig.generatorMethodsAdd){ %>
+        handleSaveAndAdd,
+        <% } %>
+      };
     },
   });
 </script>

@@ -17,7 +17,7 @@
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table' || basicsConfig.generatorTemplate == 'sub-table'){ %>
     <select id="selectWithoutPage" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
         select t.id, t.parent_id<% for(item in tableConfig){ %>, ${GeneratorXmlUtil.getSelectField(item)}<% } %>
-        from ${tableInfo.name} t
+        from ${strutil.toLowerCase(tableInfo.name)} t
         <% for(item in tableConfig){ %>
         <% if(strutil.toLowerCase(item.name) == 'create_user' || strutil.toLowerCase(item.name) == 'edit_user'){ %>
         left join sys_user su_${strutil.toLowerCase(item.name)} on su_${strutil.toLowerCase(item.name)}.id = t.${strutil.toLowerCase(item.name)}
@@ -32,14 +32,14 @@
 
     <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
         select t.id, t.parent_id, t.name as title, t.id as `key`
-        from ${tableInfo.name} t
+        from ${strutil.toLowerCase(tableInfo.name)} t
         order by t.order_no
     </select>
     <% } %>
     <% if(basicsConfig.listGeneratorTemplate == 'table'){ %>
     <select id="select" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
         select t.id<% for(item in tableConfig){ %>, ${GeneratorXmlUtil.getSelectField(item)}<% } %>
-        from ${tableInfo.name} t
+        from ${strutil.toLowerCase(tableInfo.name)} t
         <% for(item in tableConfig){ %>
         <% if(strutil.toLowerCase(item.name) == 'create_user' || strutil.toLowerCase(item.name) == 'edit_user'){ %>
         left join sys_user su_${strutil.toLowerCase(item.name)} on su_${strutil.toLowerCase(item.name)}.id = t.${strutil.toLowerCase(item.name)}
@@ -54,7 +54,7 @@
     <%index = 0;%>
     <select id="getById" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
         select <% for(item in tableInfo.fields){ %>${index == 0 ? '' : ', '}t.${strutil.toLowerCase(item.name)}<% index++;} %>
-        from ${tableInfo.name} t
+        from ${strutil.toLowerCase(tableInfo.name)} t
         where t.id = #{id}
     </select>
     <% } %>
@@ -63,12 +63,12 @@
 
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0)
-        from ${tableInfo.name} t
+        from ${strutil.toLowerCase(tableInfo.name)} t
         where t.parent_id = #{parentId}
     </select>
     <update id="updateOrderBatch">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
-            update ${tableInfo.name}
+            update ${strutil.toLowerCase(tableInfo.name)}
             <set>
                 parent_id = #{item.parentId},
                 order_no = #{item.orderNo}
@@ -83,7 +83,7 @@
     <%index = 0;%>
     <select id="exportData" resultType="${basicsConfig.packagePath}.model.${basicsConfig.modelName}">
         select <% for(item in exportConfig!){ %>${index == 0 ? '' : ', '}${GeneratorXmlUtil.getExportField(item)}<% index++;} %>
-        from ${tableInfo.name} t
+        from ${strutil.toLowerCase(tableInfo.name)} t
         <% for(item in exportConfig!){ %>
         <% if(strUtil.isNotBlank(item.dictType)){ %>
         left join sys_dict sd_${strutil.toLowerCase(item.name)} on sd_${strutil.toLowerCase(item.name)}.code = t.${strutil.toLowerCase(item.name)} and sd_${strutil.toLowerCase(item.name)}.dict_type = '${item.dictType}'
