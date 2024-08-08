@@ -2,10 +2,9 @@ package com.easy.admin.auth.controller;
 
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.service.SysUserService;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.common.core.annotation.ResponseResult;
-import com.easy.admin.core.annotation.SysLog;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -111,18 +110,6 @@ public class SysUserController extends BaseController {
     public SysUser get(@PathVariable("id") String id) {
         return service.get(id);
     }
-
-    /**
-     * 获取当前登录用户
-     *
-     * @return SysUser
-     */
-    @GetMapping("current")
-    @SysLog(modular = "sys", method = "获取当前登录用户")
-    public SysUser getCurrent() {
-        return service.getCurrentUser();
-    }
-
 
     /**
      * 查询用户，用于用户选择

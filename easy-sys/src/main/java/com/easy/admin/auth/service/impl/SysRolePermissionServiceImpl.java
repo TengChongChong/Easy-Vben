@@ -3,11 +3,12 @@ package com.easy.admin.auth.service.impl;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.auth.dao.SysRolePermissionMapper;
+import com.easy.admin.auth.model.SysPermission;
 import com.easy.admin.auth.model.SysRolePermission;
 import com.easy.admin.auth.service.SysRolePermissionService;
+import com.easy.admin.common.core.common.status.CommonStatus;
+import com.easy.admin.common.core.constant.CommonConst;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,5 +51,10 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
     @Override
     public boolean removeRolePermissions(String permissions) {
         return remove(new QueryWrapper<SysRolePermission>().in("permission_id", permissions.split(CommonConst.SPLIT)));
+    }
+
+    @Override
+    public List<SysPermission> selectSysPermissionByRoleId(String roleId) {
+        return baseMapper.selectSysPermissionByRoleId(roleId, CommonStatus.ENABLE.getCode());
     }
 }

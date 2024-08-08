@@ -7,9 +7,19 @@
         <result column="permission_id" property="permissionId"/>
     </resultMap>
     <select id="selectPermissionsByRoleId" resultType="com.easy.admin.auth.model.SysPermission">
-        select * from sys_permission p
-        left join sys_role_permission rp on rp.permission_id = p.id
-        where p.status = #{status} and rp.role_id = #{roleId}
+        select * from sys_permission sp
+        left join sys_role_permission srp on srp.permission_id = sp.id
+        where sp.status = #{status} and srp.role_id = #{roleId}
+    </select>
+    <select id="selectSysPermissionByRoleId" resultType="com.easy.admin.auth.model.SysPermission">
+        select sp.id, sp.parent_id, sp.type, sp.name, sp.title, sp.icon, sp.code, sp.path, sp.component, sp.external_link,
+               sp.order_no, sp.show_in_menu, sp.open_mode
+        from sys_permission sp
+                 left join sys_role_permission srp on srp.permission_id = sp.id
+        where srp.role_id = #{roleId}
+          and sp.status = #{status}
+        group by sp.id, sp.order_no
+        order by sp.order_no
     </select>
 
 

@@ -5,17 +5,16 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.file.util.file.EditorUtil;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.dao.SysMessageMapper;
 import com.easy.admin.sys.model.SysMessage;
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.sys.service.SysMessageService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.common.core.util.ToolUtil;
-import com.easy.admin.file.util.file.EditorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +65,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
 
     @Override
     public Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page) {
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         // 查询条件
         QueryWrapper<SysMessage> queryWrapper = commonQuery(sysMessage);
         // 只查询接收人为自己的

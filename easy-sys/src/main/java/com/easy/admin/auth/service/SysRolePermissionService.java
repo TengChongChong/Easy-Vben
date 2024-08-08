@@ -1,5 +1,7 @@
 package com.easy.admin.auth.service;
 
+import com.easy.admin.auth.model.SysPermission;
+
 import java.util.List;
 
 /**
@@ -35,4 +37,12 @@ public interface SysRolePermissionService {
      * @return true/false
      */
     boolean removeRolePermissions(String permissionIds);
+
+    /**
+     * 根据角色id获取权限数据
+     *
+     * @param roleId 角色id
+     * @return List<SysPermission>
+     */
+    List<SysPermission> selectSysPermissionByRoleId(String roleId);
 }

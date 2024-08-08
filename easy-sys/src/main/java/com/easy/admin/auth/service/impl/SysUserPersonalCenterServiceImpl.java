@@ -5,6 +5,7 @@ import cn.hutool.extra.mail.MailUtil;
 import cn.hutool.json.JSONObject;
 import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysUserPersonalCenterService;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.exception.EasyException;
@@ -54,22 +55,22 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     private FileStorageFactory fileStorageFactory;
 
     @Override
-    public SysUser getCurrentUser() {
-        SysUser sysUser = ShiroUtil.getCurrentUser();
-        if (sysUser != null) {
-            SysUser queryResult = sysUserService.selectEmailAndPhone(sysUser.getId());
+    public SessionUserVO getCurrentUser() {
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        if (currentUser != null) {
+            SysUser queryResult = sysUserService.selectEmailAndPhone(currentUser.getId());
             if (queryResult != null) {
-                sysUser.setPhoneNumber(queryResult.getPhoneNumber());
-                sysUser.setEmail(queryResult.getEmail());
+                currentUser.setPhoneNumber(queryResult.getPhoneNumber());
+                currentUser.setEmail(queryResult.getEmail());
             }
             // 如果数据库中email也为空,查询是否有待验证url
-            String mail = sysMailVerifiesService.getMailByUserId(sysUser.getId());
+            String mail = sysMailVerifiesService.getMailByUserId(currentUser.getId());
             if (StrUtil.isNotBlank(mail)) {
-                sysUser.setEmail(mail);
-                sysUser.setMailIsVerifies(false);
+                currentUser.setEmail(mail);
+                currentUser.setMailIsVerifies(false);
             }
         }
-        return sysUser;
+        return currentUser;
     }
 
     @Override
@@ -80,9 +81,9 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
             return true;
         }
 
-        SysUser sysUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         // 删除原头像
-        fileInfoService.delete(sysUser.getId(), "avatar");
+        fileInfoService.delete(currentUser.getId(), "avatar");
 
         if (avatar.getSize() > 1024 * 100) {
             // 超过100kb，压缩
@@ -98,11 +99,11 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         }
 
         // 保存头像
-        fileInfoService.saveData(sysUser.getId(), "avatar", avatar);
+        fileInfoService.saveData(currentUser.getId(), "avatar", avatar);
 
-        sysUser.setAvatar(avatar);
+        currentUser.setAvatar(avatar);
 
-        ShiroUtil.setCurrentUser(sysUser);
+        ShiroUtil.setCurrentUser(currentUser);
 
         return true;
     }
@@ -112,7 +113,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         if (sysUser == null) {
             throw new EasyException(GlobalException.FAILED_TO_GET_DATA);
         }
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         sysUser.setId(currentUser.getId());
         sysUser = sysUserService.saveData(sysUser, false);
         // 保存成功后更新redis中的用户信息
@@ -123,7 +124,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         if (sysUser.getAvatar() != null) {
             saveUserAvatar(sysUser.getAvatar());
         }
-        return currentUser;
+        return sysUser;
     }
 
     @Override
@@ -131,7 +132,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         if (StrUtil.isBlank(email)) {
             throw new EasyException("获取邮箱信息失败");
         }
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         SysMailVerification sysMailVerifies = sysMailVerifiesService.saveData(String.valueOf(currentUser.getId()), email, MailConst.MAIL_BINDING_MAIL);
         if (sysMailVerifies != null) {
             String url = "/#/auth/personal/center/mail-verifies/" + sysMailVerifies.getCode();
@@ -157,26 +158,26 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
             throw new EasyException("请输入新密码");
         }
 
-        SysUser sysUser = ShiroUtil.getCurrentUser();
-        if (sysUser == null) {
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        if (currentUser == null) {
             throw new EasyException("请登录后重试");
         }
 
         // 检查当前密码是否正确
-        SysUser passwordAndSlat = sysUserService.selectPasswordAndSalt(sysUser.getId());
+        SysUser passwordAndSlat = sysUserService.selectPasswordAndSalt(currentUser.getId());
         if (!PasswordUtil.encryptedPasswords(oldPassword, passwordAndSlat.getSalt()).equals(passwordAndSlat.getPassword())) {
             throw new EasyException("原密码输入错误");
         }
         // 修改密码
-        boolean isSuccess = sysUserService.resetPassword(sysUser.getUsername(), password);
-        sysUser.setPassword(PasswordUtil.encryptedPasswords(password, passwordAndSlat.getSalt()));
-        ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, sysUser);
+        boolean isSuccess = sysUserService.resetPassword(currentUser.getUsername(), password);
+        currentUser.setPassword(PasswordUtil.encryptedPasswords(password, passwordAndSlat.getSalt()));
+        ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, currentUser);
         return isSuccess;
     }
 
     @Override
     public boolean bindingPhone(String phone, String captcha) {
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         String redisCode = (String) RedisUtil.get(RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId());
         if (StrUtil.isBlank(redisCode)) {
             throw new EasyException("验证码已过期，请重新获取");

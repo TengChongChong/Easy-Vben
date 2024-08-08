@@ -6,11 +6,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.common.constant.SysRoleConst;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.SpringContextHolder;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.scheduler.common.status.SchedulerStatus;
 import com.easy.admin.scheduler.dao.SchedulerJobMapper;
 import com.easy.admin.scheduler.model.SchedulerJob;
@@ -20,7 +21,6 @@ import com.easy.admin.scheduler.service.SchedulerJobLogService;
 import com.easy.admin.scheduler.service.SchedulerJobService;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.common.core.util.ToolUtil;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,7 +169,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SchedulerJob saveData(SchedulerJob schedulerJob) {
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         // 更新前的任务名称
         String jobJobCode = null;
         schedulerJob.setEditDate(new Date());

@@ -125,22 +125,26 @@ public class SysUser extends Model<SysUser> implements Serializable {
      */
     @TableField(exist = false)
     private SysDept dept;
+
     /**
      * 所属部门名称
      */
     @TableField(exist = false)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String deptName;
+
     /**
      * 角色集合
      */
     @TableField(exist = false)
     private List<SysRole> roleList;
+
     /**
      * 角色数据权限
      */
     @TableField(exist = false)
     private List<DataPermission> dataPermissionList;
+
     /**
      * 角色ids，修改时使用
      */
@@ -153,6 +157,7 @@ public class SysUser extends Model<SysUser> implements Serializable {
      */
     @TableField(exist = false)
     private List<SysPermission> permissionList;
+
     /**
      * 头像缩略图
      */
@@ -164,7 +169,4 @@ public class SysUser extends Model<SysUser> implements Serializable {
      */
     @TableField(exist = false)
     private boolean mailIsVerifies = true;
-
-    public SysUser() {
-    }
 }

@@ -1,7 +1,10 @@
 package com.easy.admin.auth.service;
 
 import com.easy.admin.auth.model.SysRole;
+import com.easy.admin.auth.model.vo.SysRoleCacheVO;
+import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.config.mybatis.plugins.model.DataPermission;
 
 import java.util.List;
 
@@ -100,4 +103,27 @@ public interface SysRoleService {
      * @return List<SysRole>
      */
     List<SysRole> selectRoleByDept(String deptId);
+
+    /**
+     * 获取角色信息，优先从缓存获取，如果未命中则从数据库获取
+     *
+     * @param id 角色id
+     * @return SysRoleCacheVO
+     */
+    SysRoleCacheVO getSysRoleCache(String id);
+
+    /**
+     * 将角色数据权限汇总，并按照数据范围合并
+     *
+     * @param roleList 角色
+     * @return 数据权限
+     */
+    List<DataPermission> convertToDataPermission(List<SessionUserRoleVO> roleList);
+
+    /**
+     * 刷新缓存数据
+     *
+     * @return true/false
+     */
+    boolean refresh();
 }

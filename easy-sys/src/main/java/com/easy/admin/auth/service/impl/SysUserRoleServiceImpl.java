@@ -4,9 +4,8 @@ import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.dao.SysUserRoleMapper;
-import com.easy.admin.auth.model.SysPermission;
-import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.model.SysUserRole;
+import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
@@ -78,12 +77,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     }
 
     @Override
-    public List<SysPermission> selectPermissionByUserId(String userId) {
-        return baseMapper.selectPermissionByUserId(userId, CommonStatus.ENABLE.getCode());
-    }
-
-    @Override
-    public List<SysRole> selectRoleByUserId(String userId) {
+    public List<SessionUserRoleVO> selectRoleByUserId(String userId) {
         return baseMapper.selectRoleByUserId(userId, CommonStatus.ENABLE.getCode());
     }
 }

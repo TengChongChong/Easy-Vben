@@ -1,9 +1,7 @@
 package com.easy.admin.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.model.SysRoleDataPermission;
-import com.easy.admin.config.mybatis.plugins.model.DataPermission;
 
 import java.util.List;
 
@@ -40,11 +38,4 @@ public interface SysRoleDataPermissionService extends IService<SysRoleDataPermis
      */
     boolean saveBatchData(String roleId, List<String> deptIds);
 
-    /**
-     * 将角色数据权限汇总，并按照数据范围合并
-     *
-     * @param roleList 角色
-     * @return 数据权限
-     */
-    List<DataPermission> convertToDataPermission(List<SysRole> roleList);
 }

@@ -4,10 +4,11 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.dao.SysImportExcelTemporaryMapper;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
@@ -16,7 +17,6 @@ import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.util.office.ImportExportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,29 +119,29 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
 
     @Override
     public boolean checkLastData(String templateId) {
-        SysUser sysUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         QueryWrapper<SysImportExcelTemporary> selectLastData = new QueryWrapper<>();
-        selectLastData.eq("user_id", sysUser.getId());
+        selectLastData.eq("user_id", currentUser.getId());
         selectLastData.eq("template_id", templateId);
         return count(selectLastData) > 0;
     }
 
     @Override
     public boolean cleanMyImport(String templateId) {
-        SysUser sysUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         QueryWrapper<SysImportExcelTemporary> clean = new QueryWrapper<>();
-        clean.eq("user_id", sysUser.getId());
+        clean.eq("user_id", currentUser.getId());
         clean.eq("template_id", templateId);
         return remove(clean);
     }
 
     @Override
     public boolean cleanSuccessData(String templateId) {
-        SysUser sysUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         // 删除已导入成功的数据
         QueryWrapper<SysImportExcelTemporary> deleteSuccess = new QueryWrapper<>();
         deleteSuccess.eq("verification_status", ImportConst.VERIFICATION_STATUS_SUCCESS);
-        deleteSuccess.eq("user_id", sysUser.getId());
+        deleteSuccess.eq("user_id", currentUser.getId());
         deleteSuccess.eq("template_id", templateId);
         return remove(deleteSuccess);
     }
@@ -156,8 +156,8 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
 
     @Override
     public SysImportSummary selectImportSummary(String templateId) {
-        SysUser sysUser = ShiroUtil.getCurrentUser();
-        List<SysImportExcelTemporary> temporaries = baseMapper.selectImportSummary(templateId, sysUser.getId());
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        List<SysImportExcelTemporary> temporaries = baseMapper.selectImportSummary(templateId, currentUser.getId());
         SysImportSummary summary = new SysImportSummary();
         if (temporaries != null && !temporaries.isEmpty()) {
             for (SysImportExcelTemporary temporary : temporaries) {

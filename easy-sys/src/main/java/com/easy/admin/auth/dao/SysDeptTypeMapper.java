@@ -25,6 +25,7 @@ public interface SysDeptTypeMapper extends BaseMapper<SysDeptType> {
 
     /**
      * 获取所有数据
+     *
      * @param status 状态
      * @return List<JsTree>
      */
@@ -45,6 +46,7 @@ public interface SysDeptTypeMapper extends BaseMapper<SysDeptType> {
      * @return 角色集合
      */
     List<String> selectRoles(@Param("id") String id);
+
     /**
      * 获取最大排序值
      *
@@ -68,4 +70,12 @@ public interface SysDeptTypeMapper extends BaseMapper<SysDeptType> {
      * @return 更新条数
      */
     Integer updateOrderBatch(List<SysDeptType> list);
+
+    /**
+     * 根据部门类型编码获取状态
+     *
+     * @param code 部门类型编码
+     * @return 状态
+     */
+    String getStatusByCode(@Param("code") String code);
 }

@@ -7,7 +7,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.SpringContextHolder;
 import com.easy.admin.exception.BusinessException;
@@ -151,18 +151,18 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         data.subList(0, sysImportExcelData.getStartRow()).clear();
 
         // 模板验证通过,将数据插入到临时表
-        SysUser sysUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         // 清空上次导入的信息
         cleanLastImport(importExcelTemplate);
         // 插入数据到临时表
-        if (!insertData(sysUser, importExcelTemplate, configs, data)) {
+        if (!insertData(currentUser, importExcelTemplate, configs, data)) {
             throw new EasyException(BusinessException.IMPORT_INSERT_FAIL);
         }
         // 唯一约束检查
-        checkOnly(configs, templateId, sysUser.getId());
+        checkOnly(configs, templateId, currentUser.getId());
         if (StrUtil.isNotBlank(importExcelTemplate.getCallback())) {
             ImportService importService = SpringContextHolder.getBean(importExcelTemplate.getCallback());
-            boolean isSuccess = importService.verificationData(templateId, sysUser.getId());
+            boolean isSuccess = importService.verificationData(templateId, currentUser.getId());
             if (!isSuccess) {
                 throw new EasyException("执行验证数据回调失败");
             }
@@ -255,13 +255,13 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     /**
      * 将数据导入临时表
      *
-     * @param sysUser             当前登录用户
+     * @param currentUser         当前登录用户
      * @param importExcelTemplate 模板信息
      * @param configs             导入规则
      * @param rows                excel中数据
      * @return true/false
      */
-    private boolean insertData(SysUser sysUser,
+    private boolean insertData(SessionUserVO currentUser,
                                SysImportExcelTemplate importExcelTemplate,
                                List<SysImportExcelTemplateDetail> configs,
                                List<List<Object>> rows) {
@@ -274,7 +274,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
             setDictMap(cacheMap, dicts);
         }
         for (List<Object> row : rows) {
-            temporaries.add(getTemporaryInfo(sysUser, importExcelTemplate, configs, row, cacheMap));
+            temporaries.add(getTemporaryInfo(currentUser, importExcelTemplate, configs, row, cacheMap));
         }
         return importExcelTemporaryService.saveBatch(temporaries);
     }
@@ -312,14 +312,14 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     /**
      * 将excel单行转为SysImportExcelTemporary对象
      *
-     * @param sysUser             操作用户
+     * @param currentUser         操作用户
      * @param importExcelTemplate 模板信息
      * @param configs             导入规则
      * @param data                行
      * @param cacheMap            缓存
      * @return SysImportExcelTemporary
      */
-    private SysImportExcelTemporary getTemporaryInfo(SysUser sysUser,
+    private SysImportExcelTemporary getTemporaryInfo(SessionUserVO currentUser,
                                                      SysImportExcelTemplate importExcelTemplate,
                                                      List<SysImportExcelTemplateDetail> configs,
                                                      List<Object> data,
@@ -373,7 +373,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
             SysImportExcelTemporary temporary = (SysImportExcelTemporary) object;
             // 设置模板信息
             temporary.setTemplateId(importExcelTemplate.getId());
-            temporary.setUserId(sysUser.getId());
+            temporary.setUserId(currentUser.getId());
             // 设置验证结果
             if (StrUtil.isNotBlank(verificationResults)) {
                 temporary.setVerificationResults(verificationResults.toString());
@@ -443,7 +443,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public int insertData(String templateId) {
-        SysUser sysUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         SysImportExcelTemplate importExcelTemplate = importExcelTemplateService.get(templateId);
         // 检查是否有权限访问
         if (StrUtil.isNotBlank(importExcelTemplate.getPermissionCode()) && !hasPermission(importExcelTemplate.getPermissionCode())) {
@@ -454,7 +454,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         ImportService importService = null;
         if (StrUtil.isNotBlank(importExcelTemplate.getCallback())) {
             importService = SpringContextHolder.getBean(importExcelTemplate.getCallback());
-            boolean isSuccess = importService.beforeImport(templateId, sysUser.getId());
+            boolean isSuccess = importService.beforeImport(templateId, currentUser.getId());
             if (!isSuccess) {
                 throw new EasyException("执行导入前回调失败");
             }
@@ -474,7 +474,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
                     StrUtil.join(",", insertFields),
                     StrUtil.join(",", selectFields),
                     importExcelTemplate.getId(),
-                    sysUser.getId(),
+                    currentUser.getId(),
                     ImportConst.VERIFICATION_STATUS_SUCCESS);
             // 调用导入后回调
             if (importService != null) {

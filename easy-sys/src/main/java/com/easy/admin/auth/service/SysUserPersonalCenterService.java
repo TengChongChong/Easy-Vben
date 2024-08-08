@@ -2,6 +2,7 @@ package com.easy.admin.auth.service;
 
 import cn.hutool.json.JSONObject;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.file.model.FileInfo;
 
 /**
@@ -15,9 +16,9 @@ public interface SysUserPersonalCenterService {
     /**
      * 获取当前登录用户信息
      *
-     * @return SysUser
+     * @return SessionUserVO
      */
-    SysUser getCurrentUser();
+    SessionUserVO getCurrentUser();
 
     /**
      * 保存头像
@@ -46,8 +47,8 @@ public interface SysUserPersonalCenterService {
     /**
      * 申请绑定密保邮箱
      *
-     * @param phone 手机号
-     * @param captcha  验证码
+     * @param phone   手机号
+     * @param captcha 验证码
      * @return true/false
      */
     boolean bindingPhone(String phone, String captcha);

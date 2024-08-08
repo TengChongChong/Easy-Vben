@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.cms.common.constant.CmsRedisKeyPrefix;
 import com.easy.admin.cms.dao.CmsColumnMapper;
 import com.easy.admin.cms.model.CmsColumn;
@@ -258,7 +258,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
         List<CmsColumn> cmsColumnList = baseMapper.selectNeedUpdateParentInfo();
         updateBatchById(cmsColumnList);
         // 2.设置创建时间等信息
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         baseMapper.updateAfterImport(currentUser.getDeptId(), currentUser.getId(), new Date());
         return true;
     }

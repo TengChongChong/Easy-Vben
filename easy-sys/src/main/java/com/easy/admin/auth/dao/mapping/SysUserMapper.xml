@@ -89,12 +89,12 @@
             ${ew.sqlSegment}
         </where>
     </select>
-    <select id="getSysUserByUserName" resultType="com.easy.admin.auth.model.SysUser">
-        select t.id, t.dept_id, t.post_id, t.nickname, t.username, t.password, t.salt, t.sex, t.email, t.phone_number,
-               t.birthday, t.status, t.source, t.last_login_date, t.tenant_id
-        from sys_user t where t.username = #{account} or t.phone_number = #{account} or t.email = #{account}
-    </select>
     <select id="getDeptIdByUserId" resultType="java.lang.String">
         select dept_id from sys_user where id = #{id}
+    </select>
+    <select id="getSessionUserByUserName" resultType="com.easy.admin.auth.model.vo.session.SessionUserVO">
+        select  t.id, t.dept_id, t.post_id, t.nickname, t.username, t.password, t.salt, t.sex, t.email, t.phone_number,
+               t.birthday, t.status, t.source, t.last_login_date
+        from sys_user t where t.username = #{account} or t.phone_number = #{account} or t.email = #{account}
     </select>
 </mapper>

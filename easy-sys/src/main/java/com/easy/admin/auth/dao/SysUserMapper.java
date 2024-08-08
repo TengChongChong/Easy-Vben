@@ -2,8 +2,9 @@ package com.easy.admin.auth.dao;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
+import com.easy.admin.common.core.common.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -63,9 +64,9 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * 获取用户信息，用于登录
      *
      * @param username 账号|邮箱|手机号
-     * @return SysUser
+     * @return SessionUserVO
      */
-    SysUser getSysUserByUserName(@Param("account") String username);
+    SessionUserVO getSessionUserByUserName(@Param("account") String username);
 
     /**
      * 获取密码和盐，用于修改密码

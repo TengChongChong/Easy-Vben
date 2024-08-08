@@ -52,13 +52,11 @@ public class SysDict extends Model<SysDict> {
      * 图标
      */
     @Excel(name = "图标", width = 30, orderNum = "4")
-    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String icon;
     /**
      * 显示方式
      */
     @Excel(name = "显示方式", width = 30, orderNum = "5")
-    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String displayType;
 
     /**

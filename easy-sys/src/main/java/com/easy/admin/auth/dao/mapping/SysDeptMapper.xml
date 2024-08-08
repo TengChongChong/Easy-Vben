@@ -70,6 +70,9 @@
             ${ew.sqlSegment}
         </where>
     </select>
+    <select id="getSessionDeptById" resultType="com.easy.admin.auth.model.vo.session.SessionDeptVO">
+        select id, parent_id, name, simple_name, code, type_code, status from sys_dept where id = #{id}
+    </select>
     <update id="updateOrderBatch">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update sys_dept

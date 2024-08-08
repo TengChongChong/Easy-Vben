@@ -17,7 +17,7 @@ import com.easy.admin.activiti.model.ActivitiTask;
 import com.easy.admin.activiti.model.ActivitiTaskInfo;
 import com.easy.admin.activiti.service.ActivitiProcessDefinitionService;
 import com.easy.admin.activiti.service.ActivitiTaskService;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.exception.EasyException;
@@ -69,7 +69,7 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
     @Override
     public Page<ActivitiTask> select(ActivitiTask activitiTask, Page<ActivitiTask> page) {
         QueryWrapper<ActivitiTask> queryWrapper = new QueryWrapper<>();
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         // 查询条件
         if (activitiTask != null) {
             // 名称
@@ -162,7 +162,7 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
             activitiProcessDefinitionService.getProcessDefinition(activitiTask.getProcessDefinitionId());
 
             // 获取提交表单数据
-            Map<String, String> formValues = Convert.toMap(String.class, String.class, params) ;
+            Map<String, String> formValues = Convert.toMap(String.class, String.class, params);
             formService.submitTaskFormData(taskId, formValues);
 
             // 自动签收
@@ -175,7 +175,7 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
         // 检查是否可以撤销
         Subject subject = SecurityUtils.getSubject();
         ActivitiTask activitiTask = baseMapper.selectTask(processInstanceId);
-        if(activitiTask == null){
+        if (activitiTask == null) {
             throw new EasyException("撤销失败，流程未发起或已办结");
         }
         boolean isApplyUser = activitiTask.getApplyUserId().equals(ShiroUtil.getCurrentUser().getId());
@@ -196,13 +196,13 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
     /**
      * 发送申请被管理员撤销信息
      *
-     * @param activitiTask         任务
+     * @param activitiTask 任务
      * @param deleteReason 撤销原因
      */
     private void sendMessage(ActivitiTask activitiTask, String deleteReason) {
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         // 设置模板引擎变量
-        Map<String,Object> params = new HashMap<>(4);
+        Map<String, Object> params = new HashMap<>(4);
         params.put("processDefinitionName", activitiTask.getProcessDefinitionName());
         params.put("processVersion", activitiTask.getProcessVersion());
         params.put("createTime", DateUtil.format(activitiTask.getCreateTime(), DatePattern.NORM_DATETIME_MINUTE_PATTERN));

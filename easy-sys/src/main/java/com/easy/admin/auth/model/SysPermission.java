@@ -62,20 +62,20 @@ public class SysPermission extends Model<SysPermission> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String component;
     /**
-     * 是否外链
+     * 是否外部链接
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String external;
+    private String externalLink;
     /**
      * 排序值
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer orderNo;
     /**
-     * 是否显示
+     * 在菜单中显示
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String display;
+    private String showInMenu;
     /**
      * 打开方式
      */

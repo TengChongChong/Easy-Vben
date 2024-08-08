@@ -1,10 +1,8 @@
 package com.easy.admin.util;
 
-import cn.hutool.core.util.StrUtil;
 import com.easy.admin.auth.common.constant.SessionConst;
-import com.easy.admin.auth.model.SysPermission;
-import com.easy.admin.auth.model.SysRole;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -23,7 +21,8 @@ import java.util.List;
  * @date 2018/9/11
  */
 public class ShiroUtil {
-    private ShiroUtil() {}
+    private ShiroUtil() {
+    }
 
     private static Logger logger = LoggerFactory.getLogger(ShiroUtil.class);
 
@@ -46,13 +45,13 @@ public class ShiroUtil {
     /**
      * 将数据放到session中
      *
-     * @param key key
+     * @param key   key
      * @param value value
      */
     public static void setAttribute(String key, Object value) {
         try {
             Session session = getSession();
-            if(session != null){
+            if (session != null) {
                 session.setAttribute(key, value);
             }
         } catch (Exception e) {
@@ -71,7 +70,7 @@ public class ShiroUtil {
         Object value = null;
         try {
             Session session = getSession();
-            if(session != null){
+            if (session != null) {
                 value = session.getAttribute(key);
             }
         } catch (Exception e) {
@@ -89,7 +88,7 @@ public class ShiroUtil {
     public static void removeAttribute(Object key) {
         try {
             Session session = getSession();
-            if(session != null){
+            if (session != null) {
                 session.removeAttribute(key);
             }
         } catch (Exception e) {
@@ -101,26 +100,26 @@ public class ShiroUtil {
     /**
      * 设置当前用户
      *
-     * @param sysUser 当前用户
+     * @param currentUser 当前用户
      */
-    public static void setCurrentUser(SysUser sysUser) {
-        setAttribute(SessionConst.USER_SESSION_KEY, sysUser);
+    public static void setCurrentUser(SessionUserVO currentUser) {
+        setAttribute(SessionConst.USER_SESSION_KEY, currentUser);
     }
 
     /**
      * 获取当前用户
      *
-     * @return SysUser
+     * @return SessionUserVO
      */
-    public static SysUser getCurrentUser() {
-        SysUser user = (SysUser) getAttribute(SessionConst.USER_SESSION_KEY);
-        if (user == null) {
+    public static SessionUserVO getCurrentUser() {
+        SessionUserVO currentUser = (SessionUserVO) getAttribute(SessionConst.USER_SESSION_KEY);
+        if (currentUser == null) {
             PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
             if (principalCollection != null) {
-                user = (SysUser) principalCollection.getPrimaryPrincipal();
+                currentUser = (SessionUserVO) principalCollection.getPrimaryPrincipal();
             }
         }
-        return user;
+        return currentUser;
     }
 
     /**
@@ -129,10 +128,9 @@ public class ShiroUtil {
      * @param roleCode 角色标识
      * @return true/false
      */
-    public static boolean havRole(String roleCode){
-        SysUser currentUser = getCurrentUser();
-        List<String> roleCodes = getRoleCodes(currentUser.getRoleList());
-        return roleCodes.contains(roleCode);
+    public static boolean havRole(String roleCode) {
+        SessionUserVO currentUser = getCurrentUser();
+        return currentUser.getRoleCodeList().contains(roleCode);
     }
 
     /**
@@ -144,51 +142,17 @@ public class ShiroUtil {
 
 
     /**
-     * 获取角色标识
-     *
-     * @param roleList 权限list
-     * @return 权限标识
-     */
-    public static List<String> getRoleCodes(List<SysRole> roleList) {
-        List<String> roleCodes = new ArrayList<>();
-        for (SysRole role : roleList) {
-            if (StrUtil.isNotBlank(role.getCode())) {
-                roleCodes.add(role.getCode());
-            }
-        }
-        return roleCodes;
-    }
-
-    /**
      * 获取角色Id
      *
      * @param roleList 权限list
      * @return 权限标识
      */
-    public static List<String> getRoleIds(List<SysRole> roleList) {
+    public static List<String> getRoleIds(List<SessionUserRoleVO> roleList) {
         List<String> roleIds = new ArrayList<>();
-        for (SysRole role : roleList) {
+        for (SessionUserRoleVO role : roleList) {
             roleIds.add(role.getId());
         }
         return roleIds;
     }
 
-    /**
-     * 获取权限标识
-     *
-     * @param permissionList 权限list
-     * @return 权限标识
-     */
-    public static List<String> getPermissionCodes(List<SysPermission> permissionList) {
-        List<String> permissionCodes = new ArrayList<>();
-        if (permissionList == null) {
-            return permissionCodes;
-        }
-        for (SysPermission permission : permissionList) {
-            if (StrUtil.isNotBlank(permission.getCode())) {
-                permissionCodes.add(permission.getCode());
-            }
-        }
-        return permissionCodes;
-    }
 }

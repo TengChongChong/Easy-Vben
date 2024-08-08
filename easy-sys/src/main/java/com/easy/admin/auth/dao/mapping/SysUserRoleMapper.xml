@@ -17,24 +17,13 @@
           and p.status = #{status}
           and p.code is not null
     </select>
-    <select id="selectRoleByUserId" resultType="com.easy.admin.auth.model.SysRole">
-        select r.id, r.name, r.code, r.data_permission
-        from sys_role r
-         left join sys_user_role sur on sur.role_id = r.id
+    <select id="selectRoleByUserId" resultType="com.easy.admin.auth.model.vo.session.SessionUserRoleVO">
+        select sr.id, sr.name, sr.code
+        from sys_role sr
+         left join sys_user_role sur on sur.role_id = sr.id
         where sur.user_id = #{userId}
-          and r.status = #{status}
-          and r.code is not null
-    </select>
-    <select id="selectPermissionByUserId" resultType="com.easy.admin.auth.model.SysPermission">
-        select p.id, p.parent_id, p.type, p.name, p.title, p.icon, p.code, p.path, p.component, p.external,
-               p.order_no, p.display, p.open_mode
-        from sys_permission p
-                 left join sys_role_permission rp on rp.permission_id = p.id
-                 left join sys_user_role sur on sur.role_id = rp.role_id
-        where sur.user_id = #{userId}
-          and p.status = #{status}
-        group by p.path, p.component, p.name, p.id, p.icon, p.parent_id, p.order_no, p.display, p.open_mode
-        order by p.order_no
+          and sr.status = #{status}
+          and sr.code is not null
     </select>
     <select id="selectAllRoleByUserId" resultType="java.lang.String">
         select t.role_id

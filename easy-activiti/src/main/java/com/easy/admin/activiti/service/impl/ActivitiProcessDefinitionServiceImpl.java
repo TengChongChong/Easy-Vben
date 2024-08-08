@@ -10,11 +10,11 @@ import com.easy.admin.activiti.model.ActivitiFormPropertyVO;
 import com.easy.admin.activiti.model.ActivitiProcess;
 import com.easy.admin.activiti.model.ActivitiProcessDefinitionVO;
 import com.easy.admin.activiti.service.ActivitiProcessDefinitionService;
+import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
+import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.auth.model.SysRole;
-import com.easy.admin.auth.model.SysUser;
-import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.util.ShiroUtil;
 import org.activiti.engine.FormService;
 import org.activiti.engine.IdentityService;
@@ -86,7 +86,7 @@ public class ActivitiProcessDefinitionServiceImpl extends ServiceImpl<ActivitiPr
         if (checkBusinessKey(activitiProcessDefinitionVO.getBusinessKey())) {
             throw new EasyException("[" + activitiProcessDefinitionVO.getBusinessKey() + "]已提交过申请，请勿重复提交");
         }
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         JSONObject result = new JSONObject();
         ProcessDefinition processDefinition = getProcessDefinition(activitiProcessDefinitionVO.getProcessDefinitionId());
         if (activitiProcessDefinitionVO.getHasFormData() == null || !activitiProcessDefinitionVO.getHasFormData()) {
@@ -148,8 +148,8 @@ public class ActivitiProcessDefinitionServiceImpl extends ServiceImpl<ActivitiPr
      * @param currentUser 当前用户
      * @return 流程参数
      */
-    private Map<String, Object> setUserInfo(Map<String, Object> variables, SysUser currentUser) {
-        List<String> roleCodeList = ShiroUtil.getRoleCodes(currentUser.getRoleList());
+    private Map<String, Object> setUserInfo(Map<String, Object> variables, SessionUserVO currentUser) {
+        List<String> roleCodeList = currentUser.getRoleCodeList();
 
         // 流程发起人ID
         variables.put(ActivitiVariableConst.APPLY_USER_ID, currentUser.getId());
@@ -159,14 +159,12 @@ public class ActivitiProcessDefinitionServiceImpl extends ServiceImpl<ActivitiPr
         variables.put(ActivitiVariableConst.DEPT_ID, currentUser.getDeptId());
         // 流程发起人所在部门type code
         variables.put(ActivitiVariableConst.DEPT_TYPE_CODE, currentUser.getDept().getTypeCode());
-        // 流程发起人所在部门type 名称
-        variables.put(ActivitiVariableConst.DEPT_TYPE_NAME, currentUser.getDept().getTypeName());
         // 流程发起人所在部门名称
         variables.put(ActivitiVariableConst.DEPT_NAME, currentUser.getDept().getName());
         // 流程发起人所属角色 eg: role1,role2,role3
         variables.put(ActivitiVariableConst.USER_ROLE_CODES, ArrayUtil.join(roleCodeList.toArray(), CommonConst.SPLIT));
         // 设置角色快速判断参数，如isRole1、isRole2等，如果角色标识使用:隔开，则改为驼峰命名 eg: sys:admin => isSysAdmin
-        for (SysRole role : currentUser.getRoleList()) {
+        for (SessionUserRoleVO role : currentUser.getRoleList()) {
             variables.put(convertRoleCode(role.getCode()), CommonConst.TRUE);
         }
         // 将此用户没有的角色也设置参数，防止使用时参数不存在

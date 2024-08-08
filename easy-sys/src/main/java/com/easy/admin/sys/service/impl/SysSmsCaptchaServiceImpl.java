@@ -3,6 +3,7 @@ package com.easy.admin.sys.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.RandomUtil;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
@@ -23,7 +24,7 @@ public class SysSmsCaptchaServiceImpl implements SysSmsCaptchaService {
 
     @Override
     public String bindingPhone(String phone) {
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         if (currentUser == null) {
             throw new EasyException("你尚未登录，请登录后重试");
         }

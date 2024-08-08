@@ -1,7 +1,6 @@
 package com.easy.admin.auth.service;
 
-import com.easy.admin.auth.model.SysPermission;
-import com.easy.admin.auth.model.SysRole;
+import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
 
 import java.util.List;
 
@@ -38,18 +37,10 @@ public interface SysUserRoleService {
     boolean removeUserRole(String roles);
 
     /**
-     * 根据用户id获取菜单集合
-     *
-     * @param userId 用户id
-     * @return 菜单集合
-     */
-    List<SysPermission> selectPermissionByUserId(String userId);
-
-    /**
      * 根据用户id获取角色名称集合
      *
      * @param userId 用户id
      * @return 角色集合
      */
-    List<SysRole> selectRoleByUserId(String userId);
+    List<SessionUserRoleVO> selectRoleByUserId(String userId);
 }

@@ -131,4 +131,14 @@ public class SysRoleController extends BaseController {
     public List<SysRole> selectRoleByDept(String deptId) {
         return service.selectRoleByDept(deptId);
     }
+
+    /**
+     * 刷新缓存数据
+     *
+     * @return true/false
+     */
+    @PostMapping("refresh")
+    public boolean refresh() {
+        return service.refresh();
+    }
 }

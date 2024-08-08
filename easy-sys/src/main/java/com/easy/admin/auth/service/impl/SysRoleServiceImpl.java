@@ -8,6 +8,8 @@ import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.auth.common.type.DataPermissionType;
 import com.easy.admin.auth.dao.SysRoleMapper;
 import com.easy.admin.auth.model.SysRole;
+import com.easy.admin.auth.model.vo.SysRoleCacheVO;
+import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
 import com.easy.admin.auth.service.*;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.status.CommonStatus;
@@ -16,6 +18,7 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.config.mybatis.plugins.model.DataPermission;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.common.core.util.ToolUtil;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -92,7 +96,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         SysRole sysRole = baseMapper.getById(id);
         if (sysRole != null) {
             sysRole.setPermissionIds(baseMapper.selectPermissions(id));
-            sysRole.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
+            DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRole.getDataPermission().toUpperCase());
+            if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
+                sysRole.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
+            }
         }
         return sysRole;
     }
@@ -128,6 +135,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             sysDeptTypeRoleService.removeDeptTypeRole(ids);
             // 删除部门自定义数据权限
             sysRoleDataPermissionService.removeByRoleId(ids);
+
+            for (String id : idList) {
+                // 删除缓存的角色数据
+                RedisUtil.del(RedisPrefix.SYS_ROLE + id);
+            }
         }
         return isSuccess;
     }
@@ -155,7 +167,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         boolean isSuccess = saveOrUpdate(sysRole);
         if (isSuccess) {
-            // 删除授权信息,下次请求资源重新授权
+            // 删除授权信息，下次请求资源重新授权
             RedisUtil.delByPrefix(RedisPrefix.SHIRO_AUTHORIZATION);
             sysRolePermissionsService.saveRolePermissions(sysRole.getId(), sysRole.getPermissionIds());
 
@@ -166,6 +178,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             } else {
                 sysRoleDataPermissionService.removeByRoleId(sysRole.getId());
             }
+            // 删除缓存的角色数据
+            RedisUtil.del(RedisPrefix.SYS_ROLE + sysRole.getId());
         }
         return sysRole;
     }
@@ -203,4 +217,108 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         return baseMapper.selectRole(queryWrapper);
     }
+
+    @Override
+    public SysRoleCacheVO getSysRoleCache(String id) {
+        SysRoleCacheVO sysRoleCache = (SysRoleCacheVO) RedisUtil.get(RedisPrefix.SYS_ROLE + id);
+        if (sysRoleCache != null) {
+            return sysRoleCache;
+        }
+        // 从数据库中获取
+        SysRole sysRole = baseMapper.getById(id);
+        if (sysRole == null) {
+            throw new EasyException("角色信息[" + id + "]不存在");
+        }
+        // 数据权限
+        DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRole.getDataPermission().toUpperCase());
+        if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
+            sysRole.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
+        }
+
+        sysRoleCache = new SysRoleCacheVO(sysRole, sysRolePermissionsService.selectSysPermissionByRoleId(id));
+        RedisUtil.set(RedisPrefix.SYS_ROLE + id, sysRoleCache);
+        return sysRoleCache;
+    }
+
+
+    /**
+     * 将角色数据权限汇总，并按照数据范围合并
+     *
+     * @param roleList 角色
+     * @return 数据权限
+     */
+    @Override
+    public List<DataPermission> convertToDataPermission(List<SessionUserRoleVO> roleList) {
+        if (roleList == null || roleList.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<DataPermission> dataPermissionList = new ArrayList<>();
+        for (SessionUserRoleVO sessionUserRole : roleList) {
+            SysRoleCacheVO sysRoleCache = getSysRoleCache(sessionUserRole.getId());
+
+            // 数据权限类型
+            DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRoleCache.getDataPermission().toUpperCase());
+            switch (dataPermissionType) {
+                case ALL:
+                    // 全部数据权限（不做数据权限控制）
+                    return Collections.emptyList();
+                case CUSTOM:
+                    // 自定义数据权限
+                    // 查询自定义数据权限
+                    List<String> deptIds = sysRoleCache.getDataPermissionDeptIdList();
+                    // 检查是否有效
+                    if (deptIds != null && !deptIds.isEmpty()) {
+                        dataPermissionList.add(new DataPermission(dataPermissionType, deptIds));
+                    }
+                    break;
+                default:
+                    if (checkHasDataPermission(dataPermissionList, dataPermissionType)) {
+                        dataPermissionList.add(new DataPermission(dataPermissionType));
+                    }
+            }
+        }
+        return dataPermissionList;
+    }
+
+    @Override
+    public boolean refresh() {
+        // 删除缓存的角色数据
+        RedisUtil.delByPrefix(RedisPrefix.SYS_ROLE);
+        return true;
+    }
+
+    /**
+     * 检查数据权限是否有必要添加到数据权限集合中
+     *
+     * @param dataPermissionList 数据权限集合
+     * @param dataPermissionType 数据权限
+     * @return true/false
+     */
+    private boolean checkHasDataPermission(List<DataPermission> dataPermissionList, DataPermissionType dataPermissionType) {
+        if (dataPermissionList.isEmpty()) {
+            return true;
+        }
+        if (DataPermissionType.SELF.equals(dataPermissionType)) {
+            for (DataPermission dataPermission : dataPermissionList) {
+                if (dataPermission.getType() == DataPermissionType.SELF || dataPermission.getType() == DataPermissionType.MY_DEPT || dataPermission.getType() == DataPermissionType.MY_AND_SUB_DEPT) {
+                    return false;
+                }
+            }
+        } else if (DataPermissionType.MY_DEPT.equals(dataPermissionType)) {
+            for (DataPermission dataPermission : dataPermissionList) {
+                if (dataPermission.getType() == DataPermissionType.MY_DEPT || dataPermission.getType() == DataPermissionType.MY_AND_SUB_DEPT) {
+                    return false;
+                }
+            }
+        } else if (DataPermissionType.MY_AND_SUB_DEPT.equals(dataPermissionType)) {
+            for (DataPermission dataPermission : dataPermissionList) {
+                if (dataPermission.getType() == DataPermissionType.MY_AND_SUB_DEPT) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
 }

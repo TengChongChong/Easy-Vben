@@ -1,7 +1,7 @@
 package com.easy.admin.config.mybatis.handlers;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.util.ShiroUtil;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -40,19 +40,19 @@ public class EasyFrameMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        SysUser sysUser = null;
+        SessionUserVO currentUser = null;
         try {
-            sysUser = ShiroUtil.getCurrentUser();
+            currentUser = ShiroUtil.getCurrentUser();
         } catch (Exception e) {
             // 如果获取不到用户则不设置用户类默认值
         }
-        if (sysUser != null) {
+        if (currentUser != null) {
             // 设置创建人&编辑人
-            this.setFieldValByName(CREATE_USER, sysUser.getId(), metaObject);
-            this.setFieldValByName(EDIT_USER, sysUser.getId(), metaObject);
+            this.setFieldValByName(CREATE_USER, currentUser.getId(), metaObject);
+            this.setFieldValByName(EDIT_USER, currentUser.getId(), metaObject);
             Object deptIdValue = this.getFieldValByName(DEPT_ID, metaObject);
             if (deptIdValue == null) {
-                this.setFieldValByName(DEPT_ID, sysUser.getDeptId(), metaObject);
+                this.setFieldValByName(DEPT_ID, currentUser.getDeptId(), metaObject);
             }
         }
         Date now = new Date();
@@ -62,9 +62,9 @@ public class EasyFrameMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        SysUser sysUser = ShiroUtil.getCurrentUser();
-        if (sysUser != null) {
-            this.setFieldValByName(EDIT_USER, sysUser.getId(), metaObject);
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        if (currentUser != null) {
+            this.setFieldValByName(EDIT_USER, currentUser.getId(), metaObject);
         }
         this.setFieldValByName(EDIT_DATE, new Date(), metaObject);
     }

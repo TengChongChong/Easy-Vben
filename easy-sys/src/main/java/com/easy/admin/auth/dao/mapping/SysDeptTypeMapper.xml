@@ -52,6 +52,9 @@
     <select id="selectChildCount" resultType="java.lang.Integer">
         select count(1) from sys_dept_type sdt where sdt.parent_id = (select id from sys_dept_type sdt2 where sdt2.code = #{code})
     </select>
+    <select id="getStatusByCode" resultType="java.lang.String">
+        select t.status from sys_dept_type t where t.code = #{code}
+    </select>
 
     <update id="updateOrderBatch">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">

@@ -2,6 +2,7 @@ package com.easy.admin.auth.service;
 
 
 import com.easy.admin.auth.model.SysDept;
+import com.easy.admin.auth.model.vo.session.SessionDeptVO;
 import com.easy.admin.common.core.common.tree.Tree;
 
 import java.util.List;
@@ -103,4 +104,12 @@ public interface SysDeptService {
      * @return List<SysDept>
      */
     List<SysDept> selectDepartments(SysDept sysDept);
+
+    /**
+     * 根据id获取SessionDept信息
+     *
+     * @param id id
+     * @return SessionDeptVO
+     */
+    SessionDeptVO getSessionDeptById(String id);
 }

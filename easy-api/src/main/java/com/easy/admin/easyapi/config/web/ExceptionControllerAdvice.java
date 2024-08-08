@@ -1,7 +1,7 @@
 package com.easy.admin.easyapi.config.web;
 
 import cn.hutool.core.util.StrUtil;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.status.ResultCode;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.Response;
@@ -158,7 +158,7 @@ public class ExceptionControllerAdvice {
         sysException.setTriggerTime(new Date());
         sysException.setType(e.getClass().getName());
         sysException.setTrace(StrUtil.join("\n\t", e.getStackTrace()));
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         if (currentUser != null) {
             sysException.setUserId(currentUser.getId());
         }

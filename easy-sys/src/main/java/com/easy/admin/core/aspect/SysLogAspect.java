@@ -1,5 +1,6 @@
 package com.easy.admin.core.aspect;
 
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.util.WebUtils;
 import com.easy.admin.sys.model.SysLog;
 import com.easy.admin.auth.model.SysUser;
@@ -69,7 +70,7 @@ public class SysLogAspect {
         sysLog.setMethod(log.method());
         // 操作用户信息
         sysLog.setOperationDate(new Date());
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         if (currentUser != null) {
             sysLog.setOperationUser(currentUser.getId());
         }

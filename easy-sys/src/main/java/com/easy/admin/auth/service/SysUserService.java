@@ -1,8 +1,10 @@
 package com.easy.admin.auth.service;
 
-import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
+import com.easy.admin.common.core.common.pagination.Page;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +49,14 @@ public interface SysUserService {
      * @return SysUser
      */
     SysUser get(String id);
+
+    /**
+     * 获取用户信息，用于登录
+     *
+     * @param username 账号|邮箱|手机号
+     * @return SessionUserVO
+     */
+    SessionUserVO getSessionUserByUserName(String username);
 
     /**
      * 新增
@@ -100,6 +110,15 @@ public interface SysUserService {
     boolean setStatus(String ids, String status);
 
     /**
+     * 更新最后登录时间
+     *
+     * @param id        数据id
+     * @param lastLogin 最后登录时间
+     * @return int
+     */
+    int updateUserLastLoginDate(String id, Date lastLogin);
+
+    /**
      * 根据账号查询用户
      *
      * @param username 账号
@@ -122,13 +141,6 @@ public interface SysUserService {
      * @return true/false
      */
     boolean updateUserLastLoginDate(String userId);
-
-    /**
-     * 获取当前登录用户
-     *
-     * @return SysUser
-     */
-    SysUser getCurrentUser();
 
     /**
      * 根据部门id查询用户数量

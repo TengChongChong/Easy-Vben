@@ -39,6 +39,11 @@ public class RedisPrefix {
     public static final String SYS_DICT = "sys:dict";
 
     /**
+     * 系统角色
+     */
+    public static final String SYS_ROLE = "sys:role:";
+
+    /**
      * 找回密码验证码
      */
     public static final String RESET_PASSWORD_VERIFICATION_CODE = "reset:password:verification:code:";

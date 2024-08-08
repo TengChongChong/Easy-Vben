@@ -6,12 +6,12 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.auth.common.status.SysDeptStatus;
 import com.easy.admin.auth.common.status.SysUserStatus;
 import com.easy.admin.auth.dao.SysUserMapper;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysRoleDataPermissionService;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.auth.service.SysUserService;
@@ -19,6 +19,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.exception.BusinessException;
@@ -26,7 +27,6 @@ import com.easy.admin.sys.common.constant.SexConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.ShiroUtil;
-import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -137,6 +137,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
         }
         return sysUser;
+    }
+
+    @Override
+    public SessionUserVO getSessionUserByUserName(String username) {
+        return baseMapper.getSessionUserByUserName(username);
+    }
+
+    @Override
+    public int updateUserLastLoginDate(String id, Date lastLogin) {
+        return baseMapper.updateUserLastLoginDate(id, lastLogin);
     }
 
     @Override
@@ -302,29 +312,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return baseMapper.updateById(sysUser) > 0;
     }
 
-    @Override
-    public SysUser getCurrentUser() {
-        SysUser sysUser = ShiroUtil.getCurrentUser();
-        sysUser.setPassword(null);
-        sysUser.setSalt(null);
-        // 如果没有授权,从数据库查询权限
-        if (sysUser.getPermissionList() == null) {
-            // 设置角色
-            sysUser.setRoleList(sysUserRoleService.selectRoleByUserId(sysUser.getId()));
-            // 设置角色权限
-            sysUser.setDataPermissionList(sysRoleDataPermissionService.convertToDataPermission(sysUser.getRoleList()));
-            // 设置菜单
-            sysUser.setPermissionList(sysUserRoleService.selectPermissionByUserId(sysUser.getId()));
-            ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, sysUser);
-        }
-        // 由于密保邮箱&手机可能会发生变动,这里重新从数据库查询
-        SysUser queryResult = selectEmailAndPhone(sysUser.getId());
-        if (queryResult != null) {
-            sysUser.setPhoneNumber(queryResult.getPhoneNumber());
-            sysUser.setEmail(queryResult.getEmail());
-        }
-        return sysUser;
-    }
 
     @Override
     public long countUser(String deptIds) {

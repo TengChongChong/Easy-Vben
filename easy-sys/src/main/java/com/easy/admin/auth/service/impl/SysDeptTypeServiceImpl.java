@@ -154,14 +154,11 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
 
     @Override
     public boolean checkDeptTypeIsDisabled(String code) {
-        QueryWrapper<SysDeptType> checkDeptTypeIsDisabled = new QueryWrapper<>();
-        checkDeptTypeIsDisabled.select("status");
-        checkDeptTypeIsDisabled.eq("code", code);
-        SysDeptType sysDeptType = getOne(checkDeptTypeIsDisabled);
-        if (sysDeptType == null) {
+        String status = baseMapper.getStatusByCode(code);
+        if (StrUtil.isBlank(status)) {
             throw new EasyException("部门类型[" + code + "]被删除，请联系管理员");
         }
-        return CommonStatus.DISABLE.getCode().equals(sysDeptType.getStatus());
+        return CommonStatus.DISABLE.getCode().equals(status);
     }
 
     @Override

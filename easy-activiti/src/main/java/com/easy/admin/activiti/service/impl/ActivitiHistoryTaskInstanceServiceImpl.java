@@ -7,8 +7,8 @@ import com.easy.admin.activiti.constant.status.ActivitiTaskStatus;
 import com.easy.admin.activiti.dao.ActivitiHistoryTaskInstanceMapper;
 import com.easy.admin.activiti.model.ActivitiHistoryTaskInstance;
 import com.easy.admin.activiti.service.ActivitiHistoryTaskInstanceService;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.util.ShiroUtil;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class ActivitiHistoryTaskInstanceServiceImpl extends ServiceImpl<ActivitiHistoryTaskInstanceMapper, ActivitiHistoryTaskInstance> implements ActivitiHistoryTaskInstanceService {
     @Override
     public Page<ActivitiHistoryTaskInstance> selectMy(ActivitiHistoryTaskInstance task, Page<ActivitiHistoryTaskInstance> page) {
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         QueryWrapper<ActivitiHistoryTaskInstance> queryWrapper = getQueryWrapper(task);
         queryWrapper.eq("arv_applyUserId.text_", currentUser.getId());
         page.setDefaultDesc("start_time_");
@@ -32,7 +32,7 @@ public class ActivitiHistoryTaskInstanceServiceImpl extends ServiceImpl<Activiti
 
     @Override
     public Page<ActivitiHistoryTaskInstance> selectParticipate(ActivitiHistoryTaskInstance task, Page<ActivitiHistoryTaskInstance> page) {
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         QueryWrapper<ActivitiHistoryTaskInstance> queryWrapper = getQueryWrapper(task);
         queryWrapper.eq("aht.assignee_", currentUser.getId());
         page.setDefaultDesc("start_time_");
@@ -68,7 +68,7 @@ public class ActivitiHistoryTaskInstanceServiceImpl extends ServiceImpl<Activiti
             }
             // 任务状态
             if (task.getTaskStatus() != null) {
-                if (ActivitiTaskStatus.IN_PROCESS.getCode().equals(task.getTaskStatus()) ) {
+                if (ActivitiTaskStatus.IN_PROCESS.getCode().equals(task.getTaskStatus())) {
                     queryWrapper.isNull("ahp.end_time_");
                 } else if (ActivitiTaskStatus.COMPLETED.getCode().equals(task.getTaskStatus())) {
                     queryWrapper.isNotNull("ahp.end_time_").isNull("ahp.delete_reason_");

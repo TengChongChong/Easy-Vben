@@ -2,7 +2,7 @@ package com.easy.admin.config.mybatis.plugins;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
-import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.config.mybatis.annotation.EasyDataScope;
 import com.easy.admin.config.mybatis.plugins.model.DataPermission;
@@ -86,7 +86,7 @@ public class DataPermissionHandlerImpl implements DataPermissionHandler {
             // 未登录
             return null;
         }
-        SysUser currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
         // 用户数据权限
         List<DataPermission> dataPermissionList = currentUser.getDataPermissionList();
         if (dataPermissionList == null || dataPermissionList.isEmpty()) {

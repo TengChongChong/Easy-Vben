@@ -3,6 +3,7 @@ package com.easy.admin.auth.dao;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.auth.model.SysDept;
+import com.easy.admin.auth.model.vo.session.SessionDeptVO;
 import com.easy.admin.common.core.common.tree.Tree;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,6 +27,7 @@ public interface SysDeptMapper extends BaseMapper<SysDept> {
 
     /**
      * 获取所有数据
+     *
      * @param status 状态
      * @return List<JsTree>
      */
@@ -70,4 +72,12 @@ public interface SysDeptMapper extends BaseMapper<SysDept> {
      * @return 更新条数
      */
     Integer updateOrderBatch(List<SysDept> list);
+
+    /**
+     * 根据id获取SessionDept信息
+     *
+     * @param id id
+     * @return SessionDeptVO
+     */
+    SessionDeptVO getSessionDeptById(@Param("id") String id);
 }

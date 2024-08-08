@@ -1,6 +1,7 @@
 package com.easy.admin.auth.controller;
 
 import cn.hutool.json.JSONObject;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.auth.model.SysUser;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @ResponseResult
-    @RequestMapping("/api/auth/sys/user/personal/center")
+@RequestMapping("/api/auth/sys/user/personal/center")
 public class SysUserPersonalCenterController extends BaseController {
     /**
      * 个人中心 service
@@ -27,10 +28,10 @@ public class SysUserPersonalCenterController extends BaseController {
     /**
      * 当前用户
      *
-     * @return SysUser
+     * @return SessionUserVO
      */
     @GetMapping("current/user")
-    public SysUser currentUser() {
+    public SessionUserVO currentUser() {
         return service.getCurrentUser();
     }
 

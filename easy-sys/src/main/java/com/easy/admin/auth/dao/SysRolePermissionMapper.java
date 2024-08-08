@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * 角色权限
+ *
  * @author TengChongChong
  */
 public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
@@ -17,9 +18,17 @@ public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
      * 根据角色id获取权限集合
      *
      * @param roleId 角色id
-     * @param  status 状态
+     * @param status 状态
      * @return List<SysPermissions> 权限集合
      */
     List<SysPermission> selectPermissionsByRoleId(@Param("roleId") String roleId, @Param("status") String status);
 
+    /**
+     * 根据角色id获取权限数据
+     *
+     * @param roleId 角色id
+     * @param status 权限状态
+     * @return List<SysPermission>
+     */
+    List<SysPermission> selectSysPermissionByRoleId(@Param("roleId") String roleId, @Param("status") String status);
 }
