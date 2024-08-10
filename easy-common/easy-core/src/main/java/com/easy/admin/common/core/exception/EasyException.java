@@ -1,7 +1,9 @@
 package com.easy.admin.common.core.exception;
 
-
 import com.easy.admin.common.core.common.status.ResultCode;
+import com.easy.admin.common.core.util.Response;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 自定义Exception
@@ -9,6 +11,8 @@ import com.easy.admin.common.core.common.status.ResultCode;
  * @author TengChongChong
  * @date 2019-01-20
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class EasyException extends RuntimeException {
     /**
      * 响应码
@@ -22,7 +26,7 @@ public class EasyException extends RuntimeException {
     /**
      * 错误显示方式：0 静默 ； 1 notification.info; 2 notification.warning; 3 notification.error; 9 page
      */
-    private Integer showType = 3;
+    private String showType = Response.SHOW_TYPE_ERROR;
 
     public EasyException(String message) {
         // 默认为error级别错误
@@ -35,12 +39,7 @@ public class EasyException extends RuntimeException {
         this.message = message;
     }
 
-    public EasyException(Integer showType, String message) {
-        this.message = message;
-        this.showType = showType;
-    }
-
-    public EasyException(Integer showType, String code, String message) {
+    public EasyException(String showType, String code, String message) {
         this.code = code;
         this.message = message;
         this.showType = showType;
@@ -50,34 +49,10 @@ public class EasyException extends RuntimeException {
         this.code = easyServiceException.getCode();
         this.message = easyServiceException.getMessage();
     }
-    public EasyException(Integer showType, EasyServiceException easyServiceException) {
+
+    public EasyException(String showType, EasyServiceException easyServiceException) {
         this.code = easyServiceException.getCode();
         this.message = easyServiceException.getMessage();
-        this.showType = showType;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Integer getShowType() {
-        return showType;
-    }
-
-    public void setShowType(Integer showType) {
         this.showType = showType;
     }
 }

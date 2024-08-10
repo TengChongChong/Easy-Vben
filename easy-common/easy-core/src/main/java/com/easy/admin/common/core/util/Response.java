@@ -7,6 +7,7 @@ import cn.hutool.http.ContentType;
 import cn.hutool.json.JSONObject;
 import com.easy.admin.common.core.constant.helper.NodePropertiesConstantsHelper;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
@@ -17,19 +18,20 @@ import java.io.Serializable;
  * @author TengChongChong
  * @date 2020/08/24
  */
+@Data
 public class Response implements Serializable {
     /**
      * 错误级别 - info
      */
-    public static final int SHOW_TYPE_INFO = 1;
+    public static final String SHOW_TYPE_INFO = "info";
     /**
      * 错误级别 - warning
      */
-    public static final int SHOW_TYPE_WARNING = 2;
+    public static final String SHOW_TYPE_WARNING = "warning";
     /**
      * 错误级别 - error
      */
-    public static final int SHOW_TYPE_ERROR = 3;
+    public static final String SHOW_TYPE_ERROR = "error";
 
     /**
      * 默认错误码
@@ -63,7 +65,7 @@ public class Response implements Serializable {
      * 错误级别
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer showType;
+    private String showType;
 
     /**
      * 方便后端故障排除：唯一的请求ID，保留字段
@@ -149,17 +151,6 @@ public class Response implements Serializable {
     /**
      * 失败提示 - Notification 通知提醒框 - error
      *
-     * @param errorMessage 错误信息
-     * @param showType     错误显示方式
-     * @return Response
-     */
-    public static Response failError(String errorMessage, Integer showType) {
-        return fail(null, ERROR_CODE, errorMessage, showType);
-    }
-
-    /**
-     * 失败提示 - Notification 通知提醒框 - error
-     *
      * @param errorCode    错误码
      * @param errorMessage 错误信息
      * @return Response
@@ -189,7 +180,7 @@ public class Response implements Serializable {
      * @param showType     错误显示方式
      * @return Response
      */
-    public static Response failError(Object data, String errorCode, String errorMessage, Integer showType) {
+    public static Response failError(Object data, String errorCode, String errorMessage, String showType) {
         return fail(data, errorCode, errorMessage, showType);
     }
 
@@ -202,7 +193,7 @@ public class Response implements Serializable {
      * @param showType     错误显示方式
      * @return Response
      */
-    public static Response fail(Object data, String errorCode, String errorMessage, Integer showType) {
+    public static Response fail(Object data, String errorCode, String errorMessage, String showType) {
         Response response = new Response();
         response.setSuccess(false);
         response.setData(data);
@@ -226,70 +217,6 @@ public class Response implements Serializable {
                 response,
                 Response.failError(code, message).toString(),
                 ContentType.build(ContentType.JSON.getValue(), CharsetUtil.charset(CharsetUtil.UTF_8)));
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public Integer getShowType() {
-        return showType;
-    }
-
-    public void setShowType(Integer showType) {
-        this.showType = showType;
-    }
-
-    public String getTraceId() {
-        return traceId;
-    }
-
-    public void setTraceId(String traceId) {
-        this.traceId = traceId;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
     }
 
     @Override
