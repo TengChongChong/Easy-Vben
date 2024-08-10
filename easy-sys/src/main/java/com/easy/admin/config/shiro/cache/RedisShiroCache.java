@@ -1,10 +1,10 @@
 package com.easy.admin.config.shiro.cache;
 
-import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.redis.constant.RedisPrefix;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
-import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
@@ -72,9 +72,7 @@ public class RedisShiroCache<K, V> implements Cache<K, V> {
     }
 
     private K getCacheKey(Object k) {
-        if (k instanceof SimplePrincipalCollection) {
-            return (K) (RedisPrefix.SHIRO_AUTHORIZATION + ((SessionUserVO) ((SimplePrincipalCollection) k).getPrimaryPrincipal()).getId());
-        }
-        return (K) (RedisPrefix.SHIRO_AUTHORIZATION + k);
+        Subject subject = SecurityUtils.getSubject();
+        return (K) (RedisPrefix.SHIRO_AUTHORIZATION + subject.getSession().getId());
     }
 }
