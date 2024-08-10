@@ -1,6 +1,6 @@
 package com.easy.admin.config.shiro.authc;
 
-import com.easy.admin.auth.model.dto.LoginDTO;
+import com.easy.admin.auth.model.dto.LoginAccountDTO;
 import lombok.Data;
 import org.apache.shiro.authc.AuthenticationToken;
 
@@ -8,35 +8,16 @@ import org.apache.shiro.authc.AuthenticationToken;
  * 账号密码认证 AuthenticationToken
  *
  * @author tengchong
- * @date 2024/8/6
+ * @date 2024/8/8
  */
 @Data
-public class EasyAccountAuthenticationToken implements AuthenticationToken {
+public class EasyAccountAuthenticationToken extends LoginAccountDTO implements AuthenticationToken {
 
-    /**
-     * 用户名
-     */
-    private String username;
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 记住我
-     */
-    private boolean rememberMe;
-
-    /**
-     * 验证码
-     */
-    private String captchaVerification;
-
-    public EasyAccountAuthenticationToken(LoginDTO login) {
-        this.username = login.getUsername();
-        this.password = login.getPassword();
-        this.rememberMe = login.getRememberMe();
-        this.captchaVerification = login.getCaptchaVerification();
+    public EasyAccountAuthenticationToken(LoginAccountDTO loginAccount) {
+        this.setUsername(loginAccount.getUsername());
+        this.setPassword(loginAccount.getPassword());
+        this.setRememberMe(loginAccount.getRememberMe());
+        this.setCaptchaVerification(loginAccount.getCaptchaVerification());
     }
 
     @Override

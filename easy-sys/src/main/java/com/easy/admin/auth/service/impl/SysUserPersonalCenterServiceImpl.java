@@ -101,7 +101,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         // 保存头像
         fileInfoService.saveData(currentUser.getId(), "avatar", avatar);
 
-        currentUser.setAvatar(avatar);
+        currentUser.setAvatar(avatar.getUrl());
 
         ShiroUtil.setCurrentUser(currentUser);
 

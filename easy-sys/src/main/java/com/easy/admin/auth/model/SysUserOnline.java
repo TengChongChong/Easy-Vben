@@ -1,5 +1,6 @@
 package com.easy.admin.auth.model;
 
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,7 +12,11 @@ import java.util.Date;
  * @date 2018/9/12
  */
 @Data
-public class SysUserOnline extends SysUser {
+public class SysUserOnline extends SessionUserVO {
+    /**
+     * 用户所属部门
+     */
+    private String deptName;
     /**
      * sessionId
      */

@@ -2,10 +2,11 @@ package com.easy.admin.auth.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import com.easy.admin.auth.common.constant.SessionConst;
-import com.easy.admin.auth.model.dto.LoginDTO;
+import com.easy.admin.auth.model.dto.LoginAccountDTO;
+import com.easy.admin.auth.model.dto.LoginQrCodeDTO;
+import com.easy.admin.auth.model.dto.LoginSmsDTO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.AuthService;
-import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.shiro.authc.EasyAccountAuthenticationToken;
@@ -32,22 +33,34 @@ public class AuthServiceImpl implements AuthService {
     private ShiroService shiroService;
 
     @Override
-    public Subject login(LoginDTO loginDTO) {
+    public Subject loginAccount(LoginAccountDTO loginAccount) {
         Subject subject = SecurityUtils.getSubject();
 
         // 将登录参数转为 AuthenticationToken
-        AuthenticationToken authenticationToken = convertAuthenticationToken(loginDTO);
+        AuthenticationToken authenticationToken = new EasyAccountAuthenticationToken(loginAccount);
 
         // 登录
         subject.login(authenticationToken);
 
         // 是否记住我方式登录
-        subject.getSession().setAttribute(SessionConst.REMEMBER_ME, loginDTO.getRememberMe());
+        subject.getSession().setAttribute(SessionConst.REMEMBER_ME, loginAccount.getRememberMe());
 
         // 登录成功后的一些处理
         afterLogin(subject);
 
         return subject;
+    }
+
+    @Override
+    public Subject loginQrCode(LoginQrCodeDTO loginQrCode) {
+        // todo: 待实现
+        return null;
+    }
+
+    @Override
+    public Subject loginSms(LoginSmsDTO loginSms) {
+        // todo: 待实现
+        return null;
     }
 
     @Override
@@ -82,27 +95,5 @@ public class AuthServiceImpl implements AuthService {
             shiroService.kickOutSession(sessionUser);
         }
 
-    }
-
-    /**
-     * 将登录参数转为 AuthenticationToken
-     *
-     * @param loginDTO 登录参数
-     * @return AuthenticationToken
-     */
-    private AuthenticationToken convertAuthenticationToken(LoginDTO loginDTO) {
-        switch (loginDTO.getAuthType()) {
-            case account:
-                // 账号密码登录
-                return new EasyAccountAuthenticationToken(loginDTO);
-            //case sms:
-            //    // todo: 扫码登录
-            //    break;
-            //case scan_code:
-            //    // todo: 扫码登录
-            //    break;
-            default:
-                throw new EasyException("不支持的登录方式[" + loginDTO.getAuthType() + "]");
-        }
     }
 }

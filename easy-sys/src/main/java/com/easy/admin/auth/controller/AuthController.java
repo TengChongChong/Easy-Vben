@@ -1,6 +1,8 @@
 package com.easy.admin.auth.controller;
 
-import com.easy.admin.auth.model.dto.LoginDTO;
+import com.easy.admin.auth.model.dto.LoginAccountDTO;
+import com.easy.admin.auth.model.dto.LoginQrCodeDTO;
+import com.easy.admin.auth.model.dto.LoginSmsDTO;
 import com.easy.admin.auth.model.vo.route.RouteVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.AuthService;
@@ -36,16 +38,44 @@ public class AuthController {
     private AuthService service;
 
     /**
-     * 登录
+     * 用户登录 - 用户名+密码
      *
-     * @param loginDTO loginDTO
+     * @param loginAccount 登录信息
      * @return token
      */
-    @Operation(summary = "登录")
-    @PostMapping(value = "/api/login")
-    @SysLog(modular = "sys", method = "用户登录")
-    public String login(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginDTO loginDTO) {
-        Subject subject = service.login(loginDTO);
+    @Operation(summary = "用户登录 - 用户名+密码参数")
+    @PostMapping(value = "/api/login/account")
+    @SysLog(modular = "sys", method = "用户登录 - 用户名+密码参数")
+    public String loginAccount(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginAccountDTO loginAccount) {
+        Subject subject = service.loginAccount(loginAccount);
+        return subject.getSession().getId().toString();
+    }
+
+    /**
+     * 用户登录 - 扫码
+     *
+     * @param loginQrCode 登录信息
+     * @return token
+     */
+    @Operation(summary = "用户登录 - 扫码参数")
+    @PostMapping(value = "/api/login/qr/code")
+    @SysLog(modular = "sys", method = "用户登录 - 扫码参数")
+    public String loginQrCode(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginQrCodeDTO loginQrCode) {
+        Subject subject = service.loginQrCode(loginQrCode);
+        return subject.getSession().getId().toString();
+    }
+
+    /**
+     * 用户登录 - 手机号+短信验证码
+     *
+     * @param loginSms 登录信息
+     * @return token
+     */
+    @Operation(summary = "用户登录 - 手机号+短信验证码参数")
+    @PostMapping(value = "/api/login/sms")
+    @SysLog(modular = "sys", method = "用户登录 - 手机号+短信验证码参数")
+    public String loginSms(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginSmsDTO loginSms) {
+        Subject subject = service.loginSms(loginSms);
         return subject.getSession().getId().toString();
     }
 

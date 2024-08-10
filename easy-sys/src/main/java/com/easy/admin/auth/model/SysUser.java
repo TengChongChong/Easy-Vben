@@ -2,7 +2,6 @@ package com.easy.admin.auth.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.easy.admin.config.mybatis.plugins.model.DataPermission;
 import com.easy.admin.file.model.FileInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -127,36 +126,11 @@ public class SysUser extends Model<SysUser> implements Serializable {
     private SysDept dept;
 
     /**
-     * 所属部门名称
-     */
-    @TableField(exist = false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String deptName;
-
-    /**
-     * 角色集合
-     */
-    @TableField(exist = false)
-    private List<SysRole> roleList;
-
-    /**
-     * 角色数据权限
-     */
-    @TableField(exist = false)
-    private List<DataPermission> dataPermissionList;
-
-    /**
      * 角色ids，修改时使用
      */
     @TableField(exist = false)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> roleIdList;
-
-    /**
-     * 菜单集合
-     */
-    @TableField(exist = false)
-    private List<SysPermission> permissionList;
 
     /**
      * 头像缩略图

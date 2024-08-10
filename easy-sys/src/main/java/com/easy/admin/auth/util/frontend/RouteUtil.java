@@ -72,9 +72,9 @@ public class RouteUtil {
         if (sysPermission == null) {
             return null;
         }
-
-        boolean canConvert = PermissionType.CATALOGUE.getCode().equals(sysPermission.getType()) ||
-                PermissionType.MENU.getCode().equals(sysPermission.getType());
+        boolean isCatalogue = PermissionType.CATALOGUE.getCode().equals(sysPermission.getType());
+        boolean isMenu = PermissionType.MENU.getCode().equals(sysPermission.getType());
+        boolean canConvert = isCatalogue || isMenu;
         if (!canConvert) {
             return null;
         }
@@ -83,18 +83,19 @@ public class RouteUtil {
         route.setId(sysPermission.getId());
         route.setParentId(sysPermission.getParentId());
         // 是否为外链
-        boolean isExternal = WhetherConst.YES.equals(sysPermission.getExternalLink());
+        boolean isExternalLink = WhetherConst.YES.equals(sysPermission.getExternalLink());
         // 组件
-        //route.setComponent(isExternal ? "IFrameView" : StrUtil.isNotBlank(sysPermission.getComponent()) ? sysPermission.getComponent() : "BasicLayout");
-        route.setComponent(isExternal ? "IFrame" : StrUtil.isNotBlank(sysPermission.getComponent()) ? sysPermission.getComponent() : "LAYOUT");
+        if (isMenu) {
+            route.setComponent(isExternalLink ? "IFrameView" : StrUtil.isNotBlank(sysPermission.getComponent()) ? sysPermission.getComponent() : "BasicLayout");
+        }
         // 路由的名称
         route.setName(getRouteName(sysPermission));
         // 路由Meta配置
         route.setMeta(convertRouteMeta(sysPermission));
-        if (StrUtil.isNotBlank(sysPermission.getPath())) {
-            route.setPath(sysPermission.getPath());
-        } else {
+        if (isExternalLink || StrUtil.isBlank(sysPermission.getPath())) {
             route.setPath("/" + route.getId());
+        } else {
+            route.setPath(sysPermission.getPath());
         }
         return route;
     }

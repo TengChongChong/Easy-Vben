@@ -2,7 +2,6 @@ package com.easy.admin.auth.model.vo.session;
 
 import com.easy.admin.auth.model.vo.route.RouteVO;
 import com.easy.admin.config.mybatis.plugins.model.DataPermission;
-import com.easy.admin.file.model.FileInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -98,7 +97,7 @@ public class SessionUserVO implements Serializable {
     /**
      * 头像
      */
-    private FileInfo avatar;
+    private String avatar;
 
     /**
      * 所属部门
@@ -108,11 +107,13 @@ public class SessionUserVO implements Serializable {
     /**
      * 角色集合
      */
+    @JsonIgnore
     private List<SessionUserRoleVO> roleList = Collections.emptyList();
 
     /**
      * 用户数据权限
      */
+    @JsonIgnore
     private List<DataPermission> dataPermissionList = Collections.emptyList();
 
     /**

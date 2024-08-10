@@ -13,13 +13,13 @@ import com.easy.admin.auth.service.*;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.common.status.ResultCode;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.common.core.util.Response;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.shiro.authc.EasyAccountAuthenticationToken;
 import com.easy.admin.config.shiro.service.ShiroService;
 import com.easy.admin.config.shiro.session.RedisSessionDAO;
 import com.easy.admin.exception.BusinessException;
+import com.easy.admin.file.model.FileInfo;
 import com.easy.admin.file.service.FileInfoService;
 import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.common.constant.SysConst;
@@ -103,7 +103,7 @@ public class ShiroServiceImpl implements ShiroService {
         // 账号被禁用
         if (SysUserStatus.DISABLE.getCode().equals(sessionUser.getStatus())) {
             logger.debug("账号[{}]被禁用", authenticationToken.getUsername());
-            throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.USER_DISABLED);
+            throw new EasyException(BusinessException.USER_DISABLED);
         }
 
         // 获取当前登录用户部门信息
@@ -111,7 +111,10 @@ public class ShiroServiceImpl implements ShiroService {
         sessionUser.setDept(sessionDept);
 
         // 用户头像
-        sessionUser.setAvatar(fileInfoService.selectOne(sessionUser.getId(), "avatar"));
+        FileInfo avatarFile = fileInfoService.selectOne(sessionUser.getId(), "avatar");
+        if (avatarFile != null) {
+            sessionUser.setAvatar(avatarFile.getUrl());
+        }
 
         return sessionUser;
     }
@@ -128,18 +131,18 @@ public class ShiroServiceImpl implements ShiroService {
         // 部门被删除
         if (sessionDept == null) {
             logger.debug("账号[{}]所在部门[{}]被删除", username, deptId);
-            throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.DEPT_NON_EXISTENT);
+            throw new EasyException(BusinessException.DEPT_NON_EXISTENT);
         }
 
         // 部门被禁用
         if (CommonStatus.DISABLE.getCode().equals(sessionDept.getStatus())) {
             logger.debug("账号[{}]所在部门[{}]被禁用", username, sessionDept.getName());
-            throw new EasyException(Response.SHOW_TYPE_WARNING, BusinessException.DEPT_DISABLED);
+            throw new EasyException(BusinessException.DEPT_DISABLED);
         }
 
         // 检查部门类型是否被禁用
         if (StrUtil.isBlank(sessionDept.getTypeCode())) {
-            throw new EasyException(Response.SHOW_TYPE_WARNING, "部门[" + sessionDept.getName() + "]未设置类型，请联系管理员");
+            throw new EasyException("部门[" + sessionDept.getName() + "]未设置类型，请联系管理员");
         }
         sysDeptTypeService.checkDeptTypeIsDisabled(sessionDept.getTypeCode());
 
@@ -258,7 +261,7 @@ public class ShiroServiceImpl implements ShiroService {
         // 检查尝试次数
         int retryCount = getRetryCount(username);
         if (retryCount > 0) {
-            throw new EasyException(Response.SHOW_TYPE_WARNING, ResultCode.UNAUTHORIZED.getCode(), "账号或密码错误，你还剩" + retryCount + "次重试的机会");
+            throw new EasyException(ResultCode.UNAUTHORIZED.getCode(), "账号或密码错误，你还剩" + retryCount + "次重试的机会");
         } else {
             lockUser(username);
         }
@@ -293,7 +296,7 @@ public class ShiroServiceImpl implements ShiroService {
         String isLockKey = RedisPrefix.LOGIN_LOCK + username;
         // 检查是否已被锁定
         if (checkIsLock(username)) {
-            throw new EasyException(Response.SHOW_TYPE_WARNING, ResultCode.UNAUTHORIZED.getCode(), "帐号[" + username + "]已被锁定，请" + RedisUtil.getExpire(isLockKey) / 60 + "分钟后重试");
+            throw new EasyException(ResultCode.UNAUTHORIZED.getCode(), "帐号[" + username + "]已被锁定，请" + RedisUtil.getExpire(isLockKey) / 60 + "分钟后重试");
         }
         // 累加尝试次数
         int loginCount = getTrialFrequency(username, true);
@@ -322,7 +325,7 @@ public class ShiroServiceImpl implements ShiroService {
         String isLockKey = RedisPrefix.LOGIN_LOCK + username;
         RedisUtil.set(isLockKey, "lock", SysConst.projectProperties.getLoginLockLength());
         RedisUtil.setExpire(loginCountKey, SysConst.projectProperties.getLoginLockLength());
-        throw new EasyException(Response.SHOW_TYPE_WARNING, ResultCode.UNAUTHORIZED.getCode(), "由于密码输入错误次数过多，帐号[" + username + "]已被锁定" + SysConst.projectProperties.getLoginLockLength() / 60 + "分钟");
+        throw new EasyException(ResultCode.UNAUTHORIZED.getCode(), "由于密码输入错误次数过多，帐号[" + username + "]已被锁定" + SysConst.projectProperties.getLoginLockLength() / 60 + "分钟");
     }
 
     /**
