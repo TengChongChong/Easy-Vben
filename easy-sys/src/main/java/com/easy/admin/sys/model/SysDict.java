@@ -54,10 +54,10 @@ public class SysDict extends Model<SysDict> {
     @Excel(name = "图标", width = 30, orderNum = "4")
     private String icon;
     /**
-     * 显示方式
+     * 标签色
      */
-    @Excel(name = "显示方式", width = 30, orderNum = "5")
-    private String displayType;
+    @Excel(name = "标签色", width = 30, orderNum = "5")
+    private String color;
 
     /**
      * 状态

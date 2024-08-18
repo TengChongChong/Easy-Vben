@@ -8,7 +8,7 @@
         <result column="parent_code" property="parentCode"/>
         <result column="dict_type" property="dictType"/>
         <result column="icon" property="icon"/>
-        <result column="display_type" property="displayType"/>
+        <result column="color" property="color"/>
         <result column="status" property="status"/>
         <result column="remarks" property="remarks"/>
         <result column="order_no" property="orderNo"/>
@@ -26,7 +26,7 @@
         select ifnull(max(order_no), 0) from sys_dict t where t.dict_type = #{dictType}
     </select>
     <select id="select" resultType="com.easy.admin.sys.model.SysDict">
-        select t.id, t.order_no, t.parent_code, t.name, t.code, t.icon, t.display_type, t.status, t.dict_type,
+        select t.id, t.order_no, t.parent_code, t.name, t.code, t.icon, t.color, t.status, t.dict_type,
                dt.name as dict_type_name, ud.name as parent_name, su.nickname as editUser, t.edit_date
         from sys_dict t
           left join sys_user su on su.id = t.edit_user
@@ -37,11 +37,11 @@
         </where>
     </select>
     <select id="selectAll" resultType="com.easy.admin.sys.model.SysDict">
-        select t.code, t.parent_code, t.name, t.dict_type, t.icon, t.display_type from sys_dict t
+        select t.code, t.parent_code, t.name, t.dict_type, t.icon, t.color from sys_dict t
         where t.status = #{status} order by dict_type, order_no
     </select>
     <select id="exportData" resultType="com.easy.admin.sys.model.SysDict">
-        select t.id, t.name, t.code, t.parent_code, t.dict_type, t.icon, t.display_type, stauts_dict.name as status, t.remarks, t.order_no
+        select t.id, t.name, t.code, t.parent_code, t.dict_type, t.icon, t.color, stauts_dict.name as status, t.remarks, t.order_no
         from sys_dict t
         left join sys_dict stauts_dict on stauts_dict.dict_type = 'commonStatus' and stauts_dict.code = t.status
         <where>

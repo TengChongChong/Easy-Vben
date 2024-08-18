@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 路由 RouteRecordNormalized
@@ -53,8 +52,4 @@ public class RouteVO implements Serializable {
      */
     private RouteMetaVO meta;
 
-    /**
-     * 嵌套的路由
-     */
-    private List<RouteVO> children;
 }

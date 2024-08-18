@@ -107,7 +107,6 @@ public class SessionUserVO implements Serializable {
     /**
      * 角色集合
      */
-    @JsonIgnore
     private List<SessionUserRoleVO> roleList = Collections.emptyList();
 
     /**

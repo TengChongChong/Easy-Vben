@@ -192,7 +192,7 @@ public class ShiroServiceImpl implements ShiroService {
         // 用户路由集合
         sessionUser.setRouteList(routeList);
     }
-
+    
     @Override
     public void updateUserLastLoginDate(String userId) {
         sysUserService.updateUserLastLoginDate(userId, new Date());
