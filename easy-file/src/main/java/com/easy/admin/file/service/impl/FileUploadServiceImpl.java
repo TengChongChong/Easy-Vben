@@ -1,20 +1,19 @@
 package com.easy.admin.file.service.impl;
 
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.file.model.FileUploadResponse;
 import com.easy.admin.file.model.FileUploadRule;
 import com.easy.admin.file.service.FileUploadRuleService;
 import com.easy.admin.file.service.FileUploadService;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.util.file.FileUtil;
+import org.dromara.x.file.storage.core.FileInfo;
+import org.dromara.x.file.storage.core.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 
 /**
  * 文件上传
@@ -28,14 +27,11 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Autowired
     private FileUploadRuleService fileUploadRuleService;
 
-    /**
-     * 文件存储
-     */
     @Autowired
-    private FileStorageFactory fileStorageFactory;
+    private FileStorageService fileStorageService;
 
     @Override
-    public FileUploadResponse upload(String ruleSlug, MultipartFile file) {
+    public FileInfo upload(String ruleSlug, MultipartFile file) {
         FileUploadRule uploadRule = fileUploadRuleService.getBySlug(ruleSlug);
         if (uploadRule == null) {
             throw new EasyException("文件上传规则不存在");
@@ -51,7 +47,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         return uploadFile(file, uploadRule);
     }
 
-    private FileUploadResponse uploadFile(MultipartFile file, FileUploadRule uploadRule) {
+    private FileInfo uploadFile(MultipartFile file, FileUploadRule uploadRule) {
         // 文件名
         String displayName = file.getOriginalFilename();
 
@@ -80,31 +76,9 @@ public class FileUploadServiceImpl implements FileUploadService {
             throw new EasyException("上传失败[不允许上传拓展名为" + suffix + "的文件]");
         }
 
-        // uuid文件名
-        String fileName = IdUtil.randomUUID() + "." + suffix;
+        // 存放路径，以目录分隔符（/）结尾
+        String path = uploadRule.getDirectory() + File.separator + FileUtil.getTemporaryPath();
 
-        // local - 路径 / oss - ObjectName
-        String objectName = fileStorageFactory.getFileStorage().getTemporaryPath() + fileName;
-
-        InputStream inputStream;
-
-        try {
-            inputStream = file.getInputStream();
-        } catch (IOException e) {
-            throw new EasyException("上传失败[无法获取InputStream]");
-        }
-
-        // 响应信息
-        FileUploadResponse result = fileStorageFactory.getFileStorage().uploadFile(
-                uploadRule.getBucket(),
-                objectName,
-                inputStream
-        );
-        result.setDisplayName(displayName);
-        result.setName(fileName);
-        result.setSize(file.getSize());
-        result.setSuffix(suffix);
-        result.setContentType(file.getContentType());
-        return result;
+        return fileStorageService.of(file).setPath(path).upload();
     }
 }

@@ -1,8 +1,8 @@
 package com.easy.admin.file.task;
 
-import com.easy.admin.file.model.FileInfo;
-import com.easy.admin.file.service.FileInfoService;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.service.FileDetailService;
+import org.dromara.x.file.storage.core.FileInfo;
+import org.dromara.x.file.storage.core.FileStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 清理已删除的文件
- * 由于文件无法回滚，删除时仅被标记删除，在这里每小时删除已删除的文件
+ * 清理无效的文件
+ * 1.用户上传的临时文件（未保存直接关闭页面）
+ * 2.由于文件无法回滚，删除时仅被标记删除，延迟1小时删除
  *
  * @author TengChongChong
  * @date 2023-12-27
  */
 @Component
-public class CleanDeletedFile {
+public class CleanInvalidFile {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private FileInfoService fileInfoService;
+    private FileDetailService fileDetailService;
 
     @Autowired
-    FileStorageFactory fileStorageFactory;
+    private FileStorageService fileStorageService;
 
     public void clean() {
         // 清除已删除文件
         logger.info("清除临时文件");
 
-        List<FileInfo> fileInfoList = fileInfoService.selectDeleted();
+        List<FileInfo> fileInfoList = fileDetailService.selectDeleted();
         if (fileInfoList == null || fileInfoList.isEmpty()) {
             return;
         }
@@ -42,9 +43,9 @@ public class CleanDeletedFile {
 
         fileInfoList.forEach(fileInfo -> {
             ids.add(fileInfo.getId());
-            fileStorageFactory.getFileStorage().removeFile(fileInfo.getBucketName(), fileInfo.getObjectName());
+            fileStorageService.delete(fileInfo);
         });
 
-        fileInfoService.deleteData(ids);
+        fileDetailService.removeByIds(ids);
     }
 }

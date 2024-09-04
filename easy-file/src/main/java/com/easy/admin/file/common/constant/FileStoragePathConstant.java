@@ -1,4 +1,4 @@
-package com.easy.admin.file.storage.common.constant;
+package com.easy.admin.file.common.constant;
 
 /**
  * 文件存放目录

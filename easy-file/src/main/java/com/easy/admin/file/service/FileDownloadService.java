@@ -1,7 +1,8 @@
 package com.easy.admin.file.service;
 
 import com.easy.admin.file.model.FileDownload;
-import org.springframework.core.io.InputStreamResource;
+import org.dromara.x.file.storage.core.FileInfo;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +26,10 @@ public interface FileDownloadService {
     /**
      * 保存
      *
-     * @param bucketName local - 文件夹名称 / oss - bucket名称
-     * @param objectName local - 文件路径 /  oss - objectName
-     * @param displayName 显示名称
+     * @param fileInfo fileInfo
      * @return FileDownload
      */
-    FileDownload saveData(String bucketName, String objectName, String displayName);
+    FileDownload saveData(FileInfo fileInfo);
 
     /**
      * 保存
@@ -45,22 +44,22 @@ public interface FileDownloadService {
      *
      * @param id      文件id
      * @param request request
-     * @return ResponseEntity<FileSystemResource>
+     * @return ResponseEntity<Resource>
      * @throws UnsupportedEncodingException ex
      */
-    ResponseEntity<InputStreamResource> download(String id, HttpServletRequest request) throws UnsupportedEncodingException;
+    ResponseEntity<Resource> download(String id, HttpServletRequest request) throws UnsupportedEncodingException;
 
     /**
      * 下载FileInfo数据中文件
      *
-     * @param parentId         数据id
-     * @param type        类型
+     * @param objectId    数据id
+     * @param objectType  类型
      * @param displayName 显示名称
-     * @param request request
+     * @param request     request
      * @return ResponseEntity
      * @throws UnsupportedEncodingException ex
      */
-    ResponseEntity<InputStreamResource> downloadFileInfoById(String parentId, String type, String displayName, HttpServletRequest request) throws UnsupportedEncodingException;
+    ResponseEntity<Resource> downloadFileInfoById(String objectId, String objectType, String displayName, HttpServletRequest request) throws UnsupportedEncodingException;
 
     /**
      * 清除无效下载链接

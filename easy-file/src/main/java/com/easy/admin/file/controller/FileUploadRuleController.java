@@ -6,7 +6,7 @@ import com.easy.admin.file.model.FileUploadRule;
 import com.easy.admin.file.service.FileUploadRuleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,13 +34,13 @@ public class FileUploadRuleController {
      * 查询数据
      *
      * @param fileUploadRule 查询条件
-     * @param page 分页
+     * @param page           分页
      * @return Page<FileUploadRule>
      */
-    @Operation(summary ="查询数据")
+    @Operation(summary = "查询数据")
     @GetMapping()
-    @RequiresPermissions("file:upload:rule:select")
-    public Page<FileUploadRule> select(FileUploadRule fileUploadRule, Page<FileUploadRule> page){
+    @SaCheckPermission("file:upload:rule:select")
+    public Page<FileUploadRule> select(FileUploadRule fileUploadRule, Page<FileUploadRule> page) {
         return service.select(fileUploadRule, page);
     }
 
@@ -50,9 +50,9 @@ public class FileUploadRuleController {
      * @param id id
      * @return FileUploadRule
      */
-    @Operation(summary ="查询详情")
+    @Operation(summary = "查询详情")
     @GetMapping("{id}")
-    @RequiresPermissions("file:upload:rule:select")
+    @SaCheckPermission("file:upload:rule:select")
     public FileUploadRule get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -63,20 +63,21 @@ public class FileUploadRuleController {
      * @return FileUploadRule
      */
     @GetMapping("add")
-    @Operation(summary ="新增")
-    @RequiresPermissions("file:upload:rule:save")
+    @Operation(summary = "新增")
+    @SaCheckPermission("file:upload:rule:save")
     public FileUploadRule add() {
         return service.add();
     }
+
     /**
      * 删除
      *
      * @param ids 数据ids
      * @return true/false
      */
-    @Operation(summary ="删除")
+    @Operation(summary = "删除")
     @DeleteMapping("{ids}")
-    @RequiresPermissions("file:upload:rule:remove")
+    @SaCheckPermission("file:upload:rule:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -87,10 +88,10 @@ public class FileUploadRuleController {
      * @param fileUploadRule 表单内容
      * @return FileUploadRule
      */
-    @Operation(summary ="保存/修改")
+    @Operation(summary = "保存/修改")
     @PostMapping()
-    @RequiresPermissions("file:upload:rule:save")
-    public FileUploadRule saveData(@Valid @RequestBody FileUploadRule fileUploadRule){
+    @SaCheckPermission("file:upload:rule:save")
+    public FileUploadRule saveData(@Valid @RequestBody FileUploadRule fileUploadRule) {
         return service.saveData(fileUploadRule);
     }
 
@@ -102,7 +103,7 @@ public class FileUploadRuleController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("file:upload:rule:save")
+    @SaCheckPermission("file:upload:rule:save")
     public boolean setStatus(@PathVariable("id") String id,
                              @PathVariable("status") String status) {
         return service.setStatus(id, status);
@@ -114,9 +115,9 @@ public class FileUploadRuleController {
      * @param slug 规则别名
      * @return FileUploadRule
      */
-    @Operation(summary ="获取上传规则")
+    @Operation(summary = "获取上传规则")
     @GetMapping("slug/{slug}")
-    public FileUploadRule getBySlug(@PathVariable("slug") String slug){
+    public FileUploadRule getBySlug(@PathVariable("slug") String slug) {
         return service.getBySlug(slug);
     }
 }

@@ -1,7 +1,8 @@
 package com.easy.admin.file.util.file;
 
 import cn.hutool.core.util.StrUtil;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.service.FileDetailService;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,11 +24,7 @@ import java.io.IOException;
 @Component
 public class EditorUtil {
 
-    /**
-     * 文件存储
-     */
-    private static FileStorageFactory fileStorageFactory;
-
+    private static FileDetailService fileDetailService;
 
     /**
      * 图片选择器
@@ -42,21 +39,23 @@ public class EditorUtil {
     /**
      * 处理内容中在临时目录的文件
      *
-     * @param html 内容
+     * @param objectId 数据id
+     * @param html     内容
      * @return 处理后的内容
      */
-    public static String moveToFormal(String html) {
+    public static String moveToFormal(String objectId, String html) {
         Document document = Jsoup.parse(html);
-        handleImage(document);
-        return document.toString();
+        handleImage(objectId, document);
+        return document.body().html();
     }
 
     /**
      * 处理图片
      *
+     * @param objectId 数据id
      * @param document Document
      */
-    private static void handleImage(Document document) {
+    private static void handleImage(String objectId, Document document) {
         Elements elements = document.select(IMAGE_SELECTOR);
         if (elements.isEmpty()) {
             return;
@@ -64,21 +63,13 @@ public class EditorUtil {
 
         for (Element element : elements) {
             String url = element.attr("src");
-            String bucketName = element.attr("data-bucket-name");
-            String objectName = element.attr("data-object-name");
-            if (StrUtil.isNotBlank(url) && fileStorageFactory.getFileStorage().inTemporaryPath(objectName)) {
-                //    // 如果文件过大，将文件压缩
-                //    if (file.length() > MAX_IMAGE_LENGTH) {
-                //        Integer width = getThumbnailWidth(file);
-                //        if(width != null){
-                //            path = ImageUtil.generateThumbnail(file, width);
-                //        }
-                //    }
+            String fileId = element.attr("data-file-id");
+            if (StrUtil.isNotBlank(url) && StrUtil.isNotBlank(fileId) && FileUtil.inTemporaryPath(url)) {
+                FileInfo fileInfo = fileDetailService.get(fileId);
+                fileInfo = fileDetailService.saveToFormal(objectId, "content-image", fileInfo);
 
-                // 文件存在
-                objectName = fileStorageFactory.getFileStorage().moveToFormal(bucketName, objectName);
-                url = fileStorageFactory.getFileStorage().getFileUrl(bucketName, objectName);
-                element.attr("src", url);
+                element.attr("src", fileInfo.getUrl())
+                        .attr("data-file-id", fileInfo.getId());
             }
         }
     }
@@ -94,7 +85,7 @@ public class EditorUtil {
         float proportion = (float) file.length() / EditorUtil.MAX_IMAGE_LENGTH;
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
-            return (int)(bufferedImage.getWidth() / proportion);
+            return (int) (bufferedImage.getWidth() / proportion);
         } catch (IOException e) {
             // 如果没有读到宽度，则忽略转换
             return null;
@@ -102,7 +93,7 @@ public class EditorUtil {
     }
 
     @Autowired
-    public void setFileStorageFactory(FileStorageFactory fileStorageFactory) {
-        EditorUtil.fileStorageFactory = fileStorageFactory;
+    public void setFileDetailService(FileDetailService fileDetailService) {
+        EditorUtil.fileDetailService = fileDetailService;
     }
 }

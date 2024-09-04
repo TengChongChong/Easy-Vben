@@ -43,9 +43,9 @@ public class FileUploadRule extends Model<FileUploadRule> implements Serializabl
     @NotBlank(message = "分类不能为空")
     private String category;
     /**
-     * 文件桶（使用oss时）
+     * 存放目录
      */
-    private String bucket;
+    private String directory;
     /**
      * 文件最小长度，单位 kb
      */

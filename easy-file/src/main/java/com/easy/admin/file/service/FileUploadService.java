@@ -1,6 +1,6 @@
 package com.easy.admin.file.service;
 
-import com.easy.admin.file.model.FileUploadResponse;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -15,8 +15,8 @@ public interface FileUploadService {
      * 文件上传
      *
      * @param ruleSlug sh
-     * @param file 上传的文件
-     * @return file
+     * @param file     上传的文件
+     * @return FileInfo
      */
-    FileUploadResponse upload(String ruleSlug, MultipartFile file);
+    FileInfo upload(String ruleSlug, MultipartFile file);
 }

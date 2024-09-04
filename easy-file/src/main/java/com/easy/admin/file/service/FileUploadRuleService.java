@@ -16,7 +16,7 @@ public interface FileUploadRuleService {
      * 查询数据
      *
      * @param fileUploadRule 查询条件
-     * @param page   分页
+     * @param page           分页
      * @return Page<FileUploadRule>
      */
     Page<FileUploadRule> select(FileUploadRule fileUploadRule, Page<FileUploadRule> page);
@@ -30,11 +30,11 @@ public interface FileUploadRuleService {
     FileUploadRule getBySlug(String slug);
 
     /**
-     * 查询所有文件夹/桶
+     * 查询所有文件夹
      *
-     * @return 文件夹/桶列表
+     * @return 存放目录
      */
-    List<String> selectAllBucket();
+    List<String> selectAllDirectory();
 
     /**
      * 查询详情
@@ -46,9 +46,11 @@ public interface FileUploadRuleService {
 
     /**
      * 新增
+     *
      * @return FileUploadRule
      */
     FileUploadRule add();
+
     /**
      * 删除
      *

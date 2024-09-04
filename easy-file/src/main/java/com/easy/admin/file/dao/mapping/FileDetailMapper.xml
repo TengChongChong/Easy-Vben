@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.file.dao.FileDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.file.model.FileDetail">
+        <result column="id" property="id" />
+        <result column="url" property="url" />
+        <result column="size" property="size" />
+        <result column="filename" property="filename" />
+        <result column="original_filename" property="originalFilename" />
+        <result column="base_path" property="basePath" />
+        <result column="path" property="path" />
+        <result column="ext" property="ext" />
+        <result column="content_type" property="contentType" />
+        <result column="platform" property="platform" />
+        <result column="th_url" property="thUrl" />
+        <result column="th_filename" property="thFilename" />
+        <result column="th_size" property="thSize" />
+        <result column="th_content_type" property="thContentType" />
+        <result column="object_id" property="objectId" />
+        <result column="object_type" property="objectType" />
+        <result column="metadata" property="metadata" />
+        <result column="user_metadata" property="userMetadata" />
+        <result column="th_metadata" property="thMetadata" />
+        <result column="th_user_metadata" property="thUserMetadata" />
+        <result column="attr" property="attr" />
+        <result column="file_acl" property="fileAcl" />
+        <result column="th_file_acl" property="thFileAcl" />
+        <result column="hash_info" property="hashInfo" />
+        <result column="upload_id" property="uploadId" />
+        <result column="upload_status" property="uploadStatus" />
+        <result column="order_no" property="orderNo" />
+        <result column="remarks" property="remarks" />
+        <result column="status" property="status" />
+        <result column="delete_date" property="deleteDate" />
+        <result column="tenant_id" property="tenantId" />
+        <result column="dept_id" property="deptId" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+
+    <select id="selectWithoutPage" resultType="com.easy.admin.file.model.FileDetail">
+        select t.id, t.url, t.size, t.filename, t.original_filename, t.base_path, t.path, t.ext, t.content_type, t.platform,
+        t.th_url, t.th_filename, t.th_size, t.th_content_type, t.object_id, t.object_type, t.metadata, t.user_metadata,
+        t.th_metadata, t.th_user_metadata, t.attr, t.file_acl, t.th_file_acl, t.hash_info
+        from file_detail t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+    <select id="select" resultType="com.easy.admin.file.model.FileDetail">
+        select t.id, t.url, t.size, t.filename, t.original_filename, t.base_path, t.path, t.ext, t.content_type, t.platform,
+        t.th_url, t.th_filename, t.th_size, t.th_content_type, t.object_id, t.object_type, t.metadata, t.user_metadata,
+        t.th_metadata, t.th_user_metadata, t.attr, t.file_acl, t.th_file_acl, t.hash_info
+        from file_detail t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getById" resultType="com.easy.admin.file.model.FileDetail">
+        select t.id, t.url, t.size, t.filename, t.original_filename, t.base_path, t.path, t.ext, t.content_type, t.platform,
+               t.th_url, t.th_filename, t.th_size, t.th_content_type, t.object_id, t.object_type, t.metadata, t.user_metadata,
+               t.th_metadata, t.th_user_metadata, t.attr, t.file_acl, t.th_file_acl, t.hash_info, t.upload_id, t.upload_status,
+               t.order_no, t.remarks, t.status, t.tenant_id, t.dept_id, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from file_detail t
+        where t.id = #{id}
+    </select>
+
+    <select id="selectDeleted" resultType="org.dromara.x.file.storage.core.FileInfo">
+        select t.id, t.url, t.size, t.filename, t.original_filename, t.base_path, t.path, t.ext, t.content_type, t.platform,
+        t.th_url, t.th_filename
+        from file_detail t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

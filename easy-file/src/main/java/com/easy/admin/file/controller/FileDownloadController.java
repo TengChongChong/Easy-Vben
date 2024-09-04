@@ -2,7 +2,7 @@ package com.easy.admin.file.controller;
 
 import com.easy.admin.file.service.FileDownloadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,21 +32,21 @@ public class FileDownloadController {
      */
     @RequestMapping("/file/download/{id}")
     @ResponseBody
-    public ResponseEntity<InputStreamResource> downloadTemplate(@PathVariable("id") String id, HttpServletRequest request) throws UnsupportedEncodingException {
+    public ResponseEntity<Resource> downloadTemplate(@PathVariable("id") String id, HttpServletRequest request) throws UnsupportedEncodingException {
         return service.download(id, request);
     }
 
     /**
      * 下载FileInfo数据中文件
      *
-     * @param parentId         数据id
+     * @param parentId    数据id
      * @param type        类型
      * @param displayName 显示名称
      * @return ResponseEntity
      */
     @RequestMapping("/file/download/file/info")
     @ResponseBody
-    public ResponseEntity<InputStreamResource> downloadFileInfoById(
+    public ResponseEntity<Resource> downloadFileInfoById(
             @RequestParam("parentId") String parentId,
             @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "displayName", required = false) String displayName,

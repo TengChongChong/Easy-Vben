@@ -18,18 +18,18 @@ public interface FileUploadRuleMapper extends BaseMapper<FileUploadRule> {
     /**
      * 查询数据
      *
-     * @param page 分页
+     * @param page         分页
      * @param queryWrapper 查询条件
      * @return List<FileUploadRule>
      */
     List<FileUploadRule> select(Page<FileUploadRule> page, @Param("ew") QueryWrapper<FileUploadRule> queryWrapper);
 
     /**
-     * 查询所有文件夹/桶
+     * 查询所有存放目录
      *
-     * @return 文件夹/桶列表
+     * @return 文件夹
      */
-    List<String> selectAllBucket();
+    List<String> selectAllDirectory();
 
     /**
      * 获取上传规则

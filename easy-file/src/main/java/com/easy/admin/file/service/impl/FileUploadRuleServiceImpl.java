@@ -14,8 +14,6 @@ import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.file.dao.FileUploadRuleMapper;
 import com.easy.admin.file.model.FileUploadRule;
 import com.easy.admin.file.service.FileUploadRuleService;
-import com.easy.admin.file.storage.properties.FileStorageProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +28,6 @@ import java.util.List;
  */
 @Service
 public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper, FileUploadRule> implements FileUploadRuleService {
-
-    @Autowired
-    private FileStorageProperties fileStorageProperties;
 
     @Override
     public Page<FileUploadRule> select(FileUploadRule fileUploadRule, Page<FileUploadRule> page) {
@@ -62,9 +57,9 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
                     queryWrapper.eq("t.category", fileUploadRule.getCategory());
                 }
             }
-            // 文件桶（使用oss时）
-            if (Validator.isNotEmpty(fileUploadRule.getBucket())) {
-                queryWrapper.like("t.bucket", fileUploadRule.getBucket());
+            // 存放目录
+            if (Validator.isNotEmpty(fileUploadRule.getDirectory())) {
+                queryWrapper.like("t.directory", fileUploadRule.getDirectory());
             }
             // 文件后缀
             if (Validator.isNotEmpty(fileUploadRule.getSuffix())) {
@@ -96,8 +91,8 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
     }
 
     @Override
-    public List<String> selectAllBucket() {
-        return baseMapper.selectAllBucket();
+    public List<String> selectAllDirectory() {
+        return baseMapper.selectAllDirectory();
     }
 
     @Override
@@ -115,8 +110,6 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
         fileUploadRule.setUpperLimit(10240);
         //fileUploadRule.setCategory("default");
         fileUploadRule.setStatus(CommonStatus.ENABLE.getCode());
-        // 桶
-        fileUploadRule.setBucket(fileStorageProperties.getDefaultBucket());
         return fileUploadRule;
     }
 

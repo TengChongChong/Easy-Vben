@@ -23,18 +23,9 @@ public class FileDownload extends Model<FileDownload> {
     private String id;
 
     /**
-     * 显示名称
+     * 文件Id
      */
-    private String displayName;
-
-    /**
-     * local - 文件夹名称 / oss - bucket名称
-     */
-    private String bucketName;
-    /**
-     * local - 文件路径 /  oss - objectName
-     */
-    private String objectName;
+    private String fileId;
 
     /**
      * 有效期类型
@@ -45,11 +36,6 @@ public class FileDownload extends Model<FileDownload> {
      * 过期时间
      */
     private Date expire;
-
-    /**
-     * 文件大小
-     */
-    private Long size;
 
     /**
      * 授权（保留）
@@ -95,14 +81,11 @@ public class FileDownload extends Model<FileDownload> {
     @TableField(fill = FieldFill.INSERT)
     private Date createDate;
 
-    //
 
     public FileDownload() {
     }
 
-    public FileDownload(String displayName, String bucketName, String objectName) {
-        this.displayName = displayName;
-        this.bucketName = bucketName;
-        this.objectName = objectName;
+    public FileDownload(String fileId) {
+        this.fileId = fileId;
     }
 }

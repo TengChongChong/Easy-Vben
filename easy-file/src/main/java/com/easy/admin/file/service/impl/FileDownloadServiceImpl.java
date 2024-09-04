@@ -4,25 +4,24 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.common.core.util.http.HttpUtil;
 import com.easy.admin.file.common.constant.FileDownloadEffectiveTypeConst;
 import com.easy.admin.file.dao.FileDownloadMapper;
 import com.easy.admin.file.model.FileDownload;
-import com.easy.admin.file.model.FileInfo;
-import com.easy.admin.file.model.StatObjectResponse;
+import com.easy.admin.file.service.FileDetailService;
 import com.easy.admin.file.service.FileDownloadService;
-import com.easy.admin.file.service.FileInfoService;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.util.file.FileUtil;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
@@ -37,10 +36,7 @@ import java.util.List;
 public class FileDownloadServiceImpl extends ServiceImpl<FileDownloadMapper, FileDownload> implements FileDownloadService {
 
     @Autowired
-    private FileInfoService fileInfoService;
-
-    @Autowired
-    private FileStorageFactory fileStorageFactory;
+    private FileDetailService fileDetailService;
 
     /**
      * 详情
@@ -55,8 +51,8 @@ public class FileDownloadServiceImpl extends ServiceImpl<FileDownloadMapper, Fil
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public FileDownload saveData(String bucketName, String objectName, String displayName) {
-        return saveData(new FileDownload(displayName, bucketName, objectName));
+    public FileDownload saveData(FileInfo fileInfo) {
+        return saveData(new FileDownload(fileInfo.getId()));
     }
 
     /**
@@ -68,19 +64,10 @@ public class FileDownloadServiceImpl extends ServiceImpl<FileDownloadMapper, Fil
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public FileDownload saveData(FileDownload fileDownload) {
-        if (StrUtil.isBlank(fileDownload.getBucketName())) {
-            throw new EasyException("生成下载信息失败[BucketName不可为空]");
-        }
-        if (StrUtil.isBlank(fileDownload.getObjectName())) {
-            throw new EasyException("生成下载信息失败[ObjectName不可为空]");
-        }
-        if (StrUtil.isBlank(fileDownload.getDisplayName())) {
-            throw new EasyException("生成下载信息失败[DisplayName不可为空]");
+        if (StrUtil.isBlank(fileDownload.getFileId())) {
+            throw new EasyException("生成下载信息失败[FileId不可为空]");
         }
 
-        StatObjectResponse statObject = fileStorageFactory.getFileStorage().getStatObject(fileDownload.getBucketName(), fileDownload.getObjectName());
-        // 字节
-        fileDownload.setSize(statObject.getSize());
         // 类型
         if (StrUtil.isBlank(fileDownload.getEffectiveType())) {
             // 默认常规类型，过期时间12小时
@@ -90,11 +77,12 @@ public class FileDownloadServiceImpl extends ServiceImpl<FileDownloadMapper, Fil
             // 常规下载默认12小时有效期
             fileDownload.setExpire(DateUtil.offsetHour(new Date(), 12));
         }
+        fileDownload.setStatus(CommonStatus.ENABLE.getCode());
         return (FileDownload) ToolUtil.checkResult(saveOrUpdate(fileDownload), fileDownload);
     }
 
     @Override
-    public ResponseEntity<InputStreamResource> download(String id, HttpServletRequest request) throws UnsupportedEncodingException {
+    public ResponseEntity<Resource> download(String id, HttpServletRequest request) throws UnsupportedEncodingException {
         FileDownload fileDownload = getById(id);
         if (fileDownload == null) {
             throw new EasyException("链接不存在或已过期");
@@ -104,23 +92,32 @@ public class FileDownloadServiceImpl extends ServiceImpl<FileDownloadMapper, Fil
             throw new EasyException("链接已过期");
         }
 
-        InputStream inputStream = fileStorageFactory.getFileStorage().getObject(fileDownload.getBucketName(), fileDownload.getObjectName());
+        FileInfo fileInfo = fileDetailService.get(fileDownload.getFileId());
 
+        return HttpUtil.getResponseEntity(
+                FileUtil.getFileBytes(fileInfo),
+                fileInfo.getOriginalFilename(),
+                fileInfo.getSize(),
+                request
+        );
 
-        return HttpUtil.getResponseEntity(inputStream, fileDownload.getDisplayName(), fileDownload.getSize(), request);
     }
 
     @Override
-    public ResponseEntity<InputStreamResource> downloadFileInfoById(String parentId, String type, String displayName, HttpServletRequest request) throws UnsupportedEncodingException {
-        List<FileInfo> fileInfoList = fileInfoService.select(parentId, type);
+    public ResponseEntity<Resource> downloadFileInfoById(String objectId, String objectType, String displayName, HttpServletRequest request) throws UnsupportedEncodingException {
+        List<FileInfo> fileInfoList = fileDetailService.select(objectId, objectType);
         if (fileInfoList == null || fileInfoList.isEmpty()) {
             throw new EasyException("获取文件数据失败");
         }
 
         if (fileInfoList.size() == 1) {
             FileInfo fileInfo = fileInfoList.get(0);
-            InputStream inputStream = fileStorageFactory.getFileStorage().getObject(fileInfo.getBucketName(), fileInfo.getObjectName());
-            return HttpUtil.getResponseEntity(inputStream, fileInfo.getDisplayName(), fileInfo.getSize(), request);
+            return HttpUtil.getResponseEntity(
+                    FileUtil.getFileBytes(fileInfo),
+                    fileInfo.getOriginalFilename(),
+                    fileInfo.getSize(),
+                    request
+            );
         } else {
             // todo: 多个文件打包后下载
             //String zipPath = FileUtil.getTemporaryPath() + UUID.randomUUID() + ".zip";

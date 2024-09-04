@@ -5,12 +5,9 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.easy.admin.file.model.FileDownload">
         <result column="id" property="id" />
-        <result column="display_name" property="displayName" />
-        <result column="bucket_name" property="bucketName" />
-        <result column="object_name" property="objectName" />
+        <result column="file_id" property="fileId" />
         <result column="effective_type" property="effectiveType" />
         <result column="expire" property="expire" />
-        <result column="size" property="size" />
         <result column="auth" property="auth" />
         <result column="code" property="code" />
         <result column="status" property="status" />
@@ -19,13 +16,5 @@
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
     </resultMap>
-
-    <select id="select" resultType="com.easy.admin.file.model.FileDownload">
-        select id, display_name, bucket_name, object_name, effective_type, expire, size, auth, code, status, version, create_user, create_date
-        from file_download t
-        <where>
-            ${ew.sqlSegment}
-        </where>
-    </select>
 
 </mapper>
