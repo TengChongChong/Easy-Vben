@@ -18,7 +18,7 @@ import com.easy.admin.sys.dao.SysDictTypeMapper;
 import com.easy.admin.sys.model.SysDictType;
 import com.easy.admin.sys.service.ImportService;
 import com.easy.admin.sys.service.SysDictTypeService;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +61,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
             }
         }
         // 非系统管理员，仅显示非系统数据
-        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+        if (!SessionUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("t.sys", WhetherConst.NO);
         }
         return queryWrapper;
@@ -71,7 +71,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
     public List<Select> selectAll() {
         QueryWrapper<SysDictType> queryWrapper = new QueryWrapper<>();
         // 非系统管理员，仅显示非系统数据
-        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+        if (!SessionUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("sys", WhetherConst.NO);
         }
         queryWrapper.eq("status", CommonStatus.ENABLE.getCode());
@@ -142,7 +142,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
         // 导入成功后设置一些默认信息此处仅作示例
         UpdateWrapper<SysDictType> setDefaultValue = new UpdateWrapper<>();
         Date now = new Date();
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         setDefaultValue.set("create_date", now);
         setDefaultValue.set("edit_date", now);
         setDefaultValue.set("create_user", currentUser.getId());

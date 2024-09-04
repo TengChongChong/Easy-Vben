@@ -18,10 +18,10 @@
     </resultMap>
     <select id="select" resultType="com.easy.admin.cms.model.CmsMedia">
         select t.id, t.site_id, t.name, t.type, t.status, su_edit_user.nickname as edit_user, t.edit_date,
-               fi.url as file_url, fi.bucket_name as file_bucket_name, fi.object_name as file_object_name
+        fd.url as file_url, fd.id as file_id
         from cms_media t
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
-        left join file_info fi on fi.parent_id = t.id and fi.type = '${@com.easy.admin.cms.common.type.CmsFileType@MEDIA_FILE.code}' and fi.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
+        left join file_detail fd on fd.object_id = t.id and fd.object_type = '${@com.easy.admin.cms.common.type.CmsFileType@MEDIA_FILE.code}' and fd.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         <where>
             ${ew.sqlSegment}
         </where>

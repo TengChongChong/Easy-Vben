@@ -6,7 +6,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.activiti.engine.impl.persistence.entity.ModelEntity;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class ActivitiModelController {
      */
     @RequestMapping()
     @ResponseResult
-    @RequiresPermissions("activiti:model:select")
+    @SaCheckPermission("activiti:model:select")
     public Page<ActivitiModel> select(ActivitiModel activitiModel, Page<ActivitiModel> page) {
         return service.select(activitiModel, page);
     }
@@ -46,7 +46,7 @@ public class ActivitiModelController {
      */
     @GetMapping("{id}")
     @ResponseResult
-    @RequiresPermissions("activiti:model:select")
+    @SaCheckPermission("activiti:model:select")
     public ModelEntity get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -59,7 +59,7 @@ public class ActivitiModelController {
      */
     @GetMapping("{id}/json")
     @ResponseResult
-    @RequiresPermissions("activiti:model:select")
+    @SaCheckPermission("activiti:model:select")
     public ObjectNode getModel(@PathVariable("id") String id) {
         return service.getModel(id);
     }
@@ -72,7 +72,7 @@ public class ActivitiModelController {
      */
     @DeleteMapping("{ids}")
     @ResponseResult
-    @RequiresPermissions("activiti:model:remove")
+    @SaCheckPermission("activiti:model:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -85,14 +85,14 @@ public class ActivitiModelController {
      */
     @PostMapping()
     @ResponseResult
-    @RequiresPermissions("activiti:model:save")
+    @SaCheckPermission("activiti:model:save")
     public ModelEntity saveData(@RequestBody @Valid ActivitiModel activitiModel) {
         return service.saveData(activitiModel);
     }
 
     @PutMapping("{id}")
     @ResponseResult
-    @RequiresPermissions("activiti:model:save")
+    @SaCheckPermission("activiti:model:save")
     public boolean saveModel(@PathVariable("id") String id, String name,
                              String description,
                              @RequestParam("json_xml") String jsonXml,
@@ -119,7 +119,7 @@ public class ActivitiModelController {
      */
     @PostMapping("deployment/process/{id}")
     @ResponseResult
-    @RequiresPermissions("activiti:model:save")
+    @SaCheckPermission("activiti:model:save")
     public boolean deploymentProcess(@PathVariable("id") String id) {
         return service.deploymentProcess(id);
     }
@@ -132,7 +132,7 @@ public class ActivitiModelController {
      */
     @GetMapping("export/{id}")
     @ResponseResult
-    @RequiresPermissions("activiti:model:select")
+    @SaCheckPermission("activiti:model:select")
     public String export(@PathVariable("id") String id) {
         return service.export(id);
     }
@@ -145,7 +145,7 @@ public class ActivitiModelController {
      */
     @GetMapping("process/definition/id/{key}")
     @ResponseResult
-    @RequiresPermissions("activiti:model:select")
+    @SaCheckPermission("activiti:model:select")
     public String selectProcessDefinitionId(@PathVariable("key") String key) {
         return service.selectProcessDefinitionId(key);
     }

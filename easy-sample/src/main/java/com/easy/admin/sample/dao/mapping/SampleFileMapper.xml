@@ -15,10 +15,10 @@
         <result column="edit_date" property="editDate" />
     </resultMap>
     <select id="select" resultType="com.easy.admin.sample.model.SampleFile">
-        select t.id, t.remarks, t.status, su_edit_user.nickname as edit_user, t.edit_date, sf.display_name
+        select t.id, t.remarks, t.status, su_edit_user.nickname as edit_user, t.edit_date, fd.original_filename as display_name
         from sample_file t
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
-        left join file_info sf on sf.parent_id = t.id and sf.type = 'file' and sf.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
+        left join file_detail fd on fd.object_id = t.id and fd.object_type = 'file' and fd.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         <where>
             ${ew.sqlSegment}
         </where>

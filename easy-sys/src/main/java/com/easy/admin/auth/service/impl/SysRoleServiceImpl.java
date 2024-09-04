@@ -20,7 +20,7 @@ import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.mybatis.plugins.model.DataPermission;
 import com.easy.admin.sys.common.constant.WhetherConst;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.common.core.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,7 +78,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             }
         }
         // 非系统管理员，仅显示非系统数据
-        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+        if (!SessionUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("t.sys", WhetherConst.NO);
         }
         page.setDefaultAsc("t.order_no");
@@ -167,8 +167,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         boolean isSuccess = saveOrUpdate(sysRole);
         if (isSuccess) {
-            // 删除授权信息，下次请求资源重新授权
-            RedisUtil.delByPrefix(RedisPrefix.SHIRO_AUTHORIZATION);
             sysRolePermissionsService.saveRolePermissions(sysRole.getId(), sysRole.getPermissionIds());
 
             DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRole.getDataPermission().toUpperCase());
@@ -178,8 +176,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             } else {
                 sysRoleDataPermissionService.removeByRoleId(sysRole.getId());
             }
-            // 删除缓存的角色数据
-            RedisUtil.del(RedisPrefix.SYS_ROLE + sysRole.getId());
         }
         return sysRole;
     }

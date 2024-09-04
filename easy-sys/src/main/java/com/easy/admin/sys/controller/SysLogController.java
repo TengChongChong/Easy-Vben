@@ -5,7 +5,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysLog;
 import com.easy.admin.sys.service.SysLogService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 日志 
+ * 日志
  *
  * @author TengChong
  * @date 2019-06-27
@@ -36,10 +36,11 @@ public class SysLogController extends BaseController {
      * @return Page<SysLog>
      */
     @GetMapping
-    @RequiresPermissions("sys:log:select")
-    public Page<SysLog> select(SysLog sysLog, Page<SysLog> page){
+    @SaCheckPermission("sys:log:select")
+    public Page<SysLog> select(SysLog sysLog, Page<SysLog> page) {
         return service.select(sysLog, page);
     }
+
     /**
      * 详情
      *
@@ -47,7 +48,7 @@ public class SysLogController extends BaseController {
      * @return SysLog
      */
     @GetMapping("{id}")
-    @RequiresPermissions("sys:log:select")
+    @SaCheckPermission("sys:log:select")
     public SysLog get(@PathVariable("id") String id) {
         return service.get(id);
     }

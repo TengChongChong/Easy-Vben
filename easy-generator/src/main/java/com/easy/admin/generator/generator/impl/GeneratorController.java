@@ -12,7 +12,7 @@ import com.easy.admin.generator.constant.GeneratorPackageConst;
 import com.easy.admin.generator.constant.GeneratorTemplatePathConst;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +54,7 @@ public class GeneratorController extends GeneratorFile {
      */
     private List<Class<?>> initImports() {
         List<Class<?>> imports = new ArrayList<>();
-        imports.add(RequiresPermissions.class);
+        imports.add(SaCheckPermission.class);
         imports.add(Autowired.class);
         imports.add(RestController.class);
         imports.add(ResponseResult.class);

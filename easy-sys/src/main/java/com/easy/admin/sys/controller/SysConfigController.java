@@ -5,7 +5,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysConfig;
 import com.easy.admin.sys.service.SysConfigService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class SysConfigController extends BaseController {
      * @param page      Page<SysConfig>
      */
     @GetMapping("/api/auth/sys/config")
-    @RequiresPermissions("sys:config:select")
+    @SaCheckPermission("sys:config:select")
     public Page<SysConfig> select(SysConfig sysConfig, Page<SysConfig> page) {
         return service.select(sysConfig, page);
     }
@@ -46,7 +46,7 @@ public class SysConfigController extends BaseController {
      * @return SysConfig
      */
     @GetMapping("/api/auth/sys/config/{id}")
-    @RequiresPermissions("sys:config:select")
+    @SaCheckPermission("sys:config:select")
     public SysConfig get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -69,7 +69,7 @@ public class SysConfigController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("/api/auth/sys/config/{ids}")
-    @RequiresPermissions("sys:config:remove")
+    @SaCheckPermission("sys:config:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -81,7 +81,7 @@ public class SysConfigController extends BaseController {
      * @return SysConfig
      */
     @PostMapping("/api/auth/sys/config")
-    @RequiresPermissions("sys:config:save")
+    @SaCheckPermission("sys:config:save")
     public SysConfig save(@RequestBody @Valid SysConfig sysConfig) {
         return service.saveData(sysConfig);
     }
@@ -92,7 +92,7 @@ public class SysConfigController extends BaseController {
      * @return true/false
      */
     @PostMapping("/api/auth/sys/config/refresh")
-    @RequiresPermissions("sys:config:save")
+    @SaCheckPermission("sys:config:save")
     public boolean refreshCache() {
         return service.refreshCache();
     }

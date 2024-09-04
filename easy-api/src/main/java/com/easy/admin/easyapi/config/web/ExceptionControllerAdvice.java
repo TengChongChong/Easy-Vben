@@ -1,18 +1,20 @@
 package com.easy.admin.easyapi.config.web;
 
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
+import cn.dev33.satoken.exception.NotRoleException;
+import cn.dev33.satoken.exception.SaTokenException;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.status.ResultCode;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.Response;
 import com.easy.admin.config.properties.ProjectProperties;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.sys.common.status.ProfilesActiveStatus;
 import com.easy.admin.sys.model.SysException;
 import com.easy.admin.sys.service.SysExceptionService;
-import com.easy.admin.util.ShiroUtil;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,35 +62,42 @@ public class ExceptionControllerAdvice {
     /**
      * 拦截未经认证异常（未登录）
      */
-    @ExceptionHandler(UnauthenticatedException.class)
-    public Response unauthenticatedException(UnauthenticatedException e) {
-        return Response.failError(ResultCode.UNAUTHORIZED.getCode(), "你尚未登录，请登录后重试");
+    @ExceptionHandler(NotLoginException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Response unauthenticatedException(NotLoginException e) {
+        switch (e.getType()) {
+            case NotLoginException.INVALID_TOKEN:
+            case NotLoginException.TOKEN_TIMEOUT:
+                return Response.failError(ResultCode.UNAUTHORIZED.getCode(), "会话已失效，请重新登录");
+            case NotLoginException.BE_REPLACED:
+                StpUtil.logout();
+                return Response.failError(ResultCode.UNAUTHORIZED.getCode(), "你的帐号在另一地点登录，你已被迫退出");
+            case NotLoginException.KICK_OUT:
+                StpUtil.logout();
+                return Response.failError(ResultCode.UNAUTHORIZED.getCode(), "你被管理员强制退出");
+            default:
+                return Response.failError(ResultCode.UNAUTHORIZED.getCode(), "你尚未登录，请登录后重试");
+        }
     }
 
     /**
      * 权限异常（已登录无权限）
      */
-    @ExceptionHandler({UnauthorizedException.class})
+    @ExceptionHandler({NotPermissionException.class, NotRoleException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public Response unauthorizedException(HttpServletRequest request, UnauthorizedException e) {
+    public Response unauthorizedException(HttpServletRequest request, SaTokenException e) {
         // 你无权限访问此资源
         return Response.failError(ResultCode.FORBIDDEN.getCode(), "无权限访问[" + request.getMethod() + "]" + request.getRequestURI());
     }
 
     /**
-     * 登录异常
+     * 会话异常（已登录无权限）
      */
-    @ExceptionHandler(AuthenticationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response authenticationException(HttpServletRequest request, AuthenticationException e) {
-        if (e.getCause() != null && e.getCause() instanceof EasyException) {
-            logger.error("登录异常:" + e.getCause().getMessage());
-            EasyException easyException = (EasyException) e.getCause();
-            return Response.failError(null, easyException.getCode(), easyException.getMessage(), easyException.getShowType());
-        } else {
-            logger.error("登录异常:" + e.getMessage());
-            return Response.failError(e.getMessage(), Response.SHOW_TYPE_WARNING);
-        }
+    @ExceptionHandler({SaTokenException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Response saTokenExceptionException(HttpServletRequest request, SaTokenException e) {
+        // 你无权限访问此资源
+        return Response.failError(ResultCode.FORBIDDEN.getCode(), "会话异常[" + request.getMethod() + "]" + request.getRequestURI());
     }
 
     /**
@@ -158,10 +167,15 @@ public class ExceptionControllerAdvice {
         sysException.setTriggerTime(new Date());
         sysException.setType(e.getClass().getName());
         sysException.setTrace(StrUtil.join("\n\t", e.getStackTrace()));
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
-        if (currentUser != null) {
-            sysException.setUserId(currentUser.getId());
+        try {
+            SessionUserVO currentUser = SessionUtil.getCurrentUser();
+            if (currentUser != null) {
+                sysException.setUserId(currentUser.getId());
+            }
+        } catch (RuntimeException runtimeException) {
+            // ignore
         }
+
         sysExceptionService.saveData(sysException);
         return sysException;
     }

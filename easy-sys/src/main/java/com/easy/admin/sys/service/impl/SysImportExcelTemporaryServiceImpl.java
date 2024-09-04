@@ -16,7 +16,7 @@ import com.easy.admin.sys.model.SysImportExcelTemporary;
 import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.util.office.ImportExportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
     public Page<SysImportExcelTemporary> select(SysImportExcelTemporary sysImportExcelTemporary, Page<SysImportExcelTemporary> page) {
         QueryWrapper<SysImportExcelTemporary> queryWrapper = new QueryWrapper<>();
         // 导入用户id
-        queryWrapper.eq("user_id", ShiroUtil.getCurrentUser().getId());
+        queryWrapper.eq("user_id", SessionUtil.getCurrentUser().getId());
         if (sysImportExcelTemporary == null || sysImportExcelTemporary.getTemplateId() == null) {
             // 必须指定模板id
             throw new EasyException("未指定模板id");
@@ -95,7 +95,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
         QueryWrapper<SysImportExcelTemporary> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("id", "template_id");
         queryWrapper.eq("id", id);
-        queryWrapper.eq("user_id", ShiroUtil.getCurrentUser().getId());
+        queryWrapper.eq("user_id", SessionUtil.getCurrentUser().getId());
         SysImportExcelTemporary sysImportExcelTemporary = getOne(queryWrapper);
         // 查询导入规则,翻译转换后的字段(此处不翻译字典)
         List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(sysImportExcelTemporary.getTemplateId());
@@ -119,7 +119,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
 
     @Override
     public boolean checkLastData(String templateId) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         QueryWrapper<SysImportExcelTemporary> selectLastData = new QueryWrapper<>();
         selectLastData.eq("user_id", currentUser.getId());
         selectLastData.eq("template_id", templateId);
@@ -128,7 +128,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
 
     @Override
     public boolean cleanMyImport(String templateId) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         QueryWrapper<SysImportExcelTemporary> clean = new QueryWrapper<>();
         clean.eq("user_id", currentUser.getId());
         clean.eq("template_id", templateId);
@@ -137,7 +137,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
 
     @Override
     public boolean cleanSuccessData(String templateId) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 删除已导入成功的数据
         QueryWrapper<SysImportExcelTemporary> deleteSuccess = new QueryWrapper<>();
         deleteSuccess.eq("verification_status", ImportConst.VERIFICATION_STATUS_SUCCESS);
@@ -156,7 +156,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
 
     @Override
     public SysImportSummary selectImportSummary(String templateId) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         List<SysImportExcelTemporary> temporaries = baseMapper.selectImportSummary(templateId, currentUser.getId());
         SysImportSummary summary = new SysImportSummary();
         if (temporaries != null && !temporaries.isEmpty()) {

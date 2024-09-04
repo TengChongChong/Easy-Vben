@@ -5,7 +5,7 @@ import com.easy.admin.common.core.util.WebUtils;
 import com.easy.admin.sys.model.SysLog;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysLogService;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.common.core.util.http.IpUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -70,7 +70,7 @@ public class SysLogAspect {
         sysLog.setMethod(log.method());
         // 操作用户信息
         sysLog.setOperationDate(new Date());
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         if (currentUser != null) {
             sysLog.setOperationUser(currentUser.getId());
         }

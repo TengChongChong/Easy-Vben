@@ -35,7 +35,7 @@ public class ${basicsConfig.modelName}Controller {
     @Operation(summary ="查询数据（无分页）")
     @GetMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:select")
+    @SaCheckPermission("${basicsConfig.permissionCode}:select")
     <% } %>
     public List<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}){
         return service.select(${strUtil.lowerFirst(basicsConfig.modelName)});
@@ -49,7 +49,7 @@ public class ${basicsConfig.modelName}Controller {
     @Operation(summary ="查询所有数据（Tree）")
     @GetMapping("all")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:select")
+    @SaCheckPermission("${basicsConfig.permissionCode}:select")
     <% } %>
     public List<Tree> selectAll() {
         return service.selectAll();
@@ -65,7 +65,7 @@ public class ${basicsConfig.modelName}Controller {
     @Operation(summary ="查询数据")
     @GetMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:select")
+    @SaCheckPermission("${basicsConfig.permissionCode}:select")
     <% } %>
     public Page<${basicsConfig.modelName}> select(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}, Page<${basicsConfig.modelName}> page){
         return service.select(${strUtil.lowerFirst(basicsConfig.modelName)}, page);
@@ -81,7 +81,7 @@ public class ${basicsConfig.modelName}Controller {
     @Operation(summary ="查询详情")
     @GetMapping("{id}")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:select")
+    @SaCheckPermission("${basicsConfig.permissionCode}:select")
     <% } %>
     public ${basicsConfig.modelName} get(@PathVariable("id") String id) {
         return service.get(id);
@@ -99,7 +99,7 @@ public class ${basicsConfig.modelName}Controller {
     @Operation(summary ="新增或新增下级")
     @GetMapping({"/add/{parentId}", "/add"})
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:save")
+    @SaCheckPermission("${basicsConfig.permissionCode}:save")
     <% } %>
     public ${basicsConfig.modelName} add(@PathVariable(value = "parentId", required = false) String parentId) {
         return service.add(parentId);
@@ -113,7 +113,7 @@ public class ${basicsConfig.modelName}Controller {
     @GetMapping("add")
     @Operation(summary ="新增")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:save")
+    @SaCheckPermission("${basicsConfig.permissionCode}:save")
     <% } %>
     public ${basicsConfig.modelName} add() {
         return service.add();
@@ -130,7 +130,7 @@ public class ${basicsConfig.modelName}Controller {
     @Operation(summary ="删除")
     @DeleteMapping("{ids}")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:remove")
+    @SaCheckPermission("${basicsConfig.permissionCode}:remove")
     <% } %>
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
@@ -147,7 +147,7 @@ public class ${basicsConfig.modelName}Controller {
     @Operation(summary ="保存/修改")
     @PostMapping()
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:save")
+    @SaCheckPermission("${basicsConfig.permissionCode}:save")
     <% } %>
     public ${basicsConfig.modelName} saveData(@Valid @RequestBody ${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}){
         return service.saveData(${strUtil.lowerFirst(basicsConfig.modelName)});
@@ -161,7 +161,7 @@ public class ${basicsConfig.modelName}Controller {
      */
     @PostMapping("order")
     <% if(strUtil.isNotBlank(basicsConfig.permissionCode)) { %>
-    @RequiresPermissions("${basicsConfig.permissionCode}:save")
+    @SaCheckPermission("${basicsConfig.permissionCode}:save")
     <% } %>
     public boolean saveOrder(@RequestBody List<${basicsConfig.modelName}> ${strUtil.lowerFirst(basicsConfig.modelName)}List){
         return service.saveOrder(${strUtil.lowerFirst(basicsConfig.modelName)}List);
@@ -177,7 +177,7 @@ public class ${basicsConfig.modelName}Controller {
      */
     @Operation(summary ="导出数据")
     @GetMapping("export/data")
-    @RequiresPermissions("${basicsConfig.permissionCode}:select")
+    @SaCheckPermission("${basicsConfig.permissionCode}:select")
     public String exportData(${basicsConfig.modelName} ${strUtil.lowerFirst(basicsConfig.modelName)}){
         return service.exportData(${strUtil.lowerFirst(basicsConfig.modelName)});
     }

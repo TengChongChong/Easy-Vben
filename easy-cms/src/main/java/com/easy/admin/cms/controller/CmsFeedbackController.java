@@ -6,7 +6,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +38,7 @@ public class CmsFeedbackController {
      */
     @Operation(summary = "查询数据")
     @GetMapping("/api/auth/cms/feedback")
-    @RequiresPermissions("cms:feedback:select")
+    @SaCheckPermission("cms:feedback:select")
     public Page<CmsFeedback> select(CmsFeedback cmsFeedback, Page<CmsFeedback> page) {
         return service.select(cmsFeedback, page);
     }
@@ -51,7 +51,7 @@ public class CmsFeedbackController {
      */
     @Operation(summary = "查询详情")
     @GetMapping("/api/auth/cms/feedback/{id}")
-    @RequiresPermissions("cms:feedback:select")
+    @SaCheckPermission("cms:feedback:select")
     public CmsFeedback get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -64,7 +64,7 @@ public class CmsFeedbackController {
      */
     @Operation(summary = "删除")
     @DeleteMapping("/api/auth/cms/feedback/{ids}")
-    @RequiresPermissions("cms:feedback:remove")
+    @SaCheckPermission("cms:feedback:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -77,7 +77,7 @@ public class CmsFeedbackController {
      */
     @Operation(summary = "保存/修改")
     @PostMapping("/api/cms/feedback")
-    @RequiresPermissions("cms:feedback:save")
+    @SaCheckPermission("cms:feedback:save")
     public CmsFeedback saveData(@Valid @RequestBody CmsFeedback cmsFeedback) {
         return service.saveData(cmsFeedback);
     }
@@ -90,7 +90,7 @@ public class CmsFeedbackController {
      */
     @Operation(summary = "导出数据")
     @GetMapping("/api/auth/cms/feedback/export/data")
-    @RequiresPermissions("cms:feedback:select")
+    @SaCheckPermission("cms:feedback:select")
     public String exportData(CmsFeedback cmsFeedback) {
         return service.exportData(cmsFeedback);
     }

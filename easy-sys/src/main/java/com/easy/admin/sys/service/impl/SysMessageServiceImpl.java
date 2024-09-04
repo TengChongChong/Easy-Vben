@@ -8,13 +8,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.config.sa.token.util.SessionUtil;
+import com.easy.admin.file.service.FileDetailService;
 import com.easy.admin.file.util.file.EditorUtil;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.dao.SysMessageMapper;
 import com.easy.admin.sys.model.SysMessage;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.sys.service.SysMessageService;
-import com.easy.admin.util.ShiroUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,9 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
 
     @Autowired
     private SysMessageDetailService sysMessageDetailsService;
+
+    @Autowired
+    private FileDetailService fileDetailService;
 
     /**
      * 列表
@@ -58,14 +62,14 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
                 queryWrapper.le("m.send_date", sysMessage.getEndSendDate());
             }
         }
-        queryWrapper.eq("m.create_user", ShiroUtil.getCurrentUser().getId());
+        queryWrapper.eq("m.create_user", SessionUtil.getCurrentUser().getId());
         page.setRecords(baseMapper.selectSend(page, queryWrapper));
         return page;
     }
 
     @Override
     public Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 查询条件
         QueryWrapper<SysMessage> queryWrapper = commonQuery(sysMessage);
         // 只查询接收人为自己的
@@ -142,7 +146,11 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     @Override
     public boolean remove(String ids) {
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
-        return removeByIds(idList);
+        boolean isSuccess = removeByIds(idList);
+        if (isSuccess) {
+            fileDetailService.removeByObjectId(ids);
+        }
+        return isSuccess;
     }
 
     /**
@@ -167,9 +175,6 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
             sysMessage.setType(MessageConst.TYPE_NOTICE);
         }
 
-        // 处理内容中的文件
-        sysMessage.setContent(EditorUtil.moveToFormal(sysMessage.getContent()));
-
         boolean isSuccess = saveOrUpdate(sysMessage);
         if (isSuccess) {
             if (!isAdd) {
@@ -178,9 +183,24 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
             }
             // 保存收信人
             sysMessageDetailsService.saveData(sysMessage.getId(), sysMessage.getReceivers());
+
+            // 处理内容中的文件
+            saveContentImage(sysMessage.getId(), sysMessage.getContent());
         }
         return sysMessage;
     }
+
+    private void saveContentImage(String id, String content) {
+        if (StrUtil.isBlank(content)) {
+            return;
+        }
+        String realContent = EditorUtil.moveToFormal(id, content);
+        UpdateWrapper<SysMessage> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id)
+                .set("content", realContent);
+        update(updateWrapper);
+    }
+
 
     @Override
     public boolean send(String ids) {
@@ -190,7 +210,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
         send.set("send_date", new Date());
         send.in("id", idList);
         // 只能发送自己写的
-        send.eq("create_user", ShiroUtil.getCurrentUser().getId());
+        send.eq("create_user", SessionUtil.getCurrentUser().getId());
         return update(send);
     }
 
@@ -199,7 +219,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
         // 查询条件
         QueryWrapper<SysMessage> queryWrapper = new QueryWrapper<>();
         // 只查询接收人为自己的
-        queryWrapper.eq("d.receiver_user", ShiroUtil.getCurrentUser().getId());
+        queryWrapper.eq("d.receiver_user", SessionUtil.getCurrentUser().getId());
         // 已发送
         queryWrapper.eq("m.status", MessageConst.STATUS_HAS_BEEN_SENT);
         // 未读

@@ -16,7 +16,7 @@ import com.easy.admin.sys.dao.SysConfigMapper;
 import com.easy.admin.sys.model.SysConfig;
 import com.easy.admin.sys.service.AsyncService;
 import com.easy.admin.sys.service.SysConfigService;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,7 +81,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             }
         }
         // 非系统管理员，仅显示非系统数据
-        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+        if (!SessionUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("t.sys", WhetherConst.NO);
         }
         page.setDefaultDesc("t.create_date");

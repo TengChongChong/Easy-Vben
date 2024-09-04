@@ -7,7 +7,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +40,7 @@ public class CmsArticleController {
      */
     @Operation(summary = "查询数据")
     @GetMapping()
-    @RequiresPermissions("cms:article:select")
+    @SaCheckPermission("cms:article:select")
     public Page<CmsArticle> select(CmsArticle cmsArticle, Page<CmsArticle> page) {
         return service.select(cmsArticle, page);
     }
@@ -53,7 +53,7 @@ public class CmsArticleController {
      */
     @Operation(summary = "查询详情")
     @GetMapping("{id}")
-    @RequiresPermissions("cms:article:select")
+    @SaCheckPermission("cms:article:select")
     public CmsArticle get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -65,7 +65,7 @@ public class CmsArticleController {
      */
     @GetMapping("add")
     @Operation(summary = "新增")
-    @RequiresPermissions("cms:article:save")
+    @SaCheckPermission("cms:article:save")
     public CmsArticle add() {
         return service.add();
     }
@@ -78,7 +78,7 @@ public class CmsArticleController {
      */
     @Operation(summary = "删除")
     @DeleteMapping("{ids}")
-    @RequiresPermissions("cms:article:remove")
+    @SaCheckPermission("cms:article:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -91,7 +91,7 @@ public class CmsArticleController {
      */
     @Operation(summary = "保存/修改")
     @PostMapping()
-    @RequiresPermissions("cms:article:save")
+    @SaCheckPermission("cms:article:save")
     public CmsArticle saveData(@Valid @RequestBody CmsArticle cmsArticle) {
         return service.saveData(cmsArticle);
     }
@@ -104,7 +104,7 @@ public class CmsArticleController {
      */
     @Operation(summary = "发布")
     @PostMapping("release/{ids}")
-    @RequiresPermissions("cms:article:status")
+    @SaCheckPermission("cms:article:status")
     public boolean release(@PathVariable("ids") String ids) {
         return service.setStatus(ids, CmsArticleStatus.PUBLISHED.getCode());
     }
@@ -117,7 +117,7 @@ public class CmsArticleController {
      */
     @Operation(summary = "撤销")
     @PostMapping("revoke/{ids}")
-    @RequiresPermissions("cms:article:status")
+    @SaCheckPermission("cms:article:status")
     public boolean revoke(@PathVariable("ids") String ids) {
         return service.setStatus(ids, CmsArticleStatus.RESCINDED.getCode());
     }

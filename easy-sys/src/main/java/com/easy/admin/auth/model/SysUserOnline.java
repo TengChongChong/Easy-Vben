@@ -14,6 +14,10 @@ import java.util.Date;
 @Data
 public class SysUserOnline extends SessionUserVO {
     /**
+     * token
+     */
+    private String token;
+    /**
      * 用户所属部门
      */
     private String deptName;
@@ -30,10 +34,6 @@ public class SysUserOnline extends SessionUserVO {
      */
     private String systemHost;
     /**
-     * session创建时间
-     */
-    private Date startTimestamp;
-    /**
      * session最后访问时间
      */
     private Date lastAccessTime;
@@ -41,4 +41,13 @@ public class SysUserOnline extends SessionUserVO {
      * 超时时间
      */
     private Long timeout;
+    /**
+     * 设备
+     */
+    private String device;
+
+    /**
+     * 回话状态
+     */
+    private String sessionStatus;
 }

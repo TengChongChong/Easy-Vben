@@ -2,8 +2,8 @@ package com.easy.admin.cms.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.easy.admin.file.model.FileInfo;
 import lombok.Data;
+import org.dromara.x.file.storage.core.FileInfo;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -112,6 +112,7 @@ public class CmsArticle extends Model<CmsArticle> {
     /**
      * 部门id
      */
+    @TableField(fill = FieldFill.INSERT)
     private String deptId;
     /**
      * 排序值

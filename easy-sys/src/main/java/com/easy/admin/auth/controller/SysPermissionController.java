@@ -5,7 +5,7 @@ import com.easy.admin.auth.service.SysPermissionService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.annotation.ResponseResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class SysPermissionController extends BaseController {
      * @return List<JsTree>
      */
     @GetMapping()
-    @RequiresPermissions("sys:permission:select")
+    @SaCheckPermission("sys:permission:select")
     public List<SysPermission> select(SysPermission sysPermission) {
         return service.select(sysPermission);
     }
@@ -45,7 +45,7 @@ public class SysPermissionController extends BaseController {
      * @return List<JsTree>
      */
     @GetMapping("all")
-    @RequiresPermissions("sys:permission:select")
+    @SaCheckPermission("sys:permission:select")
     public List<Tree> selectAll() {
         return service.selectAll();
     }
@@ -68,7 +68,7 @@ public class SysPermissionController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{id}")
-    @RequiresPermissions("sys:permission:remove")
+    @SaCheckPermission("sys:permission:remove")
     public boolean remove(@PathVariable("id") String id) {
         return service.remove(id);
     }
@@ -82,7 +82,7 @@ public class SysPermissionController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}/type/{type}")
-    @RequiresPermissions("sys:permission:save")
+    @SaCheckPermission("sys:permission:save")
     public boolean setStatus(@PathVariable("id") String id,
                              @PathVariable("status") String status,
                              @PathVariable("type") String type) {
@@ -96,7 +96,7 @@ public class SysPermissionController extends BaseController {
      * @return SysPermissions
      */
     @PostMapping
-    @RequiresPermissions("sys:permission:save")
+    @SaCheckPermission("sys:permission:save")
     public SysPermission save(@RequestBody @Valid SysPermission sysPermission) {
         return service.saveData(sysPermission);
     }
@@ -108,7 +108,7 @@ public class SysPermissionController extends BaseController {
      * @return true/false
      */
     @PostMapping("order")
-    @RequiresPermissions("sys:permission:save")
+    @SaCheckPermission("sys:permission:save")
     public boolean saveOrder(@RequestBody List<SysPermission> sysPermissionList) {
         return service.saveOrder(sysPermissionList);
     }

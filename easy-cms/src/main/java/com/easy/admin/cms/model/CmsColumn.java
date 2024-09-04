@@ -92,6 +92,7 @@ public class CmsColumn extends Model<CmsColumn> {
     /**
      * 部门id
      */
+    @TableField(fill = FieldFill.INSERT)
     private String deptId;
     /**
      * 创建人

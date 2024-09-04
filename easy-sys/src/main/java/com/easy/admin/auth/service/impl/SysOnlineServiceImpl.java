@@ -1,20 +1,17 @@
 package com.easy.admin.auth.service.impl;
 
-import cn.hutool.core.convert.Convert;
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.model.SysUserOnline;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysUserOnlineService;
-import com.easy.admin.config.shiro.session.RedisSessionDAO;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.SimplePrincipalCollection;
-import org.apache.shiro.subject.support.DefaultSubjectContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.easy.admin.common.core.common.pagination.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,75 +23,45 @@ import java.util.List;
 @Service
 public class SysOnlineServiceImpl implements SysUserOnlineService {
 
-    @Autowired
-    private RedisSessionDAO sessionDAO;
-
     @Override
-    public List<SysUserOnline> select(SysUserOnline sysUserOnline) {
-        List<SysUserOnline> userOnlineList = new ArrayList<>();
-        Collection<Session> sessions = sessionDAO.getActiveSessions();
-        if (sessions != null && !sessions.isEmpty()) {
-            for (Session session : sessions) {
-                SysUserOnline userOnline = new SysUserOnline();
-                SimplePrincipalCollection principalCollection;
-                // 管理员强制退出
-                if (Convert.toBool(session.getAttribute(SessionConst.FORCE_LOGOUT), false)) {
-                    continue;
-                }
-                // 在其他地方登录,被踢出
-                if (Convert.toBool(session.getAttribute(SessionConst.LOGIN_ELSEWHERE), false)) {
-                    continue;
-                }
-                if (session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY) == null) {
-                    continue;
-                }
-                principalCollection = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-                SessionUserVO sessionUser = (SessionUserVO) principalCollection.getPrimaryPrincipal();
-                // 用户名
-                if (StrUtil.isNotBlank(sysUserOnline.getUsername())) {
-                    if (!sessionUser.getUsername().contains(sysUserOnline.getUsername())) {
-                        continue;
-                    }
-                }
-                // 昵称
-                if (StrUtil.isNotBlank(sysUserOnline.getNickname())) {
-                    if (!sessionUser.getNickname().contains(sysUserOnline.getNickname())) {
-                        continue;
-                    }
-                }
-                // 部门
-                if (StrUtil.isNotBlank(sysUserOnline.getDeptName())) {
-                    if (!sessionUser.getDept().getName().contains(sysUserOnline.getDeptName())) {
-                        continue;
-                    }
-                }
-                userOnline.setUsername(sessionUser.getUsername());
-                userOnline.setNickname(sessionUser.getNickname());
-                userOnline.setDeptName(sessionUser.getDept().getName());
-                userOnline.setAvatar(sessionUser.getAvatar());
-                userOnline.setId(sessionUser.getId());
+    public Page<SysUserOnline> select(SysUserOnline sysUserOnline, Page<SysUserOnline> page) {
+        int size = ((Long) page.getPageSize()).intValue();
+        int start = (((Long) page.getCurrent()).intValue() - 1) * size;
 
-                userOnline.setSessionId((String) session.getId());
-                userOnline.setHost(session.getHost());
-                userOnline.setStartTimestamp(session.getStartTimestamp());
-                userOnline.setLastAccessTime(session.getLastAccessTime());
-                userOnline.setTimeout(session.getTimeout());
-                userOnlineList.add(userOnline);
-            }
+        String keyword = (sysUserOnline != null && StrUtil.isNotBlank(sysUserOnline.getToken())) ? sysUserOnline.getToken() : "";
+        List<String> tokenList = StpUtil.searchTokenValue(keyword, start, size, true);
+        if (tokenList == null || tokenList.isEmpty()) {
+            return page;
         }
-        return userOnlineList;
+        List<SysUserOnline> userOnlineList = new ArrayList<>();
+        for (String token : tokenList) {
+            // 获取 token
+            String realToken = token.contains(":") ? token.substring(token.lastIndexOf(":") + 1) : token;
+            SaSession session = StpUtil.getTokenSessionByToken(realToken);
+
+            // token 中的用户信息
+            SessionUserVO sessionUserVO = (SessionUserVO) session.get(SessionConst.USER_SESSION_KEY);
+            SysUserOnline userOnline = new SysUserOnline();
+
+            BeanUtil.copyProperties(sessionUserVO, userOnline);
+
+            // 设备
+            userOnline.setId((String) StpUtil.getLoginIdByToken(realToken));
+            userOnline.setDevice(StpUtil.getLoginDevice());
+            userOnline.setToken(realToken);
+            userOnline.setDeptName(sessionUserVO.getDept().getName());
+            userOnline.setTimeout(StpUtil.getTokenTimeout(realToken));
+            userOnline.setSessionStatus(userOnline.getId() != null ? "1" : "-1");
+            userOnlineList.add(userOnline);
+        }
+        page.setRecords(userOnlineList);
+        return page;
     }
 
     @Override
     public boolean forceLogout(String token) {
-        Session session = sessionDAO.readSession(token);
-        if (session != null) {
-            // 标记为管理员强制退出
-            session.setAttribute(SessionConst.FORCE_LOGOUT, true);
-            sessionDAO.update(session);
-            return true;
-        } else {
-            return false;
-        }
+        // 强制指定 Token 注销下线
+        StpUtil.kickoutByTokenValue(token);
+        return true;
     }
 }

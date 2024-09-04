@@ -2,6 +2,7 @@ package com.easy.admin.activiti.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import org.activiti.engine.impl.persistence.entity.ModelEntity;
+import org.dromara.x.file.storage.core.FileInfo;
 
 /**
  * Activiti 流程模型
@@ -14,13 +15,13 @@ public class ActivitiModel extends ModelEntity {
     /**
      * 描述
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     private String description;
 
     /**
      * 模型路径
      */
-    private String path;
+    private FileInfo modelFile;
 
     public String getDescription() {
         return description;
@@ -30,15 +31,15 @@ public class ActivitiModel extends ModelEntity {
         this.description = description;
     }
 
-    public String getPath() {
-        return path;
+    public FileInfo getModelFile() {
+        return modelFile;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setModelFile(FileInfo modelFile) {
+        this.modelFile = modelFile;
     }
 
-    public ModelEntity getModelEntity(){
+    public ModelEntity getModelEntity() {
         ModelEntity modelEntity = new ModelEntity();
         modelEntity.setName(this.name);
         modelEntity.setKey(this.key);

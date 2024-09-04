@@ -1,6 +1,6 @@
 package com.easy.admin.sample.controller;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import com.easy.admin.common.core.annotation.ResponseResult;
@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import javax.validation.Valid;
+
 import com.easy.admin.sample.model.SampleSlaveGeneral;
 import com.easy.admin.sample.service.SampleSlaveGeneralService;
 
@@ -39,8 +41,8 @@ public class SampleSlaveGeneralController {
      * @return Page<SampleSlaveGeneral>
      */
     @GetMapping()
-    @RequiresPermissions("sample:slave:general:select")
-    public Page<SampleSlaveGeneral> select(SampleSlaveGeneral sampleSlaveGeneral, Page<SampleSlaveGeneral> page){
+    @SaCheckPermission("sample:slave:general:select")
+    public Page<SampleSlaveGeneral> select(SampleSlaveGeneral sampleSlaveGeneral, Page<SampleSlaveGeneral> page) {
         return service.select(sampleSlaveGeneral, page);
     }
 
@@ -51,7 +53,7 @@ public class SampleSlaveGeneralController {
      * @return SampleSlaveGeneral
      */
     @GetMapping("{id}")
-    @RequiresPermissions("sample:slave:general:select")
+    @SaCheckPermission("sample:slave:general:select")
     public SampleSlaveGeneral get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -62,7 +64,7 @@ public class SampleSlaveGeneralController {
      * @return SampleSlaveGeneral
      */
     @GetMapping("add")
-    @RequiresPermissions("sample:slave:general:save")
+    @SaCheckPermission("sample:slave:general:save")
     public SampleSlaveGeneral add() {
         return service.add();
     }
@@ -74,7 +76,7 @@ public class SampleSlaveGeneralController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("sample:slave:general:remove")
+    @SaCheckPermission("sample:slave:general:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -86,8 +88,8 @@ public class SampleSlaveGeneralController {
      * @return SampleSlaveGeneral
      */
     @PostMapping()
-    @RequiresPermissions("sample:slave:general:save")
-    public SampleSlaveGeneral saveData(@Valid @RequestBody SampleSlaveGeneral sampleSlaveGeneral){
+    @SaCheckPermission("sample:slave:general:save")
+    public SampleSlaveGeneral saveData(@Valid @RequestBody SampleSlaveGeneral sampleSlaveGeneral) {
         return service.saveData(sampleSlaveGeneral);
     }
 

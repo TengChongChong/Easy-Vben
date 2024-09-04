@@ -156,6 +156,24 @@
             <artifactId>spring-boot-starter-captcha</artifactId>
             <version>${captcha.version}</version>
         </dependency>
+        <!-- 鉴权 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
+        <!-- Sa-Token 整合 Redis （使用 jdk 默认序列化方式） -->
+<!--        <dependency>-->
+<!--            <groupId>cn.dev33</groupId>-->
+<!--            <artifactId>sa-token-redis</artifactId>-->
+<!--            <version>${sa-token.version}</version>-->
+<!--        </dependency>-->
+        <!-- Sa-Token 整合 Redis （使用 jdk 默认序列化方式） -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

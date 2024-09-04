@@ -7,7 +7,7 @@ import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.service.SysDictService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +22,6 @@ import java.util.List;
  */
 @RestController
 @ResponseResult
-@RequestMapping("/api/auth/sys/dict")
 public class SysDictController extends BaseController {
 
     @Autowired
@@ -34,8 +33,8 @@ public class SysDictController extends BaseController {
      * @param sysDict 查询条件
      * @return Page<SysDict>
      */
-    @GetMapping
-    @RequiresPermissions("sys:dict:select")
+    @GetMapping("/api/auth/sys/dict")
+    @SaCheckPermission("sys:dict:select")
     public Page<SysDict> select(SysDict sysDict, Page<SysDict> page) {
         return service.select(sysDict, page);
     }
@@ -46,8 +45,8 @@ public class SysDictController extends BaseController {
      * @param dictType 字典类型
      * @return List<Select>
      */
-    @GetMapping("dict-type")
-    @RequiresPermissions("sys:dict:select")
+    @GetMapping("/api/auth/sys/dict/dict-type")
+    @SaCheckPermission("sys:dict:select")
     public List<Select> selectByDictType(@RequestParam(value = "dictType", required = false) String dictType) {
         return service.selectByDictType(dictType);
     }
@@ -59,7 +58,7 @@ public class SysDictController extends BaseController {
      * @param dictType 字典类型
      * @return SysDict
      */
-    @GetMapping({"/add/{id}", "/add"})
+    @GetMapping({"/api/auth/sys/dict/add/{id}", "/api/auth/sys/dict/add"})
     public SysDict add(@PathVariable(value = "id", required = false) String parentId,
                        @RequestParam(value = "dictType", required = false) String dictType) {
         return service.add(parentId, dictType);
@@ -71,8 +70,8 @@ public class SysDictController extends BaseController {
      * @param ids 字典ids
      * @return true/false
      */
-    @DeleteMapping("{ids}")
-    @RequiresPermissions("sys:dict:remove")
+    @DeleteMapping("/api/auth/sys/dict/{ids}")
+    @SaCheckPermission("sys:dict:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -83,8 +82,8 @@ public class SysDictController extends BaseController {
      * @param sysDict 表单内容
      * @return SysDict
      */
-    @PostMapping
-    @RequiresPermissions("sys:dict:save")
+    @PostMapping("/api/auth/sys/dict")
+    @SaCheckPermission("sys:dict:save")
     public SysDict save(@RequestBody @Valid SysDict sysDict) {
         return service.saveData(sysDict);
     }
@@ -95,7 +94,7 @@ public class SysDictController extends BaseController {
      * @param id 字典id
      * @return SysDict
      */
-    @GetMapping("{id}")
+    @GetMapping("/api/auth/sys/dict/{id}")
     public SysDict get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -105,7 +104,7 @@ public class SysDictController extends BaseController {
      *
      * @return List<SysDict>
      */
-    @GetMapping("all")
+    @GetMapping({"/api/sys/dict/all", "/api/auth/sys/dict/all"})
     public List<SysDict> selectAll() {
         return service.selectAll();
     }
@@ -113,7 +112,7 @@ public class SysDictController extends BaseController {
     /**
      * 刷新缓存数据
      */
-    @PostMapping("refresh")
+    @PostMapping("/api/auth/sys/dict/refresh")
     public boolean refresh() {
         return service.refresh();
     }
@@ -125,8 +124,8 @@ public class SysDictController extends BaseController {
      * @return 文件下载id
      */
     @Operation(summary = "导出数据")
-    @GetMapping("export/data")
-    @RequiresPermissions("sys:dict:select")
+    @GetMapping("/api/auth/sys/dict/export/data")
+    @SaCheckPermission("sys:dict:select")
     public String exportData(SysDict sysDict) {
         return service.exportData(sysDict);
     }

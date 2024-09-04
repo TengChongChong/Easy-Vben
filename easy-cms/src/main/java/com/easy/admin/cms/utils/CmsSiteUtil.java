@@ -5,7 +5,7 @@ import com.easy.admin.cms.common.constant.CmsSessionKey;
 import com.easy.admin.cms.model.CmsSite;
 import com.easy.admin.cms.service.CmsSiteService;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +43,7 @@ public class CmsSiteUtil {
      * @return 站点id
      */
     public static String getUserActiveSiteId() {
-        CmsSite cmsSite = (CmsSite) ShiroUtil.getAttribute(CmsSessionKey.CURRENT_SITE);
+        CmsSite cmsSite = (CmsSite) SessionUtil.getAttribute(CmsSessionKey.CURRENT_SITE);
         if (cmsSite == null) {
             return null;
         }
@@ -64,7 +64,7 @@ public class CmsSiteUtil {
         if (!checkUserSite(cmsSite.getId())) {
             throw new EasyException("你无权操作站点[" + cmsSite.getName() + "]");
         }
-        ShiroUtil.setAttribute(CmsSessionKey.CURRENT_SITE, cmsSite);
+        SessionUtil.setAttribute(CmsSessionKey.CURRENT_SITE, cmsSite);
     }
 
     /**

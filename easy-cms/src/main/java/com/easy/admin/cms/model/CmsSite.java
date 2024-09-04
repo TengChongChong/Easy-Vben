@@ -85,6 +85,7 @@ public class CmsSite extends Model<CmsSite> implements Serializable {
     /**
      * 部门id
      */
+    @TableField(fill = FieldFill.INSERT)
     private String deptId;
     /**
      * 创建人

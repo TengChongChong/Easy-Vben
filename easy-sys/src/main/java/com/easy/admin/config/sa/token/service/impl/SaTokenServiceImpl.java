@@ -1,8 +1,8 @@
-package com.easy.admin.config.shiro.service.impl;
+package com.easy.admin.config.sa.token.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.common.status.SysUserStatus;
 import com.easy.admin.auth.model.vo.SysRoleCacheVO;
 import com.easy.admin.auth.model.vo.route.RouteVO;
@@ -15,25 +15,22 @@ import com.easy.admin.common.core.common.status.ResultCode;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
-import com.easy.admin.config.shiro.authc.EasyAccountAuthenticationToken;
-import com.easy.admin.config.shiro.service.ShiroService;
-import com.easy.admin.config.shiro.session.RedisSessionDAO;
+import com.easy.admin.config.sa.token.model.LoginAccount;
+import com.easy.admin.config.sa.token.service.SaTokenService;
 import com.easy.admin.exception.BusinessException;
-import com.easy.admin.file.model.FileInfo;
-import com.easy.admin.file.service.FileInfoService;
+import com.easy.admin.file.service.FileDetailService;
 import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.common.constant.SysConst;
 import com.easy.admin.sys.service.SysCaptchaService;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.SysConfigUtil;
-import org.apache.shiro.session.Session;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -41,10 +38,10 @@ import java.util.List;
  * Shiro 相关接口
  *
  * @author TengChongChong
- * @date 2020/9/26
+ * @date 2024/9/3
  */
 @Service
-public class ShiroServiceImpl implements ShiroService {
+public class SaTokenServiceImpl implements SaTokenService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -63,10 +60,7 @@ public class ShiroServiceImpl implements ShiroService {
     private SysRoleService sysRoleService;
 
     @Autowired
-    private RedisSessionDAO sessionDAO;
-
-    @Autowired
-    private FileInfoService fileInfoService;
+    private FileDetailService fileDetailService;
 
     /**
      * 验证码
@@ -81,28 +75,28 @@ public class ShiroServiceImpl implements ShiroService {
      * 3.账号状态
      * 4.部门状态
      *
-     * @param authenticationToken authenticationToken
+     * @param loginAccount loginAccount
      * @return SessionUserVO
      */
     @Override
-    public SessionUserVO validateAccountAuthenticationToken(EasyAccountAuthenticationToken authenticationToken) {
+    public SessionUserVO validateAccount(LoginAccount loginAccount) {
 
         // 验证验证码
-        captchaVerification(authenticationToken.getCaptchaVerification());
+        captchaVerification(loginAccount.getCaptchaVerification());
 
-        SessionUserVO sessionUser = getSysUserByUserName(authenticationToken.getUsername());
+        SessionUserVO sessionUser = getSysUserByUserName(loginAccount.getUsername());
         if (sessionUser == null) {
-            accountAuthenticationTokenFail(authenticationToken.getUsername());
+            accountAuthenticationTokenFail(loginAccount.getUsername());
         }
         // 密码是否正确
-        boolean passwordMismatch = PasswordUtil.encryptedPasswords(authenticationToken.getPassword(), sessionUser.getSalt()).equals(sessionUser.getPassword());
+        boolean passwordMismatch = PasswordUtil.encryptedPasswords(loginAccount.getPassword(), sessionUser.getSalt()).equals(sessionUser.getPassword());
         if (!passwordMismatch) {
-            accountAuthenticationTokenFail(authenticationToken.getUsername());
+            accountAuthenticationTokenFail(loginAccount.getUsername());
         }
 
         // 账号被禁用
         if (SysUserStatus.DISABLE.getCode().equals(sessionUser.getStatus())) {
-            logger.debug("账号[{}]被禁用", authenticationToken.getUsername());
+            logger.debug("账号[{}]被禁用", loginAccount.getUsername());
             throw new EasyException(BusinessException.USER_DISABLED);
         }
 
@@ -111,7 +105,7 @@ public class ShiroServiceImpl implements ShiroService {
         sessionUser.setDept(sessionDept);
 
         // 用户头像
-        FileInfo avatarFile = fileInfoService.selectOne(sessionUser.getId(), "avatar");
+        FileInfo avatarFile = fileDetailService.getOne(sessionUser.getId(), "avatar");
         if (avatarFile != null) {
             sessionUser.setAvatar(avatarFile.getUrl());
         }
@@ -151,7 +145,11 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     public SessionUserVO getSysUserByUserName(String username) {
-        return sysUserService.getSessionUserByUserName(username);
+        SessionUserVO sessionUser = sysUserService.getSessionUserByUserName(username);
+        if (sessionUser != null && sessionUser.getBirthday() != null) {
+            sessionUser.setAge(DateUtil.age(sessionUser.getBirthday(), new Date()));
+        }
+        return sessionUser;
     }
 
     @Override
@@ -192,64 +190,10 @@ public class ShiroServiceImpl implements ShiroService {
         // 用户路由集合
         sessionUser.setRouteList(routeList);
     }
-    
+
     @Override
     public void updateUserLastLoginDate(String userId) {
         sysUserService.updateUserLastLoginDate(userId, new Date());
-    }
-
-    /**
-     * 根据会话获取相同账号会话
-     *
-     * @param sessionUser 正在登录的用户
-     * @return List<Session>
-     */
-    @Override
-    public List<Session> getLoginedSession(SessionUserVO sessionUser) {
-        Collection<Session> sessions = sessionDAO.getActiveSessions();
-        if (sessions != null && !sessions.isEmpty()) {
-            List<Session> loginedSession = new ArrayList<>();
-            for (Session session : sessions) {
-                // 有效session
-                if (checkSessionEffective(session)) {
-                    SessionUserVO sysUser = (SessionUserVO) session.getAttribute(SessionConst.USER_SESSION_KEY);
-                    if (sysUser != null && sysUser.getUsername().equals(sessionUser.getUsername())) {
-                        loginedSession.add(session);
-                    }
-                }
-            }
-            return loginedSession;
-        }
-        return null;
-    }
-
-    /**
-     * 根据会话踢出相同账号其他会话
-     *
-     * @param sessionUser 正在登录的用户
-     * @return true/false
-     */
-    @Override
-    public boolean kickOutSession(SessionUserVO sessionUser) {
-        List<Session> loginedSession = getLoginedSession(sessionUser);
-        if (loginedSession != null && !loginedSession.isEmpty()) {
-            for (Session session : loginedSession) {
-                session.setAttribute(SessionConst.LOGIN_ELSEWHERE, true);
-                sessionDAO.update(session);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 检查session有效性
-     *
-     * @param session
-     * @return
-     */
-    private boolean checkSessionEffective(Session session) {
-        return session.getAttribute(SessionConst.FORCE_LOGOUT) == null && session.getAttribute(SessionConst.LOGIN_ELSEWHERE) == null;
     }
 
     /**

@@ -15,7 +15,7 @@ import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import org.activiti.engine.FormService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
@@ -86,7 +86,7 @@ public class ActivitiProcessDefinitionServiceImpl extends ServiceImpl<ActivitiPr
         if (checkBusinessKey(activitiProcessDefinitionVO.getBusinessKey())) {
             throw new EasyException("[" + activitiProcessDefinitionVO.getBusinessKey() + "]已提交过申请，请勿重复提交");
         }
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         JSONObject result = new JSONObject();
         ProcessDefinition processDefinition = getProcessDefinition(activitiProcessDefinitionVO.getProcessDefinitionId());
         if (activitiProcessDefinitionVO.getHasFormData() == null || !activitiProcessDefinitionVO.getHasFormData()) {

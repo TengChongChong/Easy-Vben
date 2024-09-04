@@ -1,5 +1,6 @@
 package com.easy.admin.activiti.service.impl;
 
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -12,10 +13,10 @@ import com.easy.admin.activiti.service.ActivitiModelService;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.file.model.FileDownload;
 import com.easy.admin.file.service.FileDownloadService;
-import com.easy.admin.file.storage.FileStorageFactory;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.file.util.file.FileUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -32,6 +33,8 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.io.IOUtils;
+import org.dromara.x.file.storage.core.FileInfo;
+import org.dromara.x.file.storage.core.FileStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +76,7 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
      * 文件存储
      */
     @Autowired
-    private FileStorageFactory fileStorageFactory;
+    private FileStorageService fileStorageService;
 
 
     @Override
@@ -174,24 +177,24 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
     }
 
     private void setModelEditorSource(ActivitiModel activitiModel) {
-        if (StrUtil.isNotBlank(activitiModel.getPath())) {
-            InputStream bpmnStream;
-            try {
-                bpmnStream = new FileInputStream(activitiModel.getPath());
-            } catch (FileNotFoundException e) {
-                throw new EasyException("读取模型文件失败，文件不存在");
-            }
+        if (activitiModel.getModelFile() != null) {
+            byte[] bytes = FileUtil.getFileBytes(activitiModel.getModelFile());
+            InputStream bpmnStream = new ByteArrayInputStream(bytes);
             XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
             // 读取bpmn.xml
             InputStreamReader inputStreamReader = new InputStreamReader(bpmnStream, StandardCharsets.UTF_8);
             XMLStreamReader xmlStreamReader;
+            BpmnModel bpmnModel;
             try {
                 xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStreamReader);
+                bpmnModel = new BpmnXMLConverter().convertToBpmnModel(xmlStreamReader);
+                bpmnModel.getMainProcess();
             } catch (XMLStreamException xmlStreamException) {
                 throw new EasyException("保存模型信息失败" + xmlStreamException.getMessage());
+            } finally {
+                IoUtil.close(inputStreamReader);
+                IoUtil.close(bpmnStream);
             }
-            BpmnModel bpmnModel = new BpmnXMLConverter().convertToBpmnModel(xmlStreamReader);
-            bpmnModel.getMainProcess();
 
             // xml 转 json
             BpmnJsonConverter bpmnJsonConverter = new BpmnJsonConverter();
@@ -201,7 +204,7 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
             ObjectNode properties = objectMapper.createObjectNode();
             properties.put(ActivitiModelConst.PROPERTIES_PROCESS_ID, activitiModel.getKey());
             properties.put(ActivitiModelConst.NAME, activitiModel.getName());
-            properties.put(ActivitiModelConst.PROPERTIES_PROCESS_AUTHOR, ShiroUtil.getCurrentUser().getNickname());
+            properties.put(ActivitiModelConst.PROPERTIES_PROCESS_AUTHOR, SessionUtil.getCurrentUser().getNickname());
             properties.put(ActivitiModelConst.PROPERTIES_DOCUMENTATION, activitiModel.getDescription());
             objectNode.set(ActivitiModelConst.PROPERTIES, properties);
             repositoryService.addModelEditorSource(activitiModel.getId(), objectNode.toString().getBytes(StandardCharsets.UTF_8));
@@ -212,7 +215,7 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
             ObjectNode properties = objectMapper.createObjectNode();
             properties.put(ActivitiModelConst.PROPERTIES_PROCESS_ID, activitiModel.getKey());
             properties.put(ActivitiModelConst.NAME, activitiModel.getName());
-            properties.put(ActivitiModelConst.PROPERTIES_PROCESS_AUTHOR, ShiroUtil.getCurrentUser().getNickname());
+            properties.put(ActivitiModelConst.PROPERTIES_PROCESS_AUTHOR, SessionUtil.getCurrentUser().getNickname());
             properties.put(ActivitiModelConst.PROPERTIES_DOCUMENTATION, activitiModel.getDescription());
 
             ObjectNode editorNode = objectMapper.createObjectNode();
@@ -357,21 +360,20 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
         byte[] bpmnModelXmlByte = xmlConverter.convertToXML(bpmnModel);
 
         InputStream inputStream = new ByteArrayInputStream(bpmnModelXmlByte);
-        String objectName = fileStorageFactory.getFileStorage().getTemporaryPath() + IdUtil.randomUUID() + ".bpmn20.xml";
-        // 保存文件
-        fileStorageFactory.getFileStorage().uploadFile(
-                fileStorageFactory.getFileStorageProperties().getDefaultBucket(),
-                objectName,
-                inputStream
+
+        FileInfo fileInfo = FileUtil.upload(
+                inputStream,
+                model.getName() + "(" + model.getKey() + ") v." + model.getVersion() + ".bpmn20.xml",
+                IdUtil.randomUUID() + ".bpmn20.xml"
         );
 
+        //FileInfo fileInfo = fileStorageService.of(inputStream)
+        //        .setPath(FileUtil.getTemporaryPath())
+        //        .setSaveFilename(model.getName() + "(" + model.getKey() + ") v." + model.getVersion() + ".bpmn20.xml")
+        //        .setName(IdUtil.randomUUID() + ".bpmn20.xml")
+        //        .upload();
+
         // 保存下载信息
-        return fileDownloadService.saveData(
-                new FileDownload(
-                        model.getName() + "(" + model.getKey() + ") v." + model.getVersion() + ".bpmn20.xml",
-                        fileStorageFactory.getFileStorageProperties().getDefaultBucket(),
-                        objectName
-                )
-        ).getId();
+        return fileDownloadService.saveData(new FileDownload(fileInfo.getId())).getId();
     }
 }

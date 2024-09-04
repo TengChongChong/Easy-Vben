@@ -1,11 +1,11 @@
 package com.easy.admin.auth.controller;
 
 import cn.hutool.json.JSONObject;
-import com.easy.admin.auth.model.vo.session.SessionUserVO;
-import com.easy.admin.common.core.base.BaseController;
-import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.ChangePasswordVO;
 import com.easy.admin.auth.service.SysUserPersonalCenterService;
+import com.easy.admin.common.core.annotation.ResponseResult;
+import com.easy.admin.common.core.base.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,19 +31,19 @@ public class SysUserPersonalCenterController extends BaseController {
      * @return SessionUserVO
      */
     @GetMapping("current/user")
-    public SessionUserVO currentUser() {
+    public SysUser currentUser() {
         return service.getCurrentUser();
     }
 
     /**
      * 密码修改
      *
-     * @param json {oldPassword: '', password: ''}
+     * @param changePassword changePassword
      * @return true/false
      */
     @PostMapping("change/password")
-    public boolean changePassword(@RequestBody JSONObject json) {
-        return service.changePassword(json);
+    public boolean changePassword(@RequestBody ChangePasswordVO changePassword) {
+        return service.changePassword(changePassword);
     }
 
     /**

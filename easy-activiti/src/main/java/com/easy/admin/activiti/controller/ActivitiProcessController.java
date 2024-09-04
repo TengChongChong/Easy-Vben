@@ -6,7 +6,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.annotation.ResponseResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ public class ActivitiProcessController {
      */
     @GetMapping("/api/auth/activiti/process")
     @ResponseResult
-    @RequiresPermissions("activiti:process:select")
+    @SaCheckPermission("activiti:process:select")
     public Page<ActivitiProcess> select(ActivitiProcess activitiProcess, Page<ActivitiProcess> page) {
         return service.select(activitiProcess, page);
     }
@@ -48,7 +48,7 @@ public class ActivitiProcessController {
      */
     @DeleteMapping("/api/auth/activiti/process/{deploymentIds}")
     @ResponseResult
-    @RequiresPermissions("activiti:process:remove")
+    @SaCheckPermission("activiti:process:remove")
     public boolean remove(@PathVariable("deploymentIds") String deploymentIds) {
         return service.remove(deploymentIds);
     }
@@ -61,7 +61,7 @@ public class ActivitiProcessController {
      */
     @PostMapping("/api/auth/activiti/process/convert/to/model")
     @ResponseResult
-    @RequiresPermissions("activiti:model:save")
+    @SaCheckPermission("activiti:model:save")
     public boolean convertToModel(@RequestBody ActivitiProcess activitiProcess) {
         return service.convertToModel(activitiProcess);
     }
@@ -92,7 +92,7 @@ public class ActivitiProcessController {
      */
     @PostMapping("/api/auth/activiti/process/suspend/{processDefinitionId}/{suspendProcessInstances}")
     @ResponseResult
-    @RequiresPermissions("activiti:process:suspend")
+    @SaCheckPermission("activiti:process:suspend")
     public boolean suspend(@PathVariable("processDefinitionId") String processDefinitionId,
                            @PathVariable("suspendProcessInstances") boolean suspendProcessInstances) {
         service.suspend(processDefinitionId, suspendProcessInstances);
@@ -108,7 +108,7 @@ public class ActivitiProcessController {
      */
     @PostMapping("/api/auth/activiti/process/activation/{processDefinitionId}/{suspendProcessInstances}")
     @ResponseResult
-    @RequiresPermissions("activiti:process:activation")
+    @SaCheckPermission("activiti:process:activation")
     public boolean activation(@PathVariable("processDefinitionId") String processDefinitionId,
                               @PathVariable("suspendProcessInstances") boolean suspendProcessInstances) {
         service.activation(processDefinitionId, suspendProcessInstances);

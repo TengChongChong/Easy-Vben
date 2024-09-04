@@ -1,9 +1,7 @@
 package com.easy.admin.auth.service;
 
-import cn.hutool.json.JSONObject;
 import com.easy.admin.auth.model.SysUser;
-import com.easy.admin.auth.model.vo.session.SessionUserVO;
-import com.easy.admin.file.model.FileInfo;
+import com.easy.admin.auth.model.vo.ChangePasswordVO;
 
 /**
  * 个人中心
@@ -16,17 +14,9 @@ public interface SysUserPersonalCenterService {
     /**
      * 获取当前登录用户信息
      *
-     * @return SessionUserVO
+     * @return SysUser
      */
-    SessionUserVO getCurrentUser();
-
-    /**
-     * 保存头像
-     *
-     * @param avatar 头像
-     * @return url
-     */
-    boolean saveUserAvatar(FileInfo avatar);
+    SysUser getCurrentUser();
 
     /**
      * 保存当前用户信息
@@ -56,8 +46,8 @@ public interface SysUserPersonalCenterService {
     /**
      * 修改当前用户密码
      *
-     * @param json {oldPassword: '', password: '', passwordStrength: ''}
+     * @param changePassword changePassword
      * @return true/false
      */
-    boolean changePassword(JSONObject json);
+    boolean changePassword(ChangePasswordVO changePassword);
 }

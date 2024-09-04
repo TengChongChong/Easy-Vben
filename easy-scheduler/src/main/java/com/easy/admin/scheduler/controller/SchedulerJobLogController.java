@@ -4,7 +4,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.scheduler.model.SchedulerJobLog;
 import com.easy.admin.scheduler.service.SchedulerJobLogService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ResponseResult
 @RequestMapping("/api/auth/scheduler/job/log")
-public class SchedulerJobLogController  {
+public class SchedulerJobLogController {
 
     /**
      * 定时任务执行日志 service
@@ -35,7 +35,7 @@ public class SchedulerJobLogController  {
      * @return Page<SchedulerJobLog>
      */
     @GetMapping()
-    @RequiresPermissions("scheduler:job:select")
+    @SaCheckPermission("scheduler:job:select")
     public Page<SchedulerJobLog> select(SchedulerJobLog schedulerJobLog, Page<SchedulerJobLog> page) {
         return service.select(schedulerJobLog, page);
     }

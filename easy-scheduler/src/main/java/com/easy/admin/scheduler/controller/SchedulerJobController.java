@@ -4,7 +4,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.scheduler.model.SchedulerJob;
 import com.easy.admin.scheduler.service.SchedulerJobService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class SchedulerJobController {
      * @return Page<SchedulerJob>
      */
     @GetMapping()
-    @RequiresPermissions("scheduler:job:select")
+    @SaCheckPermission("scheduler:job:select")
     public Page<SchedulerJob> select(SchedulerJob schedulerJob, Page<SchedulerJob> page) {
         return service.select(schedulerJob, page);
     }
@@ -46,7 +46,7 @@ public class SchedulerJobController {
      * @return SchedulerJob
      */
     @GetMapping("{id}")
-    @RequiresPermissions("scheduler:job:select")
+    @SaCheckPermission("scheduler:job:select")
     public SchedulerJob get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -68,7 +68,7 @@ public class SchedulerJobController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("scheduler:job:remove")
+    @SaCheckPermission("scheduler:job:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -80,7 +80,7 @@ public class SchedulerJobController {
      * @return SchedulerJob
      */
     @PostMapping()
-    @RequiresPermissions("scheduler:job:save")
+    @SaCheckPermission("scheduler:job:save")
     public SchedulerJob saveData(@Valid @RequestBody SchedulerJob schedulerJob) {
         return service.saveData(schedulerJob);
     }
@@ -92,7 +92,7 @@ public class SchedulerJobController {
      * @return true/false
      */
     @PostMapping("start/{id}")
-    @RequiresPermissions("scheduler:job:save")
+    @SaCheckPermission("scheduler:job:save")
     public boolean start(@PathVariable("id") String id) {
         service.start(id);
         return true;
@@ -105,7 +105,7 @@ public class SchedulerJobController {
      * @return true/false
      */
     @PostMapping("pause/{id}")
-    @RequiresPermissions("scheduler:job:save")
+    @SaCheckPermission("scheduler:job:save")
     public boolean pause(@PathVariable("id") String id) {
         service.pause(id);
         return true;
@@ -117,7 +117,7 @@ public class SchedulerJobController {
      * @return true/false
      */
     @PostMapping("start/all")
-    @RequiresPermissions("scheduler:job:save")
+    @SaCheckPermission("scheduler:job:save")
     public boolean startAll() {
         service.startAll();
         return true;
@@ -129,7 +129,7 @@ public class SchedulerJobController {
      * @return true/false
      */
     @PostMapping("pause/all")
-    @RequiresPermissions("scheduler:job:save")
+    @SaCheckPermission("scheduler:job:save")
     public boolean pauseAll() {
         service.pauseAll();
         return true;
@@ -142,7 +142,7 @@ public class SchedulerJobController {
      * @return true/false
      */
     @PostMapping("immediate/execution/{id}")
-    @RequiresPermissions("scheduler:job:save")
+    @SaCheckPermission("scheduler:job:save")
     public boolean immediateExecution(@PathVariable("id") String id) {
         return service.immediateExecution(id);
     }

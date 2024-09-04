@@ -1,7 +1,7 @@
 package com.easy.admin.sys.model.vo;
 
-import com.easy.admin.file.model.BaseFileInfo;
 import lombok.Data;
+import org.dromara.x.file.storage.core.FileInfo;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class SysImportExcelDataVO {
     /**
      * 上传的Excel
      */
-    private BaseFileInfo baseFileInfo;
+    private FileInfo fileInfo;
 
     /**
      * 配置的导入规则

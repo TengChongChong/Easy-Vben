@@ -20,7 +20,7 @@ import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.service.ImportService;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -258,7 +258,7 @@ public class CmsColumnServiceImpl extends ServiceImpl<CmsColumnMapper, CmsColumn
         List<CmsColumn> cmsColumnList = baseMapper.selectNeedUpdateParentInfo();
         updateBatchById(cmsColumnList);
         // 2.设置创建时间等信息
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         baseMapper.updateAfterImport(currentUser.getDeptId(), currentUser.getId(), new Date());
         return true;
     }

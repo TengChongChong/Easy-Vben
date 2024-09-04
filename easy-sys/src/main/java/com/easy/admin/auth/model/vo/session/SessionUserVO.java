@@ -80,6 +80,11 @@ public class SessionUserVO implements Serializable {
     private Date birthday;
 
     /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
      * 账号来源
      */
     private String source;

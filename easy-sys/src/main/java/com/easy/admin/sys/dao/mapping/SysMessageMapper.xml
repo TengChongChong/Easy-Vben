@@ -22,21 +22,21 @@
 
     <!-- 通用查询结果列 -->
     <select id="selectSend" resultType="com.easy.admin.sys.model.SysMessage">
-        select m.id, m.title, m.type, m.create_date, m.send_date, m.important, u.nickname, fi.url as avatar
+        select m.id, m.title, m.type, m.create_date, m.send_date, m.important, u.nickname, fd.url as avatar
         from sys_message m
         left join sys_user u on m.create_user = u.id
-        left join file_info fi on fi.parent_id = u.id and fi.type = 'avatar' and fi.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
+        left join file_detail fd on fd.object_id = u.id and fd.object_type = 'avatar' and fd.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         <where>
             ${ew.sqlSegment}
         </where>
     </select>
     <select id="selectReceive" resultType="com.easy.admin.sys.model.SysMessage">
         select d.id, d.status as details_status, d.star, m.id as messageId, m.title, m.type, m.create_date,
-        m.send_date, d.read_date, m.important, u.nickname, fi.url as avatar
+        m.send_date, d.read_date, m.important, u.nickname, fd.url as avatar
         from sys_message_detail d
         left join sys_message m on m.id = d.message_id
         left join sys_user u on u.id = m.create_user
-        left join file_info fi on fi.parent_id = u.id and fi.type = 'avatar' and fi.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
+        left join file_detail fd on fd.object_id = u.id and fd.object_type = 'avatar' and fd.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         <where>
             ${ew.sqlSegment}
         </where>
@@ -51,10 +51,10 @@
     </select>
     <select id="selectInfoById" resultType="com.easy.admin.sys.model.SysMessage">
         select m.id, m.title, m.content, m.type, m.create_date, m.send_date,
-        m.important, u.nickname, fi.url as avatar
+        m.important, u.nickname, fd.url as avatar
         from sys_message m
         left join sys_user u on u.id = m.create_user
-        left join file_info fi on fi.parent_id = u.id and fi.type = 'avatar' and fi.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
+        left join file_detail fd on fd.object_id = u.id and fd.object_type = 'avatar' and fd.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         where m.id = #{id}
     </select>
 </mapper>

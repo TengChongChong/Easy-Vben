@@ -5,7 +5,7 @@ import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysDataSource;
 import com.easy.admin.sys.service.SysDataSourceService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +36,7 @@ public class SysDataSourceController {
      * @return Page<SysDataSource>
      */
     @GetMapping()
-    @RequiresPermissions("sys:data:source:select")
+    @SaCheckPermission("sys:data:source:select")
     public Page<SysDataSource> select(SysDataSource sysDataSource, Page<SysDataSource> page) {
         return service.select(sysDataSource, page);
     }
@@ -48,7 +48,7 @@ public class SysDataSourceController {
      * @return SysDataSource
      */
     @GetMapping("{id}")
-    @RequiresPermissions("sys:data:source:select")
+    @SaCheckPermission("sys:data:source:select")
     public SysDataSource get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -59,7 +59,7 @@ public class SysDataSourceController {
      * @return SysDataSource
      */
     @GetMapping("add")
-    @RequiresPermissions("sys:data:source:save")
+    @SaCheckPermission("sys:data:source:save")
     public SysDataSource add() {
         return service.add();
     }
@@ -71,7 +71,7 @@ public class SysDataSourceController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("sys:data:source:remove")
+    @SaCheckPermission("sys:data:source:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -83,7 +83,7 @@ public class SysDataSourceController {
      * @return SysDataSource
      */
     @PostMapping()
-    @RequiresPermissions("sys:data:source:save")
+    @SaCheckPermission("sys:data:source:save")
     public SysDataSource saveData(@Valid @RequestBody SysDataSource sysDataSource) {
         return service.saveData(sysDataSource);
     }
@@ -94,7 +94,7 @@ public class SysDataSourceController {
      * @return List<Select>
      */
     @GetMapping("select/options")
-    @RequiresPermissions("sys:data:source:select")
+    @SaCheckPermission("sys:data:source:select")
     public List<Select> selectOptions() {
         return service.selectOptions();
     }

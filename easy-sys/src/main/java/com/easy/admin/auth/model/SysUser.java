@@ -2,10 +2,10 @@ package com.easy.admin.auth.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.easy.admin.file.model.FileInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.dromara.x.file.storage.core.FileInfo;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -133,7 +133,7 @@ public class SysUser extends Model<SysUser> implements Serializable {
     private List<String> roleIdList;
 
     /**
-     * 头像缩略图
+     * 头像
      */
     @TableField(exist = false)
     private FileInfo avatar;
@@ -143,4 +143,11 @@ public class SysUser extends Model<SysUser> implements Serializable {
      */
     @TableField(exist = false)
     private boolean mailIsVerifies = true;
+
+    /**
+     * 部门名称
+     */
+    @TableField(exist = false)
+    private String deptName;
+    
 }

@@ -7,7 +7,7 @@ import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.sys.model.SysDictType;
 import com.easy.admin.sys.service.SysDictTypeService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ public class SysDictTypeController extends BaseController {
      * @return Page<SysDictType>
      */
     @GetMapping
-    @RequiresPermissions("sys:dict:type:select")
+    @SaCheckPermission("sys:dict:type:select")
     public Page<SysDictType> select(SysDictType sysDictType, Page<SysDictType> page) {
         return service.select(sysDictType, page);
     }
@@ -78,7 +78,7 @@ public class SysDictTypeController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("sys:dict:type:remove")
+    @SaCheckPermission("sys:dict:type:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -90,7 +90,7 @@ public class SysDictTypeController extends BaseController {
      * @return SysDictType
      */
     @PostMapping
-    @RequiresPermissions("sys:dict:type:save")
+    @SaCheckPermission("sys:dict:type:save")
     public SysDictType save(@RequestBody @Valid SysDictType sysDictType) {
         return service.saveData(sysDictType);
     }
@@ -103,7 +103,7 @@ public class SysDictTypeController extends BaseController {
      */
     @Operation(summary = "导出数据")
     @GetMapping("export/data")
-    @RequiresPermissions("sys:dict:type:select")
+    @SaCheckPermission("sys:dict:type:select")
     public String exportData(SysDictType sysDictType) {
         return service.exportData(sysDictType);
     }

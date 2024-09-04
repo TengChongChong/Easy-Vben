@@ -12,7 +12,6 @@ import com.easy.admin.auth.common.status.SysUserStatus;
 import com.easy.admin.auth.dao.SysUserMapper;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
-import com.easy.admin.auth.service.SysRoleDataPermissionService;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -20,13 +19,11 @@ import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.ToolUtil;
-import com.easy.admin.common.redis.constant.RedisPrefix;
-import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.exception.BusinessException;
 import com.easy.admin.sys.common.constant.SexConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.util.PasswordUtil;
-import com.easy.admin.util.ShiroUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,9 +44,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
-
-    @Autowired
-    private SysRoleDataPermissionService sysRoleDataPermissionService;
 
     @Override
     public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
@@ -89,7 +83,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             queryWrapper.eq("t.dept_id", sysUser.getDeptId());
         }
         // 非系统管理员，仅显示非系统数据
-        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+        if (!SessionUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("sr.sys", WhetherConst.NO);
         }
         page.setDefaultDesc("t.create_date");
@@ -101,7 +95,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Page<SysUser> search(String keyword, String range, String deptId, Page<SysUser> page) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         if ("currentDept".equals(range)) {
-            deptId = ShiroUtil.getCurrentUser().getDeptId();
+            deptId = SessionUtil.getCurrentUser().getDeptId();
         }
         if (StrUtil.isNotBlank(deptId)) {
             queryWrapper.eq("u.dept_id", deptId);
@@ -186,7 +180,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         // 是否系统管理员
-        boolean isAdmin = ShiroUtil.havRole(SysRoleConst.SYS_ADMIN) || ShiroUtil.havRole(SysRoleConst.ADMIN);
+        boolean isAdmin = SessionUtil.havRole(SysRoleConst.SYS_ADMIN) || SessionUtil.havRole(SysRoleConst.ADMIN);
 
         // 新增用户时设置密码，用户密码不允许在用户管理里设置
         if (StrUtil.isBlank(sysUser.getId())) {
@@ -195,7 +189,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUser.setPassword(PasswordUtil.generatingPasswords(sysUser.getPassword(), sysUser.getSalt()));
 
             // 普通用户只能管理自己部门的用户
-            if (!isAdmin && !sysUser.getDeptId().equals(ShiroUtil.getCurrentUser().getDeptId())) {
+            if (!isAdmin && !sysUser.getDeptId().equals(SessionUtil.getCurrentUser().getDeptId())) {
                 throw new EasyException("你无权管理其他部门的用户");
             }
         } else {
@@ -205,7 +199,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             if (!isAdmin) {
                 // 非管理员，只能修改自己部门的用户
                 String userDeptId = baseMapper.getDeptIdByUserId(sysUser.getId());
-                if (!ShiroUtil.getCurrentUser().getDeptId().equals(userDeptId)) {
+                if (!SessionUtil.getCurrentUser().getDeptId().equals(userDeptId)) {
                     throw new EasyException("你无权管理其他部门的用户");
                 }
             }
@@ -217,8 +211,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         boolean isSuccess = saveOrUpdate(sysUser);
         if (isSuccess && updateAuthorization) {
             sysUserRoleService.saveUserRole(sysUser.getId(), sysUser.getRoleIdList());
-            // 删除授权信息,下次请求资源重新授权
-            RedisUtil.del(RedisPrefix.SHIRO_AUTHORIZATION + sysUser);
         }
         return (SysUser) ToolUtil.checkResult(isSuccess, sysUser);
     }
@@ -248,10 +240,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public String resetPassword(String ids) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         // 是否系统管理员 || 管理员
-        boolean isAdmin = ShiroUtil.havRole(SysRoleConst.SYS_ADMIN) || ShiroUtil.havRole(SysRoleConst.ADMIN);
+        boolean isAdmin = SessionUtil.havRole(SysRoleConst.SYS_ADMIN) || SessionUtil.havRole(SysRoleConst.ADMIN);
         if (!isAdmin) {
             // 非管理员，只能重置自己部门的用户
-            queryWrapper.eq("dept_id", ShiroUtil.getCurrentUser().getDeptId());
+            queryWrapper.eq("dept_id", SessionUtil.getCurrentUser().getDeptId());
         }
         String password = RandomUtil.randomString(16);
         // 生成随机的盐

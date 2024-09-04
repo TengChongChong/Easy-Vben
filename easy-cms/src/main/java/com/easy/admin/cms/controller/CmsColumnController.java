@@ -6,7 +6,7 @@ import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +39,7 @@ public class CmsColumnController {
      */
     @Operation(summary = "查询数据（无分页）")
     @GetMapping()
-    @RequiresPermissions("cms:column:select")
+    @SaCheckPermission("cms:column:select")
     public List<CmsColumn> select(CmsColumn cmsColumn) {
         return service.select(cmsColumn);
     }
@@ -51,7 +51,7 @@ public class CmsColumnController {
      */
     @Operation(summary = "查询所有数据（Tree）")
     @GetMapping("all")
-    @RequiresPermissions("cms:column:select")
+    @SaCheckPermission("cms:column:select")
     public List<Tree> selectAll() {
         return service.selectAll();
     }
@@ -64,7 +64,7 @@ public class CmsColumnController {
      */
     @Operation(summary = "查询详情")
     @GetMapping("{id}")
-    @RequiresPermissions("cms:column:select")
+    @SaCheckPermission("cms:column:select")
     public CmsColumn get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -77,7 +77,7 @@ public class CmsColumnController {
      */
     @Operation(summary = "新增或新增下级")
     @GetMapping({"/add/{parentId}", "/add"})
-    @RequiresPermissions("cms:column:save")
+    @SaCheckPermission("cms:column:save")
     public CmsColumn add(@PathVariable(value = "parentId", required = false) String parentId) {
         return service.add(parentId);
     }
@@ -90,7 +90,7 @@ public class CmsColumnController {
      */
     @Operation(summary = "删除")
     @DeleteMapping("{ids}")
-    @RequiresPermissions("cms:column:remove")
+    @SaCheckPermission("cms:column:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -103,7 +103,7 @@ public class CmsColumnController {
      */
     @Operation(summary = "保存/修改")
     @PostMapping()
-    @RequiresPermissions("cms:column:save")
+    @SaCheckPermission("cms:column:save")
     public CmsColumn saveData(@Valid @RequestBody CmsColumn cmsColumn) {
         return service.saveData(cmsColumn);
     }
@@ -115,7 +115,7 @@ public class CmsColumnController {
      * @return true/false
      */
     @PostMapping("order")
-    @RequiresPermissions("cms:column:save")
+    @SaCheckPermission("cms:column:save")
     public boolean saveOrder(@RequestBody List<CmsColumn> cmsColumnList) {
         return service.saveOrder(cmsColumnList);
     }
@@ -128,7 +128,7 @@ public class CmsColumnController {
      */
     @Operation(summary = "导出数据")
     @GetMapping("export/data")
-    @RequiresPermissions("cms:column:select")
+    @SaCheckPermission("cms:column:select")
     public String exportData(CmsColumn cmsColumn) {
         return service.exportData(cmsColumn);
     }

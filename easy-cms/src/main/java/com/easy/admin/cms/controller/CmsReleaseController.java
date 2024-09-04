@@ -9,7 +9,7 @@ import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +43,7 @@ public class CmsReleaseController {
      */
     @Operation(summary = "查询数据")
     @GetMapping()
-    @RequiresPermissions("cms:release")
+    @SaCheckPermission("cms:release")
     public Page<CmsRelease> select(CmsRelease cmsRelease, Page<CmsRelease> page) {
         return service.select(cmsRelease, page);
     }
@@ -55,7 +55,7 @@ public class CmsReleaseController {
      */
     @Operation(summary = "获取发布资源")
     @GetMapping("assets")
-    @RequiresPermissions("cms:release")
+    @SaCheckPermission("cms:release")
     public List<Tree> selectReleaseAssets() {
         return service.selectReleaseAssets();
     }
@@ -68,7 +68,7 @@ public class CmsReleaseController {
      */
     @Operation(summary = "保存/修改")
     @PostMapping()
-    @RequiresPermissions("cms:release")
+    @SaCheckPermission("cms:release")
     public CmsRelease saveData(@Valid @RequestBody CmsRelease cmsRelease) {
         return service.saveData(cmsRelease);
     }
@@ -81,7 +81,7 @@ public class CmsReleaseController {
      */
     @Operation(summary = "开始发布")
     @PostMapping("start/{id}")
-    @RequiresPermissions("cms:release")
+    @SaCheckPermission("cms:release")
     public boolean startRelease(@PathVariable("id") String id) {
         service.startRelease(id, CmsSiteUtil.getUserActiveSiteId());
         return true;
@@ -95,7 +95,7 @@ public class CmsReleaseController {
      */
     @Operation(summary = "取消发布")
     @PostMapping("cancel/{id}")
-    @RequiresPermissions("cms:release")
+    @SaCheckPermission("cms:release")
     public ReleaseProgressVO cancelRelease(@PathVariable("id") String id) {
         return service.cancelRelease(id);
     }
@@ -108,7 +108,7 @@ public class CmsReleaseController {
      */
     @Operation(summary = "获取已发布数量")
     @GetMapping("progress/{id}")
-    @RequiresPermissions("cms:release")
+    @SaCheckPermission("cms:release")
     public ReleaseProgressVO getReleaseProgress(@PathVariable("id") String id) {
         return service.getReleaseProgress(id);
     }
@@ -122,7 +122,7 @@ public class CmsReleaseController {
      */
     @Operation(summary = "发布单个列队数据")
     @PostMapping("release/queue/{id}")
-    @RequiresPermissions("cms:release")
+    @SaCheckPermission("cms:release")
     public boolean releaseQueue(@PathVariable("id") String id) {
         return service.releaseQueue(id);
     }

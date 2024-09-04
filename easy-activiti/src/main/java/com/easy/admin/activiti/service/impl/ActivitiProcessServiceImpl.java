@@ -12,7 +12,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
@@ -135,7 +135,7 @@ public class ActivitiProcessServiceImpl extends ServiceImpl<ActivitiProcessMappe
             ObjectNode properties = objectMapper.createObjectNode();
             properties.put(ActivitiModelConst.PROPERTIES_PROCESS_ID, model.getKey());
             properties.put(ActivitiModelConst.NAME, model.getName());
-            properties.put(ActivitiModelConst.PROPERTIES_PROCESS_AUTHOR, ShiroUtil.getCurrentUser().getNickname());
+            properties.put(ActivitiModelConst.PROPERTIES_PROCESS_AUTHOR, SessionUtil.getCurrentUser().getNickname());
             properties.put(ActivitiModelConst.PROPERTIES_DOCUMENTATION, activitiProcess.getDescription());
             objectNode.set(ActivitiModelConst.PROPERTIES, properties);
 

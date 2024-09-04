@@ -13,7 +13,7 @@ import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.dao.SysMessageDetailMapper;
 import com.easy.admin.sys.model.SysMessageDetail;
 import com.easy.admin.sys.service.SysMessageDetailService;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,7 +79,7 @@ public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMap
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         QueryWrapper<SysMessageDetail> delete = new QueryWrapper<>();
         delete.in("id", idList);
-        delete.eq("receiver_user", ShiroUtil.getCurrentUser().getId());
+        delete.eq("receiver_user", SessionUtil.getCurrentUser().getId());
         return remove(delete);
     }
 
@@ -108,7 +108,7 @@ public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMap
             UpdateWrapper<SysMessageDetail> updateStar = new UpdateWrapper<>();
             updateStar.eq("id", id);
             // 接收人必须是当前登录用户
-            updateStar.eq("receiver_user", ShiroUtil.getCurrentUser().getId());
+            updateStar.eq("receiver_user", SessionUtil.getCurrentUser().getId());
             updateStar.set("star", type ? MessageConst.STAR_YES : MessageConst.STAR_NO);
             return update(updateStar);
         }
@@ -123,7 +123,7 @@ public class SysMessageDetailServiceImpl extends ServiceImpl<SysMessageDetailMap
             updateRead.in("id", idList);
         }
         // 接收人必须是当前登录用户
-        updateRead.eq("receiver_user", ShiroUtil.getCurrentUser().getId());
+        updateRead.eq("receiver_user", SessionUtil.getCurrentUser().getId());
         // 阅读时间
         updateRead.set("read_date", new Date());
         // 已读

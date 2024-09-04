@@ -5,7 +5,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysException;
 import com.easy.admin.sys.service.SysExceptionService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class SysExceptionController extends BaseController {
      * @return Page<SysException>
      */
     @GetMapping
-    @RequiresPermissions("sys:exception:select")
+    @SaCheckPermission("sys:exception:select")
     public Page<SysException> select(SysException sysException, Page<SysException> page) {
         return service.select(sysException, page);
     }
@@ -45,7 +45,7 @@ public class SysExceptionController extends BaseController {
      * @return SysException
      */
     @GetMapping("{id}")
-    @RequiresPermissions("sys:exception:select")
+    @SaCheckPermission("sys:exception:select")
     public SysException get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -57,7 +57,7 @@ public class SysExceptionController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("sys:exception:remove")
+    @SaCheckPermission("sys:exception:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }

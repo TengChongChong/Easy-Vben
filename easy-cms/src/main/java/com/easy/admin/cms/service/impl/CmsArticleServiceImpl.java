@@ -16,10 +16,10 @@ import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.file.service.FileInfoService;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.config.sa.token.util.SessionUtil;
+import com.easy.admin.file.service.FileDetailService;
 import com.easy.admin.file.util.file.EditorUtil;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.file.util.file.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,10 +38,7 @@ import java.util.List;
 public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArticle> implements CmsArticleService {
 
     @Autowired
-    private FileInfoService fileInfoService;
-
-    @Autowired
-    private FileStorageFactory fileStorageFactory;
+    private FileDetailService fileInfoService;
 
     @Override
     public Page<CmsArticle> select(CmsArticle cmsArticle, Page<CmsArticle> page) {
@@ -161,7 +158,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         CmsArticle cmsArticle = baseMapper.getById(id);
         if (cmsArticle != null) {
             // 封面
-            cmsArticle.setCover(fileInfoService.selectOne(id, CmsFileType.ARTICLE_COVER.getCode()));
+            cmsArticle.setCover(fileInfoService.getOne(id, CmsFileType.ARTICLE_COVER.getCode()));
         }
         return cmsArticle;
     }
@@ -171,7 +168,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         CmsArticle cmsArticle = new CmsArticle();
         // 设置默认值
         cmsArticle.setStatus(CmsArticleStatus.DRAFT.getCode());
-        cmsArticle.setAuthor(ShiroUtil.getCurrentUser().getNickname());
+        cmsArticle.setAuthor(SessionUtil.getCurrentUser().getNickname());
         return cmsArticle;
     }
 
@@ -181,7 +178,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
-            fileInfoService.delete(ids);
+            fileInfoService.removeByObjectId(ids);
         }
         return isSuccess;
     }
@@ -195,16 +192,28 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
             // 状态
             cmsArticle.setStatus(CmsArticleStatus.DRAFT.getCode());
         }
-        // 处理内容
-        cmsArticle.setContent(EditorUtil.moveToFormal(cmsArticle.getContent()));
+
         // 手动发布
         cmsArticle.setReleaseType(CmsArticleReleaseType.MANUAL.getCode());
         boolean isSuccess = saveOrUpdate(cmsArticle);
         if (isSuccess) {
             // 处理封面
             handleCover(cmsArticle);
+            // 处理内容
+            saveContentImage(cmsArticle.getId(), cmsArticle.getContent());
         }
         return cmsArticle;
+    }
+
+    private void saveContentImage(String id, String content) {
+        if (StrUtil.isBlank(content)) {
+            return;
+        }
+        String realContent = EditorUtil.moveToFormal(id, content);
+        UpdateWrapper<CmsArticle> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id)
+                .set("content", realContent);
+        update(updateWrapper);
     }
 
     /**
@@ -213,9 +222,9 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
      * @param cmsArticle 文章信息
      */
     private void handleCover(CmsArticle cmsArticle) {
-        if (cmsArticle.getCover() != null && fileStorageFactory.getFileStorage().inTemporaryPath(cmsArticle.getCover().getObjectName())) {
-            fileInfoService.delete(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode());
-            fileInfoService.saveData(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode(), cmsArticle.getCover());
+        if (cmsArticle.getCover() != null && FileUtil.inTemporaryPath(cmsArticle.getCover().getPath())) {
+            fileInfoService.removeByObjectIdAndObjectType(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode());
+            fileInfoService.saveToFormal(cmsArticle.getId(), CmsFileType.ARTICLE_COVER.getCode(), cmsArticle.getCover());
         }
     }
 

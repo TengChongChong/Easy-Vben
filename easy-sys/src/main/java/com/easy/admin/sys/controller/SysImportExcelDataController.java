@@ -7,6 +7,7 @@ import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.model.vo.SysImportExcelDataVO;
 import com.easy.admin.sys.service.SysImportExcelDataService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,19 +56,18 @@ public class SysImportExcelDataController extends BaseController {
     /**
      * 解析文件
      *
-     * @param bucketName local - 文件夹名称 / oss - bucket名称
-     * @param objectName local - 文件路径 /  oss - objectName
-     * @return List<List<Object>>
+     * @param fileInfo fileInfo
+     * @return List<List < Object>>
      */
-    @GetMapping("analysis/excel")
-    public List<List<Object>> analysisExcel(String bucketName, String objectName){
-        return service.analysisExcel(bucketName, objectName);
+    @PostMapping("analysis/excel")
+    public List<List<Object>> analysisExcel(@RequestBody FileInfo fileInfo) {
+        return service.analysisExcel(fileInfo);
     }
 
     /**
      * 验证并解析文件
      *
-     * @param templateId   模板id
+     * @param templateId         模板id
      * @param sysImportExcelData 导入文件以及规则
      * @return true/false
      */

@@ -6,7 +6,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +39,7 @@ public class CmsMediaController {
      */
     @Operation(summary = "查询数据")
     @GetMapping()
-    @RequiresPermissions("cms:media:select")
+    @SaCheckPermission("cms:media:select")
     public Page<CmsMedia> select(CmsMedia cmsMedia, Page<CmsMedia> page) {
         return service.select(cmsMedia, page);
     }
@@ -52,7 +52,7 @@ public class CmsMediaController {
      */
     @Operation(summary = "查询详情")
     @GetMapping("{id}")
-    @RequiresPermissions("cms:media:select")
+    @SaCheckPermission("cms:media:select")
     public CmsMedia get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -64,7 +64,7 @@ public class CmsMediaController {
      */
     @GetMapping("add")
     @Operation(summary = "新增")
-    @RequiresPermissions("cms:media:save")
+    @SaCheckPermission("cms:media:save")
     public CmsMedia add() {
         return service.add();
     }
@@ -77,7 +77,7 @@ public class CmsMediaController {
      */
     @Operation(summary = "删除")
     @DeleteMapping("{ids}")
-    @RequiresPermissions("cms:media:remove")
+    @SaCheckPermission("cms:media:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -90,7 +90,7 @@ public class CmsMediaController {
      */
     @Operation(summary = "保存/修改")
     @PostMapping()
-    @RequiresPermissions("cms:media:save")
+    @SaCheckPermission("cms:media:save")
     public CmsMedia saveData(@Valid @RequestBody CmsMedia cmsMedia) {
         return service.saveData(cmsMedia);
     }

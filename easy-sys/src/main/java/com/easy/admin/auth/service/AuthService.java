@@ -1,10 +1,10 @@
 package com.easy.admin.auth.service;
 
-import com.easy.admin.auth.model.dto.LoginAccountDTO;
-import com.easy.admin.auth.model.dto.LoginQrCodeDTO;
-import com.easy.admin.auth.model.dto.LoginSmsDTO;
+import com.easy.admin.config.sa.token.model.LoginAccount;
+import com.easy.admin.config.sa.token.model.LoginQrCode;
+import com.easy.admin.config.sa.token.model.LoginSms;
+import com.easy.admin.auth.model.vo.LoginResultVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
-import org.apache.shiro.subject.Subject;
 
 /**
  * 会话
@@ -18,25 +18,25 @@ public interface AuthService {
      * 用户登录 - 用户名+密码
      *
      * @param loginAccount 登录信息
-     * @return Subject
+     * @return LoginResultVO
      */
-    Subject loginAccount(LoginAccountDTO loginAccount);
+    LoginResultVO loginAccount(LoginAccount loginAccount);
 
     /**
      * 用户登录 - 扫码
      *
      * @param loginQrCode 登录信息
-     * @return Subject
+     * @return LoginResultVO
      */
-    Subject loginQrCode(LoginQrCodeDTO loginQrCode);
+    LoginResultVO loginQrCode(LoginQrCode loginQrCode);
 
     /**
      * 用户登录 - 手机号+短信验证码
      *
      * @param loginSms 登录信息
-     * @return Subject
+     * @return LoginResultVO
      */
-    Subject loginSms(LoginSmsDTO loginSms);
+    LoginResultVO loginSms(LoginSms loginSms);
 
     /**
      * 获取当前登录用户

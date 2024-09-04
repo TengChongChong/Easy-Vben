@@ -1,5 +1,6 @@
 package com.easy.admin.activiti.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
@@ -17,23 +18,22 @@ import com.easy.admin.activiti.model.ActivitiTask;
 import com.easy.admin.activiti.model.ActivitiTaskInfo;
 import com.easy.admin.activiti.service.ActivitiProcessDefinitionService;
 import com.easy.admin.activiti.service.ActivitiTaskService;
+import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.core.mail.MailTemplate;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.model.SysMessage;
 import com.easy.admin.sys.service.SysMessageService;
-import com.easy.admin.util.ShiroUtil;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +69,7 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
     @Override
     public Page<ActivitiTask> select(ActivitiTask activitiTask, Page<ActivitiTask> page) {
         QueryWrapper<ActivitiTask> queryWrapper = new QueryWrapper<>();
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 查询条件
         if (activitiTask != null) {
             // 名称
@@ -85,7 +85,7 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
                     // 待签收
                     queryWrapper.isNull("art.assignee_")
                             .eq("ari.type_", "candidate")
-                            .and(i -> i.eq("ari.user_id_", currentUser.getId()).or().in("ari.group_id_", ShiroUtil.getRoleIds(currentUser.getRoleList()).toArray()));
+                            .and(i -> i.eq("ari.user_id_", currentUser.getId()).or().in("ari.group_id_", getRoleIds(currentUser.getRoleList()).toArray()));
                 } else if (ActivitiTaskStatusConst.CLAIMED.equals(activitiTask.getStatus())) {
                     // 待办任务：签收人或委托人为当前用户
                     queryWrapper.and(i -> i.eq("art.assignee_", currentUser.getId()).or().eq("art.owner_", currentUser.getId()));
@@ -101,9 +101,23 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
         return page;
     }
 
+    /**
+     * 获取角色Id
+     *
+     * @param roleList 权限list
+     * @return 权限标识
+     */
+    private List<String> getRoleIds(List<SessionUserRoleVO> roleList) {
+        List<String> roleIds = new ArrayList<>();
+        for (SessionUserRoleVO role : roleList) {
+            roleIds.add(role.getId());
+        }
+        return roleIds;
+    }
+
     @Override
     public void claimTask(String taskId) {
-        taskService.claim(taskId, ShiroUtil.getCurrentUser().getId());
+        taskService.claim(taskId, SessionUtil.getCurrentUser().getId());
     }
 
     @Override
@@ -173,13 +187,12 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
     @Override
     public void revoke(String processInstanceId, String deleteReason) {
         // 检查是否可以撤销
-        Subject subject = SecurityUtils.getSubject();
         ActivitiTask activitiTask = baseMapper.selectTask(processInstanceId);
         if (activitiTask == null) {
             throw new EasyException("撤销失败，流程未发起或已办结");
         }
-        boolean isApplyUser = activitiTask.getApplyUserId().equals(ShiroUtil.getCurrentUser().getId());
-        boolean isAdmin = subject.hasRole(ActivitiWorkflowConst.SYS_ADMIN_ROLE);
+        boolean isApplyUser = activitiTask.getApplyUserId().equals(SessionUtil.getCurrentUser().getId());
+        boolean isAdmin = StpUtil.hasRole(ActivitiWorkflowConst.SYS_ADMIN_ROLE);
         if (!isAdmin && !isApplyUser) {
             throw new EasyException("撤销失败，你无权撤销此申请");
         }
@@ -200,7 +213,7 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
      * @param deleteReason 撤销原因
      */
     private void sendMessage(ActivitiTask activitiTask, String deleteReason) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 设置模板引擎变量
         Map<String, Object> params = new HashMap<>(4);
         params.put("processDefinitionName", activitiTask.getProcessDefinitionName());

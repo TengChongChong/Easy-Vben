@@ -11,8 +11,8 @@ import com.easy.admin.cms.service.CmsMediaService;
 import com.easy.admin.cms.utils.CmsSiteUtil;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.file.service.FileInfoService;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.service.FileDetailService;
+import com.easy.admin.file.util.file.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +30,7 @@ import java.util.List;
 public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> implements CmsMediaService {
 
     @Autowired
-    private FileInfoService fileInfoService;
-
-    @Autowired
-    private FileStorageFactory fileStorageFactory;
+    private FileDetailService fileInfoService;
 
     @Override
     public Page<CmsMedia> select(CmsMedia cmsMedia, Page<CmsMedia> page) {
@@ -78,7 +75,7 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
     public CmsMedia get(String id) {
         CmsMedia cmsMedia = baseMapper.getById(id);
         if (cmsMedia != null) {
-            cmsMedia.setFile(fileInfoService.selectOne(id, CmsFileType.MEDIA_FILE.getCode()));
+            cmsMedia.setFile(fileInfoService.getOne(id, CmsFileType.MEDIA_FILE.getCode()));
         }
         return cmsMedia;
     }
@@ -96,7 +93,7 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
-            fileInfoService.delete(ids);
+            fileInfoService.removeByObjectId(ids);
         }
         return isSuccess;
     }
@@ -122,10 +119,10 @@ public class CmsMediaServiceImpl extends ServiceImpl<CmsMediaMapper, CmsMedia> i
      * @param cmsMedia 资源库信息
      */
     private void handleFile(CmsMedia cmsMedia) {
-        if (cmsMedia.getFile() != null && fileStorageFactory.getFileStorage().inTemporaryPath(cmsMedia.getFile().getObjectName())) {
-            fileInfoService.delete(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode());
+        if (cmsMedia.getFile() != null && FileUtil.inTemporaryPath(cmsMedia.getFile().getPath())) {
+            fileInfoService.removeByObjectIdAndObjectType(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode());
 
-            fileInfoService.saveData(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode(), cmsMedia.getFile());
+            fileInfoService.saveToFormal(cmsMedia.getId(), CmsFileType.MEDIA_FILE.getCode(), cmsMedia.getFile());
         }
     }
 }

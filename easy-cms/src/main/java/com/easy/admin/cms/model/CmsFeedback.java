@@ -62,6 +62,7 @@ public class CmsFeedback extends Model<CmsFeedback> {
     /**
      * 部门id
      */
+    @TableField(fill = FieldFill.INSERT)
     private String deptId;
     /**
      * 创建人

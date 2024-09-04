@@ -20,7 +20,7 @@ import com.easy.admin.scheduler.service.QuartzService;
 import com.easy.admin.scheduler.service.SchedulerJobLogService;
 import com.easy.admin.scheduler.service.SchedulerJobService;
 import com.easy.admin.sys.common.constant.WhetherConst;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +97,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
             }
         }
         // 非系统管理员，仅显示非系统数据
-        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+        if (!SessionUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("sys", WhetherConst.NO);
         }
         page.setDefaultDesc("create_date");
@@ -169,7 +169,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SchedulerJob saveData(SchedulerJob schedulerJob) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 更新前的任务名称
         String jobJobCode = null;
         schedulerJob.setEditDate(new Date());

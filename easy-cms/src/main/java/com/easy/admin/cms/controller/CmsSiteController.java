@@ -6,7 +6,7 @@ import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +39,7 @@ public class CmsSiteController {
      */
     @Operation(summary = "查询数据（无分页）")
     @GetMapping()
-    @RequiresPermissions("cms:site:select")
+    @SaCheckPermission("cms:site:select")
     public List<CmsSite> select(CmsSite cmsSite) {
         return service.select(cmsSite);
     }
@@ -51,7 +51,7 @@ public class CmsSiteController {
      */
     @Operation(summary = "查询所有数据（Tree）")
     @GetMapping("all")
-    @RequiresPermissions("cms:site:select")
+    @SaCheckPermission("cms:site:select")
     public List<Tree> selectAll() {
         return service.selectAll();
     }
@@ -64,7 +64,7 @@ public class CmsSiteController {
      */
     @Operation(summary = "查询详情")
     @GetMapping("{id}")
-    @RequiresPermissions("cms:site:select")
+    @SaCheckPermission("cms:site:select")
     public CmsSite get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -77,7 +77,7 @@ public class CmsSiteController {
      */
     @Operation(summary = "新增或新增下级")
     @GetMapping({"/add/{parentId}", "/add"})
-    @RequiresPermissions("cms:site:save")
+    @SaCheckPermission("cms:site:save")
     public CmsSite add(@PathVariable(value = "parentId", required = false) String parentId) {
         return service.add(parentId);
     }
@@ -90,7 +90,7 @@ public class CmsSiteController {
      */
     @Operation(summary = "删除")
     @DeleteMapping("{ids}")
-    @RequiresPermissions("cms:site:remove")
+    @SaCheckPermission("cms:site:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -103,7 +103,7 @@ public class CmsSiteController {
      */
     @Operation(summary = "保存/修改")
     @PostMapping()
-    @RequiresPermissions("cms:site:save")
+    @SaCheckPermission("cms:site:save")
     public CmsSite saveData(@Valid @RequestBody CmsSite cmsSite) {
         return service.saveData(cmsSite);
     }
@@ -115,7 +115,7 @@ public class CmsSiteController {
      * @return true/false
      */
     @PostMapping("order")
-    @RequiresPermissions("cms:site:save")
+    @SaCheckPermission("cms:site:save")
     public boolean saveOrder(@RequestBody List<CmsSite> cmsSiteList) {
         return service.saveOrder(cmsSiteList);
     }
@@ -149,7 +149,7 @@ public class CmsSiteController {
      */
     @Operation(summary = "导出数据")
     @GetMapping("export/data")
-    @RequiresPermissions("cms:site:select")
+    @SaCheckPermission("cms:site:select")
     public String exportData(CmsSite cmsSite) {
         return service.exportData(cmsSite);
     }

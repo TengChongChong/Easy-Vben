@@ -1,19 +1,18 @@
 package com.easy.admin.auth.controller;
 
-import com.easy.admin.auth.model.dto.LoginAccountDTO;
-import com.easy.admin.auth.model.dto.LoginQrCodeDTO;
-import com.easy.admin.auth.model.dto.LoginSmsDTO;
+import cn.dev33.satoken.stp.StpUtil;
+import com.easy.admin.auth.model.vo.LoginResultVO;
 import com.easy.admin.auth.model.vo.route.RouteVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.AuthService;
 import com.easy.admin.common.core.annotation.ResponseResult;
+import com.easy.admin.config.sa.token.model.LoginAccount;
+import com.easy.admin.config.sa.token.model.LoginQrCode;
+import com.easy.admin.config.sa.token.model.LoginSms;
 import com.easy.admin.core.annotation.SysLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,42 +40,39 @@ public class AuthController {
      * 用户登录 - 用户名+密码
      *
      * @param loginAccount 登录信息
-     * @return token
+     * @return LoginResultVO
      */
     @Operation(summary = "用户登录 - 用户名+密码参数")
     @PostMapping(value = "/api/login/account")
     @SysLog(modular = "sys", method = "用户登录 - 用户名+密码参数")
-    public String loginAccount(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginAccountDTO loginAccount) {
-        Subject subject = service.loginAccount(loginAccount);
-        return subject.getSession().getId().toString();
+    public LoginResultVO loginAccount(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginAccount loginAccount) {
+        return service.loginAccount(loginAccount);
     }
 
     /**
      * 用户登录 - 扫码
      *
      * @param loginQrCode 登录信息
-     * @return token
+     * @return LoginResultVO
      */
     @Operation(summary = "用户登录 - 扫码参数")
     @PostMapping(value = "/api/login/qr/code")
     @SysLog(modular = "sys", method = "用户登录 - 扫码参数")
-    public String loginQrCode(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginQrCodeDTO loginQrCode) {
-        Subject subject = service.loginQrCode(loginQrCode);
-        return subject.getSession().getId().toString();
+    public LoginResultVO loginQrCode(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginQrCode loginQrCode) {
+        return service.loginQrCode(loginQrCode);
     }
 
     /**
      * 用户登录 - 手机号+短信验证码
      *
      * @param loginSms 登录信息
-     * @return token
+     * @return LoginResultVO
      */
     @Operation(summary = "用户登录 - 手机号+短信验证码参数")
     @PostMapping(value = "/api/login/sms")
     @SysLog(modular = "sys", method = "用户登录 - 手机号+短信验证码参数")
-    public String loginSms(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginSmsDTO loginSms) {
-        Subject subject = service.loginSms(loginSms);
-        return subject.getSession().getId().toString();
+    public LoginResultVO loginSms(@RequestBody @Valid @Parameter(description = "登录参数", required = true) LoginSms loginSms) {
+        return service.loginSms(loginSms);
     }
 
     /**
@@ -84,7 +80,6 @@ public class AuthController {
      *
      * @return SessionUserVO
      */
-    @RequiresPermissions("auth:current:user")
     @GetMapping("/api/auth/current/user")
     @SysLog(modular = "sys", method = "获取当前登录用户")
     public SessionUserVO getCurrent() {
@@ -108,7 +103,7 @@ public class AuthController {
     @Operation(summary = "退出")
     @PostMapping("/api/logout")
     public void logout() {
-        SecurityUtils.getSubject().logout();
+        StpUtil.logout();
     }
 
 }

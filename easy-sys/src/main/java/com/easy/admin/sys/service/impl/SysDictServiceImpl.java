@@ -21,7 +21,7 @@ import com.easy.admin.sys.dao.SysDictMapper;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.service.ImportService;
 import com.easy.admin.sys.service.SysDictService;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +66,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
             }
         }
         // 非系统管理员，仅显示非系统数据
-        if (!ShiroUtil.havRole(SysRoleConst.SYS_ADMIN)) {
+        if (!SessionUtil.havRole(SysRoleConst.SYS_ADMIN)) {
             queryWrapper.eq("dt.sys", WhetherConst.NO);
         }
         return queryWrapper;
@@ -226,7 +226,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         // 导入成功后设置一些默认信息此处仅作示例
         UpdateWrapper<SysDict> setDefaultValue = new UpdateWrapper<>();
         Date now = new Date();
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         setDefaultValue.set("create_date", now);
         setDefaultValue.set("edit_date", now);
         setDefaultValue.set("create_user", currentUser.getId());

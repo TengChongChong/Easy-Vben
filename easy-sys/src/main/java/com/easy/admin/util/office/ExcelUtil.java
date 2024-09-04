@@ -2,22 +2,21 @@ package com.easy.admin.util.office;
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.BigExcelWriter;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.file.model.BaseFileInfo;
 import com.easy.admin.file.model.FileDownload;
 import com.easy.admin.file.service.FileDownloadService;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.util.file.FileUtil;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddressList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,15 +38,7 @@ import java.util.UUID;
 @Component
 public class ExcelUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExcelUtil.class);
-
     private static FileDownloadService downloadService;
-
-    /**
-     * 文件存储
-     */
-    private static FileStorageFactory fileStorageFactory;
-
 
     private ExcelUtil() {
     }
@@ -81,24 +72,10 @@ public class ExcelUtil {
         }
 
         InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-
-        String objectName = fileStorageFactory.getFileStorage().getTemporaryPath() + UUID.randomUUID() + EXCEL_SUFFIX_XLS;
-
-        // 保存文件
-        fileStorageFactory.getFileStorage().uploadFile(
-                fileStorageFactory.getFileStorageProperties().getDefaultBucket(),
-                objectName,
-                inputStream
-        );
-
+        // 写入文件
+        FileInfo fileInfo = FileUtil.upload(inputStream, title + DateUtil.today() + EXCEL_SUFFIX_XLS, UUID.randomUUID() + EXCEL_SUFFIX_XLS);
         // 保存下载信息
-        return downloadService.saveData(
-                new FileDownload(
-                        title + EXCEL_SUFFIX_XLS,
-                        fileStorageFactory.getFileStorageProperties().getDefaultBucket(),
-                        objectName
-                )
-        ).getId();
+        return downloadService.saveData(new FileDownload(fileInfo.getId())).getId();
     }
 
     /**
@@ -109,7 +86,7 @@ public class ExcelUtil {
      * @param dictionaries 字典
      * @return path
      */
-    public static BaseFileInfo writFile(String name, List<SysImportExcelTemplateDetail> details, Map<String, List<SysDict>> dictionaries) {
+    public static FileInfo writFile(String name, List<SysImportExcelTemplateDetail> details, Map<String, List<SysDict>> dictionaries) {
         return writFile(name, details, dictionaries, null);
     }
 
@@ -122,7 +99,7 @@ public class ExcelUtil {
      * @param body         数据
      * @return path
      */
-    public static BaseFileInfo writFile(String name, List<SysImportExcelTemplateDetail> details, Map<String, List<SysDict>> dictionaries, List<List<Object>> body) {
+    public static FileInfo writFile(String name, List<SysImportExcelTemplateDetail> details, Map<String, List<SysDict>> dictionaries, List<List<Object>> body) {
         BigExcelWriter writer = cn.hutool.poi.excel.ExcelUtil.getBigWriter();
 
         // 设置默认行高
@@ -165,15 +142,8 @@ public class ExcelUtil {
         writer.flush(outputStream);
 
         InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-        String objectName = fileStorageFactory.getFileStorage().getTemporaryPath() + UUID.randomUUID() + EXCEL_SUFFIX_XLS;
-        // 保存文件
-        fileStorageFactory.getFileStorage().uploadFile(
-                fileStorageFactory.getFileStorageProperties().getDefaultBucket(),
-                objectName,
-                inputStream
-        );
 
-        return new BaseFileInfo(fileStorageFactory.getFileStorageProperties().getDefaultBucket(), objectName);
+        return FileUtil.upload(inputStream, name + DateUtil.today() + EXCEL_SUFFIX_XLS, UUID.randomUUID() + EXCEL_SUFFIX_XLS);
     }
 
     /**
@@ -197,8 +167,4 @@ public class ExcelUtil {
         ExcelUtil.downloadService = downloadService;
     }
 
-    @Autowired
-    public void setFileStorageFactory(FileStorageFactory fileStorageFactory) {
-        ExcelUtil.fileStorageFactory = fileStorageFactory;
-    }
 }

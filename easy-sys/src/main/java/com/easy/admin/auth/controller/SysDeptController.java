@@ -5,7 +5,7 @@ import com.easy.admin.auth.service.SysDeptService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.annotation.ResponseResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class SysDeptController extends BaseController {
      * @return List<SysDept>
      */
     @GetMapping
-    @RequiresPermissions("sys:dept:select")
+    @SaCheckPermission("sys:dept:select")
     public List<SysDept> select(SysDept sysDept) {
         return service.select(sysDept);
     }
@@ -56,7 +56,7 @@ public class SysDeptController extends BaseController {
      * @return SysDept
      */
     @GetMapping({"/add/{id}", "/add"})
-    @RequiresPermissions("sys:dept:save")
+    @SaCheckPermission("sys:dept:save")
     public SysDept add(@PathVariable(value = "id", required = false) String parentId,
                        @RequestParam(value = "typeCode", required = false) String typeCode) {
         return service.add(parentId, typeCode);
@@ -69,7 +69,7 @@ public class SysDeptController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{id}")
-    @RequiresPermissions("sys:dept:remove")
+    @SaCheckPermission("sys:dept:remove")
     public boolean remove(@PathVariable("id") String id) {
         return service.remove(id);
     }
@@ -81,7 +81,7 @@ public class SysDeptController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("sys:dept:save")
+    @SaCheckPermission("sys:dept:save")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
@@ -93,7 +93,7 @@ public class SysDeptController extends BaseController {
      * @return SysDept
      */
     @PostMapping
-    @RequiresPermissions("sys:dept:save")
+    @SaCheckPermission("sys:dept:save")
     public SysDept save(@RequestBody @Valid SysDept sysDept) {
         return service.saveData(sysDept);
     }
@@ -105,7 +105,7 @@ public class SysDeptController extends BaseController {
      * @return true/false
      */
     @PostMapping("order")
-    @RequiresPermissions("sys:dept:save")
+    @SaCheckPermission("sys:dept:save")
     public boolean saveOrder(@RequestBody List<SysDept> sysDeptList) {
         return service.saveOrder(sysDeptList);
     }

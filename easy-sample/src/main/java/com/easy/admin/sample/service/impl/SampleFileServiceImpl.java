@@ -6,13 +6,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.file.model.FileInfo;
-import com.easy.admin.file.service.FileInfoService;
+import com.easy.admin.file.model.FileDownload;
+import com.easy.admin.file.service.FileDetailService;
 import com.easy.admin.file.service.FileDownloadService;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.util.file.FileUtil;
 import com.easy.admin.sample.dao.SampleFileMapper;
 import com.easy.admin.sample.model.SampleFile;
 import com.easy.admin.sample.service.SampleFileService;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,17 +30,12 @@ import java.util.List;
 @Service
 public class SampleFileServiceImpl extends ServiceImpl<SampleFileMapper, SampleFile> implements SampleFileService {
 
-    /**
-     * 文件存储
-     */
-    @Autowired
-    private FileStorageFactory fileStorageFactory;
 
     /**
      * 文件数据
      */
     @Autowired
-    private FileInfoService fileInfoService;
+    private FileDetailService fileDetailService;
 
     /**
      * 文件下载
@@ -70,7 +66,7 @@ public class SampleFileServiceImpl extends ServiceImpl<SampleFileMapper, SampleF
     public SampleFile get(String id) {
         SampleFile sampleFile = baseMapper.getById(id);
         if (sampleFile != null) {
-            sampleFile.setFile(fileInfoService.selectOne(sampleFile.getId(), "file"));
+            sampleFile.setFile(fileDetailService.getOne(sampleFile.getId(), "file"));
         }
         return sampleFile;
     }
@@ -88,7 +84,7 @@ public class SampleFileServiceImpl extends ServiceImpl<SampleFileMapper, SampleF
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
-            fileInfoService.delete(ids, "file");
+            fileDetailService.removeByObjectIdAndObjectType(ids, "file");
         }
         return isSuccess;
     }
@@ -106,25 +102,25 @@ public class SampleFileServiceImpl extends ServiceImpl<SampleFileMapper, SampleF
         return sampleFile;
     }
 
-    private void saveFile(String parentId, String type, FileInfo file) {
+    private void saveFile(String objectId, String objectType, FileInfo file) {
         if (file == null) {
-            fileInfoService.delete(parentId, type);
+            fileDetailService.removeByObjectIdAndObjectType(objectId, objectType);
             return;
         }
 
-        if (fileStorageFactory.getFileStorage().inTemporaryPath(file.getObjectName())) {
-            fileInfoService.delete(parentId, type);
-            fileInfoService.saveData(parentId, type, file);
+        if (FileUtil.inTemporaryPath(file.getPath())) {
+            fileDetailService.removeByObjectIdAndObjectType(objectId, objectType);
+            fileDetailService.saveToFormal(objectId, objectType, file);
         }
     }
 
     @Override
     public String download(String id) {
-        FileInfo fileInfo = fileInfoService.selectOne(id, "file");
+        FileInfo fileInfo = fileDetailService.getOne(id, "file");
         if (fileInfo == null) {
             throw new EasyException("请上传文件后重试");
         }
 
-        return fileDownloadService.saveData(fileInfo.getBucketName(), fileInfo.getObjectName(), fileInfo.getDisplayName()).getId();
+        return fileDownloadService.saveData(new FileDownload(fileInfo.getId())).getId();
     }
 }

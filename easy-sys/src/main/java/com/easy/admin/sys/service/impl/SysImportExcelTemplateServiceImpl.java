@@ -10,7 +10,6 @@ import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.ToolUtil;
-import com.easy.admin.file.model.BaseFileInfo;
 import com.easy.admin.file.model.FileDownload;
 import com.easy.admin.file.service.FileDownloadService;
 import com.easy.admin.sys.common.constant.ImportConst;
@@ -23,6 +22,7 @@ import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
 import com.easy.admin.util.office.ExcelUtil;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -179,14 +179,8 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
             // 如果模板中包含字典，则设置select
             dictionaries = sysDictService.selectDictionaries(ArrayUtil.toArray(dictTypes, String.class));
         }
-
-        BaseFileInfo baseFileInfo = ExcelUtil.writFile(sysImportExcelTemplate.getName(), details, dictionaries);
-
-        return fileDownloadService.saveData(new FileDownload(
-                sysImportExcelTemplate.getName() + ExcelUtil.EXCEL_SUFFIX_XLSX,
-                baseFileInfo.getBucketName(),
-                baseFileInfo.getObjectName()
-        )).getId();
+        FileInfo fileInfo = ExcelUtil.writFile(sysImportExcelTemplate.getName(), details, dictionaries);
+        return fileDownloadService.saveData(new FileDownload(fileInfo.getId())).getId();
     }
 
 }

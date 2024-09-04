@@ -3,7 +3,7 @@ package com.easy.admin.sys.controller;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.vo.SysRedisVO;
 import com.easy.admin.sys.service.SysRedisService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +30,9 @@ public class SysRedisController {
      * @return Set<String>
      */
     @GetMapping("prefix/{prefix}")
-    @RequiresPermissions("sys:redis:select")
+    @SaCheckPermission("sys:redis:select")
     @ResponseBody
-    public Set<String> selectByPrefix(@PathVariable("prefix") String prefix){
+    public Set<String> selectByPrefix(@PathVariable("prefix") String prefix) {
         return service.selectByPrefix(prefix);
     }
 
@@ -43,9 +43,9 @@ public class SysRedisController {
      * @return SysRedisVO
      */
     @GetMapping("key/{key}")
-    @RequiresPermissions("sys:redis:select")
+    @SaCheckPermission("sys:redis:select")
     @ResponseBody
-    public SysRedisVO get(@PathVariable("key") String key){
+    public SysRedisVO get(@PathVariable("key") String key) {
         return service.get(key);
     }
 
@@ -56,9 +56,9 @@ public class SysRedisController {
      * @return true/false
      */
     @DeleteMapping("{key}")
-    @RequiresPermissions("sys:redis:remove")
+    @SaCheckPermission("sys:redis:remove")
     @ResponseBody
-    public boolean remove(@PathVariable("key") String key){
+    public boolean remove(@PathVariable("key") String key) {
         return service.remove(key);
     }
 
@@ -69,9 +69,9 @@ public class SysRedisController {
      * @return true/false
      */
     @PutMapping()
-    @RequiresPermissions("sys:redis:save")
+    @SaCheckPermission("sys:redis:save")
     @ResponseBody
-    public boolean save(SysRedisVO sysRedis){
+    public boolean save(SysRedisVO sysRedis) {
         return service.save(sysRedis);
     }
 

@@ -1,4 +1,4 @@
-package com.easy.admin.auth.model.dto;
+package com.easy.admin.config.sa.token.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 @Schema(description = "用户登录 - 手机号+短信验证码参数")
-public class LoginSmsDTO {
+public class LoginSms extends BasisLogin {
 
     @NotBlank(message = "账号不能为空")
     @Schema(description = "手机号", required = true)

@@ -1,12 +1,13 @@
 package com.easy.admin.config.mybatis.plugins;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.handler.DataPermissionHandler;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.config.mybatis.annotation.EasyDataScope;
 import com.easy.admin.config.mybatis.plugins.model.DataPermission;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
@@ -20,8 +21,6 @@ import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.ParenthesedSelect;
 import net.sf.jsqlparser.statement.select.Select;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -81,12 +80,11 @@ public class DataPermissionHandlerImpl implements DataPermissionHandler {
      * @return 数据权限 SQL
      */
     private Expression getSqlSegment(EasyDataScope dataScope) {
-        Subject subject = SecurityUtils.getSubject();
-        if (!subject.isAuthenticated() && !subject.isRemembered()) {
+        if (!StpUtil.isLogin()) {
             // 未登录
             return null;
         }
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 用户数据权限
         List<DataPermission> dataPermissionList = currentUser.getDataPermissionList();
         if (dataPermissionList == null || dataPermissionList.isEmpty()) {

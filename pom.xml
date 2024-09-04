@@ -48,7 +48,8 @@
         <swagger.fox.version>3.0.0</swagger.fox.version>
         <jjwt.version>0.9.1</jjwt.version>
         <knife4j.version>2.0.4</knife4j.version>
-        <shiro.version>1.13.0</shiro.version>
+        <sa-token.version>1.39.0</sa-token.version>
+        <x-file-storage.version>2.2.1</x-file-storage.version>
         <beetl.version>3.10.0.RELEASE</beetl.version>
         <jsoup.version>1.15.4</jsoup.version>
         <captcha.version>1.3.0</captcha.version>
@@ -61,6 +62,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

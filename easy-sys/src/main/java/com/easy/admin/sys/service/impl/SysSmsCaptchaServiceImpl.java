@@ -9,7 +9,7 @@ import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.service.SysSmsCaptchaService;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.util.SysConfigUtil;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class SysSmsCaptchaServiceImpl implements SysSmsCaptchaService {
 
     @Override
     public String bindingPhone(String phone) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         if (currentUser == null) {
             throw new EasyException("你尚未登录，请登录后重试");
         }

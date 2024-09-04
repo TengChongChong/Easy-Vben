@@ -5,7 +5,7 @@ import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class SysRoleController extends BaseController {
      * @return Page<SysRole>
      */
     @GetMapping()
-    @RequiresPermissions("sys:role:select")
+    @SaCheckPermission("sys:role:select")
     public Page<SysRole> select(SysRole sysRole, Page<SysRole> page) {
         return service.select(sysRole, page);
     }
@@ -45,7 +45,7 @@ public class SysRoleController extends BaseController {
      * @return List<SysRole>
      */
     @GetMapping("all")
-    @RequiresPermissions("sys:role:select")
+    @SaCheckPermission("sys:role:select")
     public List<SysRole> selectAll() {
         return service.selectAll();
     }
@@ -68,7 +68,7 @@ public class SysRoleController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{id}")
-    @RequiresPermissions("sys:role:remove")
+    @SaCheckPermission("sys:role:remove")
     public boolean remove(@PathVariable("id") String ids) {
         return service.remove(ids);
     }
@@ -81,7 +81,7 @@ public class SysRoleController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("sys:role:save")
+    @SaCheckPermission("sys:role:save")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
@@ -93,7 +93,7 @@ public class SysRoleController extends BaseController {
      * @return SysRole
      */
     @PostMapping
-    @RequiresPermissions("sys:role:save")
+    @SaCheckPermission("sys:role:save")
     public SysRole save(@RequestBody @Valid SysRole sysRole) {
         return service.saveData(sysRole);
     }

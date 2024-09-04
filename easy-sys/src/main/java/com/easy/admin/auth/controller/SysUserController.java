@@ -5,7 +5,7 @@ import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class SysUserController extends BaseController {
      * @return Page<SysUser>
      */
     @GetMapping
-    @RequiresPermissions("sys:user:select")
+    @SaCheckPermission("sys:user:select")
     public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
         return service.select(sysUser, page);
     }
@@ -45,7 +45,7 @@ public class SysUserController extends BaseController {
      * @return SysUser
      */
     @GetMapping({"add/{deptId}"})
-    @RequiresPermissions("sys:user:save")
+    @SaCheckPermission("sys:user:save")
     public SysUser add(@PathVariable(value = "deptId", required = false) String deptId) {
         return service.add(deptId);
     }
@@ -57,7 +57,7 @@ public class SysUserController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{id}")
-    @RequiresPermissions("sys:user:remove")
+    @SaCheckPermission("sys:user:remove")
     public boolean remove(@PathVariable("id") String id) {
         return service.remove(id);
     }
@@ -70,7 +70,7 @@ public class SysUserController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("sys:user:save")
+    @SaCheckPermission("sys:user:save")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
@@ -82,7 +82,7 @@ public class SysUserController extends BaseController {
      * @return 重置后密码
      */
     @PostMapping("reset/password/{ids}")
-    @RequiresPermissions("sys:user:save")
+    @SaCheckPermission("sys:user:save")
     public String resetPassword(@PathVariable("ids") String ids) {
         return service.resetPassword(ids);
     }
@@ -94,7 +94,7 @@ public class SysUserController extends BaseController {
      * @return SysUser
      */
     @PostMapping
-    @RequiresPermissions("sys:user:save")
+    @SaCheckPermission("sys:user:save")
     public SysUser save(@RequestBody @Valid SysUser sysUser) {
         return service.saveData(sysUser, true);
     }
@@ -106,7 +106,7 @@ public class SysUserController extends BaseController {
      * @return SysUser
      */
     @GetMapping("{id}")
-    @RequiresPermissions("sys:user:select")
+    @SaCheckPermission("sys:user:select")
     public SysUser get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -134,7 +134,7 @@ public class SysUserController extends BaseController {
      * @return List<SysUser>
      */
     @GetMapping("users/{ids}")
-    @RequiresPermissions("sys:user:select")
+    @SaCheckPermission("sys:user:select")
     public List<SysUser> selectUsersByIds(@PathVariable("ids") String ids) {
         return service.selectUsersByIds(ids);
     }

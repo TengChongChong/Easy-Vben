@@ -2,7 +2,7 @@ package com.easy.admin.config.mybatis.handlers;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
-import com.easy.admin.util.ShiroUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +42,7 @@ public class EasyFrameMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         SessionUserVO currentUser = null;
         try {
-            currentUser = ShiroUtil.getCurrentUser();
+            currentUser = SessionUtil.getCurrentUser();
         } catch (Exception e) {
             // 如果获取不到用户则不设置用户类默认值
         }
@@ -62,7 +62,7 @@ public class EasyFrameMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         if (currentUser != null) {
             this.setFieldValByName(EDIT_USER, currentUser.getId(), metaObject);
         }

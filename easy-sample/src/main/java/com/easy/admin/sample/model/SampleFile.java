@@ -2,7 +2,7 @@ package com.easy.admin.sample.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.easy.admin.file.model.FileInfo;
+import org.dromara.x.file.storage.core.FileInfo;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -2,8 +2,8 @@ package com.easy.admin.cms.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.easy.admin.file.model.FileInfo;
 import lombok.Data;
+import org.dromara.x.file.storage.core.FileInfo;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -50,6 +50,7 @@ public class CmsMedia extends Model<CmsMedia> {
     /**
      * 部门id
      */
+    @TableField(fill = FieldFill.INSERT)
     private String deptId;
     /**
      * 创建人
@@ -86,13 +87,8 @@ public class CmsMedia extends Model<CmsMedia> {
     @TableField(exist = false)
     private String fileUrl;
     /**
-     * local - 文件夹名称 / oss - bucket名称
+     * 文件id
      */
     @TableField(exist = false)
-    protected String fileBucketName;
-    /**
-     * local - 文件路径 /  oss - objectName
-     */
-    @TableField(exist = false)
-    protected String fileObjectName;
+    protected String fileId;
 }

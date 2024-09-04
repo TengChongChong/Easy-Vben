@@ -1,11 +1,11 @@
 package com.easy.admin.auth.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.easy.admin.auth.model.SysDeptType;
 import com.easy.admin.auth.service.SysDeptTypeService;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.tree.Tree;
-import com.easy.admin.common.core.annotation.ResponseResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class SysDeptTypeController extends BaseController {
      * @return Page<SysDeptType>
      */
     @GetMapping()
-    @RequiresPermissions("sys:dept:type:select")
+    @SaCheckPermission("sys:dept:type:select")
     public List<SysDeptType> select(SysDeptType sysDeptType) {
         return service.select(sysDeptType);
     }
@@ -56,7 +56,7 @@ public class SysDeptTypeController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{id}")
-    @RequiresPermissions("sys:dept:type:remove")
+    @SaCheckPermission("sys:dept:type:remove")
     public boolean remove(@PathVariable("id") String ids) {
         return service.remove(ids);
     }
@@ -68,7 +68,7 @@ public class SysDeptTypeController extends BaseController {
      * @return true/false
      */
     @PostMapping("{id}/status/{status}")
-    @RequiresPermissions("sys:dept:type:save")
+    @SaCheckPermission("sys:dept:type:save")
     public boolean setStatus(@PathVariable("id") String ids, @PathVariable("status") String status) {
         return service.setStatus(ids, status);
     }
@@ -80,7 +80,7 @@ public class SysDeptTypeController extends BaseController {
      * @return SysDeptType
      */
     @PostMapping
-    @RequiresPermissions("sys:dept:type:save")
+    @SaCheckPermission("sys:dept:type:save")
     public SysDeptType save(@RequestBody @Valid SysDeptType sysDeptType) {
         return service.saveData(sysDeptType);
     }
@@ -102,7 +102,7 @@ public class SysDeptTypeController extends BaseController {
      * @return List<Tree>
      */
     @GetMapping("all")
-    @RequiresPermissions("sys:dept:type:select")
+    @SaCheckPermission("sys:dept:type:select")
     public List<Tree> selectAll() {
         return service.selectAll();
     }
@@ -115,7 +115,7 @@ public class SysDeptTypeController extends BaseController {
      * @return true/false
      */
     @PostMapping("order")
-    @RequiresPermissions("sys:dept:type:save")
+    @SaCheckPermission("sys:dept:type:save")
     public boolean saveOrder(@RequestBody List<SysDeptType> sysDeptTypeList) {
         return service.saveOrder(sysDeptTypeList);
     }

@@ -4,7 +4,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sample.model.SampleWorkFlow;
 import com.easy.admin.sample.service.SampleWorkFlowService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +34,8 @@ public class SampleWorkFlowController {
      * @return Page<SampleWorkFlow>
      */
     @GetMapping()
-    @RequiresPermissions("sample:work:flow:select")
-    public Page<SampleWorkFlow> select(SampleWorkFlow sampleWorkFlow, Page<SampleWorkFlow> page){
+    @SaCheckPermission("sample:work:flow:select")
+    public Page<SampleWorkFlow> select(SampleWorkFlow sampleWorkFlow, Page<SampleWorkFlow> page) {
         return service.select(sampleWorkFlow, page);
     }
 
@@ -56,7 +56,7 @@ public class SampleWorkFlowController {
      * @return SampleWorkFlow
      */
     @GetMapping("add")
-    @RequiresPermissions("sample:work:flow:save")
+    @SaCheckPermission("sample:work:flow:save")
     public SampleWorkFlow add() {
         return service.add();
     }
@@ -68,7 +68,7 @@ public class SampleWorkFlowController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @RequiresPermissions("sample:work:flow:remove")
+    @SaCheckPermission("sample:work:flow:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -80,8 +80,8 @@ public class SampleWorkFlowController {
      * @return SampleWorkFlow
      */
     @PostMapping()
-    @RequiresPermissions("sample:work:flow:save")
-    public SampleWorkFlow saveData(@Valid @RequestBody SampleWorkFlow sampleWorkFlow){
+    @SaCheckPermission("sample:work:flow:save")
+    public SampleWorkFlow saveData(@Valid @RequestBody SampleWorkFlow sampleWorkFlow) {
         return service.saveData(sampleWorkFlow);
     }
 
@@ -92,8 +92,8 @@ public class SampleWorkFlowController {
      * @return 文件下载id
      */
     @GetMapping("export/data")
-    @RequiresPermissions("sample:work:flow:select")
-    public String exportData(SampleWorkFlow sampleWorkFlow){
+    @SaCheckPermission("sample:work:flow:select")
+    public String exportData(SampleWorkFlow sampleWorkFlow) {
         return service.exportData(sampleWorkFlow);
     }
 

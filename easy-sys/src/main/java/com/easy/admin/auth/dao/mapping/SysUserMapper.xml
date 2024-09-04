@@ -69,7 +69,7 @@
         select role_id from sys_user_role sur where sur.user_id = #{id}
     </select>
     <select id="search" resultType="com.easy.admin.auth.model.SysUser">
-        select u.id, u.username, u.nickname, u.email, u.phone_number, sd.name as deptName
+        select u.id, u.username, u.nickname, u.email, u.phone_number, sd.name as dept_name
         from sys_user u
             left join sys_dept sd on sd.id = u.dept_id
             left join sys_dept_type sdt on sdt.code = sd.type_code

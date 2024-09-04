@@ -2,6 +2,7 @@ package com.easy.admin.sys.service;
 
 import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.model.vo.SysImportExcelDataVO;
+import org.dromara.x.file.storage.core.FileInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,16 +26,15 @@ public interface SysImportExcelDataService {
     /**
      * 解析文件
      *
-     * @param bucketName local - 文件夹名称 / oss - bucket名称
-     * @param objectName local - 文件路径 /  oss - objectName
-     * @return List<List<Object>>
+     * @param fileInfo fileInfo
+     * @return List<List < Object>>
      */
-    List<List<Object>> analysisExcel(String bucketName, String objectName);
+    List<List<Object>> analysisExcel(FileInfo fileInfo);
 
     /**
      * 验证并解析文件
      *
-     * @param templateId 模板id
+     * @param templateId         模板id
      * @param sysImportExcelData 导入文件以及规则
      * @return true/false
      */

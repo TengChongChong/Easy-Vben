@@ -1,12 +1,12 @@
 package com.easy.admin.common.core.util.http;
 
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -43,17 +43,17 @@ public class HttpUtil {
     /**
      * 获取 ResponseEntity<FileSystemResource> 用于文件下载
      *
-     * @param inputStream   文件
+     * @param bytes         文件
      * @param displayName   显示文件名称
      * @param contentLength 文件大小
      * @param request       HttpServletRequest
      * @return ResponseEntity
      * @throws UnsupportedEncodingException 异常
      */
-    public static ResponseEntity<InputStreamResource> getResponseEntity(InputStream inputStream,
-                                                                        String displayName,
-                                                                        long contentLength,
-                                                                        HttpServletRequest request) throws UnsupportedEncodingException {
+    public static ResponseEntity<Resource> getResponseEntity(byte[] bytes,
+                                                             String displayName,
+                                                             long contentLength,
+                                                             HttpServletRequest request) throws UnsupportedEncodingException {
         boolean isMSIE = HttpUtil.isMSBrowser(request);
         if (isMSIE) {
             displayName = URLEncoder.encode(displayName, "UTF-8");
@@ -74,7 +74,7 @@ public class HttpUtil {
                 .headers(headers)
                 .contentLength(contentLength)
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(new InputStreamResource(inputStream));
+                .body(new ByteArrayResource(bytes));
     }
 
 }

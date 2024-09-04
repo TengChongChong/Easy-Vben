@@ -7,7 +7,7 @@ import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +41,7 @@ public class CmsPageController {
      */
     @Operation(summary = "查询数据")
     @GetMapping()
-    @RequiresPermissions("cms:page:select")
+    @SaCheckPermission("cms:page:select")
     public Page<CmsPage> select(CmsPage cmsPage, Page<CmsPage> page) {
         return service.select(cmsPage, page);
     }
@@ -54,7 +54,7 @@ public class CmsPageController {
      */
     @Operation(summary = "查询详情")
     @GetMapping("{id}")
-    @RequiresPermissions("cms:page:select")
+    @SaCheckPermission("cms:page:select")
     public CmsPage get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -66,7 +66,7 @@ public class CmsPageController {
      */
     @GetMapping("add")
     @Operation(summary = "新增")
-    @RequiresPermissions("cms:page:save")
+    @SaCheckPermission("cms:page:save")
     public CmsPage add() {
         return service.add();
     }
@@ -79,7 +79,7 @@ public class CmsPageController {
      */
     @Operation(summary = "删除")
     @DeleteMapping("{ids}")
-    @RequiresPermissions("cms:page:remove")
+    @SaCheckPermission("cms:page:remove")
     public boolean delete(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -92,7 +92,7 @@ public class CmsPageController {
      */
     @Operation(summary = "保存/修改")
     @PostMapping()
-    @RequiresPermissions("cms:page:save")
+    @SaCheckPermission("cms:page:save")
     public CmsPage saveData(@Valid @RequestBody CmsPage cmsPage) {
         return service.saveData(cmsPage);
     }
@@ -104,7 +104,7 @@ public class CmsPageController {
      */
     @Operation(summary = "查询主题中的页面模版")
     @GetMapping("theme/page/template")
-    @RequiresPermissions("cms:page:select")
+    @SaCheckPermission("cms:page:select")
     public List<Select> selectThemePageTemplate() {
         return service.selectThemePageTemplate();
     }

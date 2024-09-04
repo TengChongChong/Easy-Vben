@@ -1,10 +1,11 @@
 package com.easy.admin.auth.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailUtil;
-import cn.hutool.json.JSONObject;
 import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.ChangePasswordVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysUserPersonalCenterService;
 import com.easy.admin.auth.service.SysUserService;
@@ -12,21 +13,20 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.core.mail.MailTemplate;
-import com.easy.admin.file.model.FileInfo;
-import com.easy.admin.file.service.FileInfoService;
-import com.easy.admin.file.storage.FileStorageFactory;
-import com.easy.admin.file.util.file.ImageUtil;
+import com.easy.admin.file.service.FileDetailService;
+import com.easy.admin.file.util.file.FileUtil;
 import com.easy.admin.sys.common.constant.MailConst;
 import com.easy.admin.sys.model.SysMailVerification;
 import com.easy.admin.sys.service.SysMailVerificationService;
 import com.easy.admin.util.PasswordUtil;
-import com.easy.admin.util.ShiroUtil;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,81 +46,54 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     private SysMailVerificationService sysMailVerifiesService;
 
     @Autowired
-    private FileInfoService fileInfoService;
-
-    /**
-     * 文件存储
-     */
-    @Autowired
-    private FileStorageFactory fileStorageFactory;
+    private FileDetailService fileDetailService;
 
     @Override
-    public SessionUserVO getCurrentUser() {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
-        if (currentUser != null) {
-            SysUser queryResult = sysUserService.selectEmailAndPhone(currentUser.getId());
-            if (queryResult != null) {
-                currentUser.setPhoneNumber(queryResult.getPhoneNumber());
-                currentUser.setEmail(queryResult.getEmail());
-            }
-            // 如果数据库中email也为空,查询是否有待验证url
-            String mail = sysMailVerifiesService.getMailByUserId(currentUser.getId());
-            if (StrUtil.isNotBlank(mail)) {
-                currentUser.setEmail(mail);
-                currentUser.setMailIsVerifies(false);
-            }
+    public SysUser getCurrentUser() {
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
+        SysUser sysUser = sysUserService.get(currentUser.getId());
+        if (sysUser != null) {
+            sysUser.setAvatar(fileDetailService.getOne(currentUser.getId(), "avatar"));
         }
-        return currentUser;
+        return sysUser;
     }
 
-    @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public boolean saveUserAvatar(FileInfo avatar) {
-        if (fileStorageFactory.getFileStorage().inFormalPath(avatar.getObjectName())) {
+    public void saveUserAvatar(FileInfo avatar) {
+        if (FileUtil.inFormalPath(avatar.getPath())) {
             // 未修改头像
-            return true;
+            return;
         }
 
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 删除原头像
-        fileInfoService.delete(currentUser.getId(), "avatar");
-
-        if (avatar.getSize() > 1024 * 100) {
-            // 超过100kb，压缩
-
-            // 下载文件到本地
-            String fullFilePath = fileStorageFactory.getFileStorage().downloadToLocalTemporaryPath(avatar.getBucketName(), avatar.getObjectName());
-            // 压缩文件
-            String thumbnailFile = ImageUtil.generateThumbnail(new File(fullFilePath), 300);
-            // 上传文件到存储
-            fileStorageFactory.getFileStorage().uploadFile(avatar.getBucketName(), avatar.getObjectName(), thumbnailFile);
-            // 文件大小
-            avatar.setSize(new File(thumbnailFile).length());
-        }
+        fileDetailService.removeByObjectIdAndObjectType(currentUser.getId(), "avatar");
 
         // 保存头像
-        fileInfoService.saveData(currentUser.getId(), "avatar", avatar);
+        fileDetailService.saveToFormal(currentUser.getId(), "avatar", avatar);
 
         currentUser.setAvatar(avatar.getUrl());
 
-        ShiroUtil.setCurrentUser(currentUser);
-
-        return true;
+        SessionUtil.setCurrentUser(currentUser);
     }
 
+    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public SysUser saveUserInfo(SysUser sysUser) {
         if (sysUser == null) {
             throw new EasyException(GlobalException.FAILED_TO_GET_DATA);
         }
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         sysUser.setId(currentUser.getId());
         sysUser = sysUserService.saveData(sysUser, false);
         // 保存成功后更新redis中的用户信息
         currentUser.setNickname(sysUser.getNickname());
         currentUser.setSex(sysUser.getSex());
         currentUser.setBirthday(sysUser.getBirthday());
-        ShiroUtil.setCurrentUser(currentUser);
+        if (currentUser.getBirthday() != null) {
+            currentUser.setAge(DateUtil.age(currentUser.getBirthday(), new Date()));
+        }
+        SessionUtil.setCurrentUser(currentUser);
         if (sysUser.getAvatar() != null) {
             saveUserAvatar(sysUser.getAvatar());
         }
@@ -132,7 +105,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         if (StrUtil.isBlank(email)) {
             throw new EasyException("获取邮箱信息失败");
         }
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         SysMailVerification sysMailVerifies = sysMailVerifiesService.saveData(String.valueOf(currentUser.getId()), email, MailConst.MAIL_BINDING_MAIL);
         if (sysMailVerifies != null) {
             String url = "/#/auth/personal/center/mail-verifies/" + sysMailVerifies.getCode();
@@ -147,37 +120,34 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     }
 
     @Override
-    public boolean changePassword(JSONObject json) {
-        String oldPassword = json.getStr("oldPassword"),
-                password = json.getStr("password");
-
-        if (StrUtil.isBlank(oldPassword)) {
+    public boolean changePassword(ChangePasswordVO changePassword) {
+        if (StrUtil.isBlank(changePassword.getCurrentPassword())) {
             throw new EasyException("请输入当前密码");
         }
-        if (StrUtil.isBlank(password)) {
+        if (StrUtil.isBlank(changePassword.getNewPassword())) {
             throw new EasyException("请输入新密码");
         }
 
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         if (currentUser == null) {
             throw new EasyException("请登录后重试");
         }
 
         // 检查当前密码是否正确
         SysUser passwordAndSlat = sysUserService.selectPasswordAndSalt(currentUser.getId());
-        if (!PasswordUtil.encryptedPasswords(oldPassword, passwordAndSlat.getSalt()).equals(passwordAndSlat.getPassword())) {
+        if (!PasswordUtil.encryptedPasswords(changePassword.getCurrentPassword(), passwordAndSlat.getSalt()).equals(passwordAndSlat.getPassword())) {
             throw new EasyException("原密码输入错误");
         }
         // 修改密码
-        boolean isSuccess = sysUserService.resetPassword(currentUser.getUsername(), password);
-        currentUser.setPassword(PasswordUtil.encryptedPasswords(password, passwordAndSlat.getSalt()));
-        ShiroUtil.setAttribute(SessionConst.USER_SESSION_KEY, currentUser);
+        boolean isSuccess = sysUserService.resetPassword(currentUser.getUsername(), changePassword.getNewPassword());
+        currentUser.setPassword(PasswordUtil.encryptedPasswords(changePassword.getNewPassword(), passwordAndSlat.getSalt()));
+        SessionUtil.setAttribute(SessionConst.USER_SESSION_KEY, currentUser);
         return isSuccess;
     }
 
     @Override
     public boolean bindingPhone(String phone, String captcha) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         String redisCode = (String) RedisUtil.get(RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId());
         if (StrUtil.isBlank(redisCode)) {
             throw new EasyException("验证码已过期，请重新获取");
