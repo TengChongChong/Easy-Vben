@@ -1,5 +1,6 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
@@ -10,22 +11,20 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.SpringContextHolder;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.exception.BusinessException;
-import com.easy.admin.file.model.BaseFileInfo;
 import com.easy.admin.file.model.FileDownload;
 import com.easy.admin.file.service.FileDownloadService;
-import com.easy.admin.file.storage.FileStorageFactory;
+import com.easy.admin.file.util.file.FileUtil;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.dao.SysImportExcelDataMapper;
 import com.easy.admin.sys.model.*;
 import com.easy.admin.sys.model.vo.SysImportExcelDataVO;
 import com.easy.admin.sys.model.vo.SysImportExcelTemplateDetailVO;
 import com.easy.admin.sys.service.*;
-import com.easy.admin.util.ShiroUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import com.easy.admin.util.office.ImportExportUtil;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import org.dromara.x.file.storage.core.FileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -75,9 +75,6 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     @Autowired
     private SysDictService sysDictService;
 
-    @Autowired
-    private FileStorageFactory fileStorageFactory;
-
     /**
      * 导入数据mapper
      */
@@ -90,9 +87,9 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     }
 
     @Override
-    public List<List<Object>> analysisExcel(String bucketName, String objectName) {
+    public List<List<Object>> analysisExcel(FileInfo fileInfo) {
         // 读取Excel
-        ExcelReader reader = cn.hutool.poi.excel.ExcelUtil.getReader(fileStorageFactory.getFileStorage().getObject(bucketName, objectName));
+        ExcelReader reader = cn.hutool.poi.excel.ExcelUtil.getReader(new ByteArrayInputStream(FileUtil.getFileBytes(fileInfo)));
         // 读取前10行
         return reader.read(0, 10);
     }
@@ -107,7 +104,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
             throw new EasyException(BusinessException.IMPORT_GET_TEMPLATE_FAIL);
         }
         // 检查是否有权限访问
-        if (StrUtil.isNotBlank(importExcelTemplate.getPermissionCode()) && !hasPermission(importExcelTemplate.getPermissionCode())) {
+        if (StrUtil.isNotBlank(importExcelTemplate.getPermissionCode()) && !StpUtil.hasPermission(importExcelTemplate.getPermissionCode())) {
             // 无权导入
             logger.debug("无权访问导入[{}]{}", importExcelTemplate.getPermissionCode(), importExcelTemplate.getName());
             throw new EasyException("无权访问导入" + importExcelTemplate.getName());
@@ -131,12 +128,8 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         }
 
         // 读取Excel
-        ExcelReader reader = cn.hutool.poi.excel.ExcelUtil.getReader(
-                fileStorageFactory.getFileStorage().getObject(
-                        sysImportExcelData.getBaseFileInfo().getBucketName(),
-                        sysImportExcelData.getBaseFileInfo().getObjectName()
-                )
-        );
+        ExcelReader reader = cn.hutool.poi.excel.ExcelUtil.getReader(new ByteArrayInputStream(FileUtil.getFileBytes(sysImportExcelData.getFileInfo())));
+
         List<List<Object>> data = reader.read();
         // 最小行
         int minDataRow = sysImportExcelData.getStartRow() + 1;
@@ -151,7 +144,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         data.subList(0, sysImportExcelData.getStartRow()).clear();
 
         // 模板验证通过,将数据插入到临时表
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 清空上次导入的信息
         cleanLastImport(importExcelTemplate);
         // 插入数据到临时表
@@ -197,20 +190,6 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
      */
     private void cleanLastImport(SysImportExcelTemplate importExcelTemplate) {
         importExcelTemporaryService.cleanMyImport(importExcelTemplate.getId());
-    }
-
-    /**
-     * 用户是否拥有指定权限标识
-     *
-     * @param code 权限标识
-     * @return true/false
-     */
-    private boolean hasPermission(String code) {
-        Subject subject = SecurityUtils.getSubject();
-        if (subject != null && StrUtil.isNotBlank(code)) {
-            return subject.isPermitted(code);
-        }
-        return false;
     }
 
     /**
@@ -351,7 +330,11 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
                     verificationResults.append(cellConfig.getTitle()).append("不能为空;");
                 } else {
                     // 将单元格数据转为string
-                    String cell = objectToString(data.size() > cellConfig.getIndex() ? data.get(cellConfig.getIndex()) : null);
+                    String cell = null;
+                    if (cellConfig.getIndex() != null) {
+                        cell = objectToString(data.size() > cellConfig.getIndex() ? data.get(cellConfig.getIndex()) : null);
+                    }
+
                     if (StrUtil.isNotBlank(cell)) {
                         // 转换数据 name to code/id
                         try {
@@ -443,10 +426,10 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public int insertData(String templateId) {
-        SessionUserVO currentUser = ShiroUtil.getCurrentUser();
+        SessionUserVO currentUser = SessionUtil.getCurrentUser();
         SysImportExcelTemplate importExcelTemplate = importExcelTemplateService.get(templateId);
         // 检查是否有权限访问
-        if (StrUtil.isNotBlank(importExcelTemplate.getPermissionCode()) && !hasPermission(importExcelTemplate.getPermissionCode())) {
+        if (StrUtil.isNotBlank(importExcelTemplate.getPermissionCode()) && !StpUtil.hasPermission(importExcelTemplate.getPermissionCode())) {
             // 无权导入
             throw new EasyException("无权访问导入" + importExcelTemplate.getName());
         }
@@ -506,7 +489,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         String leftJoinTables = ImportExportUtil.getLeftJoinTables(configs, false);
         QueryWrapper<SysImportExcelTemporary> queryWrapper = new QueryWrapper<>();
         // 导入用户id
-        queryWrapper.eq("user_id", ShiroUtil.getCurrentUser().getId());
+        queryWrapper.eq("user_id", SessionUtil.getCurrentUser().getId());
         queryWrapper.eq("template_id", importExcelTemplate.getId());
         queryWrapper.eq("verification_status", ImportConst.VERIFICATION_STATUS_FAIL);
         // 查询验证失败数据
@@ -534,12 +517,8 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         detail.setFieldLength(128);
         configs.add(detail);
 
-        BaseFileInfo baseFileInfo = ExcelUtil.writFile(importExcelTemplate.getName() + "验证失败数据", configs, dictionaries, rows);
+        FileInfo fileInfo = ExcelUtil.writFile(importExcelTemplate.getName() + "验证失败数据", configs, dictionaries, rows);
 
-        return fileDownloadService.saveData(new FileDownload(
-                importExcelTemplate.getName() + "验证失败数据" + DateUtil.today() + ExcelUtil.EXCEL_SUFFIX_XLSX,
-                baseFileInfo.getBucketName(),
-                baseFileInfo.getObjectName()
-        )).getId();
+        return fileDownloadService.saveData(new FileDownload(fileInfo.getId())).getId();
     }
 }
