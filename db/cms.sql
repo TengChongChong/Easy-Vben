@@ -11,7 +11,7 @@
  Target Server Version : 110102 (11.1.2-MariaDB)
  File Encoding         : 65001
 
- Date: 27/07/2024 21:33:53
+ Date: 04/09/2024 16:35:21
 */
 
 SET NAMES utf8mb4;
@@ -71,7 +71,7 @@ CREATE TABLE `cms_column` (
   `site_id` varchar(32) NOT NULL COMMENT '站点Id',
   `name` varchar(32) NOT NULL COMMENT '名称',
   `slug` varchar(32) NOT NULL COMMENT '别名',
-  `type` varchar(32) NOT NULL COMMENT '类型',
+  `type` varchar(32) DEFAULT NULL COMMENT '类型',
   `is_release` varchar(32) NOT NULL COMMENT '是否可以发布文章',
   `cover_proportion_width` int(11) DEFAULT NULL COMMENT '封面比例-宽',
   `cover_proportion_height` int(11) DEFAULT NULL COMMENT '封面比例-宽',
@@ -263,7 +263,7 @@ CREATE TABLE `cms_site` (
   `order_no` int(11) DEFAULT NULL COMMENT '排序值',
   `tenant_id` varchar(32) DEFAULT NULL COMMENT '租户Id',
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁',
-  `dept_id` varchar(32) NOT NULL COMMENT '部门Id',
+  `dept_id` varchar(32) DEFAULT NULL COMMENT '部门Id',
   `create_user` varchar(32) NOT NULL COMMENT '创建人',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `edit_user` varchar(32) NOT NULL COMMENT '更新人',
