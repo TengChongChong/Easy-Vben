@@ -1,8 +1,18 @@
-project:
-  # 版本号
-  version: 0.5.0
-  # 项目访问url
-  url: http://127.0.0.1
+############## Knife4j 配置 (文档: https://doc.xiaominfo.com) ##############
+springdoc:
+  api-docs:
+    #是否开启文档功能
+    enabled: true
+  #包扫描路径
+  packagesToScan: com.easy.admin
+logging:
+  file:
+    path: logs
+############## AJ-Captcha 配置 (文档: https://ajcaptcha.beliefteam.cn) ##############
+aj:
+  captcha:
+    # 滑动验证，底图路径，不配置将使用默认图片
+    jigsaw: classpath:images/verification
 spring:
   profiles:
     # dev - 开发模式 / prod - 生产模式
@@ -18,7 +28,7 @@ spring:
   web:
     resources:
       static-locations:
-        [ "classpath:/static/", "classpath:/themes/", "file:${file.storage.local.path}", "file:${beetl.theme-root}/" ]
+        [ "classpath:/static/", "classpath:/themes/", "file:${beetl.theme-root}/" ]
   datasource:
     druid:
       web-stat-filter:
@@ -62,7 +72,3 @@ spring:
         test-while-idle: true
         use-global-data-source-stat: true
         validation-query: select 1 from dual
-beetl:
-  theme:
-    # 主题文件Root目录，为了不影响项目使用jar部署，CMS主题项目将放到项目外部，此处进作为示例。
-    root: /Users/tengchong/workspaces/github/easy-vben/easy-cms/src/main/themes
