@@ -70,7 +70,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         fileDetailService.removeByObjectIdAndObjectType(currentUser.getId(), "avatar");
 
         // 保存头像
-        fileDetailService.saveToFormal(currentUser.getId(), "avatar", avatar);
+        avatar = fileDetailService.saveToFormal(currentUser.getId(), "avatar", avatar);
 
         currentUser.setAvatar(avatar.getUrl());
 
