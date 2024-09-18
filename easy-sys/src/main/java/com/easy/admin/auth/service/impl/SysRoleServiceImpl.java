@@ -16,12 +16,12 @@ import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.mybatis.plugins.model.DataPermission;
-import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.config.sa.token.util.SessionUtil;
-import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.sys.common.constant.WhetherConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,6 +176,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             } else {
                 sysRoleDataPermissionService.removeByRoleId(sysRole.getId());
             }
+            RedisUtil.delByPrefix(RedisPrefix.SYS_ROLE);
         }
         return sysRole;
     }
