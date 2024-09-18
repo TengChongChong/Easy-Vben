@@ -1,4 +1,6 @@
 project:
+  # 是否为演示模式
+  view-model: false
   # 项目访问url，无需 / 结尾
   url: http://127.0.0.1:8001
   # 前端访问url

@@ -13,6 +13,7 @@ aj:
   captcha:
     # 滑动验证，底图路径，不配置将使用默认图片
     jigsaw: classpath:images/verification
+############## Spring 配置 ##############
 spring:
   profiles:
     # dev - 开发模式 / prod - 生产模式
