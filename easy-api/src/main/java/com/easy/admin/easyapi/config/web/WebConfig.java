@@ -1,6 +1,6 @@
 package com.easy.admin.easyapi.config.web;
 
-import com.easy.admin.common.core.interceptor.EasyUseModeInterceptor;
+import com.easy.admin.common.core.interceptor.EasyViewModeInterceptor;
 import com.easy.admin.common.core.interceptor.ResponseResultInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
-    private EasyUseModeInterceptor easyUseModeInterceptor;
+    private EasyViewModeInterceptor easyViewModeInterceptor;
 
     @Autowired
     private ResponseResultInterceptor responseResultInterceptor;
@@ -42,7 +42,7 @@ public class WebConfig implements WebMvcConfigurer {
         // 添加拦截器，配置拦截地址
         // @ResponseResult注解
         registry.addInterceptor(responseResultInterceptor).addPathPatterns("/**");
-        // 使用模式，用于处理演示模式无法编辑
-        registry.addInterceptor(easyUseModeInterceptor).addPathPatterns("/**");
+        // 使用模式，用于处理演示模式无法编辑，生产环境建议注释此拦截器
+        registry.addInterceptor(easyViewModeInterceptor).addPathPatterns("/**");
     }
 }

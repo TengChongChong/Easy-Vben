@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2024-09-18
  **/
 @Component
-public class EasyUseModeInterceptor implements HandlerInterceptor {
+public class EasyViewModeInterceptor implements HandlerInterceptor {
 
     @Value("${project.view-model}")
     private boolean viewModel = false;
