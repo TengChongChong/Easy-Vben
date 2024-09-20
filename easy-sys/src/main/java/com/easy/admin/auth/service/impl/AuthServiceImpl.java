@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 登录
         StpUtil.login(sessionUserVO.getId(), saLoginModel.getDevice());
-        
+
         // 设置token有效期
         StpUtil.renewTimeout(StpUtil.getTokenValue(), saLoginModel.getTimeout());
 
@@ -96,11 +96,6 @@ public class AuthServiceImpl implements AuthService {
         result.setAccessToken(StpUtil.getTokenValue());
         result.setAccessTokenExpiresIn(StpUtil.getTokenTimeout());
         return result;
-    }
-
-    @Override
-    public SessionUserVO getCurrentUser() {
-        return SessionUtil.getCurrentUser();
     }
 
     /**

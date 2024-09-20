@@ -9,6 +9,7 @@ import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.config.sa.token.model.LoginAccount;
 import com.easy.admin.config.sa.token.model.LoginQrCode;
 import com.easy.admin.config.sa.token.model.LoginSms;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.core.annotation.SysLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -83,7 +84,7 @@ public class AuthController {
     @GetMapping("/api/auth/current/user")
     @SysLog(modular = "sys", method = "获取当前登录用户")
     public SessionUserVO getCurrent() {
-        return service.getCurrentUser();
+        return SessionUtil.getCurrentUser();
     }
 
     /**
@@ -94,7 +95,7 @@ public class AuthController {
     @GetMapping("/api/auth/current/user/route")
     @SysLog(modular = "sys", method = "获取当前登录用户路由")
     public List<RouteVO> getCurrentUserRoute() {
-        return service.getCurrentUser().getRouteList();
+        return SessionUtil.getCurrentUser().getRouteList();
     }
 
     /**

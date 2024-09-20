@@ -1,10 +1,9 @@
 package com.easy.admin.auth.service;
 
+import com.easy.admin.auth.model.vo.LoginResultVO;
 import com.easy.admin.config.sa.token.model.LoginAccount;
 import com.easy.admin.config.sa.token.model.LoginQrCode;
 import com.easy.admin.config.sa.token.model.LoginSms;
-import com.easy.admin.auth.model.vo.LoginResultVO;
-import com.easy.admin.auth.model.vo.session.SessionUserVO;
 
 /**
  * 会话
@@ -38,10 +37,4 @@ public interface AuthService {
      */
     LoginResultVO loginSms(LoginSms loginSms);
 
-    /**
-     * 获取当前登录用户
-     *
-     * @return SessionUserVO
-     */
-    SessionUserVO getCurrentUser();
 }
