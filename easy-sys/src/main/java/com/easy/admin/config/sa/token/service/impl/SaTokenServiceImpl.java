@@ -110,6 +110,9 @@ public class SaTokenServiceImpl implements SaTokenService {
             sessionUser.setAvatar(avatarFile.getUrl());
         }
 
+        // 用户角色
+        sessionUser.setRoleList(sysUserRoleService.selectRoleByUserId(sessionUser.getId()));
+
         return sessionUser;
     }
 
@@ -154,15 +157,10 @@ public class SaTokenServiceImpl implements SaTokenService {
 
     @Override
     public void setUserPermissions(SessionUserVO sessionUser) {
-
-        // 用户角色
-        sessionUser.setRoleList(sysUserRoleService.selectRoleByUserId(sessionUser.getId()));
-
         // 用户菜单，为避免放到SessionUserVO中频繁序列化，放到redis中，仅在用户首次加载页面时获取
         List<RouteVO> routeList = new ArrayList<>();
         List<String> roleCodeList = new ArrayList<>();
         List<String> permissionCodeList = new ArrayList<>();
-        permissionCodeList.add("auth:current:user");
 
         if (sessionUser.getRoleList() != null && !sessionUser.getRoleList().isEmpty()) {
             // 用户数据权限

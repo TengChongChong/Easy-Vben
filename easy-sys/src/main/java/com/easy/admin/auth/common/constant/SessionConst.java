@@ -27,6 +27,11 @@ public class SessionConst {
     public static final String LOGIN_ELSEWHERE = "login_elsewhere";
 
     /**
+     * 需要更新角色&权限
+     */
+    public static final String NEED_UPDATE_ROLE_AND_PERMISSION = "NeedUpdateRoleAndPermission";
+
+    /**
      * 验证码id
      */
     public static final String CODE_ID = "codeId";

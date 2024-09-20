@@ -1,22 +1,26 @@
 package com.easy.admin.auth.service.impl;
 
+import cn.dev33.satoken.config.SaTokenConfig;
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.auth.common.type.DataPermissionType;
 import com.easy.admin.auth.dao.SysRoleMapper;
 import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.model.vo.SysRoleCacheVO;
 import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.*;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.mybatis.plugins.model.DataPermission;
@@ -39,6 +43,9 @@ import java.util.List;
  */
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
+
+    @Autowired
+    private SaTokenConfig saTokenConfig;
 
     @Autowired
     private SysRolePermissionService sysRolePermissionsService;
@@ -140,6 +147,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 // 删除缓存的角色数据
                 RedisUtil.del(RedisPrefix.SYS_ROLE + id);
             }
+
+            addNeedUpdateRoleAndPermission(idList);
         }
         return isSuccess;
     }
@@ -148,14 +157,22 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public boolean setStatus(String ids, String status) {
         List<SysRole> roleList = new ArrayList<>();
+        List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
+
         SysRole sysRole;
-        for (String id : ids.split(CommonConst.SPLIT)) {
+        for (String id : idList) {
             sysRole = new SysRole();
             sysRole.setId(id);
             sysRole.setStatus(status);
             roleList.add(sysRole);
         }
-        return ToolUtil.checkResult(updateBatchById(roleList));
+        boolean isSuccess = updateBatchById(roleList);
+        if (isSuccess) {
+            // 删除缓存的角色数据
+            idList.forEach(id -> RedisUtil.del(RedisPrefix.SYS_ROLE + id));
+            addNeedUpdateRoleAndPermission(idList);
+        }
+        return isSuccess;
     }
 
 
@@ -167,8 +184,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         boolean isSuccess = saveOrUpdate(sysRole);
         if (isSuccess) {
+            // 保存角色权限
             sysRolePermissionsService.saveRolePermissions(sysRole.getId(), sysRole.getPermissionIds());
-
+            // 保存数据权限
             DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRole.getDataPermission().toUpperCase());
             if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
                 // 保存自定义数据权限
@@ -176,9 +194,37 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             } else {
                 sysRoleDataPermissionService.removeByRoleId(sysRole.getId());
             }
-            RedisUtil.delByPrefix(RedisPrefix.SYS_ROLE);
+            // 删除缓存的角色数据
+            RedisUtil.del(RedisPrefix.SYS_ROLE + sysRole.getId());
+            // 遍历当前在线用户，标记角色权限已变更，下次请求时更新权限数据
+            addNeedUpdateRoleAndPermission(Collections.singletonList(sysRole.getId()));
         }
         return sysRole;
+    }
+
+    private void addNeedUpdateRoleAndPermission(List<String> roleIds) {
+        // 所以token
+        List<String> tokenList = StpUtil.searchTokenValue("", 0, -1, true);
+        for (String token : tokenList) {
+            String realToken = token.contains(":") ? token.substring(token.lastIndexOf(":") + 1) : token;
+            SaSession session = StpUtil.getTokenSessionByToken(realToken);
+
+            // token 中的用户信息
+            SessionUserVO sessionUserVO = (SessionUserVO) session.get(SessionConst.USER_SESSION_KEY);
+            if (isNeedUpdate(sessionUserVO.getRoleList(), roleIds)) {
+                // 需要标记待更新
+                session.set(SessionConst.NEED_UPDATE_ROLE_AND_PERMISSION, true);
+            }
+        }
+    }
+
+    private boolean isNeedUpdate(List<SessionUserRoleVO> roleList, List<String> roleIds) {
+        for (SessionUserRoleVO sessionUserRoleVO : roleList) {
+            if (roleIds.contains(sessionUserRoleVO.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -216,7 +262,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public SysRoleCacheVO getSysRoleCache(String id) {
+    public synchronized SysRoleCacheVO getSysRoleCache(String id) {
         SysRoleCacheVO sysRoleCache = (SysRoleCacheVO) RedisUtil.get(RedisPrefix.SYS_ROLE + id);
         if (sysRoleCache != null) {
             return sysRoleCache;
@@ -233,6 +279,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
 
         sysRoleCache = new SysRoleCacheVO(sysRole, sysRolePermissionsService.selectSysPermissionByRoleId(id));
+        // 放到缓存
         RedisUtil.set(RedisPrefix.SYS_ROLE + id, sysRoleCache);
         return sysRoleCache;
     }
