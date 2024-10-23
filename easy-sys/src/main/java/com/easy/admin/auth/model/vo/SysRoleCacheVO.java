@@ -1,7 +1,6 @@
 package com.easy.admin.auth.model.vo;
 
 import com.easy.admin.auth.model.SysPermission;
-import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.model.vo.route.RouteVO;
 import com.easy.admin.auth.util.frontend.RouteUtil;
 import lombok.Data;
@@ -57,7 +56,7 @@ public class SysRoleCacheVO implements Serializable {
      */
     private List<RouteVO> routeList;
 
-    public SysRoleCacheVO(SysRole sysRole, List<SysPermission> sysPermissionList) {
+    public SysRoleCacheVO(SysRoleVO sysRole, List<SysPermission> sysPermissionList) {
         // 角色基础信息
         this.id = sysRole.getId();
         this.name = sysRole.getName();

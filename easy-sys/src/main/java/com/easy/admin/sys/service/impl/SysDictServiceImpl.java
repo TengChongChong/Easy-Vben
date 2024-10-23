@@ -15,13 +15,14 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.dao.SysDictMapper;
 import com.easy.admin.sys.model.SysDict;
+import com.easy.admin.sys.model.vo.SysDictVO;
 import com.easy.admin.sys.service.ImportService;
 import com.easy.admin.sys.service.SysDictService;
-import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,7 @@ import java.util.*;
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService, ImportService {
 
     @Override
-    public Page<SysDict> select(SysDict sysDict, Page<SysDict> page) {
+    public Page<SysDictVO> select(SysDictVO sysDict, Page<SysDictVO> page) {
         QueryWrapper<SysDict> queryWrapper = getQueryWrapper(sysDict);
         page.setDefaultAsc("t.dict_type, t.order_no");
         page.setRecords(baseMapper.select(page, queryWrapper));

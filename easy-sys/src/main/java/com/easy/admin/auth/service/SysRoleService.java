@@ -2,6 +2,7 @@ package com.easy.admin.auth.service;
 
 import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.model.vo.SysRoleCacheVO;
+import com.easy.admin.auth.model.vo.SysRoleVO;
 import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.config.mybatis.plugins.model.DataPermission;
@@ -38,14 +39,14 @@ public interface SysRoleService {
      * @param id id
      * @return SysRole
      */
-    SysRole get(String id);
+    SysRoleVO get(String id);
 
     /**
      * 新增
      *
      * @return SysRole
      */
-    SysRole add();
+    SysRoleVO add();
 
     /**
      * 删除
@@ -70,7 +71,7 @@ public interface SysRoleService {
      * @param sysRole 表单内容
      * @return SysRole
      */
-    SysRole saveData(SysRole sysRole);
+    SysRoleVO saveData(SysRoleVO sysRole);
 
     /**
      * 根据用户id获取角色标识

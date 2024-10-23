@@ -3,6 +3,7 @@ package com.easy.admin.sys.service;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.sys.model.SysDict;
+import com.easy.admin.sys.model.vo.SysDictVO;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public interface SysDictService {
      * @param page    分页
      * @return Page<SysDict>
      */
-    Page<SysDict> select(SysDict sysDict, Page<SysDict> page);
+    Page<SysDictVO> select(SysDictVO sysDict, Page<SysDictVO> page);
 
     /**
      * 根据字典类型获取字典

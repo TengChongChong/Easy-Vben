@@ -3,6 +3,7 @@ package com.easy.admin.auth.service.impl;
 import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -13,6 +14,7 @@ import com.easy.admin.auth.common.type.DataPermissionType;
 import com.easy.admin.auth.dao.SysRoleMapper;
 import com.easy.admin.auth.model.SysRole;
 import com.easy.admin.auth.model.vo.SysRoleCacheVO;
+import com.easy.admin.auth.model.vo.SysRoleVO;
 import com.easy.admin.auth.model.vo.session.SessionUserRoleVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.*;
@@ -99,21 +101,25 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public SysRole get(String id) {
+    public SysRoleVO get(String id) {
         SysRole sysRole = baseMapper.getById(id);
-        if (sysRole != null) {
-            sysRole.setPermissionIds(baseMapper.selectPermissions(id));
-            DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRole.getDataPermission().toUpperCase());
-            if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
-                sysRole.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
-            }
+        if (sysRole == null) {
+            return null;
         }
-        return sysRole;
+        SysRoleVO sysRoleVO = new SysRoleVO();
+        BeanUtil.copyProperties(sysRole, sysRoleVO);
+
+        sysRoleVO.setPermissionIds(baseMapper.selectPermissions(id));
+        DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRoleVO.getDataPermission().toUpperCase());
+        if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
+            sysRoleVO.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
+        }
+        return sysRoleVO;
     }
 
     @Override
-    public SysRole add() {
-        SysRole sysRole = new SysRole();
+    public SysRoleVO add() {
+        SysRoleVO sysRole = new SysRoleVO();
         sysRole.setStatus(CommonStatus.ENABLE.getCode());
         sysRole.setSys(WhetherConst.NO);
         sysRole.setOrderNo(baseMapper.getMaxOrderNo() + 1);
@@ -178,28 +184,32 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysRole saveData(SysRole sysRole) {
-        if (sysRole.getOrderNo() == null) {
-            sysRole.setOrderNo(baseMapper.getMaxOrderNo() + 1);
+    public SysRoleVO saveData(SysRoleVO sysRoleVO) {
+        if (sysRoleVO.getOrderNo() == null) {
+            sysRoleVO.setOrderNo(baseMapper.getMaxOrderNo() + 1);
         }
+        SysRole sysRole = new SysRole();
+        BeanUtil.copyProperties(sysRoleVO, sysRole);
+
         boolean isSuccess = saveOrUpdate(sysRole);
         if (isSuccess) {
+            sysRoleVO.setId(sysRole.getId());
             // 保存角色权限
-            sysRolePermissionsService.saveRolePermissions(sysRole.getId(), sysRole.getPermissionIds());
+            sysRolePermissionsService.saveRolePermissions(sysRoleVO.getId(), sysRoleVO.getPermissionIds());
             // 保存数据权限
-            DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRole.getDataPermission().toUpperCase());
+            DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRoleVO.getDataPermission().toUpperCase());
             if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
                 // 保存自定义数据权限
-                sysRoleDataPermissionService.saveBatchData(sysRole.getId(), sysRole.getDataPermissionDeptIds());
+                sysRoleDataPermissionService.saveBatchData(sysRoleVO.getId(), sysRoleVO.getDataPermissionDeptIds());
             } else {
-                sysRoleDataPermissionService.removeByRoleId(sysRole.getId());
+                sysRoleDataPermissionService.removeByRoleId(sysRoleVO.getId());
             }
             // 删除缓存的角色数据
-            RedisUtil.del(RedisPrefix.SYS_ROLE + sysRole.getId());
+            RedisUtil.del(RedisPrefix.SYS_ROLE + sysRoleVO.getId());
             // 遍历当前在线用户，标记角色权限已变更，下次请求时更新权限数据
-            addNeedUpdateRoleAndPermission(Collections.singletonList(sysRole.getId()));
+            addNeedUpdateRoleAndPermission(Collections.singletonList(sysRoleVO.getId()));
         }
-        return sysRole;
+        return sysRoleVO;
     }
 
     private void addNeedUpdateRoleAndPermission(List<String> roleIds) {
@@ -272,13 +282,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if (sysRole == null) {
             throw new EasyException("角色信息[" + id + "]不存在");
         }
+
+        SysRoleVO sysRoleVO = new SysRoleVO();
+        BeanUtil.copyProperties(sysRole, sysRoleVO);
         // 数据权限
         DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRole.getDataPermission().toUpperCase());
         if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
-            sysRole.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
+            sysRoleVO.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
         }
 
-        sysRoleCache = new SysRoleCacheVO(sysRole, sysRolePermissionsService.selectSysPermissionByRoleId(id));
+        sysRoleCache = new SysRoleCacheVO(sysRoleVO, sysRolePermissionsService.selectSysPermissionByRoleId(id));
         // 放到缓存
         RedisUtil.set(RedisPrefix.SYS_ROLE + id, sysRoleCache);
         return sysRoleCache;

@@ -25,12 +25,11 @@
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0) from sys_dict t where t.dict_type = #{dictType}
     </select>
-    <select id="select" resultType="com.easy.admin.sys.model.SysDict">
+    <select id="select" resultType="com.easy.admin.sys.model.vo.SysDictVO">
         select t.id, t.order_no, t.parent_code, t.name, t.code, t.icon, t.color, t.status, t.dict_type,
-               dt.name as dict_type_name, ud.name as parent_name, su.nickname as editUser, t.edit_date
+               ud.name as parent_name, su.nickname as editUser, t.edit_date
         from sys_dict t
           left join sys_user su on su.id = t.edit_user
-          left join sys_dict_type dt on t.dict_type = dt.type
           left join sys_dict ud on ud.id = t.parent_code and t.dict_type = ud.dict_type
         <where>
             ${ew.sqlSegment}

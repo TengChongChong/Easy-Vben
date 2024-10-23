@@ -66,9 +66,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             // 类型
             if (Validator.isNotEmpty(sysConfig.getType())) {
                 if (sysConfig.getType().contains(CommonConst.SPLIT)) {
-                    queryWrapper.in("t.status", sysConfig.getType().split(CommonConst.SPLIT));
+                    queryWrapper.in("t.type", sysConfig.getType().split(CommonConst.SPLIT));
                 } else {
-                    queryWrapper.eq("t.status", sysConfig.getType());
+                    queryWrapper.eq("t.type", sysConfig.getType());
                 }
             }
             // 系统

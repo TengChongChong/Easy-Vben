@@ -1,6 +1,7 @@
 package com.easy.admin.auth.controller;
 
 import com.easy.admin.auth.model.SysRole;
+import com.easy.admin.auth.model.vo.SysRoleVO;
 import com.easy.admin.auth.service.SysRoleService;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
@@ -56,7 +57,7 @@ public class SysRoleController extends BaseController {
      * @return SysRole
      */
     @GetMapping("add")
-    public SysRole add() {
+    public SysRoleVO add() {
         return service.add();
     }
 
@@ -94,7 +95,7 @@ public class SysRoleController extends BaseController {
      */
     @PostMapping
     @SaCheckPermission("sys:role:save")
-    public SysRole save(@RequestBody @Valid SysRole sysRole) {
+    public SysRoleVO save(@RequestBody @Valid SysRoleVO sysRole) {
         return service.saveData(sysRole);
     }
 
@@ -105,7 +106,7 @@ public class SysRoleController extends BaseController {
      * @return SysRole
      */
     @GetMapping("{id}")
-    public SysRole get(@PathVariable("id") String id) {
+    public SysRoleVO get(@PathVariable("id") String id) {
         return service.get(id);
     }
 

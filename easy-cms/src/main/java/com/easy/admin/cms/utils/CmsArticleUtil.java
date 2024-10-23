@@ -49,7 +49,7 @@ public class CmsArticleUtil {
         if (containContent) {
             cmsArticle.setAppendField("t.content");
         }
-        Page<CmsArticle> result = cmsArticleService.selectArticle(cmsArticle, new Page<>(1, pageSize));
+        Page<CmsArticle> result = cmsArticleService.selectArticle(cmsArticle, new Page<>(1L, pageSize));
         return initArticle(result.getRecords());
     }
 

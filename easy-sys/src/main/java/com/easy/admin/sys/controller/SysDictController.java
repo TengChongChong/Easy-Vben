@@ -1,13 +1,14 @@
 package com.easy.admin.sys.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.sys.model.SysDict;
+import com.easy.admin.sys.model.vo.SysDictVO;
 import com.easy.admin.sys.service.SysDictService;
 import io.swagger.v3.oas.annotations.Operation;
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class SysDictController extends BaseController {
      */
     @GetMapping("/api/auth/sys/dict")
     @SaCheckPermission("sys:dict:select")
-    public Page<SysDict> select(SysDict sysDict, Page<SysDict> page) {
+    public Page<SysDictVO> select(SysDictVO sysDict, Page<SysDictVO> page) {
         return service.select(sysDict, page);
     }
 

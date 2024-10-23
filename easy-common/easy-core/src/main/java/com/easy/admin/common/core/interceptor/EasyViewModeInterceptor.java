@@ -30,7 +30,13 @@ public class EasyViewModeInterceptor implements HandlerInterceptor {
     /**
      * 演示模式允许的 Url
      */
-    private static final List<String> PASS_URL = Arrays.asList("/api/login/account", "/api/login/qr/code", "/api/login/sms");
+    private static final List<String> PASS_URL = Arrays.asList(
+            "/api/login/account",
+            "/api/login/qr/code",
+            "/api/login/sms",
+            "/api/logout",
+            "/api/sys/captcha/check"
+    );
 
 
     @Override

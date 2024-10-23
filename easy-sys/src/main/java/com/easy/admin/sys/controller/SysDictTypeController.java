@@ -35,7 +35,7 @@ public class SysDictTypeController extends BaseController {
      * @return Page<SysDictType>
      */
     @GetMapping
-    @SaCheckPermission("sys:dict:type:select")
+    @SaCheckPermission("sys:dict:select")
     public Page<SysDictType> select(SysDictType sysDictType, Page<SysDictType> page) {
         return service.select(sysDictType, page);
     }
@@ -78,7 +78,7 @@ public class SysDictTypeController extends BaseController {
      * @return true/false
      */
     @DeleteMapping("{ids}")
-    @SaCheckPermission("sys:dict:type:remove")
+    @SaCheckPermission("sys:dict:remove")
     public boolean remove(@PathVariable("ids") String ids) {
         return service.remove(ids);
     }
@@ -90,7 +90,7 @@ public class SysDictTypeController extends BaseController {
      * @return SysDictType
      */
     @PostMapping
-    @SaCheckPermission("sys:dict:type:save")
+    @SaCheckPermission("sys:dict:save")
     public SysDictType save(@RequestBody @Valid SysDictType sysDictType) {
         return service.saveData(sysDictType);
     }
@@ -103,7 +103,7 @@ public class SysDictTypeController extends BaseController {
      */
     @Operation(summary = "导出数据")
     @GetMapping("export/data")
-    @SaCheckPermission("sys:dict:type:select")
+    @SaCheckPermission("sys:dict:select")
     public String exportData(SysDictType sysDictType) {
         return service.exportData(sysDictType);
     }

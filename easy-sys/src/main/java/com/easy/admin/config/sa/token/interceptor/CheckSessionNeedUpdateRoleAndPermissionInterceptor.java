@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 检查当前会话权限是否需要更新
+ * 只对更改角色权限（菜单、数据权限）即时更新，增加或移除角色不会触发更新
  *
  * @author TengChongChong
  * @date 2024-09-20

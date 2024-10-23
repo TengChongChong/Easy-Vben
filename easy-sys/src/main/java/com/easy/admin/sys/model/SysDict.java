@@ -98,17 +98,5 @@ public class SysDict extends Model<SysDict> {
     private Date editDate;
 
     //
-    /**
-     * 父字典名称
-     */
-    @TableField(exist = false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String parentName;
-    /**
-     * 字典类型名称
-     */
-    @TableField(exist = false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String dictTypeName;
 
 }

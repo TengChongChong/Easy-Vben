@@ -8,7 +8,6 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 角色
@@ -39,7 +38,7 @@ public class SysRole extends Model<SysRole> {
     /**
      * 数据权限
      */
-    @NotBlank(message = "数据权限")
+    @NotBlank(message = "数据权限不能为空")
     private String dataPermission;
 
     /**
@@ -94,20 +93,5 @@ public class SysRole extends Model<SysRole> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date editDate;
-
-    //
-    /**
-     * 权限ids
-     */
-    @TableField(exist = false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> permissionIds;
-
-    /**
-     * 数据权限 自定义部门ids
-     */
-    @TableField(exist = false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> dataPermissionDeptIds;
 
 }
