@@ -134,9 +134,11 @@ public class RouteUtil {
             // 配置页面是否在菜单中隐藏，隐藏后页面不会在菜单中显示。
             routeMeta.setHideInMenu(true);
         }
+        routeMeta.setOpenInNewWindow(!WhetherConst.YES.equals(sysPermission.getOpenMode()));
+
         // 外部链接
         if (WhetherConst.YES.equals(sysPermission.getExternalLink())) {
-            if ("1".equals(sysPermission.getOpenMode())) {
+            if (routeMeta.getOpenInNewWindow()) {
                 // 配置内嵌页面的 iframe 地址，设置后会在当前页面内嵌对应的页面。
                 routeMeta.setIframeSrc(sysPermission.getPath());
             } else {

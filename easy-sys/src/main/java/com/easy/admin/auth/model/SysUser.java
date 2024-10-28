@@ -118,36 +118,5 @@ public class SysUser extends Model<SysUser> implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date editDate;
 
-    //
-    /**
-     * 所属部门
-     */
-    @TableField(exist = false)
-    private SysDept dept;
 
-    /**
-     * 角色ids，修改时使用
-     */
-    @TableField(exist = false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> roleIdList;
-
-    /**
-     * 头像
-     */
-    @TableField(exist = false)
-    private FileInfo avatar;
-
-    /**
-     * 邮箱是否验证
-     */
-    @TableField(exist = false)
-    private boolean mailIsVerifies = true;
-
-    /**
-     * 部门名称
-     */
-    @TableField(exist = false)
-    private String deptName;
-    
 }

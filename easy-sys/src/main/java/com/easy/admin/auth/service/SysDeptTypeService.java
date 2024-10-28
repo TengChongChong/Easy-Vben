@@ -1,6 +1,7 @@
 package com.easy.admin.auth.service;
 
 import com.easy.admin.auth.model.SysDeptType;
+import com.easy.admin.auth.model.vo.SysDeptTypeVO;
 import com.easy.admin.common.core.common.tree.Tree;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public interface SysDeptTypeService {
      * @param id id
      * @return SysDeptType
      */
-    SysDeptType get(String id);
+    SysDeptTypeVO get(String id);
 
     /**
      * 新增
@@ -41,7 +42,7 @@ public interface SysDeptTypeService {
      * @param parentId 上级id
      * @return SysDeptType
      */
-    SysDeptType add(String parentId);
+    SysDeptTypeVO add(String parentId);
 
     /**
      * 删除
@@ -66,7 +67,7 @@ public interface SysDeptTypeService {
      * @param sysDeptType 表单内容
      * @return SysDeptType
      */
-    SysDeptType saveData(SysDeptType sysDeptType);
+    SysDeptTypeVO saveData(SysDeptTypeVO sysDeptType);
 
     /**
      * 保存排序

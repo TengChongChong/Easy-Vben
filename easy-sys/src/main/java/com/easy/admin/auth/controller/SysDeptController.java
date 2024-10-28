@@ -1,11 +1,12 @@
 package com.easy.admin.auth.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.easy.admin.auth.model.SysDept;
+import com.easy.admin.auth.model.vo.SysDeptVO;
 import com.easy.admin.auth.service.SysDeptService;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.tree.Tree;
-import com.easy.admin.common.core.annotation.ResponseResult;
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class SysDeptController extends BaseController {
      */
     @GetMapping
     @SaCheckPermission("sys:dept:select")
-    public List<SysDept> select(SysDept sysDept) {
+    public List<SysDeptVO> select(SysDeptVO sysDept) {
         return service.select(sysDept);
     }
 

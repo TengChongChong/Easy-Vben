@@ -7,7 +7,6 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 部门类型
@@ -65,14 +64,7 @@ public class SysDeptType extends Model<SysDeptType> {
     private String editUser;
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
-
-    //
-    /**
-     * 该部门类型可以选择的角色列表 1,2,3
-     */
-    @TableField(exist = false)
-    private List<String> roleIdList;
-
+    
     public SysDeptType() {
     }
 

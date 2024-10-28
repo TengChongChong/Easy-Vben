@@ -2,6 +2,7 @@ package com.easy.admin.auth.service;
 
 
 import com.easy.admin.auth.model.SysDept;
+import com.easy.admin.auth.model.vo.SysDeptVO;
 import com.easy.admin.auth.model.vo.session.SessionDeptVO;
 import com.easy.admin.common.core.common.tree.Tree;
 
@@ -21,7 +22,7 @@ public interface SysDeptService {
      * @param sysDept 查询条件
      * @return List<SysDept>
      */
-    List<SysDept> select(SysDept sysDept);
+    List<SysDeptVO> select(SysDeptVO sysDept);
 
     /**
      * 获取所有数据

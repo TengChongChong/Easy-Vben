@@ -89,11 +89,4 @@ public class SysDept extends Model<SysDept> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date editDate;
 
-    // ==== 非数据库中字段
-    /**
-     * 部门类型名称
-     */
-    @TableField(exist = false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String typeName;
 }

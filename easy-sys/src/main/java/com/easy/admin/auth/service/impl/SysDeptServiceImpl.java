@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.dao.SysDeptMapper;
 import com.easy.admin.auth.model.SysDept;
+import com.easy.admin.auth.model.vo.SysDeptVO;
 import com.easy.admin.auth.model.vo.session.SessionDeptVO;
 import com.easy.admin.auth.service.SysDeptService;
 import com.easy.admin.auth.service.SysUserService;
@@ -41,7 +42,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
-    public List<SysDept> select(SysDept sysDept) {
+    public List<SysDeptVO> select(SysDeptVO sysDept) {
         QueryWrapper<SysDept> queryWrapper = new QueryWrapper<>();
         if (sysDept != null) {
             if (Validator.isNotEmpty(sysDept.getName())) {

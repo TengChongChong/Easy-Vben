@@ -1,5 +1,6 @@
 package com.easy.admin.auth.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -11,6 +12,7 @@ import com.easy.admin.auth.common.status.SysDeptStatus;
 import com.easy.admin.auth.common.status.SysUserStatus;
 import com.easy.admin.auth.dao.SysUserMapper;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.SysUserVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysUserRoleService;
 import com.easy.admin.auth.service.SysUserService;
@@ -18,7 +20,6 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.exception.BusinessException;
 import com.easy.admin.sys.common.constant.SexConst;
@@ -46,7 +47,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUserRoleService sysUserRoleService;
 
     @Override
-    public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
+    public Page<SysUserVO> select(SysUserVO sysUser, Page<SysUserVO> page) {
         if (sysUser == null || StrUtil.isBlank(sysUser.getDeptId())) {
             // 不允许查询所有部门用户数据
             return null;
@@ -92,7 +93,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Page<SysUser> search(String keyword, String range, String deptId, Page<SysUser> page) {
+    public Page<SysUserVO> search(String keyword, String range, String deptId, Page<SysUserVO> page) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         if ("currentDept".equals(range)) {
             deptId = SessionUtil.getCurrentUser().getDeptId();
@@ -112,7 +113,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysUser> selectUsersByIds(String ids) {
+    public List<SysUserVO> selectUsersByIds(String ids) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("u.id", ids.split(CommonConst.SPLIT));
         queryWrapper.eq("u.status", SysUserStatus.ENABLE.getCode());
@@ -122,15 +123,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUser get(String id) {
+    public SysUserVO get(String id) {
         SysUser sysUser = baseMapper.getById(id);
-        if (sysUser != null) {
-            sysUser.setRoleIdList(baseMapper.selectRoles(id));
-            if (Validator.isEmpty(sysUser.getRoleIdList())) {
-                sysUser.setRoleIdList(Collections.emptyList());
-            }
+        if (sysUser == null) {
+            return null;
         }
-        return sysUser;
+        SysUserVO sysUserVO = new SysUserVO();
+        BeanUtil.copyProperties(sysUser, sysUserVO);
+
+        sysUserVO.setRoleIdList(baseMapper.selectRoles(id));
+        return sysUserVO;
     }
 
     @Override
@@ -144,8 +146,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUser add(String deptId) {
-        SysUser sysUser = new SysUser();
+    public SysUserVO add(String deptId) {
+        SysUserVO sysUser = new SysUserVO();
         sysUser.setDeptId(deptId);
         sysUser.setStatus(SysUserStatus.ENABLE.getCode());
         sysUser.setSex(SexConst.BOY);
@@ -167,15 +169,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public SysUser saveData(SysUser sysUser, boolean updateAuthorization) {
+    public SysUserVO saveData(SysUserVO sysUserVO, boolean updateAuthorization) {
         // 账号不能重复
-        if (checkHaving(sysUser.getId(), "username", sysUser.getUsername())) {
+        if (checkHaving(sysUserVO.getId(), "username", sysUserVO.getUsername())) {
             throw new EasyException(BusinessException.USER_REGISTERED);
         }
-        if (checkHaving(sysUser.getId(), "email", sysUser.getEmail())) {
+        if (checkHaving(sysUserVO.getId(), "email", sysUserVO.getEmail())) {
             throw new EasyException("邮箱已注册");
         }
-        if (checkHaving(sysUser.getId(), "phone_number", sysUser.getPhoneNumber())) {
+        if (checkHaving(sysUserVO.getId(), "phone_number", sysUserVO.getPhoneNumber())) {
             throw new EasyException("手机号已注册");
         }
 
@@ -183,36 +185,40 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         boolean isAdmin = SessionUtil.havRole(SysRoleConst.SYS_ADMIN) || SessionUtil.havRole(SysRoleConst.ADMIN);
 
         // 新增用户时设置密码，用户密码不允许在用户管理里设置
-        if (StrUtil.isBlank(sysUser.getId())) {
+        if (StrUtil.isBlank(sysUserVO.getId())) {
             // 生成随机的盐
-            sysUser.setSalt(RandomUtil.randomString(10));
-            sysUser.setPassword(PasswordUtil.generatingPasswords(sysUser.getPassword(), sysUser.getSalt()));
+            sysUserVO.setSalt(RandomUtil.randomString(10));
+            sysUserVO.setPassword(PasswordUtil.generatingPasswords(sysUserVO.getPassword(), sysUserVO.getSalt()));
 
             // 普通用户只能管理自己部门的用户
-            if (!isAdmin && !sysUser.getDeptId().equals(SessionUtil.getCurrentUser().getDeptId())) {
+            if (!isAdmin && !sysUserVO.getDeptId().equals(SessionUtil.getCurrentUser().getDeptId())) {
                 throw new EasyException("你无权管理其他部门的用户");
             }
         } else {
             // 部门不允许修改
-            sysUser.setDeptId(null);
+            sysUserVO.setDeptId(null);
             // 修改用户需检查是否有权限修改
             if (!isAdmin) {
                 // 非管理员，只能修改自己部门的用户
-                String userDeptId = baseMapper.getDeptIdByUserId(sysUser.getId());
+                String userDeptId = baseMapper.getDeptIdByUserId(sysUserVO.getId());
                 if (!SessionUtil.getCurrentUser().getDeptId().equals(userDeptId)) {
                     throw new EasyException("你无权管理其他部门的用户");
                 }
             }
         }
-        if (Validator.isEmpty(sysUser.getNickname())) {
-            sysUser.setNickname(sysUser.getUsername());
+        if (Validator.isEmpty(sysUserVO.getNickname())) {
+            sysUserVO.setNickname(sysUserVO.getUsername());
         }
+
+        SysUser sysUser = new SysUser();
+        BeanUtil.copyProperties(sysUserVO, sysUser);
 
         boolean isSuccess = saveOrUpdate(sysUser);
         if (isSuccess && updateAuthorization) {
-            sysUserRoleService.saveUserRole(sysUser.getId(), sysUser.getRoleIdList());
+            sysUserVO.setId(sysUser.getId());
+            sysUserRoleService.saveUserRole(sysUser.getId(), sysUserVO.getRoleIdList());
         }
-        return (SysUser) ToolUtil.checkResult(isSuccess, sysUser);
+        return sysUserVO;
     }
 
     /**

@@ -3,6 +3,7 @@ package com.easy.admin.auth.dao;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.auth.model.SysDept;
+import com.easy.admin.auth.model.vo.SysDeptVO;
 import com.easy.admin.auth.model.vo.session.SessionDeptVO;
 import com.easy.admin.common.core.common.tree.Tree;
 import org.apache.ibatis.annotations.Param;
@@ -23,7 +24,7 @@ public interface SysDeptMapper extends BaseMapper<SysDept> {
      * @param queryWrapper 查询条件
      * @return 数据列表
      */
-    List<SysDept> select(@Param("ew") QueryWrapper<SysDept> queryWrapper);
+    List<SysDeptVO> select(@Param("ew") QueryWrapper<SysDept> queryWrapper);
 
     /**
      * 获取所有数据

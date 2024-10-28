@@ -1,11 +1,12 @@
 package com.easy.admin.auth.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.SysUserVO;
 import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class SysUserController extends BaseController {
      */
     @GetMapping
     @SaCheckPermission("sys:user:select")
-    public Page<SysUser> select(SysUser sysUser, Page<SysUser> page) {
+    public Page<SysUserVO> select(SysUserVO sysUser, Page<SysUserVO> page) {
         return service.select(sysUser, page);
     }
 
@@ -46,7 +47,7 @@ public class SysUserController extends BaseController {
      */
     @GetMapping({"add/{deptId}"})
     @SaCheckPermission("sys:user:save")
-    public SysUser add(@PathVariable(value = "deptId", required = false) String deptId) {
+    public SysUserVO add(@PathVariable(value = "deptId", required = false) String deptId) {
         return service.add(deptId);
     }
 
@@ -95,7 +96,7 @@ public class SysUserController extends BaseController {
      */
     @PostMapping
     @SaCheckPermission("sys:user:save")
-    public SysUser save(@RequestBody @Valid SysUser sysUser) {
+    public SysUserVO save(@RequestBody @Valid SysUserVO sysUser) {
         return service.saveData(sysUser, true);
     }
 
@@ -120,10 +121,10 @@ public class SysUserController extends BaseController {
      * @return Page<SysUser>
      */
     @GetMapping("search")
-    public Page<SysUser> search(@RequestParam(value = "keyword", required = false) String keyword,
-                                @RequestParam(value = "range", required = false) String range,
-                                @RequestParam(value = "deptId", required = false) String deptId,
-                                Page<SysUser> page) {
+    public Page<SysUserVO> search(@RequestParam(value = "keyword", required = false) String keyword,
+                                  @RequestParam(value = "range", required = false) String range,
+                                  @RequestParam(value = "deptId", required = false) String deptId,
+                                  Page<SysUserVO> page) {
         return service.search(keyword, range, deptId, page);
     }
 
@@ -135,7 +136,7 @@ public class SysUserController extends BaseController {
      */
     @GetMapping("users/{ids}")
     @SaCheckPermission("sys:user:select")
-    public List<SysUser> selectUsersByIds(@PathVariable("ids") String ids) {
+    public List<SysUserVO> selectUsersByIds(@PathVariable("ids") String ids) {
         return service.selectUsersByIds(ids);
     }
 }

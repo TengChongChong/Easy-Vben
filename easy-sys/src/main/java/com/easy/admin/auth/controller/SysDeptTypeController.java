@@ -2,6 +2,7 @@ package com.easy.admin.auth.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.easy.admin.auth.model.SysDeptType;
+import com.easy.admin.auth.model.vo.SysDeptTypeVO;
 import com.easy.admin.auth.service.SysDeptTypeService;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
@@ -45,7 +46,7 @@ public class SysDeptTypeController extends BaseController {
      * @return SysDeptType
      */
     @GetMapping({"add/{id}", "add"})
-    public SysDeptType add(@PathVariable(value = "id", required = false) String parentId) {
+    public SysDeptTypeVO add(@PathVariable(value = "id", required = false) String parentId) {
         return service.add(parentId);
     }
 
@@ -81,7 +82,7 @@ public class SysDeptTypeController extends BaseController {
      */
     @PostMapping
     @SaCheckPermission("sys:dept:type:save")
-    public SysDeptType save(@RequestBody @Valid SysDeptType sysDeptType) {
+    public SysDeptTypeVO save(@RequestBody @Valid SysDeptTypeVO sysDeptType) {
         return service.saveData(sysDeptType);
     }
 
@@ -92,7 +93,7 @@ public class SysDeptTypeController extends BaseController {
      * @return SysDeptType
      */
     @GetMapping("{id}")
-    public SysDeptType get(@PathVariable("id") String id) {
+    public SysDeptTypeVO get(@PathVariable("id") String id) {
         return service.get(id);
     }
 

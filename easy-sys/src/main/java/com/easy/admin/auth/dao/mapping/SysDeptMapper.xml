@@ -18,7 +18,7 @@
         <result column="edit_user" property="editUser"/>
         <result column="edit_date" property="editDate"/>
     </resultMap>
-    <select id="select" resultMap="BaseResultMap">
+    <select id="select" resultType="com.easy.admin.auth.model.vo.SysDeptVO">
         select t.id, t.parent_id, t.name, t.simple_name, t.code, t.type_code, dt.name as type_name,
                t.status, t.order_no, su.nickname as edit_user, t.edit_date
         from sys_dept t

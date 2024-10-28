@@ -1,11 +1,13 @@
 package com.easy.admin.auth.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailUtil;
 import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.model.vo.ChangePasswordVO;
+import com.easy.admin.auth.model.vo.SysUserVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysUserPersonalCenterService;
 import com.easy.admin.auth.service.SysUserService;
@@ -49,13 +51,16 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     private FileDetailService fileDetailService;
 
     @Override
-    public SysUser getCurrentUser() {
+    public SysUserVO getCurrentUser() {
         SessionUserVO currentUser = SessionUtil.getCurrentUser();
         SysUser sysUser = sysUserService.get(currentUser.getId());
-        if (sysUser != null) {
-            sysUser.setAvatar(fileDetailService.getOne(currentUser.getId(), "avatar"));
+        if (sysUser == null) {
+            return null;
         }
-        return sysUser;
+        SysUserVO sysUserVO = new SysUserVO();
+        BeanUtil.copyProperties(sysUser, sysUserVO);
+        sysUserVO.setAvatar(fileDetailService.getOne(currentUser.getId(), "avatar"));
+        return sysUserVO;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -79,7 +84,7 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysUser saveUserInfo(SysUser sysUser) {
+    public SysUserVO saveUserInfo(SysUserVO sysUser) {
         if (sysUser == null) {
             throw new EasyException(GlobalException.FAILED_TO_GET_DATA);
         }

@@ -40,12 +40,13 @@
             ${ew.sqlSegment}
         </where>
     </update>
-    <select id="select" resultMap="BaseResultMap">
+    <select id="select" resultType="com.easy.admin.auth.model.vo.SysUserVO">
         select t.id, t.dept_id, t.post_id, t.nickname, t.username, t.sex, t.email, t.phone_number, t.birthday, t.status, t.source,
-               t.last_login_date, t.tenant_id, t.create_user, t.create_date, t.edit_user, t.edit_date
+               t.last_login_date, t.tenant_id, t.create_user, t.create_date, t.edit_user, t.edit_date, fd.url as avatar_url
         from sys_user t
         left join sys_user_role sur on sur.user_id = t.id
         left join sys_role sr on sr.id = sur.role_id
+        left join file_detail fd on fd.object_id = t.id and fd.object_type = 'avatar' and fd.status = '${@com.easy.admin.file.common.constant.FileInfoStatusConst@NORMAL}'
         <where>
             ${ew.sqlSegment}
         </where>
@@ -68,7 +69,7 @@
     <select id="selectRoles" resultType="java.lang.String">
         select role_id from sys_user_role sur where sur.user_id = #{id}
     </select>
-    <select id="search" resultType="com.easy.admin.auth.model.SysUser">
+    <select id="search" resultType="com.easy.admin.auth.model.vo.SysUserVO">
         select u.id, u.username, u.nickname, u.email, u.phone_number, sd.name as dept_name
         from sys_user u
             left join sys_dept sd on sd.id = u.dept_id
@@ -80,7 +81,7 @@
     <select id="selectPasswordAndSalt" resultType="com.easy.admin.auth.model.SysUser">
         select u.password, u.salt from sys_user u where u.id = #{id}
     </select>
-    <select id="selectUsersByIds" resultType="com.easy.admin.auth.model.SysUser">
+    <select id="selectUsersByIds" resultType="com.easy.admin.auth.model.vo.SysUserVO">
         select u.id, u.username, u.nickname, u.email, u.phone_number, sd.name as dept_name
         from sys_user u
              left join sys_dept sd on sd.id = u.dept_id

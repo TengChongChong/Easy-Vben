@@ -3,6 +3,7 @@ package com.easy.admin.auth.controller;
 import cn.hutool.json.JSONObject;
 import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.model.vo.ChangePasswordVO;
+import com.easy.admin.auth.model.vo.SysUserVO;
 import com.easy.admin.auth.service.SysUserPersonalCenterService;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
@@ -53,7 +54,7 @@ public class SysUserPersonalCenterController extends BaseController {
      * @return SysUser
      */
     @PostMapping("user/info")
-    public SysUser saveUserInfo(@RequestBody SysUser sysUser) {
+    public SysUserVO saveUserInfo(@RequestBody SysUserVO sysUser) {
         return service.saveUserInfo(sysUser);
     }
 

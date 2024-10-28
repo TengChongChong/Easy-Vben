@@ -3,6 +3,7 @@ package com.easy.admin.auth.dao;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.SysUserVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
 import org.apache.ibatis.annotations.Param;
@@ -24,7 +25,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param queryWrapper 查询条件
      * @return
      */
-    List<SysUser> select(Page<SysUser> page, @Param("ew") QueryWrapper<SysUser> queryWrapper);
+    List<SysUserVO> select(Page<SysUserVO> page, @Param("ew") QueryWrapper<SysUser> queryWrapper);
 
     /**
      * 查询用户列表 Activiti
@@ -42,7 +43,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param queryWrapper 查询条件
      * @return List<SysUser>
      */
-    List<SysUser> search(Page<SysUser> page, @Param("ew") QueryWrapper<SysUser> queryWrapper);
+    List<SysUserVO> search(Page<SysUserVO> page, @Param("ew") QueryWrapper<SysUser> queryWrapper);
 
     /**
      * 根据查询条件查询用户信息
@@ -50,7 +51,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param queryWrapper 查询条件
      * @return List<SysUser>
      */
-    List<SysUser> selectUsersByIds(@Param("ew") QueryWrapper<SysUser> queryWrapper);
+    List<SysUserVO> selectUsersByIds(@Param("ew") QueryWrapper<SysUser> queryWrapper);
 
     /**
      * 获取详情信息

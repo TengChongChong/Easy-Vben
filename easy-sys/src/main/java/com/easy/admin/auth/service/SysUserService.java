@@ -1,6 +1,7 @@
 package com.easy.admin.auth.service;
 
 import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.SysUserVO;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
 
@@ -21,7 +22,7 @@ public interface SysUserService {
      * @param page    分页
      * @return Page<SysUser>
      */
-    Page<SysUser> select(SysUser sysUser, Page<SysUser> page);
+    Page<SysUserVO> select(SysUserVO sysUser, Page<SysUserVO> page);
 
     /**
      * 根据关键字搜索用户
@@ -32,7 +33,7 @@ public interface SysUserService {
      * @param page    分页
      * @return Page<SysUser>
      */
-    Page<SysUser> search(String keyword, String range, String deptId, Page<SysUser> page);
+    Page<SysUserVO> search(String keyword, String range, String deptId, Page<SysUserVO> page);
 
     /**
      * 获取指定用户信息
@@ -40,7 +41,7 @@ public interface SysUserService {
      * @param ids ids
      * @return List<SysUser>
      */
-    List<SysUser> selectUsersByIds(String ids);
+    List<SysUserVO> selectUsersByIds(String ids);
 
     /**
      * 详情
@@ -48,7 +49,7 @@ public interface SysUserService {
      * @param id id
      * @return SysUser
      */
-    SysUser get(String id);
+    SysUserVO get(String id);
 
     /**
      * 获取用户信息，用于登录
@@ -64,7 +65,7 @@ public interface SysUserService {
      * @param deptId 部门id
      * @return SysUser
      */
-    SysUser add(String deptId);
+    SysUserVO add(String deptId);
 
     /**
      * 删除
@@ -81,7 +82,7 @@ public interface SysUserService {
      * @param updateAuthorization 是否更新授权
      * @return SysUser
      */
-    SysUser saveData(SysUser sysUser, boolean updateAuthorization);
+    SysUserVO saveData(SysUserVO sysUser, boolean updateAuthorization);
 
     /**
      * 重置密码

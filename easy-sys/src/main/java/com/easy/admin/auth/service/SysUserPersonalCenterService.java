@@ -1,7 +1,7 @@
 package com.easy.admin.auth.service;
 
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.model.vo.ChangePasswordVO;
+import com.easy.admin.auth.model.vo.SysUserVO;
 
 /**
  * 个人中心
@@ -16,7 +16,7 @@ public interface SysUserPersonalCenterService {
      *
      * @return SysUser
      */
-    SysUser getCurrentUser();
+    SysUserVO getCurrentUser();
 
     /**
      * 保存当前用户信息
@@ -24,7 +24,7 @@ public interface SysUserPersonalCenterService {
      * @param sysUser 用户信息
      * @return 保存后信息
      */
-    SysUser saveUserInfo(SysUser sysUser);
+    SysUserVO saveUserInfo(SysUserVO sysUser);
 
     /**
      * 申请绑定密保邮箱

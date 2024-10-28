@@ -1,5 +1,6 @@
 package com.easy.admin.auth.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -7,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.dao.SysDeptTypeMapper;
 import com.easy.admin.auth.model.SysDeptType;
+import com.easy.admin.auth.model.vo.SysDeptTypeVO;
 import com.easy.admin.auth.service.SysDeptService;
 import com.easy.admin.auth.service.SysDeptTypeRoleService;
 import com.easy.admin.auth.service.SysDeptTypeService;
@@ -65,17 +67,20 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
     }
 
     @Override
-    public SysDeptType get(String id) {
+    public SysDeptTypeVO get(String id) {
         SysDeptType sysDeptType = baseMapper.getById(id);
-        if (sysDeptType != null) {
-            sysDeptType.setRoleIdList(baseMapper.selectRoles(id));
+        if (sysDeptType == null) {
+            return null;
         }
-        return sysDeptType;
+        SysDeptTypeVO sysDeptTypeVO = new SysDeptTypeVO();
+        BeanUtil.copyProperties(sysDeptType, sysDeptTypeVO);
+        sysDeptTypeVO.setRoleIdList(baseMapper.selectRoles(id));
+        return sysDeptTypeVO;
     }
 
     @Override
-    public SysDeptType add(String parentId) {
-        SysDeptType sysDeptType = new SysDeptType();
+    public SysDeptTypeVO add(String parentId) {
+        SysDeptTypeVO sysDeptType = new SysDeptTypeVO();
         sysDeptType.setParentId(parentId);
         sysDeptType.setStatus(CommonStatus.ENABLE.getCode());
         sysDeptType.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
@@ -95,7 +100,7 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
         // 检查部门类型下是否有部门
         count = sysDeptService.selectCountByTypeIds(ids);
         if (count > 0) {
-            throw new EasyException("要删除的类型中包含 " + count + " 个部门信息，请删除部门信息后重试");
+            throw new EasyException("删除的部门类型下有 " + count + " 个部门信息，请删除部门信息后重试");
         }
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
@@ -117,7 +122,10 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysDeptType saveData(SysDeptType sysDeptType) {
+    public SysDeptTypeVO saveData(SysDeptTypeVO sysDeptTypeVO) {
+        SysDeptType sysDeptType = new SysDeptType();
+        BeanUtil.copyProperties(sysDeptTypeVO, sysDeptType);
+
         // 是否是修改了编码
         boolean isModifyCode = false;
         SysDeptType oldDeptType = null;
@@ -143,13 +151,14 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
         }
         boolean isSuccess = saveOrUpdate(sysDeptType);
         if (isSuccess) {
-            departmentTypeRoleService.saveDeptTypeRole(sysDeptType.getId(), sysDeptType.getRoleIdList());
+            sysDeptTypeVO.setId(sysDeptType.getId());
+            departmentTypeRoleService.saveDeptTypeRole(sysDeptType.getId(), sysDeptTypeVO.getRoleIdList());
             // 如果修改了部门类型代码，需要将sys_dept(部门)表中的typeCode一并修改
             if (isModifyCode) {
                 sysDeptService.updateDeptTypeCode(oldDeptType.getCode(), sysDeptType.getCode());
             }
         }
-        return (SysDeptType) ToolUtil.checkResult(isSuccess, sysDeptType);
+        return sysDeptTypeVO;
     }
 
     @Override

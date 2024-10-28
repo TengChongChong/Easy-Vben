@@ -114,6 +114,11 @@ public class RouteMetaVO implements Serializable {
      * 用于配置标签页最大打开数量，设置后会在打开新标签页时自动关闭最早打开的标签页(仅在打开同名标签页时生效)，默认值：-1
      */
     private Integer maxNumOfOpenTab;
+    
+    /**
+     * 在新窗口打开
+     */
+    private Boolean openInNewWindow;
 
     /**
      * 用于配置页面在菜单可以看到，但是访问会被重定向到403。默认值：false
