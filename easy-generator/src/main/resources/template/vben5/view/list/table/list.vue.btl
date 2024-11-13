@@ -13,7 +13,10 @@ import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '#/components/
 
 import { initColumns } from './data';
 import Input${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} from './input.vue';
-
+<% if(basicsConfig.isGeneratorMethodsExport){ %>
+// 导出按钮状态
+const exportBtnLoading = ref<boolean>(false);
+<% } %>
 function handleSearch() {
   gridApi.search();
 }
@@ -81,6 +84,23 @@ function handleEdit(id: string) {
   });
 }
 <% } %>
+<% if(basicsConfig.isGeneratorMethodsExport){ %>
+const handelExportData = async () => {
+  exportBtnLoading.value = true;
+  try {
+    await exportDataApi({
+      dictType: unref(dictType),
+      ...(await gridApi.formApi.getValues()),
+    }).then((id) => {
+      downloadFileById(id);
+    });
+  } catch (error) {
+    console.error('导出数据错误', error);
+  } finally {
+    exportBtnLoading.value = false;
+  }
+};
+<% } %>
 </script>
 
 <template>
@@ -113,6 +133,12 @@ function handleEdit(id: string) {
             @success="handleSearch"
           />
           <% } %>
+          <% } %>
+          <% if(basicsConfig.isGeneratorMethodsExport){ %>
+          <ButtonExport
+            :loading="exportBtnLoading"
+            @click="handelExportData"
+          />
           <% } %>
         </Space>
       </template>
