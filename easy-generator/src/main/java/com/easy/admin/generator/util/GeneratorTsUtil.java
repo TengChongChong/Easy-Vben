@@ -29,20 +29,20 @@ public class GeneratorTsUtil {
 
     /**
      * 属性是否必填
-     * 
-     * @param propertyName 属性 
-     * @param inputConfig 表单配置
+     *
+     * @param propertyName 属性
+     * @param inputConfig  表单配置
      * @return true/false
      */
     public static boolean isRequired(String propertyName, List<FieldConfig> inputConfig) {
         for (FieldConfig fieldConfig : inputConfig) {
-            if(fieldConfig.getPropertyName().equals(propertyName)){
-                return fieldConfig.getRequired();
+            if (fieldConfig.getPropertyName().equals(propertyName)) {
+                return fieldConfig.getRequired() != null && fieldConfig.getRequired();
             }
         }
         return false;
     }
-    
+
     /**
      * 将java数据类型转ts数据类型
      *
@@ -50,7 +50,7 @@ public class GeneratorTsUtil {
      * @return 类型
      */
     public static String convertPropertyType(String propertyType) {
-        switch (propertyType){
+        switch (propertyType) {
             case "Short":
             case "Integer":
             case "Long":
@@ -72,16 +72,13 @@ public class GeneratorTsUtil {
      * @param queryConfig 查询条件
      * @return true/false
      */
-    public static boolean needDayJs(List<FieldConfig> queryConfig){
+    public static boolean needDayJs(List<FieldConfig> queryConfig) {
         for (FieldConfig fieldConfig : queryConfig) {
-            if("RangePicker".equals(fieldConfig.getComponentType())){
+            if ("RangePicker".equals(fieldConfig.getComponentType())) {
                 return true;
             }
         }
         return false;
     }
 
-    public static String convertImportPath(String path){
-        return path.replace("/src", "@").replace(".ts", "");
-    }
 }

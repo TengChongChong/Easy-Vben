@@ -42,20 +42,4 @@ public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> 
     <% } %>
     <% if(basicsConfig.isGeneratorMethodsExport){ %>${GeneratorJavaUtil.generatorExport(item.propertyName, exportConfig)}<% } %>${GeneratorJavaUtil.generatorVerification(item.propertyName, inputConfig)}private ${item.propertyType} ${item.propertyName};
     <% } %>
-
-    // 非表字段
-    <% for(item in queryConfig){ %>
-    <% if(item.matchingMode == 'start_end'){ %>
-    /**
-     * ${item.label} - 开始时间
-     */
-    @TableField(exist=false)
-    private Date start${strUtil.upperFirst(item.propertyName)};
-    /**
-     * ${item.label} - 结束时间
-     */
-    @TableField(exist=false)
-    private Date end${strUtil.upperFirst(item.propertyName)};
-    <% } %>
-    <% } %>
 }

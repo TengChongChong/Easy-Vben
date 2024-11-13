@@ -15,11 +15,11 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { saveOrder, selectAll } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
+  import { saveOrder, selectAll } from '${apiTsPath!}';
   import { listToTree, treeToList } from '@/utils/helper/treeHelper';
   import { TreeProps } from 'ant-design-vue';
   import { AntTreeNodeDropEvent, TreeDataItem } from 'ant-design-vue/lib/tree';
-  import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
+  import { ${basicsConfig.modelName} } from '${modelTsPath!}';
   import { message } from 'ant-design-vue';
 
   export default defineComponent({
@@ -30,7 +30,7 @@
       const treeData = ref<TreeProps['treeData']>([]);
       const [registerDrawer, { changeLoading, closeDrawer }] = useDrawerInner(async () => {
         changeLoading(true);
-        await selectAll().then((res) => {
+        await selectAllApi().then((res) => {
           treeData.value = listToTree(res);
           changeLoading(false);
         });
@@ -64,7 +64,7 @@
           });
         });
 
-        await saveOrder(params)
+        await saveOrderApi(params)
           .then(() => {
             message.success('保存成功');
             closeDrawer();

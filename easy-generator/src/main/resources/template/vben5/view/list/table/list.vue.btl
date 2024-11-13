@@ -1,0 +1,162 @@
+<script lang="ts" setup>
+import type { VbenFormProps } from '#/adapter/form';
+import type { VxeGridProps } from '#/adapter/vxe-table';
+import { ${basicsConfig.modelName} } from '${modelTsPath!}';
+import { Page, useVben${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} } from '@vben/common-ui';
+
+import { Space } from 'ant-design-vue';
+
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath!}';
+
+import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '#/components/button';
+
+import { initColumns } from './data';
+import Input${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} from './input.vue';
+
+function handleSearch() {
+  gridApi.search();
+}
+
+const formOptions: VbenFormProps = {
+  collapsed: true,
+  schema: [
+    <% if(queryConfig != null) { %>
+    <% for(item in queryConfig){ %>
+    {
+      fieldName: '${item.propertyName}',
+      label: '${item.label}',
+      component: '${item.componentType}',
+      <% if(strUtil.isNotBlank(item.dictType)) { %>
+      componentProps: {
+        dictType: '${item.dictType}'
+      },
+      <% } %>
+    },
+    <% } %>
+    <% } %>
+  ],
+};
+
+const gridOptions: VxeGridProps<${basicsConfig.modelName}> = {
+  id: '${tableId}',
+  columns: initColumns(),
+  proxyConfig: {
+    ajax: {
+      query: async ({ page }, formValues) => {
+        return await selectApi({ ...formValues }, page);
+      },
+    },
+  },
+};
+
+const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '${basicsConfig.businessName}',
+  formOptions,
+  gridOptions,
+});
+<% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
+const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
+  connectedComponent: InputDrawer,
+});
+<% } %>
+<% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
+const [BaseInputModal, baseInputModalApi] = useVbenModal({
+  connectedComponent: InputModal,
+});
+<% } %>
+<% if(basicsConfig.generatorMethodsAdd){ %>
+async function handleCreate() {
+  addApi().then((res) => {
+    baseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}Api.setData(res);
+    baseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}Api.open();
+  });
+}
+<% } %>
+<% if(basicsConfig.generatorMethodsSave){ %>
+function handleEdit(id: string) {
+  getApi(id).then((res) => {
+    baseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}Api.setData(res);
+    baseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}Api.open();
+  });
+}
+<% } %>
+</script>
+
+<template>
+  <Page auto-content-height>
+    <Grid>
+      <template #toolbar-tools>
+        <Space>
+          <% if(basicsConfig.generatorMethodsAdd){ %>
+          <% if(strUtil.isNotBlank(basicsConfig.permissionCode)){ %>
+          <ButtonAdd
+            :auth-codes="['${basicsConfig.permissionCode}:save']"
+            @click="handleCreate"
+          />
+          <% } else { %>
+          <ButtonAdd @click="handleCreate" />
+          <% } %>
+          <% } %>
+          <% if(basicsConfig.generatorMethodsRemove){ %>
+          <% if(strUtil.isNotBlank(basicsConfig.permissionCode)){ %>
+          <ButtonRemove
+            :api="removeApi"
+            :auth-codes="['${basicsConfig.permissionCode}:remove']"
+            :grid-api="gridApi"
+            @success="handleSearch"
+          />
+          <% } else { %>
+          <ButtonRemove
+            :api="removeApi"
+            :grid-api="gridApi"
+            @success="handleSearch"
+          />
+          <% } %>
+          <% } %>
+        </Space>
+      </template>
+      <template #action="{ row }">
+        <% if(basicsConfig.generatorMethodsSave){ %>
+        <% if(strUtil.isNotBlank(basicsConfig.permissionCode)){ %>
+        <ButtonEdit
+          :auth-codes="['${basicsConfig.permissionCode}:save']"
+          size="small"
+          type="link"
+          @click="handleEdit(row.id)"
+        />
+        <% } else { %>
+        <ButtonEdit
+          size="small"
+          type="link"
+          @click="handleEdit(row.id)"
+        />
+        <% } %>
+        <% } %>
+        <% if(basicsConfig.generatorMethodsRemove){ %>
+        <% if(strUtil.isNotBlank(basicsConfig.permissionCode)){ %>
+        <ButtonRemove
+          :api="removeApi"
+          :auth-codes="['${basicsConfig.permissionCode}:remove']"
+          :ids="[row.id]"
+          size="small"
+          type="link"
+          @success="handleSearch"
+        />
+        <% } else { %>
+        <ButtonRemove
+          :api="removeApi"
+          :ids="[row.id]"
+          size="small"
+          type="link"
+          @success="handleSearch"
+        />
+        <% } %>
+        <% } %>
+      </template>
+    </Grid>
+
+    <!--  编辑  -->
+    <BaseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} @success="handleSearch" />
+  </Page>
+</template>

@@ -1,0 +1,37 @@
+package ${basicsConfig.packagePath}.model;
+
+<% for(import in tableInfo.importPackages){ %>
+import ${import};
+<% } %>
+<% for(import in imports){ %>
+import ${import.name};
+<% } %>
+
+/**
+ * ${basicsConfig.businessName}
+ *
+ * @author ${basicsConfig.author}
+ * @date ${date}
+ */
+@Data
+@TableName("${tableInfo.name}")
+public class ${basicsConfig.modelName}VO extends ${basicsConfig.modelName} implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    // 非表字段
+    <% for(item in queryConfig){ %>
+    <% if(item.matchingMode == 'start_end'){ %>
+    /**
+     * ${item.label} - 开始时间
+     */
+    @TableField(exist=false)
+    private Date start${strUtil.upperFirst(item.propertyName)};
+    /**
+     * ${item.label} - 结束时间
+     */
+    @TableField(exist=false)
+    private Date end${strUtil.upperFirst(item.propertyName)};
+    <% } %>
+    <% } %>
+}

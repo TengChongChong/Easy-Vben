@@ -1,0 +1,40 @@
+// 表格列数据
+import type { VxeGridPropTypes } from '@vben/plugins/vxe-table';
+
+// 表格列数据
+export const initColumns = (): VxeGridPropTypes.Columns[] => {
+  return [
+    { type: 'checkbox', width: 50, fixed: 'left' },
+    { title: '序号', type: 'seq', width: 50, fixed: 'left' },
+    <% if(tableConfig != null) { %>
+    <% for(item in tableConfig){ %>
+    {
+      title: '${item.title}',
+      field: '${item.propertyName}',
+      <% if(basicsConfig.listGeneratorTemplate != 'tree-table'){ %>
+      sortable: true,
+      <% } %>
+      <% if(item.width != null) { %>
+      width: ${item.width},
+      <% } %>
+      <% if(item.format != null) { %>
+      format: '${item.format}',
+      <% } %>
+      <% if(item.dictType != null) { %>
+      cellRender: {
+        name: 'DictTag',
+        props: { dictType: '${item.dictType}' },
+      },
+      <% } %>
+    },
+    <% } %>
+    <% } %>
+    {
+      title: '操作',
+      field: 'action',
+      width: 160,
+      fixed: 'right',
+      slots: { default: 'action' },
+    },
+  ];
+};

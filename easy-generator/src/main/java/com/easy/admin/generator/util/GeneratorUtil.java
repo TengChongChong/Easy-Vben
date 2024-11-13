@@ -2,8 +2,11 @@ package com.easy.admin.generator.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.generator.constant.GeneratorVersion;
 import com.easy.admin.generator.model.BasicsConfig;
 import com.easy.admin.generator.model.FieldConfig;
+import com.easy.admin.sys.common.constant.SysConfigConst;
+import com.easy.admin.util.SysConfigUtil;
 import org.apache.ibatis.type.JdbcType;
 
 import java.io.File;
@@ -29,7 +32,13 @@ public class GeneratorUtil {
      * @return 路径
      */
     public static String getModelTsPath(BasicsConfig basicsConfig) {
-        String fileName = StrUtil.lowerFirst(basicsConfig.getModelName()) + "Model.ts";
+        String fileName;
+        if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
+            fileName = StrUtil.lowerFirst(basicsConfig.getModelName()) + "Model.ts";
+        } else {
+            fileName = StrUtil.lowerFirst(basicsConfig.getTable().replaceAll("_", "-")) + "-model.ts";
+        }
+
         String path = File.separator + "api" + File.separator;
         String table = basicsConfig.getTable().toLowerCase();
         if (basicsConfig.getTable().contains(CommonConst.TABLE_SEPARATE)) {
@@ -48,15 +57,16 @@ public class GeneratorUtil {
      * @return 文件名
      */
     public static String getDataTsName(BasicsConfig basicsConfig) {
-        String fileName;
-        String table = basicsConfig.getTable().toLowerCase();
-        if (basicsConfig.getTable().contains(CommonConst.TABLE_SEPARATE)) {
-            fileName = table.substring(basicsConfig.getTable().lastIndexOf(CommonConst.TABLE_SEPARATE) + 1);
-        } else {
-            fileName = table;
-        }
-        fileName += ".data.ts";
-        return fileName;
+        //String fileName;
+        //String table = basicsConfig.getTable().toLowerCase();
+        //if (basicsConfig.getTable().contains(CommonConst.TABLE_SEPARATE)) {
+        //    fileName = table.substring(basicsConfig.getTable().lastIndexOf(CommonConst.TABLE_SEPARATE) + 1);
+        //} else {
+        //    fileName = table;
+        //}
+        //fileName += ".data.ts";
+        //return fileName;
+        return "data.ts";
     }
 
     /**

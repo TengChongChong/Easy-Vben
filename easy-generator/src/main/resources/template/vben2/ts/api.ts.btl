@@ -16,7 +16,7 @@ const BASE_URL = '/api${basicsConfig.controllerMapping}';
  *
  * @param params 查询条件
  */
-export function select(params: ${basicsConfig.modelName}) {
+export function selectApi(params: ${basicsConfig.modelName}) {
   return defHttp.get<Page<${basicsConfig.modelName}>>({
     url: BASE_URL,
     params: params,
@@ -25,7 +25,7 @@ export function select(params: ${basicsConfig.modelName}) {
 /**
  * 查询所有数据（Tree）
  */
-export function selectAll() {
+export function selectAllApi() {
   return defHttp.get<TreeNodeModel[]>({
     url: `\${BASE_URL}/all`,
   });
@@ -37,7 +37,7 @@ export function selectAll() {
  * @param params 查询条件
  * @param page 分页
  */
-export function select(params: ${basicsConfig.modelName}, page: Page<${basicsConfig.modelName}>) {
+export function selectApi(params: ${basicsConfig.modelName}, page: Page<${basicsConfig.modelName}>) {
   return defHttp.get<Page<${basicsConfig.modelName}>>({
     url: BASE_URL,
     params: Object.assign(params, page),
@@ -50,7 +50,7 @@ export function select(params: ${basicsConfig.modelName}, page: Page<${basicsCon
  *
  * @param id id
  */
-export function get(id: string) {
+export function getApi(id: string) {
   return defHttp.get<${basicsConfig.modelName}>({
     url: `\${BASE_URL}/\${id}`,
   });
@@ -63,7 +63,7 @@ export function get(id: string) {
  *
  * @param parentId 父id
  */
-export function add(parentId: string | undefined) {
+export function addApi(parentId: string | undefined) {
   return defHttp.get<${basicsConfig.modelName}>({
     url: `\${BASE_URL}/add/\${parentId || ''}`,
   });
@@ -72,7 +72,7 @@ export function add(parentId: string | undefined) {
 /**
  * 新增
  */
-export function add() {
+export function addApi() {
   return defHttp.get<${basicsConfig.modelName}>({
     url: `\${BASE_URL}/add`,
   });
@@ -86,7 +86,7 @@ export function add() {
  *
  * @param ids ids
  */
-export function remove(ids: string) {
+export function removeApi(ids: string) {
   return defHttp.delete<boolean>({
     url: `\${BASE_URL}/\${ids}`,
   });
@@ -99,7 +99,7 @@ export function remove(ids: string) {
  *
  * @param params 表单数据
  */
-export function save(params: ${basicsConfig.modelName}) {
+export function saveApi(params: ${basicsConfig.modelName}) {
   return defHttp.post<${basicsConfig.modelName}>({
     url: BASE_URL,
     data: params,
@@ -112,7 +112,7 @@ export function save(params: ${basicsConfig.modelName}) {
  *
  * @param params 表单数据
  */
-export function saveOrder(params: ${basicsConfig.modelName}[]) {
+export function saveOrderApi(params: ${basicsConfig.modelName}[]) {
   return defHttp.post<${basicsConfig.modelName}>({
     url: `\${BASE_URL}/order`,
     data: params,
@@ -127,7 +127,7 @@ export function saveOrder(params: ${basicsConfig.modelName}[]) {
  *
  * @param params 查询条件
  */
-export function exportData(params: ${basicsConfig.modelName}) {
+export function exportDataApi(params: ${basicsConfig.modelName}) {
   return defHttp.get<string>({
     url: `\${BASE_URL}/export/data`,
     params,

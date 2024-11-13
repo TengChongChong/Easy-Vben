@@ -1,42 +1,34 @@
 <template>
-  <PageWrapper>
-    <a-card>
-      <Loading :loading="loading || saveBtnLoading" tip="加载中..." />
-      <BasicForm @register="registerForm" />
-      <div class="text-center">
-        <a-space>
-          <a-button-save :loading="saveBtnLoading" @click="handleSave" />
-          <% if(basicsConfig.generatorMethodsAdd){ %>
-          <a-button-save :loading="saveBtnLoading" text="保存并新增" @click="handleSaveAndAdd" />
-          <% } %>
-        </a-space>
-      </div>
-    </a-card>
-  </PageWrapper>
+  <BasicDrawer
+    v-bind="$attrs"
+    @register="registerDrawer"
+    showFooter
+    title="${basicsConfig.businessName}"
+    :width="720"
+    @ok="handleSave"
+  >
+    <BasicForm @register="registerForm" />
+    <% if(basicsConfig.generatorMethodsAdd){ %>
+    <template #appendFooter>
+      <a-button-save @click="handleSaveAndAdd" text="保存并新增" />
+    </template>
+    <% } %>
+  </BasicDrawer>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, unref, onMounted, nextTick } from 'vue';
-  import { PageWrapper } from '@/components/Page';
-  import { Loading } from '@/components/Loading';
-  import { useRouter } from 'vue-router';
-  import { useTabs } from '@/hooks/web/useTabs';
+  import { defineComponent, nextTick } from 'vue';
   import { BasicForm, useForm } from '@/components/Form';
+  import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
   import { AButtonSave } from '@/components/Button';
-  import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
-  import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
+  import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath!}';
+  import { ${basicsConfig.modelName} } from '${modelTsPath!}';
   import { message } from 'ant-design-vue';
 
   export default defineComponent({
     name: '${basicsConfig.modelName}Input',
-    components: { PageWrapper, Loading, BasicForm, AButtonSave },
-    setup() {
-      const { setTitle } = useTabs();
-      const { currentRoute } = useRouter();
-      const { id } = unref(currentRoute).query;
-
-      const loading = ref(false);
-      const saveBtnLoading = ref(false);
-
+    components: { BasicDrawer, BasicForm, AButtonSave },
+    emits: ['success', 'register'],
+    setup(_, { emit }) {
       const [registerForm, { resetFields, setFieldsValue, validate, getFieldsValue }] = useForm({
         labelWidth: 100,
         schemas: [
@@ -90,58 +82,45 @@
         baseColProps: { md: 24 },
       });
 
-      onMounted(async () => {
-        loading.value = true;
-        try {
-          let data;
-          if (id) {
-            data = await get(id as string);
-            // todo: 设置标签页名称
-            // await setTitle((data.xxx as string) || '编辑${basicsConfig.businessName}');
-          } else {
-            // 设置标签页名称
-            await setTitle('新增${basicsConfig.businessName}');
-            data = await add();
-          }
-          // 重置表单
-          await resetFields();
-          await setFieldsValue(data);
-        } catch (e) {
-          console.error(e);
-        } finally {
-          loading.value = false;
-        }
+      const [registerDrawer, { changeLoading, closeDrawer }] = useDrawerInner(async (data) => {
+        changeLoading(true);
+        // 重置表单
+        await resetFields();
+        await setFieldsValue(data);
+        changeLoading(false);
       });
 
       async function handleSubmit(callback: (_: ${basicsConfig.modelName}) => any) {
         try {
-          saveBtnLoading.value = true;
+          changeLoading(true);
           await validate();
-          await save(getFieldsValue() as ${basicsConfig.modelName}).then((res) => {
+          await saveApi(getFieldsValue() as ${basicsConfig.modelName}).then((res) => {
             message.success('保存成功');
+            emit('success');
             callback(res);
           });
         } catch (e) {
           console.error(e);
-        } finally {
-          saveBtnLoading.value = false;
+          changeLoading(false);
         }
       }
 
       async function handleSave() {
-        await handleSubmit(() => {});
+        await handleSubmit((_) => {
+          changeLoading(false);
+          closeDrawer();
+        });
       }
 
       <% if(basicsConfig.generatorMethodsAdd){ %>
       async function handleSaveAndAdd() {
         await handleSubmit(() => {
           nextTick(() => {
-            add().then(async (data) => {
-              loading.value = true;
+            addApi().then(async (data) => {
               // 重置表单
               await resetFields();
               await setFieldsValue(data);
-              loading.value = false;
+              changeLoading(false);
             });
           });
         });
@@ -149,8 +128,7 @@
 
       <% } %>
       return {
-        loading,
-        saveBtnLoading,
+        registerDrawer,
         registerForm,
         handleSave,
         <% if(basicsConfig.generatorMethodsAdd){ %>

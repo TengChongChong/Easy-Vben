@@ -8,8 +8,12 @@ export interface ${basicsConfig.modelName} extends BasicModel {
   <% if(!GeneratorTsUtil.inBasicModel(field.propertyName)) { %>
   <% if(field.comment != null && field.comment != "") { %>
   // ${field.comment}
-  ${field.propertyName}${GeneratorTsUtil.isRequired(field.propertyType, inputConfig) ? '' : '?'}: ${GeneratorTsUtil.convertPropertyType(field.propertyType)};
+  ${field.propertyName}${GeneratorTsUtil.isRequired(field.propertyName, inputConfig) ? '' : '?'}: ${GeneratorTsUtil.convertPropertyType(field.propertyType)};
   <% } %>
   <% } %>
   <% } %>
+}
+
+export interface ${basicsConfig.modelName}VO extends ${basicsConfig.modelName} {
+  // 非表字段
 }

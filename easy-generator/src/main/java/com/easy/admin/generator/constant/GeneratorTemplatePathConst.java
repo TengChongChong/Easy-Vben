@@ -12,6 +12,10 @@ public class GeneratorTemplatePathConst {
      */
     public static final String MODEL = "/template/common/classes/Model.java.btl";
     /**
+     * 实体类VO
+     */
+    public static final String MODEL_VO = "/template/common/classes/ModelVO.java.btl";
+    /**
      * dao
      */
     public static final String MAPPER = "/template/common/classes/Mapper.java.btl";
@@ -32,16 +36,15 @@ public class GeneratorTemplatePathConst {
      */
     public static final String CONTROLLER = "/template/common/classes/Controller.java.btl";
     /**
-     * 接口文件
+     * 接口文件，需根据版本拼接地址
      */
-    public static final String API_TS = "/template/common/ts/api.ts.btl";
+    public static final String API_TS = "/ts/api.ts.btl";
     /**
      * Model.ts
      */
     public static final String MODEL_TS = "/template/common/ts/model.ts.btl";
-
     /**
-     * data.ts
+     * data.ts，需根据版本拼接地址
      */
-    public static final String DATA_TS = "/template/common/ts/data.ts.btl";
+    public static final String DATA_TS = "/ts/data.ts.btl";
 }

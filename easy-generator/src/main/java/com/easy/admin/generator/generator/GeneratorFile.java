@@ -12,10 +12,13 @@ import com.easy.admin.generator.constant.GeneratorImportConst;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.util.*;
 import com.easy.admin.sys.common.constant.SysConst;
+import lombok.Data;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,7 +33,10 @@ import java.util.*;
  * @author tengchong
  * @date 2022/6/20
  */
+@Data
 public class GeneratorFile {
+
+    private final Logger logger = LoggerFactory.getLogger(GeneratorFile.class);
 
     private GroupTemplate groupTemplate;
 
@@ -67,7 +73,7 @@ public class GeneratorFile {
     protected String backEndPathBasePath;
 
     /**
-     * 构造
+     * GeneratorFile
      *
      * @param generatorConfig 生成配置
      * @param tableInfo       表信息
@@ -127,7 +133,7 @@ public class GeneratorFile {
                 fileOutputStream = new FileOutputStream(file);
                 pageTemplate.renderTo(fileOutputStream);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                logger.warn("文件不存在，{}", e.getMessage());
             } finally {
                 try {
                     if (fileOutputStream != null) {
@@ -153,7 +159,7 @@ public class GeneratorFile {
         try {
             configuration = new Configuration(properties);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("初始化Configuration失败", e);
         }
         ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();
         this.groupTemplate = new GroupTemplate(resourceLoader, configuration);
@@ -211,7 +217,7 @@ public class GeneratorFile {
             try {
                 property.put(field.getName(), field.get(c));
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                logger.warn("获取类中的变量失败", e);
             }
         }
         Map<String, Object> clazz = new HashMap<>(1);
@@ -219,51 +225,4 @@ public class GeneratorFile {
         return clazz;
     }
 
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
-    }
-
-    public GeneratorConfig getGeneratorConfig() {
-        return generatorConfig;
-    }
-
-    public void setGeneratorConfig(GeneratorConfig generatorConfig) {
-        this.generatorConfig = generatorConfig;
-    }
-
-    public List<Class<?>> getImports() {
-        return imports;
-    }
-
-    public void setImports(List<Class<?>> imports) {
-        this.imports = imports;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
-    public GroupTemplate getGroupTemplate() {
-        return groupTemplate;
-    }
-
-    public void setGroupTemplate(GroupTemplate groupTemplate) {
-        this.groupTemplate = groupTemplate;
-    }
-
-    public Template getPageTemplate() {
-        return pageTemplate;
-    }
-
-    public void setPageTemplate(Template pageTemplate) {
-        this.pageTemplate = pageTemplate;
-    }
 }

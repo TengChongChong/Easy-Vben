@@ -21,8 +21,8 @@
   import { BasicForm, useForm } from '@/components/Form';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { AButtonSave, AButtonCancel } from '@/components/Button';
-  import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
-  import { ${basicsConfig.modelName} } from '${modelTsPath! != null ? modelTsPath : 'todo: Model Path' }';
+  import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath!}';
+  import { ${basicsConfig.modelName} } from '${modelTsPath!}';
   import { message } from 'ant-design-vue';
 
   export default defineComponent({
@@ -98,7 +98,7 @@
           saveBtnLoading.value = true;
           changeLoading(true);
           await validate();
-          await save(getFieldsValue() as ${basicsConfig.modelName}).then((res) => {
+          await saveApi(getFieldsValue() as ${basicsConfig.modelName}).then((res) => {
             message.success('保存成功');
             emit('success');
             callback(res);
@@ -122,7 +122,7 @@
       async function handleSaveAndAdd() {
         await handleSubmit(() => {
           nextTick(() => {
-            add().then(async (data) => {
+            addApi().then(async (data) => {
               // 重置表单
               await resetFields();
               await setFieldsValue(data);

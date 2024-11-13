@@ -15,32 +15,20 @@
         <a-button-remove-batch
           auth="${basicsConfig.permissionCode}:remove"
           :id="checkedKeys"
-          :api="remove"
+          :api="removeApi"
           @success="reload"
         />
         <% } else { %>
-        <a-button-remove-batch :id="checkedKeys" :api="remove" @success="reload" />
+        <a-button-remove-batch :id="checkedKeys" :api="removeApi" @success="reload" />
         <% } %>
         <% } %>
-        <Authority ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'value="' + basicsConfig.permissionCode + ':save" ' : ''}>
-          <a-button @click="handleOrder">
-            <template #icon> <Icon icon="ant-design:ordered-list-outlined" /> </template> 排序
-          </a-button>
-        </Authority>
-
-        <a-button @click="expandAll">
-          <template #icon> <Icon icon="ant-design:plus-outlined" /> </template> 展开全部
-        </a-button>
-        <a-button @click="collapseAll">
-          <template #icon> <Icon icon="ant-design:minus-outlined" /> </template>折叠全部
-        </a-button>
         <% if(basicsConfig.isGeneratorMethodsImport){ %>
-        <a-button-import ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':import:data"' : ''} import-code="${basicsConfig.permissionCode}" />
+        <a-button-import ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':import:data" ' : ''} import-code="${basicsConfig.permissionCode}" />
         <% } %>
         <% if(basicsConfig.isGeneratorMethodsExport){ %>
         <a-button-export
           :loading="exportBtnLoading"
-          ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':select"' : ''}
+          ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':select" ' : ''}
           @click="handelExportData"
         />
         <% } %>
@@ -50,8 +38,6 @@
         <template v-if="column.key === 'action'">
           <div class="basic-table-action center">
             <% if(basicsConfig.generatorMethodsSave){ %>
-            <a-button-add-sub small ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleCreate" />
-            <a-divider type="vertical" />
             <a-button-edit small ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':save" ' : ''}:id="record.id" @click="handleEdit" />
             <% } %>
             <% if(basicsConfig.generatorMethodsRemove){ %>
@@ -60,7 +46,7 @@
               small
               ${strUtil.isNotBlank(basicsConfig.permissionCode) ? 'auth="' + basicsConfig.permissionCode + ':remove"' : ''}
               :id="record.id"
-              :api="remove"
+              :api="removeApi"
               @success="reload"
             />
             <% } %>
@@ -75,45 +61,41 @@
     <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
     <${basicsConfig.modelName}Input @register="registerModal" @success="reload" />
     <% } %>
-    <${basicsConfig.modelName}Order @register="registerOrderDrawer" @success="reload" />
   </PageWrapper>
 </template>
 <script lang="ts">
   import { defineComponent, ref, reactive${basicsConfig.formGeneratorTemplate == 'page' ? ', onActivated' : ''} } from 'vue';
   import { PageWrapper } from '@/components/Page';
   import { BasicTable, useTable } from '@/components/Table';
-  import { clearTreeEmptyChildren, listToTree } from '@/utils/helper/treeHelper';
   import { searchFormSchema, columns } from '${dataTsPath}';
-  import { Icon } from '@/components/Icon';
+  <% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
   import { useDrawer } from '@/components/Drawer';
+  <% } %>
+  <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
+  import { useModal } from '@/components/Modal';
+  <% } %>
   import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '@/components/Button';
   <% if(basicsConfig.isGeneratorMethodsExport){ %>
   import { downloadFileById } from '@/utils/file/download';
+  import { ${basicsConfig.modelName} } from '${modelTsPath!}';
   <% } %>
-  import { Authority } from '@/components/Authority';
-  import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath! != null ? apiTsPath : 'todo: Api Path'}';
+  import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath!}';
   <% if(basicsConfig.formGeneratorTemplate == 'drawer' || basicsConfig.formGeneratorTemplate == 'modal'){ %>
   import ${basicsConfig.modelName}Input from '${viewPath}/Input.vue';
   <% } %>
   <% if(basicsConfig.formGeneratorTemplate == 'page'){ %>
   import { useGo } from '@/hooks/web/usePage';
   <% } %>
-  import ${basicsConfig.modelName}Order from '${viewPath}/Order.vue';
-
 
   export default defineComponent({
     name: '${basicsConfig.modelName}List',
     components: {
       PageWrapper,
-      Authority,
-      Icon,
       <% if(basicsConfig.formGeneratorTemplate == 'drawer' || basicsConfig.formGeneratorTemplate == 'modal'){ %>
       ${basicsConfig.modelName}Input,
       <% } %>
-      ${basicsConfig.modelName}Order,
       <% if(basicsConfig.generatorMethodsAdd){ %>
       AButtonAdd,
-      AButtonAddSub,
       <% } %>
       <% if(basicsConfig.generatorMethodsRemove){ %>
       AButtonRemoveBatch,
@@ -160,21 +142,16 @@
       });
       <% } %>
 
-      // 排序
-      const [registerOrderDrawer, { openDrawer: openOrderDrawer }] = useDrawer();
       /**
        * 初始化表格
        */
-      const [registerTable, { reload, getForm, expandAll, collapseAll }] = useTable({
+      <% if(basicsConfig.isGeneratorMethodsExport){ %>
+      const [registerTable, { reload, getForm }] = useTable({
+       <% } else { %>
+       const [registerTable, { reload }] = useTable({
+       <% } %>
         title: '${basicsConfig.businessName}',
-        api: select,
-        afterFetch: (items) => {
-          const tree = listToTree(items);
-          return clearTreeEmptyChildren(tree, 'children');
-        },
-        isTreeTable: true,
-        pagination: false,
-        showIndexColumn: false,
+        api: selectApi,
         columns,
         useSearchForm: true,
         formConfig: {
@@ -190,12 +167,12 @@
       <% if(basicsConfig.generatorMethodsAdd){ %>
       const handleCreate = () => {
         <% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
-        add().then((data) => {
+        addApi().then((data) => {
           openDrawer(true, data);
         });
         <% } %>
         <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
-        add().then((data) => {
+        addApi().then((data) => {
           openModal(true, data);
         });
         <% } %>
@@ -208,12 +185,12 @@
       <% if(basicsConfig.generatorMethodsSave){ %>
       const handleEdit = (id: string) => {
         <% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
-        get(id).then((data) => {
+        getApi(id).then((data) => {
           openDrawer(true, data);
         });
         <% } %>
         <% if(basicsConfig.formGeneratorTemplate == 'modal'){ %>
-        get(id).then((data) => {
+        getApi(id).then((data) => {
           openModal(true, data);
         });
         <% } %>
@@ -223,17 +200,11 @@
       };
 
       <% } %>
-      /**
-       * 排序
-       */
-      const handleOrder = () => {
-        openOrderDrawer(true, {});
-      };
       <% if(basicsConfig.isGeneratorMethodsExport){ %>
       const handelExportData = async () => {
         exportBtnLoading.value = true;
         try {
-          await exportData(Object.assign(searchInfo, getForm().getFieldsValue())).then((id) => {
+          await exportDataApi(Object.assign(searchInfo, getForm().getFieldsValue())).then((id) => {
             downloadFileById(id);
           });
         } catch (e) {
@@ -255,7 +226,7 @@
         handelExportData,
         <% } %>
         <% if(basicsConfig.generatorMethodsRemove){ %>
-        remove,
+        removeApi,
         <% } %>
         <% if(basicsConfig.formGeneratorTemplate == 'drawer'){ %>
         registerDrawer,
@@ -264,8 +235,6 @@
         registerModal,
         <% } %>
         registerTable,
-        registerOrderDrawer,
-        openOrderDrawer,
         <% if(basicsConfig.generatorMethodsAdd){ %>
         handleCreate,
         <% } %>
@@ -273,9 +242,6 @@
         handleEdit,
         <% } %>
         reload,
-        expandAll,
-        collapseAll,
-        handleOrder,
       };
     },
   });
