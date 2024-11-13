@@ -30,7 +30,7 @@ public class FileDownloadController {
      * @param id 资源id
      * @return ResponseEntity
      */
-    @RequestMapping("/file/download/{id}")
+    @RequestMapping("/api/file/download/{id}")
     @ResponseBody
     public ResponseEntity<Resource> downloadTemplate(@PathVariable("id") String id, HttpServletRequest request) throws UnsupportedEncodingException {
         return service.download(id, request);
@@ -44,7 +44,7 @@ public class FileDownloadController {
      * @param displayName 显示名称
      * @return ResponseEntity
      */
-    @RequestMapping("/file/download/file/info")
+    @RequestMapping("/api/file/download/file/info")
     @ResponseBody
     public ResponseEntity<Resource> downloadFileInfoById(
             @RequestParam("parentId") String parentId,
