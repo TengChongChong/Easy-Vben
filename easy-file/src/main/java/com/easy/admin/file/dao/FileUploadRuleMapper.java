@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.file.model.FileUploadRule;
+import com.easy.admin.file.model.vo.FileUploadRuleVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public interface FileUploadRuleMapper extends BaseMapper<FileUploadRule> {
      * @param slug 规则别名
      * @return FileUploadRule
      */
-    FileUploadRule getBySlug(@Param("slug") String slug);
+    FileUploadRuleVO getBySlug(@Param("slug") String slug);
 
     /**
      * 查询详情

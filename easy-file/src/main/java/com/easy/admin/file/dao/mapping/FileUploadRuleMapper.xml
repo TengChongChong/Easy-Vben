@@ -21,7 +21,7 @@
         <result column="edit_date" property="editDate" />
     </resultMap>
     <select id="select" resultType="com.easy.admin.file.model.FileUploadRule">
-        select t.id, t.name, t.slug, t.category, t.directory, t.lower_limit, t.upper_limit, t.status, su_edit_user.nickname as edit_user, t.edit_date
+        select t.id, t.name, t.slug, t.category, t.directory, t.suffix, t.lower_limit, t.upper_limit, t.status, su_edit_user.nickname as edit_user, t.edit_date
         from file_upload_rule t
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
         <where>
@@ -29,7 +29,7 @@
         </where>
     </select>
 
-    <select id="getBySlug" resultType="com.easy.admin.file.model.FileUploadRule">
+    <select id="getBySlug" resultType="com.easy.admin.file.model.vo.FileUploadRuleVO">
         select t.id, t.name, t.slug, t.category, t.directory, t.lower_limit, t.upper_limit, t.suffix, t.status
         from file_upload_rule t
         where t.slug = #{slug}

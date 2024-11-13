@@ -2,6 +2,7 @@ package com.easy.admin.file.service;
 
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.file.model.FileUploadRule;
+import com.easy.admin.file.model.vo.FileUploadRuleVO;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ public interface FileUploadRuleService {
      * 获取上传规则
      *
      * @param slug 规则别名
-     * @return FileUploadRule
+     * @return FileUploadRuleVO
      */
-    FileUploadRule getBySlug(String slug);
+    FileUploadRuleVO getBySlug(String slug);
 
     /**
      * 查询所有文件夹

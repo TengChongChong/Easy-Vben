@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 文件上传规则
@@ -100,10 +99,4 @@ public class FileUploadRule extends Model<FileUploadRule> implements Serializabl
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
 
-    // 非表字段
-    /**
-     * 文件后缀
-     */
-    @TableField(exist = false)
-    private List<String> suffixArray;
 }

@@ -132,7 +132,7 @@ public class FileDetailServiceImpl extends ServiceImpl<FileDetailMapper, FileDet
     public boolean removeByObjectIdAndObjectType(String objectId, String objectType) {
         UpdateWrapper<FileDetail> updateWrapper = new UpdateWrapper<>();
         if (objectId.contains(CommonConst.SPLIT)) {
-            updateWrapper.eq("object_id", objectId.split(CommonConst.SPLIT));
+            updateWrapper.in("object_id", objectId.split(CommonConst.SPLIT));
         } else {
             updateWrapper.eq("object_id", objectId);
         }

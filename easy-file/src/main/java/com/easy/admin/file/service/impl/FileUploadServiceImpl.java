@@ -3,7 +3,7 @@ package com.easy.admin.file.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.file.model.FileUploadRule;
+import com.easy.admin.file.model.vo.FileUploadRuleVO;
 import com.easy.admin.file.service.FileUploadRuleService;
 import com.easy.admin.file.service.FileUploadService;
 import com.easy.admin.file.util.file.FileUtil;
@@ -32,7 +32,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public FileInfo upload(String ruleSlug, MultipartFile file) {
-        FileUploadRule uploadRule = fileUploadRuleService.getBySlug(ruleSlug);
+        FileUploadRuleVO uploadRule = fileUploadRuleService.getBySlug(ruleSlug);
         if (uploadRule == null) {
             throw new EasyException("文件上传规则不存在");
         }
@@ -47,7 +47,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         return uploadFile(file, uploadRule);
     }
 
-    private FileInfo uploadFile(MultipartFile file, FileUploadRule uploadRule) {
+    private FileInfo uploadFile(MultipartFile file, FileUploadRuleVO uploadRule) {
         // 文件名
         String displayName = file.getOriginalFilename();
 
@@ -71,7 +71,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         if (uploadRule.getSuffixArray() == null || uploadRule.getSuffixArray().isEmpty()) {
             throw new EasyException("上传失败[未设置允许上传的文件拓展名]");
         }
-        String suffix = displayName.substring(displayName.lastIndexOf(".") + 1);
+        String suffix = displayName.substring(displayName.lastIndexOf(".") + 1).toLowerCase();
         if (!uploadRule.getSuffixArray().contains(suffix)) {
             throw new EasyException("上传失败[不允许上传拓展名为" + suffix + "的文件]");
         }

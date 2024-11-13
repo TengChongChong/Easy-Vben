@@ -13,6 +13,7 @@ import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.file.dao.FileUploadRuleMapper;
 import com.easy.admin.file.model.FileUploadRule;
+import com.easy.admin.file.model.vo.FileUploadRuleVO;
 import com.easy.admin.file.service.FileUploadRuleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,8 +79,8 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
     }
 
     @Override
-    public FileUploadRule getBySlug(String slug) {
-        FileUploadRule rule = (FileUploadRule) RedisUtil.get(RedisPrefix.FILE_UPLOAD_RULE + slug);
+    public FileUploadRuleVO getBySlug(String slug) {
+        FileUploadRuleVO rule = (FileUploadRuleVO) RedisUtil.get(RedisPrefix.FILE_UPLOAD_RULE + slug);
         if (rule == null) {
             rule = baseMapper.getBySlug(slug);
             if (rule != null && StrUtil.isNotBlank(rule.getSuffix())) {
@@ -137,6 +138,9 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
         if (count > 0) {
             throw new EasyException("已存在别名为 " + fileUploadRule.getSlug() + " 的上传规则，请修改后重试");
         }
+        
+        // 统一小写
+        fileUploadRule.setSuffix(fileUploadRule.getSuffix().toLowerCase());
 
         boolean isSuccess = saveOrUpdate(fileUploadRule);
         if (isSuccess) {
