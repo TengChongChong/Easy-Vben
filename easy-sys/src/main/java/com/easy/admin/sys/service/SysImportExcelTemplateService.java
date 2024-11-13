@@ -2,6 +2,7 @@ package com.easy.admin.sys.service;
 
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
+import com.easy.admin.sys.model.vo.SysImportExcelTemplateVO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,7 +36,7 @@ public interface SysImportExcelTemplateService {
      * @param importCode 模板代码
      * @return SysImportExcelTemplate
      */
-    SysImportExcelTemplate getByImportCode(String importCode);
+    SysImportExcelTemplateVO getByImportCode(String importCode);
 
     /**
      * 删除

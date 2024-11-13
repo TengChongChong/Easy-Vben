@@ -45,8 +45,8 @@ public class SysOnlineServiceImpl implements SysUserOnlineService {
 
             BeanUtil.copyProperties(sessionUserVO, userOnline);
 
-            // 设备
             userOnline.setId((String) StpUtil.getLoginIdByToken(realToken));
+            // 设备
             userOnline.setDevice(StpUtil.getLoginDevice());
             userOnline.setToken(realToken);
             userOnline.setDeptName(sessionUserVO.getDept().getName());

@@ -1,5 +1,6 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
@@ -17,6 +18,7 @@ import com.easy.admin.sys.dao.SysImportExcelTemplateMapper;
 import com.easy.admin.sys.model.SysDict;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
+import com.easy.admin.sys.model.vo.SysImportExcelTemplateVO;
 import com.easy.admin.sys.service.SysDictService;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
@@ -93,14 +95,17 @@ public class SysImportExcelTemplateServiceImpl extends ServiceImpl<SysImportExce
     }
 
     @Override
-    public SysImportExcelTemplate getByImportCode(String importCode) {
+    public SysImportExcelTemplateVO getByImportCode(String importCode) {
         QueryWrapper<SysImportExcelTemplate> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("import_code", importCode);
         SysImportExcelTemplate sysImportExcelTemplate = getOne(queryWrapper);
-        if (sysImportExcelTemplate != null) {
-            sysImportExcelTemplate.setDetailList(templateDetailsService.selectDetails(sysImportExcelTemplate.getId()));
+        if (sysImportExcelTemplate == null) {
+            return null;
         }
-        return sysImportExcelTemplate;
+        SysImportExcelTemplateVO sysImportExcelTemplateVO = new SysImportExcelTemplateVO();
+        BeanUtil.copyProperties(sysImportExcelTemplate, sysImportExcelTemplateVO);
+        sysImportExcelTemplateVO.setDetailList(templateDetailsService.selectDetails(sysImportExcelTemplate.getId()));
+        return sysImportExcelTemplateVO;
     }
 
     /**

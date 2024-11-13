@@ -2,9 +2,9 @@ package com.easy.admin.sys.controller;
 
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
-import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.model.vo.SysImportExcelDataVO;
+import com.easy.admin.sys.model.vo.SysImportExcelTemplateVO;
 import com.easy.admin.sys.service.SysImportExcelDataService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
 import org.dromara.x.file.storage.core.FileInfo;
@@ -38,7 +38,7 @@ public class SysImportExcelDataController extends BaseController {
      * @return SysImportExcelTemplate
      */
     @GetMapping("{importCode}")
-    public SysImportExcelTemplate getImportExcelTemplate(@PathVariable("importCode") String importCode) {
+    public SysImportExcelTemplateVO getImportExcelTemplate(@PathVariable("importCode") String importCode) {
         return importExcelTemplateService.getByImportCode(importCode);
     }
 

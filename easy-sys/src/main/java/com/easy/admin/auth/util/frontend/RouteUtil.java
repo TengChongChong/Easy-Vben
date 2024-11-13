@@ -80,6 +80,9 @@ public class RouteUtil {
         }
 
         RouteVO route = new RouteVO();
+        if (isCatalogue) {
+            route.setRedirect(sysPermission.getPath());
+        }
         route.setId(sysPermission.getId());
         route.setParentId(sysPermission.getParentId());
         // 是否为外链

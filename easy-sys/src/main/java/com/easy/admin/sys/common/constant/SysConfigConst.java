@@ -81,6 +81,10 @@ public class SysConfigConst {
      */
     public static final String MESSAGE_EXPIRE = "messageExpire";
 
+    /**
+     * 代码生成版本，vben2|vben5
+     */
+    public static final String CODE_GENERATOR_VERSION = "codeGeneratorVersion";
 
 
 }

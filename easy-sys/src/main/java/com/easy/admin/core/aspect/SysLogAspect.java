@@ -2,11 +2,10 @@ package com.easy.admin.core.aspect;
 
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.util.WebUtils;
-import com.easy.admin.sys.model.SysLog;
-import com.easy.admin.auth.model.SysUser;
-import com.easy.admin.sys.service.SysLogService;
-import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.common.core.util.http.IpUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
+import com.easy.admin.sys.model.SysLog;
+import com.easy.admin.sys.service.SysLogService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
