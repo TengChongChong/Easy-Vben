@@ -1,10 +1,12 @@
 package com.easy.admin.generator.generator.impl;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.easy.admin.generator.constant.GeneratorTemplatePathConst;
+import com.easy.admin.generator.constant.GeneratorVersion;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.util.GeneratorUtil;
+import com.easy.admin.sys.common.constant.SysConfigConst;
+import com.easy.admin.util.SysConfigUtil;
 
 import java.io.File;
 
@@ -27,8 +29,14 @@ public class GeneratorModelTs extends GeneratorFile {
 
     @Override
     public void init() {
-        // 设置模板
-        this.setTemplate(GeneratorTemplatePathConst.MODEL_TS);
+        if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
+            // 设置模板
+            this.setTemplate("/template/vben2/ts/" + generatorConfig.getBasicsConfig().getListGeneratorTemplate() + "/model.ts.btl");
+        } else {
+            // 设置模板
+            this.setTemplate("/template/vben5/ts/" + generatorConfig.getBasicsConfig().getListGeneratorTemplate() + "/model.ts.btl");
+        }
+
         // 设置文件路径
         initFilePath();
     }
