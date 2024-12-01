@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  scan="true" scanPeriod="60 seconds" debug="false">
-    <contextName>easy-frame</contextName>
+    <contextName>easy-vben</contextName>
+
     <springProperty scope="context" name="log.path" source="logging.file.path"/>
 
     <!-- 日志文件名称 -->

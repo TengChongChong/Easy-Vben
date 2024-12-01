@@ -31,10 +31,10 @@ public class GeneratorModelTs extends GeneratorFile {
     public void init() {
         if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
             // 设置模板
-            this.setTemplate("/template/vben2/ts/" + generatorConfig.getBasicsConfig().getListGeneratorTemplate() + "/model.ts.btl");
+            this.setTemplate("/template/vben2/ts/model.ts.btl");
         } else {
             // 设置模板
-            this.setTemplate("/template/vben5/ts/" + generatorConfig.getBasicsConfig().getListGeneratorTemplate() + "/model.ts.btl");
+            this.setTemplate("/template/vben5/ts/model.ts.btl");
         }
 
         // 设置文件路径
