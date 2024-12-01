@@ -1,5 +1,6 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -14,6 +15,7 @@ import com.easy.admin.file.util.file.EditorUtil;
 import com.easy.admin.sys.common.constant.MessageConst;
 import com.easy.admin.sys.dao.SysMessageMapper;
 import com.easy.admin.sys.model.SysMessage;
+import com.easy.admin.sys.model.vo.SysMessageVO;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.sys.service.SysMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
      * @return 数据集合
      */
     @Override
-    public Page<SysMessage> select(SysMessage sysMessage, Page<SysMessage> page) {
+    public Page<SysMessage> select(SysMessageVO sysMessage, Page<SysMessage> page) {
         QueryWrapper<SysMessage> queryWrapper = commonQuery(sysMessage);
         if (sysMessage != null) {
             if (Validator.isNotEmpty(sysMessage.getStatus())) {
@@ -68,7 +70,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     }
 
     @Override
-    public Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page) {
+    public Page<SysMessageVO> selectReceive(SysMessageVO sysMessage, Page<SysMessageVO> page) {
         SessionUserVO currentUser = SessionUtil.getCurrentUser();
         // 查询条件
         QueryWrapper<SysMessage> queryWrapper = commonQuery(sysMessage);
@@ -104,17 +106,19 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     }
 
     @Override
-    public SysMessage get(String id) {
+    public SysMessageVO get(String id) {
         SysMessage sysMessage = getById(id);
+        SysMessageVO sysMessageVO = new SysMessageVO();
+        BeanUtil.copyProperties(sysMessage, sysMessageVO);
         if (sysMessage != null) {
             // 查询收信人信息
-            sysMessage.setReceivers(sysMessageDetailsService.selectReceiverUser(id));
+            sysMessageVO.setReceivers(sysMessageDetailsService.selectReceiverUser(id));
         }
-        return sysMessage;
+        return sysMessageVO;
     }
 
     @Override
-    public SysMessage info(String id) {
+    public SysMessageVO info(String id) {
         return baseMapper.selectInfoById(id);
     }
 
@@ -124,8 +128,8 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
      * @return 默认值
      */
     @Override
-    public SysMessage add() {
-        SysMessage sysMessage = new SysMessage();
+    public SysMessageVO add() {
+        SysMessageVO sysMessage = new SysMessageVO();
         // 设置默认值
         sysMessage.setType(MessageConst.TYPE_NOTICE);
         // 非重要
@@ -156,38 +160,41 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
     /**
      * 保存
      *
-     * @param sysMessage 表单内容
+     * @param sysMessageVO 表单内容
      * @return 保存后信息
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SysMessage saveData(SysMessage sysMessage) {
-        boolean isAdd = StrUtil.isBlank(sysMessage.getId());
+    public SysMessageVO saveData(SysMessageVO sysMessageVO) {
+        boolean isAdd = StrUtil.isBlank(sysMessageVO.getId());
         if (isAdd) {
-            if (StrUtil.isBlank(sysMessage.getStatus())) {
-                sysMessage.setStatus(MessageConst.STATUS_DRAFT);
+            if (StrUtil.isBlank(sysMessageVO.getStatus())) {
+                sysMessageVO.setStatus(MessageConst.STATUS_DRAFT);
             }
         }
-        if (MessageConst.STATUS_HAS_BEEN_SENT.equals(sysMessage.getStatus())) {
-            sysMessage.setSendDate(new Date());
+        if (MessageConst.STATUS_HAS_BEEN_SENT.equals(sysMessageVO.getStatus())) {
+            sysMessageVO.setSendDate(new Date());
         }
-        if (StrUtil.isBlank(sysMessage.getType())) {
-            sysMessage.setType(MessageConst.TYPE_NOTICE);
+        if (StrUtil.isBlank(sysMessageVO.getType())) {
+            sysMessageVO.setType(MessageConst.TYPE_NOTICE);
         }
 
+        SysMessage sysMessage = new SysMessage();
+        BeanUtil.copyProperties(sysMessageVO, sysMessage);
         boolean isSuccess = saveOrUpdate(sysMessage);
+        sysMessageVO.setId(sysMessage.getId());
         if (isSuccess) {
             if (!isAdd) {
                 // 清空上次设置的收信人
-                sysMessageDetailsService.remove(String.valueOf(sysMessage.getId()));
+                sysMessageDetailsService.remove(String.valueOf(sysMessageVO.getId()));
             }
             // 保存收信人
-            sysMessageDetailsService.saveData(sysMessage.getId(), sysMessage.getReceivers());
+            sysMessageDetailsService.saveData(sysMessageVO.getId(), sysMessageVO.getReceivers());
 
             // 处理内容中的文件
-            saveContentImage(sysMessage.getId(), sysMessage.getContent());
+            saveContentImage(sysMessageVO.getId(), sysMessageVO.getContent());
         }
-        return sysMessage;
+        return sysMessageVO;
     }
 
     private void saveContentImage(String id, String content) {

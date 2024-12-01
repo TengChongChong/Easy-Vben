@@ -2,6 +2,7 @@ package com.easy.admin.sys.service;
 
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.sys.model.SysMessage;
+import com.easy.admin.sys.model.vo.SysMessageVO;
 
 /**
  * 消息
@@ -14,19 +15,19 @@ public interface SysMessageService {
      * 列表
      *
      * @param sysMessage 查询条件
-     * @param page   分页
+     * @param page       分页
      * @return Page<SysMessage>
      */
-    Page<SysMessage> select(SysMessage sysMessage, Page<SysMessage> page);
+    Page<SysMessage> select(SysMessageVO sysMessage, Page<SysMessage> page);
 
     /**
      * 收信列表
      *
      * @param sysMessage 查询条件
-     * @param page   分页
+     * @param page       分页
      * @return Page<SysMessage>
      */
-    Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page);
+    Page<SysMessageVO> selectReceive(SysMessageVO sysMessage, Page<SysMessageVO> page);
 
     /**
      * 详情
@@ -34,7 +35,7 @@ public interface SysMessageService {
      * @param id id
      * @return SysMessage
      */
-    SysMessage get(String id);
+    SysMessageVO get(String id);
 
     /**
      * 详情
@@ -42,7 +43,7 @@ public interface SysMessageService {
      * @param id id
      * @return SysMessage
      */
-    SysMessage info(String id);
+    SysMessageVO info(String id);
 
     /**
      * 新增
@@ -65,7 +66,7 @@ public interface SysMessageService {
      * @param sysMessage 表单内容
      * @return 保存后信息
      */
-    SysMessage saveData(SysMessage sysMessage);
+    SysMessageVO saveData(SysMessageVO sysMessage);
 
     /**
      * 发送

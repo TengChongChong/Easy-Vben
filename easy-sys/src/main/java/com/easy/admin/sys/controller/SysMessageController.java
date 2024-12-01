@@ -2,10 +2,11 @@ package com.easy.admin.sys.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.base.BaseController;
 import com.easy.admin.common.core.common.pagination.Page;
-import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.sys.model.SysMessage;
+import com.easy.admin.sys.model.vo.SysMessageVO;
 import com.easy.admin.sys.service.SysMessageDetailService;
 import com.easy.admin.sys.service.SysMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class SysMessageController extends BaseController {
      * @return Page<SysMessage>
      */
     @GetMapping
-    public Page<SysMessage> select(SysMessage sysMessage, Page<SysMessage> page) {
+    public Page<SysMessage> select(SysMessageVO sysMessage, Page<SysMessage> page) {
         return service.select(sysMessage, page);
     }
 
@@ -51,7 +52,7 @@ public class SysMessageController extends BaseController {
      * @return Page<SysMessage>
      */
     @GetMapping("receive")
-    public Page<SysMessage> selectReceive(SysMessage sysMessage, Page<SysMessage> page) {
+    public Page<SysMessageVO> selectReceive(SysMessageVO sysMessage, Page<SysMessageVO> page) {
         return service.selectReceive(sysMessage, page);
     }
 
@@ -62,7 +63,7 @@ public class SysMessageController extends BaseController {
      * @return SysMessage
      */
     @GetMapping("{id}")
-    public SysMessage get(@PathVariable("id") String id) {
+    public SysMessageVO get(@PathVariable("id") String id) {
         return service.get(id);
     }
 
@@ -74,9 +75,9 @@ public class SysMessageController extends BaseController {
      * @return SysMessage
      */
     @GetMapping("info")
-    public SysMessage info(@RequestParam(value = "id", required = false) String id,
-                           @RequestParam(value = "messageId") String messageId) {
-        if(StrUtil.isNotBlank(id)){
+    public SysMessageVO info(@RequestParam(value = "id", required = false) String id,
+                             @RequestParam(value = "messageId") String messageId) {
+        if (StrUtil.isNotBlank(id)) {
             // 标记已读
             sysMessageDetailsService.setRead(id);
         }
@@ -112,7 +113,7 @@ public class SysMessageController extends BaseController {
      * @return SysMessage
      */
     @PostMapping
-    public SysMessage save(@RequestBody @Valid SysMessage sysMessage) {
+    public SysMessageVO save(@RequestBody @Valid SysMessageVO sysMessage) {
         return service.saveData(sysMessage);
     }
 

@@ -30,7 +30,7 @@
             ${ew.sqlSegment}
         </where>
     </select>
-    <select id="selectReceive" resultType="com.easy.admin.sys.model.SysMessage">
+    <select id="selectReceive" resultType="com.easy.admin.sys.model.vo.SysMessageVO">
         select d.id, d.status as details_status, d.star, m.id as messageId, m.title, m.type, m.create_date,
         m.send_date, d.read_date, m.important, u.nickname, fd.url as avatar
         from sys_message_detail d
@@ -49,7 +49,7 @@
             ${ew.sqlSegment}
         </where>
     </select>
-    <select id="selectInfoById" resultType="com.easy.admin.sys.model.SysMessage">
+    <select id="selectInfoById" resultType="com.easy.admin.sys.model.vo.SysMessageVO">
         select m.id, m.title, m.content, m.type, m.create_date, m.send_date,
         m.important, u.nickname, fd.url as avatar
         from sys_message m

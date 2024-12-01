@@ -26,7 +26,7 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.core.mail.MailTemplate;
 import com.easy.admin.sys.common.constant.MessageConst;
-import com.easy.admin.sys.model.SysMessage;
+import com.easy.admin.sys.model.vo.SysMessageVO;
 import com.easy.admin.sys.service.SysMessageService;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
@@ -226,7 +226,7 @@ public class ActivitiTaskServiceImpl extends ServiceImpl<ActivitiTaskMapper, Act
         params.put("deleteUser", currentUser.getNickname());
         params.put("deleteReason", deleteReason);
 
-        SysMessage sysMessage = new SysMessage();
+        SysMessageVO sysMessage = new SysMessageVO();
         sysMessage.setTitle("你发起的[" + activitiTask.getProcessDefinitionName() + "]" + activitiTask.getBusinessTitle() + "被" + currentUser.getNickname() + "]撤销");
         // 重要
         sysMessage.setImportant(MessageConst.IMPORTANT_YES);
