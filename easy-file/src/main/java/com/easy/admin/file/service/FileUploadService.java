@@ -14,9 +14,9 @@ public interface FileUploadService {
     /**
      * 文件上传
      *
-     * @param ruleSlug sh
-     * @param file     上传的文件
+     * @param ruleKey sh
+     * @param file    上传的文件
      * @return FileInfo
      */
-    FileInfo upload(String ruleSlug, MultipartFile file);
+    FileInfo upload(String ruleKey, MultipartFile file);
 }

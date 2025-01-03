@@ -33,7 +33,7 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
     @Override
     public Page<FileUploadRule> select(FileUploadRule fileUploadRule, Page<FileUploadRule> page) {
         QueryWrapper<FileUploadRule> queryWrapper = getQueryWrapper(fileUploadRule);
-        page.setDefaultAsc("t.category, t.slug");
+        page.setDefaultAsc("t.category, t.rule_key");
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
@@ -47,8 +47,8 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
                 queryWrapper.like("t.name", fileUploadRule.getName());
             }
             // 别名
-            if (Validator.isNotEmpty(fileUploadRule.getSlug())) {
-                queryWrapper.like("t.slug", fileUploadRule.getSlug());
+            if (Validator.isNotEmpty(fileUploadRule.getRuleKey())) {
+                queryWrapper.like("t.rule_key", fileUploadRule.getRuleKey());
             }
             // 分类
             if (Validator.isNotEmpty(fileUploadRule.getCategory())) {
@@ -79,14 +79,14 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
     }
 
     @Override
-    public FileUploadRuleVO getBySlug(String slug) {
-        FileUploadRuleVO rule = (FileUploadRuleVO) RedisUtil.get(RedisPrefix.FILE_UPLOAD_RULE + slug);
+    public FileUploadRuleVO getByKey(String key) {
+        FileUploadRuleVO rule = (FileUploadRuleVO) RedisUtil.get(RedisPrefix.FILE_UPLOAD_RULE + key);
         if (rule == null) {
-            rule = baseMapper.getBySlug(slug);
+            rule = baseMapper.getByKey(key);
             if (rule != null && StrUtil.isNotBlank(rule.getSuffix())) {
                 rule.setSuffixArray(Arrays.asList(rule.getSuffix().split(CommonConst.SPLIT)));
             }
-            RedisUtil.set(RedisPrefix.FILE_UPLOAD_RULE + slug, rule);
+            RedisUtil.set(RedisPrefix.FILE_UPLOAD_RULE + key, rule);
         }
         return rule;
     }
@@ -130,21 +130,21 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
 
         // 规则别名不能重复
         QueryWrapper<FileUploadRule> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("slug", fileUploadRule.getSlug());
+        queryWrapper.eq("rule_key", fileUploadRule.getRuleKey());
         if (fileUploadRule.getId() != null) {
             queryWrapper.ne("id", fileUploadRule.getId());
         }
         long count = baseMapper.selectCount(queryWrapper);
         if (count > 0) {
-            throw new EasyException("已存在别名为 " + fileUploadRule.getSlug() + " 的上传规则，请修改后重试");
+            throw new EasyException("已存在别名为 " + fileUploadRule.getRuleKey() + " 的上传规则，请修改后重试");
         }
-        
+
         // 统一小写
         fileUploadRule.setSuffix(fileUploadRule.getSuffix().toLowerCase());
 
         boolean isSuccess = saveOrUpdate(fileUploadRule);
         if (isSuccess) {
-            RedisUtil.del(RedisPrefix.FILE_UPLOAD_RULE + fileUploadRule.getSlug());
+            RedisUtil.del(RedisPrefix.FILE_UPLOAD_RULE + fileUploadRule.getRuleKey());
         }
 
         return fileUploadRule;

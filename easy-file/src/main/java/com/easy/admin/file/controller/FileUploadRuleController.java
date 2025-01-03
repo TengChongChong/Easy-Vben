@@ -112,12 +112,12 @@ public class FileUploadRuleController {
     /**
      * 获取上传规则
      *
-     * @param slug 规则别名
+     * @param key 规则别名
      * @return FileUploadRule
      */
     @Operation(summary = "获取上传规则")
-    @GetMapping("slug/{slug}")
-    public FileUploadRule getBySlug(@PathVariable("slug") String slug) {
-        return service.getBySlug(slug);
+    @GetMapping("key/{key}")
+    public FileUploadRule getByKey(@PathVariable("key") String key) {
+        return service.getByKey(key);
     }
 }

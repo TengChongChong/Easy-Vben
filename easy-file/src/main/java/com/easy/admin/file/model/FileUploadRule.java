@@ -34,8 +34,8 @@ public class FileUploadRule extends Model<FileUploadRule> implements Serializabl
     /**
      * 别名
      */
-    @NotBlank(message = "别名不能为空")
-    private String slug;
+    @NotBlank(message = "Key不能为空")
+    private String ruleKey;
     /**
      * 分类
      */

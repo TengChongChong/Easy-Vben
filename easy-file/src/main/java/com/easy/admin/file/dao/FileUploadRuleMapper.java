@@ -35,10 +35,10 @@ public interface FileUploadRuleMapper extends BaseMapper<FileUploadRule> {
     /**
      * 获取上传规则
      *
-     * @param slug 规则别名
+     * @param key 规则别名
      * @return FileUploadRule
      */
-    FileUploadRuleVO getBySlug(@Param("slug") String slug);
+    FileUploadRuleVO getByKey(@Param("key") String key);
 
     /**
      * 查询详情

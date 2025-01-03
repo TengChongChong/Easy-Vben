@@ -27,9 +27,9 @@ public class FileUploadController {
      * @param file 文件
      * @return FileInfo
      */
-    @PostMapping("/upload/{ruleSlug}")
-    public FileInfo upload(@PathVariable("ruleSlug") String ruleSlug, @RequestParam("file") MultipartFile file) {
-        return service.upload(ruleSlug, file);
+    @PostMapping("/upload/{ruleKey}")
+    public FileInfo upload(@PathVariable("ruleKey") String ruleKey, @RequestParam("file") MultipartFile file) {
+        return service.upload(ruleKey, file);
     }
 
 }

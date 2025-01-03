@@ -25,10 +25,10 @@ public interface FileUploadRuleService {
     /**
      * 获取上传规则
      *
-     * @param slug 规则别名
+     * @param key 规则别名
      * @return FileUploadRuleVO
      */
-    FileUploadRuleVO getBySlug(String slug);
+    FileUploadRuleVO getByKey(String key);
 
     /**
      * 查询所有文件夹

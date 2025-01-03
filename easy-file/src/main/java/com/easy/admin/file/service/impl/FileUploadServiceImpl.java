@@ -31,8 +31,8 @@ public class FileUploadServiceImpl implements FileUploadService {
     private FileStorageService fileStorageService;
 
     @Override
-    public FileInfo upload(String ruleSlug, MultipartFile file) {
-        FileUploadRuleVO uploadRule = fileUploadRuleService.getBySlug(ruleSlug);
+    public FileInfo upload(String ruleKey, MultipartFile file) {
+        FileUploadRuleVO uploadRule = fileUploadRuleService.getByKey(ruleKey);
         if (uploadRule == null) {
             throw new EasyException("文件上传规则不存在");
         }
