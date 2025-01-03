@@ -1,18 +1,22 @@
 package com.easy.admin.sys.service.impl;
 
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.auth.common.constant.SessionConst;
+import com.easy.admin.auth.model.SysUser;
+import com.easy.admin.auth.model.vo.session.SessionUserVO;
+import com.easy.admin.auth.service.SysUserService;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.Response;
 import com.easy.admin.sys.common.constant.MailConst;
 import com.easy.admin.sys.dao.SysMailVerificationMapper;
 import com.easy.admin.sys.model.SysMailVerification;
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.sys.service.SysMailVerificationService;
-import com.easy.admin.auth.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,10 +60,29 @@ public class SysMailVerificationServiceImpl extends ServiceImpl<SysMailVerificat
         // 更新用户表中的邮箱
         if (sysUserService.setUserMail(sysUser.getId(), sysMailVerifies.getMail())) {
             remove(queryWrapper);
+            // 更新 Account-Session 中的用户信息
+            updateUserInfo(sysUser.getId(), sysMailVerifies.getMail());
         } else {
             throw new EasyException(Response.SHOW_TYPE_WARNING, "更新用户信息失败，请重试");
         }
         return true;
+    }
+
+    /**
+     * 更新 Account-Session 中的用户信息（邮箱）
+     *
+     * @param userId 用户id
+     * @param email  邮箱
+     */
+    private void updateUserInfo(String userId, String email) {
+        SaSession session = StpUtil.getSessionByLoginId(userId, false);
+        if (session != null) {
+            SessionUserVO sessionUserVO = (SessionUserVO) session.get(SessionConst.USER_SESSION_KEY);
+            if (sessionUserVO != null) {
+                sessionUserVO.setEmail(email);
+                session.set(SessionConst.USER_SESSION_KEY, sessionUserVO);
+            }
+        }
     }
 
     @Override

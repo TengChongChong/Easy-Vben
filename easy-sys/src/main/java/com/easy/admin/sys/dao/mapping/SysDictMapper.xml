@@ -50,7 +50,7 @@
     </select>
     <update id="updateDuplicateData">
         update sys_import_excel_temporary
-        set verification_results = concat(ifnull(verification_results, ''), '字典类型下已存在（', field2, '）字典;'),
+        set verification_results = concat(ifnull(verification_results, ''), '已存在字典类型为 ', field2, ' 的字典;'),
             verification_status  = #{status}
         where id in (
             select id from (

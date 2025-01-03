@@ -34,7 +34,7 @@ public class SessionUserVO implements Serializable {
     private String postId;
 
     /**
-     * 账号
+     * 用户名
      */
     private String username;
 
@@ -85,7 +85,7 @@ public class SessionUserVO implements Serializable {
     private Integer age;
 
     /**
-     * 账号来源
+     * 用户来源
      */
     private String source;
 

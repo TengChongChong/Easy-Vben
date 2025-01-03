@@ -113,12 +113,12 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
         SessionUserVO currentUser = SessionUtil.getCurrentUser();
         SysMailVerification sysMailVerifies = sysMailVerifiesService.saveData(String.valueOf(currentUser.getId()), email, MailConst.MAIL_BINDING_MAIL);
         if (sysMailVerifies != null) {
-            String url = "/#/auth/personal/center/mail-verifies/" + sysMailVerifies.getCode();
+            String url = "/#/auth/personal/mail-verifies/" + sysMailVerifies.getCode();
             String hideUsername = StrUtil.hide(currentUser.getUsername(), 1, currentUser.getUsername().length() - 1);
             Map<String, Object> params = new HashMap<>(2);
             params.put("url", url);
             params.put("username", hideUsername);
-            MailUtil.sendHtml(email, "账号" + hideUsername + "密保邮箱验证", MailTemplate.getContent("/mail/verify-mail.html", params));
+            MailUtil.sendHtml(email, "用户名" + hideUsername + "密保邮箱验证", MailTemplate.getContent("/mail/verify-mail.html", params));
             return true;
         }
         return false;
@@ -151,16 +151,22 @@ public class SysUserPersonalCenterServiceImpl implements SysUserPersonalCenterSe
     }
 
     @Override
-    public boolean bindingPhone(String phone, String captcha) {
+    public boolean bindingPhoneNumber(String phoneNumber, String captcha) {
         SessionUserVO currentUser = SessionUtil.getCurrentUser();
-        String redisCode = (String) RedisUtil.get(RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId());
+        String redisKey = RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId() + ":" + phoneNumber;
+        String redisCode = (String) RedisUtil.get(redisKey);
         if (StrUtil.isBlank(redisCode)) {
             throw new EasyException("验证码已过期，请重新获取");
         }
         if (!redisCode.equals(captcha)) {
             throw new EasyException("验证码错误，请重新输入");
         }
-        RedisUtil.del(RedisPrefix.BINDING_PHONE_VERIFICATION_CODE + currentUser.getId());
-        return sysUserService.setPhone(currentUser.getId(), phone);
+        RedisUtil.del(redisKey);
+        boolean isSuccess = sysUserService.setPhone(currentUser.getId(), phoneNumber);
+        if (isSuccess) {
+            currentUser.setPhoneNumber(phoneNumber);
+            SessionUtil.setCurrentUser(currentUser);
+        }
+        return isSuccess;
     }
 }

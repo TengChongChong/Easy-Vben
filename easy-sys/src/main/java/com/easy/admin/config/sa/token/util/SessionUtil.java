@@ -59,7 +59,8 @@ public class SessionUtil {
      * @param currentUser 当前用户
      */
     public static void setCurrentUser(SessionUserVO currentUser) {
-        setAttribute(SessionConst.USER_SESSION_KEY, currentUser);
+        // 将用户信息放到Account-Session中，当用户在多端登录时在一端修改信息，其他端获取到的用户信息也是最新的
+        StpUtil.getSession().set(SessionConst.USER_SESSION_KEY, currentUser);
     }
 
     /**
@@ -68,7 +69,7 @@ public class SessionUtil {
      * @return SessionUserVO
      */
     public static SessionUserVO getCurrentUser() {
-        return (SessionUserVO) getTokenSession().get(SessionConst.USER_SESSION_KEY);
+        return (SessionUserVO) StpUtil.getSession().get(SessionConst.USER_SESSION_KEY);
     }
 
     /**
@@ -79,13 +80,6 @@ public class SessionUtil {
      */
     public static boolean havRole(String roleCode) {
         return StpUtil.hasRole(roleCode);
-    }
-
-    /**
-     * 删除当前用户
-     */
-    public static void removeCurrentUser() {
-        removeAttribute(SessionConst.USER_SESSION_KEY);
     }
 
 }

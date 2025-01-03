@@ -10,8 +10,9 @@ public interface SysSmsCaptchaService {
     /**
      * 绑定手机短信验证码
      *
-     * @param phone 手机号
+     * @param phoneNumber         手机号
+     * @param captchaVerification 验证码
      * @return 验证码
      */
-    String bindingPhone(String phone);
+    String sendBindingPhoneNumberSms(String phoneNumber, String captchaVerification);
 }

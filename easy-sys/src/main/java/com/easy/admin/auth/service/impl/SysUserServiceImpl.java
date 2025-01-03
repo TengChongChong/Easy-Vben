@@ -170,7 +170,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public SysUserVO saveData(SysUserVO sysUserVO, boolean updateAuthorization) {
-        // 账号不能重复
+        // 用户名不能重复
         if (checkHaving(sysUserVO.getId(), "username", sysUserVO.getUsername())) {
             throw new EasyException(BusinessException.USER_REGISTERED);
         }
@@ -322,13 +322,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public boolean setUserMail(String userId, String mail) {
-        // 解绑该邮箱以前绑定的账号，防止一个邮箱绑定多个账号
+        // 解绑该邮箱以前绑定的用户名，防止一个邮箱绑定多个用户名
         UpdateWrapper<SysUser> untyingMail = new UpdateWrapper<>();
         untyingMail.eq("email", mail);
         untyingMail.set("email", null);
         update(untyingMail);
 
-        // 绑定新账号
+        // 绑定新用户
         UpdateWrapper<SysUser> updateWrapper = new UpdateWrapper<>();
         updateWrapper.set("email", mail);
         updateWrapper.eq("id", userId);

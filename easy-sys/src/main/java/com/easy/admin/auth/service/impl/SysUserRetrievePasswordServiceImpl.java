@@ -36,7 +36,7 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
     public boolean sendEmail(String username, String email) {
         SysUser sysUser = sysUserService.getSysUserMailAndPhoneByUserName(username);
         if (sysUser == null || StrUtil.isBlank(sysUser.getEmail()) || !sysUser.getEmail().equals(email)) {
-            throw new EasyException("账号与邮箱不匹配");
+            throw new EasyException("用户名与邮箱不匹配");
         }
         String hideUsername = StrUtil.hide(username, 1, username.length() - 1);
         // 验证码
@@ -46,7 +46,7 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
         Map<String, Object> params = new HashMap<>(2);
         params.put("code", code);
         params.put("username", hideUsername);
-        MailUtil.sendHtml(email, "账号" + hideUsername + "密码重置", MailTemplate.getContent("/mail/rest-password.html", params));
+        MailUtil.sendHtml(email, "用户名" + hideUsername + "密码重置", MailTemplate.getContent("/mail/rest-password.html", params));
         return true;
     }
 
@@ -54,7 +54,7 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
     public String sendSms(String username, String mobile) {
         SysUser sysUser = sysUserService.getSysUserMailAndPhoneByUserName(username);
         if (sysUser == null || StrUtil.isBlank(sysUser.getEmail()) || !sysUser.getPhoneNumber().equals(mobile)) {
-            throw new EasyException("账号与手机号不匹配");
+            throw new EasyException("用户名与手机号不匹配");
         }
         // 验证码
         String code = RandomUtil.randomNumbers(6);
@@ -67,7 +67,7 @@ public class SysUserRetrievePasswordServiceImpl implements SysUserRetrievePasswo
     @Override
     public boolean verifiesCode(String username, String code) {
         if (StrUtil.isBlank(username) || StrUtil.isBlank(code)) {
-            throw new EasyException("获取账号或验证码失败");
+            throw new EasyException("获取用户名或验证码失败");
         }
         String relCode = (String) RedisUtil.get(RedisPrefix.RESET_PASSWORD_VERIFICATION_CODE + username);
         // 缓存中有当前用户重置密码需要的验证码

@@ -36,9 +36,9 @@ public class SysUser extends Model<SysUser> implements Serializable {
      */
     private String postId;
     /**
-     * 账号
+     * 用户名
      */
-    @NotBlank(message = "账号不能为空")
+    @NotBlank(message = "用户名不能为空")
     private String username;
     /**
      * 昵称
@@ -76,7 +76,7 @@ public class SysUser extends Model<SysUser> implements Serializable {
     @NotNull(message = "状态不能为空")
     private String status;
     /**
-     * 账号来源
+     * 用户来源
      */
     private String source;
     /**

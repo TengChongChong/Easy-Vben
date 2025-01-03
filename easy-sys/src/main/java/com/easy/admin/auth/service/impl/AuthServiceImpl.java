@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResultVO loginAccount(LoginAccount loginAccount) {
 
-        // 账号密码校验 & 用户相关检查
+        // 用户名密码校验 & 用户相关检查
         SessionUserVO sessionUserVO = saTokenService.validateAccount(loginAccount);
 
         // 授权

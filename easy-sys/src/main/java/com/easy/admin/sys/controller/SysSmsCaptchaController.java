@@ -22,12 +22,13 @@ public class SysSmsCaptchaController {
     /**
      * 绑定手机短信验证码
      *
-     * @param phone 手机号
+     * @param phoneNumber         手机号
+     * @param captchaVerification 验证码
      * @return 验证码
      */
-    @GetMapping("/api/auth/sys/sms/captcha/binding/phone/captcha")
-    public String bindingPhone(String phone) {
+    @GetMapping("/api/auth/sys/sms/captcha/binding/phone/number")
+    public String sendBindingPhoneNumberSms(String phoneNumber, String captchaVerification) {
         // 注：此处仅为演示，实际场景勿返回验证码
-        return service.bindingPhone(phone);
+        return service.sendBindingPhoneNumberSms(phoneNumber, captchaVerification);
     }
 }

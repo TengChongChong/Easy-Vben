@@ -135,15 +135,10 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
                 isModifyCode = !oldDeptType.getCode().equals(sysDeptType.getCode());
             }
         }
+
         // 部门类型代码不能重复
-        QueryWrapper<SysDeptType> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("code", sysDeptType.getCode());
-        if (Validator.isNotEmpty(sysDeptType.getId())) {
-            queryWrapper.ne("id", sysDeptType.getId());
-        }
-        long count = baseMapper.selectCount(queryWrapper);
-        if (count > 0) {
-            throw new EasyException("部门类型代码 " + sysDeptType.getCode() + " 已存在");
+        if (checkHaving(sysDeptType.getId(), "code", sysDeptType.getCode())) {
+            throw new EasyException("已存在部门类型代码为 " + sysDeptType.getCode() + " 的类型");
         }
 
         if (sysDeptType.getOrderNo() == null) {
@@ -159,6 +154,27 @@ public class SysDeptTypeServiceImpl extends ServiceImpl<SysDeptTypeMapper, SysDe
             }
         }
         return sysDeptTypeVO;
+    }
+
+    /**
+     * 检查数据是否已经存在
+     *
+     * @param id    数据id
+     * @param field 字段
+     * @param value 值
+     * @return true/false
+     */
+    private boolean checkHaving(String id, String field, String value) {
+        if (Validator.isNotEmpty(value)) {
+            QueryWrapper<SysDeptType> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq(field, value);
+            if (StrUtil.isNotBlank(id)) {
+                queryWrapper.ne("id", id);
+            }
+            long count = baseMapper.selectCount(queryWrapper);
+            return count > 0;
+        }
+        return false;
     }
 
     @Override

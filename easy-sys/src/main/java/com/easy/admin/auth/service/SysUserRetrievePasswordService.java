@@ -10,8 +10,8 @@ public interface SysUserRetrievePasswordService {
     /**
      * 发送重置密码邮件
      *
-     * @param username 账号
-     * @param email     邮箱
+     * @param username 用户名
+     * @param email    邮箱
      * @return true/false
      */
     boolean sendEmail(String username, String email);
@@ -19,8 +19,8 @@ public interface SysUserRetrievePasswordService {
     /**
      * 发送重置密码短信
      *
-     * @param username 账号
-     * @param mobile     手机号
+     * @param username 用户名
+     * @param mobile   手机号
      * @return 验证码
      */
     String sendSms(String username, String mobile);
@@ -28,7 +28,7 @@ public interface SysUserRetrievePasswordService {
     /**
      * 验证验证码
      *
-     * @param username 账号
+     * @param username 用户名
      * @param code     验证码
      * @return true/false
      */
@@ -37,7 +37,7 @@ public interface SysUserRetrievePasswordService {
     /**
      * 重置密码
      *
-     * @param username 账号
+     * @param username 用户名
      * @param code     校验码
      * @param password 新密码
      * @return true/false

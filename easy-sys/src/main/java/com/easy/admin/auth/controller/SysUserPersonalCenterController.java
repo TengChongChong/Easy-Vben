@@ -1,7 +1,6 @@
 package com.easy.admin.auth.controller;
 
 import cn.hutool.json.JSONObject;
-import com.easy.admin.auth.model.SysUser;
 import com.easy.admin.auth.model.vo.ChangePasswordVO;
 import com.easy.admin.auth.model.vo.SysUserVO;
 import com.easy.admin.auth.service.SysUserPersonalCenterService;
@@ -32,7 +31,7 @@ public class SysUserPersonalCenterController extends BaseController {
      * @return SessionUserVO
      */
     @GetMapping("current/user")
-    public SysUser currentUser() {
+    public SysUserVO currentUser() {
         return service.getCurrentUser();
     }
 
@@ -76,7 +75,7 @@ public class SysUserPersonalCenterController extends BaseController {
      * @return true/false
      */
     @PostMapping("phone")
-    public boolean bindingPhone(@RequestBody JSONObject json) {
-        return service.bindingPhone(json.getStr("phone"), json.getStr("captcha"));
+    public boolean bindingPhoneNumber(@RequestBody JSONObject json) {
+        return service.bindingPhoneNumber(json.getStr("phoneNumber"), json.getStr("captcha"));
     }
 }

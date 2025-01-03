@@ -54,7 +54,7 @@ public interface SysUserService {
     /**
      * 获取用户信息，用于登录
      *
-     * @param username 账号|邮箱|手机号
+     * @param username 用户名|邮箱|手机号
      * @return SessionUserVO
      */
     SessionUserVO getSessionUserByUserName(String username);
@@ -95,7 +95,7 @@ public interface SysUserService {
     /**
      * 重置密码
      *
-     * @param username 账号，请确认是用户本人的username
+     * @param username 用户名，请确认是用户本人的username
      * @param password 新密码
      * @return true/false
      */
@@ -120,17 +120,17 @@ public interface SysUserService {
     int updateUserLastLoginDate(String id, Date lastLogin);
 
     /**
-     * 根据账号查询用户
+     * 根据用户名查询用户
      *
-     * @param username 账号
+     * @param username 用户名
      * @return SysUser
      */
     SysUser getSysUserByUserName(String username);
 
     /**
-     * 根据账号查询用户邮箱
+     * 根据用户名查询用户邮箱
      *
-     * @param username 账号
+     * @param username 用户名
      * @return SysUser
      */
     SysUser getSysUserMailAndPhoneByUserName(String username);

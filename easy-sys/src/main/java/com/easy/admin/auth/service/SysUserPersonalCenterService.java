@@ -37,11 +37,11 @@ public interface SysUserPersonalCenterService {
     /**
      * 申请绑定密保邮箱
      *
-     * @param phone   手机号
-     * @param captcha 验证码
+     * @param phoneNumber 手机号
+     * @param captcha     验证码
      * @return true/false
      */
-    boolean bindingPhone(String phone, String captcha);
+    boolean bindingPhoneNumber(String phoneNumber, String captcha);
 
     /**
      * 修改当前用户密码

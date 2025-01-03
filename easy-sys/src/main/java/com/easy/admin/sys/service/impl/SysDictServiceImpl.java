@@ -109,7 +109,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     public SysDict add(String parentId, String dictType) {
         SysDict sysDict = new SysDict();
         sysDict.setStatus(CommonStatus.ENABLE.getCode());
-        sysDict.setDictType(dictType);
+        sysDict.setDictType(StrUtil.isBlank(dictType) ? null : dictType);
         if (parentId != null) {
             SysDict parentDict = baseMapper.selectById(parentId);
             sysDict.setParentCode(parentDict.getCode());

@@ -156,12 +156,44 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (StrUtil.isBlank(sysPermission.getId()) && sysPermission.getOrderNo() == null) {
             sysPermission.setOrderNo(baseMapper.getMaxOrderNo(sysPermission.getParentId()) + 1);
         }
+
+        // 检查菜单path是否已存在
+        if (checkHaving(sysPermission.getId(), "path", sysPermission.getPath())) {
+            throw new EasyException("已存在地址为 " + sysPermission.getPath() + " 的菜单");
+        }
+
+        // 检查菜单name是否已存在
+        if (checkHaving(sysPermission.getId(), "name", sysPermission.getName())) {
+            throw new EasyException("已存在组件名称为 " + sysPermission.getName() + " 的菜单");
+        }
+
         boolean isSuccess = saveOrUpdate(sysPermission);
         if (isSuccess) {
             // 删除缓存的角色数据
             RedisUtil.delByPrefix(RedisPrefix.SYS_ROLE);
         }
         return sysPermission;
+    }
+
+    /**
+     * 检查数据是否已经存在
+     *
+     * @param id    数据id
+     * @param field 字段
+     * @param value 值
+     * @return true/false
+     */
+    private boolean checkHaving(String id, String field, String value) {
+        if (Validator.isNotEmpty(value)) {
+            QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq(field, value);
+            if (StrUtil.isNotBlank(id)) {
+                queryWrapper.ne("id", id);
+            }
+            long count = baseMapper.selectCount(queryWrapper);
+            return count > 0;
+        }
+        return false;
     }
 
     @Override

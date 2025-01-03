@@ -48,9 +48,9 @@ public class SysUserRetrievePasswordController extends BaseController {
     }
 
     /**
-     * 验证账号与校验码是否匹配
+     * 验证用户名与校验码是否匹配
      *
-     * @param username 账号
+     * @param username 用户名
      * @param code     校验码
      * @return true/false
      */
@@ -62,9 +62,9 @@ public class SysUserRetrievePasswordController extends BaseController {
     /**
      * 重设密码
      *
-     * @param username 账号
+     * @param username 用户名
      * @param code     校验码
-     * @param json {password: ''}
+     * @param json     {password: ''}
      * @return true/false
      */
     @PostMapping("reset/password/{username}/{code}")
