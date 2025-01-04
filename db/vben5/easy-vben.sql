@@ -3720,44 +3720,46 @@ COMMIT;
 -- ----------------------------
 -- Table structure for file_upload_rule
 -- ----------------------------
-DROP TABLE IF EXISTS `file_upload_rule`;
-CREATE TABLE `file_upload_rule` (
-  `id` varchar(32) NOT NULL COMMENT '主键',
-  `name` varchar(32) NOT NULL COMMENT '名称',
-  `slug` varchar(32) NOT NULL COMMENT '别名',
-  `category` varchar(32) NOT NULL COMMENT '分类',
-  `directory` varchar(64) DEFAULT NULL COMMENT '存储路径',
-  `lower_limit` int(32) NOT NULL DEFAULT 1 COMMENT '文件最小长度，单位 kb',
-  `upper_limit` int(32) NOT NULL COMMENT '文件最大长度，单位 kb',
-  `suffix` varchar(255) NOT NULL COMMENT '文件后缀',
-  `status` varchar(32) NOT NULL COMMENT '状态',
-  `tenant_id` varchar(32) DEFAULT NULL COMMENT '租户Id',
-  `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁',
-  `dept_id` varchar(32) NOT NULL COMMENT '部门Id',
-  `create_user` varchar(32) NOT NULL COMMENT '创建人',
-  `create_date` datetime NOT NULL COMMENT '创建时间',
-  `edit_user` varchar(32) NOT NULL COMMENT '更新人',
-  `edit_date` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sys_file_upload_rule_pk` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='文件上传规则';
+DROP TABLE IF EXISTS file_upload_rule;
+CREATE TABLE file_upload_rule(
+    id VARCHAR(32) NOT NULL   COMMENT '主键' ,
+    name VARCHAR(32) NOT NULL   COMMENT '名称' ,
+    rule_key VARCHAR(32) NOT NULL   COMMENT 'Key' ,
+    category VARCHAR(32) NOT NULL   COMMENT '分类' ,
+    directory VARCHAR(64)    COMMENT '存储路径' ,
+    lower_limit INT(32) NOT NULL  DEFAULT 1 COMMENT '文件最小长度，单位 kb' ,
+    upper_limit INT(32) NOT NULL   COMMENT '文件最大长度，单位 kb' ,
+    suffix VARCHAR(255) NOT NULL   COMMENT '文件后缀' ,
+    enable_image_compression VARCHAR(1)    COMMENT '启用图片自动压缩' ,
+    max_width INT    COMMENT '最大宽度' ,
+    max_height INT    COMMENT '最大高度' ,
+    status VARCHAR(32) NOT NULL   COMMENT '状态' ,
+    tenant_id VARCHAR(32)    COMMENT '租户Id' ,
+    version INT NOT NULL  DEFAULT 0 COMMENT '乐观锁' ,
+    dept_id VARCHAR(32) NOT NULL   COMMENT '部门Id' ,
+    create_user VARCHAR(32) NOT NULL   COMMENT '创建人' ,
+    create_date DATETIME NOT NULL   COMMENT '创建时间' ,
+    edit_user VARCHAR(32) NOT NULL   COMMENT '更新人' ,
+    edit_date DATETIME NOT NULL   COMMENT '更新时间' ,
+    PRIMARY KEY (id)
+)  COMMENT = '文件上传规则';
 
 -- ----------------------------
 -- Records of file_upload_rule
 -- ----------------------------
 BEGIN;
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1725407845312217090', '图片', 'default-image', 'default', 'easy-default', 1, 5120, 'jpg,jpeg,png,gif,bmp', '1', NULL, 5, '1', '1', '2023-11-17 14:57:41', '1', '2024-11-01 09:17:12');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1725412941634846721', '视频', 'default-video', 'default', 'easy-default', 1, 20480, 'mp4', '1', NULL, 1, '1', '1', '2023-11-17 15:17:56', '1', '2023-12-27 13:25:02');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1725413209940279297', '数据导入', 'sys-import-data-excel', 'sys', 'easy-vben', 1, 10240, 'xlsx,xls', '1', NULL, 0, '1', '1', '2023-11-17 15:19:00', '1', '2023-11-17 15:19:00');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1725413723876737025', '用户头像', 'sys-user-avatar', 'sys', 'easy-vben', 1, 1024, 'jpg,png', '1', NULL, 0, '1', '1', '2023-11-17 15:21:03', '1', '2023-11-17 15:21:03');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1739847435703816193', '上传示例', 'sample-file', 'default', 'easy-sample', 1, 1024, 'jpg,png,gif', '1', NULL, 2, '1', '1', '2023-12-27 11:15:28', '1', '2023-12-27 13:25:12');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740245876728684546', '资源库', 'cms-media', 'cms', 'easy-cms', 1, 10240, 'jpg,jpeg,png,gif,bmp,mp4,mp3,ogg,wav,doc,docx,csv,xls,xlsx,ppt,pptx,pdf,txt,zip,rar,7z', '1', NULL, 3, '1', '1', '2023-12-28 13:38:43', '1', '2024-07-27 21:16:46');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740250664577134594', '资源库 - 图片', 'cms-media-image', 'cms', 'easy-cms', 1, 3072, 'jpg,jpeg,png,gif,bmp', '1', NULL, 3, '1', '1', '2023-12-28 13:57:45', '1', '2023-12-28 14:02:49');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740250835838955522', '资源库 - 音频', 'cms-media-audio', 'cms', 'easy-cms', 1, 10240, 'mp3,ogg,wav', '1', NULL, 1, '1', '1', '2023-12-28 13:58:26', '1', '2023-12-28 13:58:37');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740251065674231809', '资源库 - 视频', 'cms-media-video', 'cms', 'easy-cms', 1, 20480, 'mp4', '1', NULL, 0, '1', '1', '2023-12-28 13:59:21', '1', '2023-12-28 13:59:21');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740251232112603138', '资源库 - 文档', 'cms-media-doc', 'cms', 'easy-cms', 1, 20480, 'doc,docx,csv,xls,xlsx,ppt,pptx,pdf,txt', '1', NULL, 0, '1', '1', '2023-12-28 14:00:00', '1', '2023-12-28 14:00:00');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740251548946132994', '资源库 - 其他', 'cms-media-other', 'cms', 'easy-cms', 1, 10240, 'zip,rar,7z', '1', NULL, 0, '1', '1', '2023-12-28 14:01:16', '1', '2023-12-28 14:01:16');
-INSERT INTO `file_upload_rule` (`id`, `name`, `slug`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1831244776621920258', '导入流程模型', 'import-model', 'activiti', 'easy-activiti', 1, 1024, 'xml', '1', NULL, 4, '1', '1', '2024-09-04 16:15:52', '1', '2024-11-01 14:27:30');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1725407845312217090', '图片', 'default-image', 'default', 'easy-default', 1, 5120, 'jpg,jpeg,png,gif,bmp', '1', NULL, 5, '1', '1', '2023-11-17 14:57:41', '1', '2024-11-01 09:17:12');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1725412941634846721', '视频', 'default-video', 'default', 'easy-default', 1, 20480, 'mp4', '1', NULL, 1, '1', '1', '2023-11-17 15:17:56', '1', '2023-12-27 13:25:02');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1725413209940279297', '数据导入', 'sys-import-data-excel', 'sys', 'easy-vben', 1, 10240, 'xlsx,xls', '1', NULL, 0, '1', '1', '2023-11-17 15:19:00', '1', '2023-11-17 15:19:00');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1725413723876737025', '用户头像', 'sys-user-avatar', 'sys', 'easy-vben', 1, 1024, 'jpg,png', '1', NULL, 0, '1', '1', '2023-11-17 15:21:03', '1', '2023-11-17 15:21:03');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1739847435703816193', '上传示例', 'sample-file', 'default', 'easy-sample', 1, 1024, 'jpg,png,gif', '1', NULL, 2, '1', '1', '2023-12-27 11:15:28', '1', '2023-12-27 13:25:12');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740245876728684546', '资源库', 'cms-media', 'cms', 'easy-cms', 1, 10240, 'jpg,jpeg,png,gif,bmp,mp4,mp3,ogg,wav,doc,docx,csv,xls,xlsx,ppt,pptx,pdf,txt,zip,rar,7z', '1', NULL, 3, '1', '1', '2023-12-28 13:38:43', '1', '2024-07-27 21:16:46');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740250664577134594', '资源库 - 图片', 'cms-media-image', 'cms', 'easy-cms', 1, 3072, 'jpg,jpeg,png,gif,bmp', '1', NULL, 3, '1', '1', '2023-12-28 13:57:45', '1', '2023-12-28 14:02:49');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740250835838955522', '资源库 - 音频', 'cms-media-audio', 'cms', 'easy-cms', 1, 10240, 'mp3,ogg,wav', '1', NULL, 1, '1', '1', '2023-12-28 13:58:26', '1', '2023-12-28 13:58:37');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740251065674231809', '资源库 - 视频', 'cms-media-video', 'cms', 'easy-cms', 1, 20480, 'mp4', '1', NULL, 0, '1', '1', '2023-12-28 13:59:21', '1', '2023-12-28 13:59:21');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740251232112603138', '资源库 - 文档', 'cms-media-doc', 'cms', 'easy-cms', 1, 20480, 'doc,docx,csv,xls,xlsx,ppt,pptx,pdf,txt', '1', NULL, 0, '1', '1', '2023-12-28 14:00:00', '1', '2023-12-28 14:00:00');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1740251548946132994', '资源库 - 其他', 'cms-media-other', 'cms', 'easy-cms', 1, 10240, 'zip,rar,7z', '1', NULL, 0, '1', '1', '2023-12-28 14:01:16', '1', '2023-12-28 14:01:16');
+INSERT INTO `file_upload_rule` (`id`, `name`, `rule_key`, `category`, `directory`, `lower_limit`, `upper_limit`, `suffix`, `status`, `tenant_id`, `version`, `dept_id`, `create_user`, `create_date`, `edit_user`, `edit_date`) VALUES ('1831244776621920258', '导入流程模型', 'import-model', 'activiti', 'easy-activiti', 1, 1024, 'xml', '1', NULL, 4, '1', '1', '2024-09-04 16:15:52', '1', '2024-11-01 14:27:30');
 COMMIT;
 
 -- ----------------------------
