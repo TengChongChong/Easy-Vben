@@ -61,6 +61,18 @@ public class FileUploadRule extends Model<FileUploadRule> implements Serializabl
     @NotBlank(message = "文件后缀不能为空")
     private String suffix;
     /**
+     * 启用图片自动压缩
+     */
+    private String enableImageCompression;
+    /**
+     * 最大宽度
+     */
+    private Integer maxWidth;
+    /**
+     * 最大高度
+     */
+    private Integer maxHeight;
+    /**
      * 状态
      */
     private String status;

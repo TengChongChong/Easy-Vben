@@ -12,6 +12,9 @@
         <result column="lower_limit" property="lowerLimit" />
         <result column="upper_limit" property="upperLimit" />
         <result column="suffix" property="suffix" />
+        <result column="enable_image_compression" property="enableImageCompression" />
+        <result column="max_width" property="maxWidth" />
+        <result column="max_height" property="maxHeight" />
         <result column="status" property="status" />
         <result column="tenant_id" property="tenantId" />
         <result column="version" property="version" />
@@ -21,7 +24,8 @@
         <result column="edit_date" property="editDate" />
     </resultMap>
     <select id="select" resultType="com.easy.admin.file.model.FileUploadRule">
-        select t.id, t.name, t.rule_key, t.category, t.directory, t.suffix, t.lower_limit, t.upper_limit, t.status, su_edit_user.nickname as edit_user, t.edit_date
+        select t.id, t.name, t.rule_key, t.category, t.directory, t.suffix, t.enable_image_compression, t.max_width, t.max_height,
+               t.lower_limit, t.upper_limit, t.status, su_edit_user.nickname as edit_user, t.edit_date
         from file_upload_rule t
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
         <where>
@@ -30,13 +34,15 @@
     </select>
 
     <select id="getByKey" resultType="com.easy.admin.file.model.vo.FileUploadRuleVO">
-        select t.id, t.name, t.rule_key, t.category, t.directory, t.lower_limit, t.upper_limit, t.suffix, t.status
+        select t.id, t.name, t.rule_key, t.category, t.directory, t.lower_limit, t.upper_limit, t.suffix,
+               t.enable_image_compression, t.max_width, t.max_height, t.status
         from file_upload_rule t
         where t.rule_key = #{key}
     </select>
 
     <select id="getById" resultType="com.easy.admin.file.model.FileUploadRule">
-        select t.id, t.name, t.rule_key, t.category, t.directory, t.lower_limit, t.upper_limit, t.suffix, t.status, t.tenant_id,
+        select t.id, t.name, t.rule_key, t.category, t.directory, t.lower_limit, t.upper_limit, t.suffix,
+               t.enable_image_compression, t.max_width, t.max_height, t.status, t.tenant_id,
                t.version
         from file_upload_rule t
         where t.id = #{id}

@@ -111,6 +111,7 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
         fileUploadRule.setUpperLimit(10240);
         //fileUploadRule.setCategory("default");
         fileUploadRule.setStatus(CommonStatus.ENABLE.getCode());
+        fileUploadRule.setEnableImageCompression(CommonStatus.DISABLE.getCode());
         return fileUploadRule;
     }
 

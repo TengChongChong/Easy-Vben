@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * 文件上传
@@ -29,6 +30,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Autowired
     private FileStorageService fileStorageService;
+
 
     @Override
     public FileInfo upload(String ruleKey, MultipartFile file) {
@@ -79,6 +81,18 @@ public class FileUploadServiceImpl implements FileUploadService {
         // 存放路径，以目录分隔符（/）结尾
         String path = uploadRule.getDirectory() + File.separator + FileUtil.getTemporaryPath();
 
-        return fileStorageService.of(file).setPath(path).upload();
+        if (CommonStatus.ENABLE.getCode().equals(uploadRule.getEnableImageCompression()) && isImage(suffix)) {
+            return fileStorageService.of(file).setPath(path)
+                    .image(img -> img.size(uploadRule.getMaxWidth(), uploadRule.getMaxHeight()))
+                    .upload();
+        } else {
+            return fileStorageService.of(file).setPath(path).upload();
+        }
+    }
+
+
+    private boolean isImage(String suffix) {
+        List<String> imageSuffixList = List.of("jpg", "jpeg");
+        return imageSuffixList.contains(suffix);
     }
 }
