@@ -27,13 +27,14 @@ public interface SysUserService {
     /**
      * 根据关键字搜索用户
      *
-     * @param keyword 关键字
-     * @param range   数据范围，可以选择哪些用户 'all' | 'currentDept'
-     * @param deptId  部门id，如传入range='currentDept'，此参数无效
-     * @param page    分页
+     * @param keyword  关键字
+     * @param range    数据范围，可以选择哪些用户 'all' | 'currentDept' | 'role'
+     * @param deptId   部门Id （非必须）
+     * @param roleCode 角色标识（非必须）
+     * @param page     分页
      * @return Page<SysUser>
      */
-    Page<SysUserVO> search(String keyword, String range, String deptId, Page<SysUserVO> page);
+    Page<SysUserVO> search(String keyword, String range, String deptId, String roleCode, Page<SysUserVO> page);
 
     /**
      * 获取指定用户信息

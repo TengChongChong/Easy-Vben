@@ -115,17 +115,19 @@ public class SysUserController extends BaseController {
     /**
      * 查询用户，用于用户选择
      *
-     * @param keyword 关键字
-     * @param range   数据范围，可以选择哪些用户 'all' | 'currentDept'
-     * @param deptId  部门id，如传入range='currentDept'，此参数无效
+     * @param keyword  关键字
+     * @param range    数据范围，可以选择哪些用户 'all' | 'currentDept' | 'role'
+     * @param deptId   部门Id （非必须）
+     * @param roleCode 角色标识（非必须）
      * @return Page<SysUser>
      */
     @GetMapping("search")
     public Page<SysUserVO> search(@RequestParam(value = "keyword", required = false) String keyword,
                                   @RequestParam(value = "range", required = false) String range,
                                   @RequestParam(value = "deptId", required = false) String deptId,
+                                  @RequestParam(value = "roleCode", required = false) String roleCode,
                                   Page<SysUserVO> page) {
-        return service.search(keyword, range, deptId, page);
+        return service.search(keyword, range, deptId, roleCode, page);
     }
 
     /**

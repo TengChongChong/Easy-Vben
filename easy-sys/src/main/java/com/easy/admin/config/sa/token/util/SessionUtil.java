@@ -59,6 +59,8 @@ public class SessionUtil {
      * @param currentUser 当前用户
      */
     public static void setCurrentUser(SessionUserVO currentUser) {
+        StpUtil.getTokenSession().setLoginId(currentUser.getId());
+
         // 将用户信息放到Account-Session中，当用户在多端登录时在一端修改信息，其他端获取到的用户信息也是最新的
         StpUtil.getSession().set(SessionConst.USER_SESSION_KEY, currentUser);
     }

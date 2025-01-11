@@ -1,6 +1,7 @@
 package com.easy.admin.config.sa.token.interceptor;
 
 import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
 import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.config.sa.token.service.SaTokenService;
@@ -22,7 +23,7 @@ public class CheckSessionNeedUpdateRoleAndPermissionInterceptor {
     private SaTokenService saTokenService;
 
     public void check() {
-        SaSession session = SessionUtil.getTokenSession();
+        SaSession session = StpUtil.getSession();
         if (session.has(SessionConst.NEED_UPDATE_ROLE_AND_PERMISSION)) {
             SessionUserVO sessionUser = SessionUtil.getCurrentUser();
             // 重新获取授权

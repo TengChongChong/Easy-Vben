@@ -213,17 +213,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     private void addNeedUpdateRoleAndPermission(List<String> roleIds) {
-        // 所以token
-        List<String> tokenList = StpUtil.searchTokenValue("", 0, -1, true);
+        // 所有 token
+        List<String> tokenList = StpUtil.searchSessionId("", 0, -1, true);
         for (String token : tokenList) {
             String realToken = token.contains(":") ? token.substring(token.lastIndexOf(":") + 1) : token;
-            SaSession session = StpUtil.getTokenSessionByToken(realToken);
-
+            SaSession accountSession = StpUtil.getSessionByLoginId(realToken);
             // token 中的用户信息
-            SessionUserVO sessionUserVO = (SessionUserVO) session.get(SessionConst.USER_SESSION_KEY);
-            if (isNeedUpdate(sessionUserVO.getRoleList(), roleIds)) {
+            SessionUserVO sessionUserVO = (SessionUserVO) accountSession.get(SessionConst.USER_SESSION_KEY);
+            if (sessionUserVO != null && isNeedUpdate(sessionUserVO.getRoleList(), roleIds)) {
                 // 需要标记待更新
-                session.set(SessionConst.NEED_UPDATE_ROLE_AND_PERMISSION, true);
+                accountSession.set(SessionConst.NEED_UPDATE_ROLE_AND_PERMISSION, true);
             }
         }
     }

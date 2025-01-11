@@ -74,6 +74,8 @@
         from sys_user u
             left join sys_dept sd on sd.id = u.dept_id
             left join sys_dept_type sdt on sdt.code = sd.type_code
+            left join sys_user_role sur on sur.user_id = u.id
+            left join sys_role sr on sr.id = sur.role_id
         <where>
             ${ew.sqlSegment}
         </where>

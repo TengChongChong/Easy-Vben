@@ -93,10 +93,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Page<SysUserVO> search(String keyword, String range, String deptId, Page<SysUserVO> page) {
+    public Page<SysUserVO> search(String keyword, String range, String deptId, String roleCode, Page<SysUserVO> page) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+
+
         if ("currentDept".equals(range)) {
             deptId = SessionUtil.getCurrentUser().getDeptId();
+        } else if ("role".equals(range)) {
+            queryWrapper.eq("sr.code", roleCode);
         }
         if (StrUtil.isNotBlank(deptId)) {
             queryWrapper.eq("u.dept_id", deptId);
