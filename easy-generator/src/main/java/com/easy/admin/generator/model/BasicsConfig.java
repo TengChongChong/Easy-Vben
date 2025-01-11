@@ -71,6 +71,10 @@ public class BasicsConfig {
      */
     private String menuName;
     /**
+     * 上级菜单
+     */
+    private String menuParentId;
+    /**
      * 权限标识
      */
     private String permissionCode;

@@ -4,7 +4,7 @@ import type { Page } from '#/api/base/model/page-model';
 <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
 import type { TreeNodeModel } from '#/api/base/model/tree-model';
 <% } %>
-import { ${basicsConfig.modelName}, ${basicsConfig.modelName}VO } from '${modelTsPath}';
+import type { ${basicsConfig.modelName}, ${basicsConfig.modelName}VO } from '${modelTsPath}';
 
 import { requestClient } from '#/api/request';
 
@@ -89,10 +89,7 @@ export function removeApi(ids: string) {
  * @param params 表单数据
  */
 export function saveApi(params: ${basicsConfig.modelName}VO) {
-  return requestClient.post<${basicsConfig.modelName}VO>({
-    url: BASE_URL,
-    data: params,
-  });
+  return requestClient.post<${basicsConfig.modelName}VO>(BASE_URL, params);
 }
 
 <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
@@ -102,10 +99,7 @@ export function saveApi(params: ${basicsConfig.modelName}VO) {
  * @param params 表单数据
  */
 export function saveOrderApi(params: ${basicsConfig.modelName}[]) {
-  return requestClient.post<${basicsConfig.modelName}>({
-    url: `\${BASE_URL}/order`,
-    data: params,
-  });
+  return requestClient.post<${basicsConfig.modelName}>(`\${BASE_URL}/order`, params);
 }
 <% } %>
 <% } %>
@@ -117,8 +111,7 @@ export function saveOrderApi(params: ${basicsConfig.modelName}[]) {
  * @param params 查询条件
  */
 export function exportDataApi(params: ${basicsConfig.modelName}VO) {
-  return requestClient.get<string>({
-    url: `\${BASE_URL}/export/data`,
+  return requestClient.get<string>(`\${BASE_URL}/export/data`, {
     params,
   });
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ${basicsConfig.modelName} } from '${modelTsPath!}';
+import type { ${basicsConfig.modelName} } from '${modelTsPath!}';
 
 import { ref } from 'vue';
 
@@ -37,7 +37,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       componentProps: {
         showTime: true,
       },
-      <% } else if(item.componentType == 'InputTextArea') { %>
+      <% } else if(item.componentType == 'Textarea') { %>
       componentProps: {
         autoSize: {
           minRows: 2,

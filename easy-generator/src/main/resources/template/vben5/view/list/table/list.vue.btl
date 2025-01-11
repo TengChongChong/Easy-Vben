@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import { ${basicsConfig.modelName} } from '${modelTsPath!}';
+import type { ${basicsConfig.modelName} } from '${modelTsPath!}';
+
+import { ref, unref } from 'vue';
+
 import { Page, useVben${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} } from '@vben/common-ui';
 
 import { Space } from 'ant-design-vue';
@@ -10,6 +13,9 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath!}';
 
 import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '#/components/button';
+<% if(basicsConfig.isGeneratorMethodsExport){ %>
+import { downloadFileById } from '#/util/download';
+<% } %>
 
 import { initColumns } from './data';
 import Input${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} from './input.vue';
@@ -88,10 +94,7 @@ function handleEdit(id: string) {
 const handelExportData = async () => {
   exportBtnLoading.value = true;
   try {
-    await exportDataApi({
-      dictType: unref(dictType),
-      ...(await gridApi.formApi.getValues()),
-    }).then((id) => {
+    await exportDataApi(await gridApi.formApi.getValues()).then((id) => {
       downloadFileById(id);
     });
   } catch (error) {

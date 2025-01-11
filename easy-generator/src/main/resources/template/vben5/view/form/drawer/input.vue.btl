@@ -9,7 +9,7 @@ import {
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { ${basicsConfig.modelName} } from '${modelTsPath!}';
+import type { ${basicsConfig.modelName} } from '${modelTsPath!}';
 import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath!}';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
@@ -36,7 +36,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       componentProps: {
         showTime: true,
       },
-      <% } else if(item.componentType == 'InputTextArea') { %>
+      <% } else if(item.componentType == 'Textarea') { %>
       componentProps: {
         autoSize: {
           minRows: 2,

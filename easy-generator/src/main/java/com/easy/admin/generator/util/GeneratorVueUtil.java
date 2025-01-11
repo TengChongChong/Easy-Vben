@@ -97,7 +97,8 @@ public class GeneratorVueUtil {
         if (basicsConfig.isGeneratorMethodsAdd()) {
             buttonArray.add(buttonPrefix + "ButtonAdd");
             buttonArray.add(buttonPrefix + "ButtonEdit");
-            if (GeneratorListTemplateConst.TREE_TABLE.equals(basicsConfig.getListGeneratorTemplate())) {
+            if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION)) &&
+                    GeneratorListTemplateConst.TREE_TABLE.equals(basicsConfig.getListGeneratorTemplate())) {
                 buttonArray.add(buttonPrefix + "ButtonAddSub");
             }
         }

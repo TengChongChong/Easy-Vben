@@ -28,12 +28,14 @@ import com.easy.admin.generator.model.ImportCellConfig;
 import com.easy.admin.generator.service.GeneratorService;
 import com.easy.admin.generator.type.EasyTypeConvertHandler;
 import com.easy.admin.sys.common.constant.OpenModeConst;
+import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.common.status.ProfilesActiveStatus;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
+import com.easy.admin.util.SysConfigUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,17 +143,24 @@ public class GeneratorServiceImpl implements GeneratorService {
         if (sysPermissionsService.hasMenu(generatorConfig.getBasicsConfig().getMenuName())) {
             return;
         }
+        String listComponent;
+        if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
+            listComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/List.vue";
+        } else {
+            listComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/list";
+        }
         SysPermission basePermission = getNewMenu(
                 generatorConfig.getBasicsConfig().getMenuName(),
                 PermissionType.MENU.getCode(),
                 WhetherConst.YES,
                 generatorConfig.getBasicsConfig().getPermissionCode() + ":select",
                 generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/list",
-                generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/List.vue"
+                listComponent
         );
         basePermission.setParentId("0");
         basePermission.setExternalLink(WhetherConst.NO);
         basePermission.setType(PermissionType.MENU.getCode());
+        basePermission.setParentId(generatorConfig.getBasicsConfig().getMenuParentId());
         sysPermissionsService.saveData(basePermission);
         if (StrUtil.isNotBlank(generatorConfig.getBasicsConfig().getPermissionCode())) {
             // 如果权限标识不为空,保存方法权限
@@ -180,13 +189,19 @@ public class GeneratorServiceImpl implements GeneratorService {
                 sysPermissionsService.saveData(savePermission);
             }
             if (GeneratorFormTemplateConst.PAGE.equals(generatorConfig.getBasicsConfig().getFormGeneratorTemplate())) {
+                String inputComponent;
+                if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
+                    inputComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/Input.vue";
+                } else {
+                    inputComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/input";
+                }
                 SysPermission savePermission = getNewMenu(
                         "详情",
                         PermissionType.MENU.getCode(),
                         WhetherConst.NO,
                         null,
                         generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/input",
-                        generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/Input.vue"
+                        inputComponent
                 );
                 savePermission.setParentId(basePermission.getId());
                 sysPermissionsService.saveData(savePermission);

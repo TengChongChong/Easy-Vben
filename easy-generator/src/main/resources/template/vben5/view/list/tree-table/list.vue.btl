@@ -1,17 +1,19 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import { ${basicsConfig.modelName} } from '${modelTsPath!}';
+import type { ${basicsConfig.modelName} } from '${modelTsPath!}';
+
+import { ref, unref } from 'vue';
+
 import { Page, useVben${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} } from '@vben/common-ui';
 
 import { Button, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath!}';
 
 import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '#/components/button';
 import { LucideListOrdered, LucideMinus, LucidePlus } from '#/components/icons';
-
+import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath!}';
 import { initColumns } from './data';
 import Input${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} from './input.vue';
 import Order${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} from './order.vue';
@@ -130,7 +132,6 @@ const handelExportData = async () => {
   exportBtnLoading.value = true;
   try {
     await exportDataApi({
-      dictType: unref(dictType),
       ...(await gridApi.formApi.getValues()),
     }).then((id) => {
       downloadFileById(id);
@@ -209,7 +210,7 @@ const handelExportData = async () => {
           size="small"
           text="新增下级"
           type="link"
-          @click="handleCreate"
+          @click="handleCreate(row.id)"
         />
         <% } else { %>
         <ButtonAdd

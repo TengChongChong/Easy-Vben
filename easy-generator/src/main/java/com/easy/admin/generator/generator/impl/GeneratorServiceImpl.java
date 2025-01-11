@@ -63,6 +63,7 @@ public class GeneratorServiceImpl extends GeneratorFile {
         imports.add(ServiceImpl.class);
         imports.add(Page.class);
         imports.add(CommonConst.class);
+        imports.add(StrUtil.class);
         // 导入
         if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.IMPORT_DATA)) {
             imports.add(ImportService.class);
