@@ -10,11 +10,6 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 /**
  * 富文本编辑器
  *
@@ -29,7 +24,17 @@ public class EditorUtil {
     /**
      * 图片选择器
      */
-    private static final String IMAGE_SELECTOR = "img.editor-media.editor-image";
+    private static final String IMAGE_SELECTOR = "img[src*=temporary]";
+
+    /**
+     * 视频选择器
+     */
+    private static final String VIDEO_SELECTOR = "source[src*=temporary]";
+
+    /**
+     * 附件选择器
+     */
+    private static final String ATTACHMENT_SELECTOR = "a[href*=temporary]";
 
     /**
      * 最大图片大小（文件大小）：默认 500kb
@@ -39,58 +44,76 @@ public class EditorUtil {
     /**
      * 处理内容中在临时目录的文件
      *
-     * @param objectId 数据id
-     * @param html     内容
+     * @param html 内容
      * @return 处理后的内容
      */
-    public static String moveToFormal(String objectId, String html) {
+    public static String moveToFormal(String html) {
+        if (StrUtil.isBlank(html)) {
+            return null;
+        }
         Document document = Jsoup.parse(html);
-        handleImage(objectId, document);
+        handleImage(document);
+        handleVideo(document);
+        handleAttachment(document);
         return document.body().html();
     }
 
     /**
      * 处理图片
      *
-     * @param objectId 数据id
      * @param document Document
      */
-    private static void handleImage(String objectId, Document document) {
-        Elements elements = document.select(IMAGE_SELECTOR);
+    private static void handleImage(Document document) {
+        Elements elements = getElements(document, IMAGE_SELECTOR);
+        handleFile(elements, "src");
+    }
+
+    /**
+     * 处理视频
+     *
+     * @param document Document
+     */
+    private static void handleVideo(Document document) {
+        Elements elements = getElements(document, VIDEO_SELECTOR);
+        handleFile(elements, "src");
+    }
+
+    /**
+     * 处理附件
+     *
+     * @param document Document
+     */
+    private static void handleAttachment(Document document) {
+        Elements elements = getElements(document, ATTACHMENT_SELECTOR);
+        handleFile(elements, "href");
+    }
+
+    /**
+     * 处理文件
+     *
+     * @param elements Elements
+     * @param attr     attr
+     */
+    private static void handleFile(Elements elements, String attr) {
         if (elements.isEmpty()) {
             return;
         }
 
         for (Element element : elements) {
-            String url = element.attr("src");
-            String fileId = element.attr("data-file-id");
-            if (StrUtil.isNotBlank(url) && StrUtil.isNotBlank(fileId) && FileUtil.inTemporaryPath(url)) {
-                FileInfo fileInfo = fileDetailService.get(fileId);
-                fileInfo = fileDetailService.saveToFormal(objectId, "content-image", fileInfo);
+            String url = element.attr(attr);
+            if (StrUtil.isNotBlank(url) && FileUtil.inTemporaryPath(url)) {
+                FileInfo fileInfo = fileDetailService.getByUrl(url);
+                fileInfo = fileDetailService.saveToFormal(null, "content-file", fileInfo);
 
-                element.attr("src", fileInfo.getUrl())
-                        .attr("data-file-id", fileInfo.getId());
+                element.attr(attr, fileInfo.getUrl()).attr("data-file-id", fileInfo.getId());
             }
         }
     }
 
-    /**
-     * 获取缩略图宽度
-     * 根据源文件大小与期望文件大小计算缩小后大概的宽度
-     *
-     * @param file 文件
-     * @return 宽度
-     */
-    private static Integer getThumbnailWidth(File file) {
-        float proportion = (float) file.length() / EditorUtil.MAX_IMAGE_LENGTH;
-        try {
-            BufferedImage bufferedImage = ImageIO.read(file);
-            return (int) (bufferedImage.getWidth() / proportion);
-        } catch (IOException e) {
-            // 如果没有读到宽度，则忽略转换
-            return null;
-        }
+    private static Elements getElements(Document document, String selector) {
+        return document.select(selector);
     }
+
 
     @Autowired
     public void setFileDetailService(FileDetailService fileDetailService) {

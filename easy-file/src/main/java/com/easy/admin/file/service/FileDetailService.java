@@ -77,6 +77,14 @@ public interface FileDetailService extends IService<FileDetail> {
     FileInfo get(String id);
 
     /**
+     * 查询详情
+     *
+     * @param url url
+     * @return FileDetail
+     */
+    FileInfo getByUrl(String url);
+
+    /**
      * 根据objectId删除
      *
      * @param objectId   文件所属对象id
