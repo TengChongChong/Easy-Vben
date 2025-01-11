@@ -201,7 +201,7 @@ public class SysMessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMess
         if (StrUtil.isBlank(content)) {
             return;
         }
-        String realContent = EditorUtil.moveToFormal(id, content);
+        String realContent = EditorUtil.moveToFormal(content);
         UpdateWrapper<SysMessage> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id)
                 .set("content", realContent);
