@@ -140,7 +140,8 @@ public class GeneratorVueUtil {
         if ("String".equals(fieldConfig.getPropertyType())) {
             rules.append(".string()");
             rules.append(".min(1, { message: '请输入").append(fieldConfig.getLabel()).append("' })");
-            rules.append(".max(32, { message: '").append(fieldConfig.getLabel()).append("最多输入").append(GeneratorUtil.getColumnLength(fieldConfig)).append("个字符' })");
+            Integer columnLength = GeneratorUtil.getColumnLength(fieldConfig);
+            rules.append(".max(").append(columnLength).append(", { message: '").append(fieldConfig.getLabel()).append("最多输入").append(columnLength).append("个字符' })");
         }
         // Integer、Double、Long
         if ("Integer".equals(fieldConfig.getPropertyType()) || "Double".equals(fieldConfig.getPropertyType()) || "Long".equals(fieldConfig.getPropertyType())) {

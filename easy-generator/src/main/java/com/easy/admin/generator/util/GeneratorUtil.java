@@ -79,6 +79,6 @@ public class GeneratorUtil {
         if (fieldConfig.getMetaInfo().getJdbcType() == JdbcType.VARCHAR) {
             return fieldConfig.getMetaInfo().getLength();
         }
-        return null;
+        return 32;
     }
 }
