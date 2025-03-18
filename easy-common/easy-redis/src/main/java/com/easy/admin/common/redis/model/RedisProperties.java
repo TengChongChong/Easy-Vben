@@ -1,6 +1,7 @@
 package com.easy.admin.common.redis.model;
 
 import cn.hutool.core.lang.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
  * @author TengChongChong
  * @date 2018/9/4
  */
+@Slf4j
 @Configuration
 @ConfigurationProperties(prefix = "spring.redis")
 public class RedisProperties {
-    private static final Logger logger = LoggerFactory.getLogger(RedisProperties.class);
     /**
      * Redis数据库编号
      */
@@ -87,7 +88,7 @@ public class RedisProperties {
     }
 
     public String getPassword() {
-        if(Validator.isEmpty(password)){
+        if (Validator.isEmpty(password)) {
             return null;
         }
         return password;

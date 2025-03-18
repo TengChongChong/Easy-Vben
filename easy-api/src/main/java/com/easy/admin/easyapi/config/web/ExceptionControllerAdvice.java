@@ -15,6 +15,7 @@ import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.sys.common.status.ProfilesActiveStatus;
 import com.easy.admin.sys.model.SysException;
 import com.easy.admin.sys.service.SysExceptionService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,9 @@ import java.util.List;
  * @author TengChongChong
  * @date 2018/10/22
  */
+@Slf4j
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private ProjectProperties projectProperties;
@@ -55,7 +55,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(EasyException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Response easyException(HttpServletRequest request, EasyException e) {
-        logger.debug("业务异常", e);
+        log.debug("业务异常", e);
         return Response.failError(null, e.getCode(), e.getMessage(), e.getShowType());
     }
 
@@ -141,7 +141,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Object handleException(HttpServletRequest request, RuntimeException e) {
-        logger.debug("未知异常", e);
+        log.debug("未知异常", e);
         // 将异常记录到表中
         SysException sysException = saveLog(HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getMethod() + " " + request.getRequestURI(), e);
         if (ProfilesActiveStatus.DEV.getProfilesActive().equals(projectProperties.getProfilesActive())) {

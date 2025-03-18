@@ -1,6 +1,7 @@
 package com.easy.admin.file.task;
 
 import com.easy.admin.file.service.FileDetailService;
+import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.dromara.x.file.storage.core.FileStorageService;
 import org.slf4j.Logger;
@@ -19,10 +20,9 @@ import java.util.List;
  * @author TengChongChong
  * @date 2023-12-27
  */
+@Slf4j
 @Component
 public class CleanInvalidFile {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private FileDetailService fileDetailService;
@@ -32,7 +32,7 @@ public class CleanInvalidFile {
 
     public void clean() {
         // 清除已删除文件
-        logger.info("清除临时文件");
+        log.info("清除临时文件");
 
         List<FileInfo> fileInfoList = fileDetailService.selectDeleted();
         if (fileInfoList == null || fileInfoList.isEmpty()) {

@@ -2,6 +2,7 @@ package com.easy.admin.sys.service.impl;
 
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.service.AsyncService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -13,10 +14,9 @@ import org.springframework.stereotype.Service;
  * @author tengchong
  * @date 2022/3/7
  */
+@Slf4j
 @Service
 public class AsyncServiceImpl implements AsyncService {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     @Async("asyncExecutor")
@@ -26,7 +26,7 @@ public class AsyncServiceImpl implements AsyncService {
         } catch (InterruptedException e) {
             // ignore
         }
-        logger.debug("延迟删除缓存{}", key);
+        log.debug("延迟删除缓存{}", key);
         RedisUtil.del(key);
     }
 }

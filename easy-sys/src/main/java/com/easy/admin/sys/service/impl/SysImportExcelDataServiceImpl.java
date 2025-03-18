@@ -24,6 +24,7 @@ import com.easy.admin.sys.model.vo.SysImportExcelTemplateDetailVO;
 import com.easy.admin.sys.service.*;
 import com.easy.admin.util.office.ExcelUtil;
 import com.easy.admin.util.office.ImportExportUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +45,9 @@ import java.util.*;
  * @author TengChongChong
  * @date 2019-04-17
  */
+@Slf4j
 @Service
 public class SysImportExcelDataServiceImpl implements SysImportExcelDataService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private FileDownloadService fileDownloadService;
@@ -106,7 +106,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         // 检查是否有权限访问
         if (StrUtil.isNotBlank(importExcelTemplate.getPermissionCode()) && !StpUtil.hasPermission(importExcelTemplate.getPermissionCode())) {
             // 无权导入
-            logger.debug("无权访问导入[{}]{}", importExcelTemplate.getPermissionCode(), importExcelTemplate.getName());
+            log.debug("无权访问导入[{}]{}", importExcelTemplate.getPermissionCode(), importExcelTemplate.getName());
             throw new EasyException("无权访问导入" + importExcelTemplate.getName());
         }
 
@@ -114,7 +114,7 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
         if (configs == null || configs.isEmpty()) {
             // 无导入规则
-            logger.debug("模板[{}]未配置导入规则", importExcelTemplate.getImportCode());
+            log.debug("模板[{}]未配置导入规则", importExcelTemplate.getImportCode());
             throw new EasyException("模板[" + importExcelTemplate.getImportCode() + "]未配置导入规则");
         }
         // 设置字段下标

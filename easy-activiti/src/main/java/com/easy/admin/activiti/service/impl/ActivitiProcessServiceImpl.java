@@ -15,14 +15,13 @@ import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +40,9 @@ import java.util.List;
  * @author TengChongChong
  * @date 2019-07-12
  */
+@Slf4j
 @Service
 public class ActivitiProcessServiceImpl extends ServiceImpl<ActivitiProcessMapper, ActivitiProcess> implements ActivitiProcessService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RepositoryService repositoryService;
@@ -142,7 +140,7 @@ public class ActivitiProcessServiceImpl extends ServiceImpl<ActivitiProcessMappe
             repositoryService.addModelEditorSource(model.getId(), objectNode.toString().getBytes(StandardCharsets.UTF_8));
             return true;
         } catch (XMLStreamException e) {
-            logger.debug("流程转模型失败[" + processDefinition.getId() + "]", e);
+            log.debug("流程转模型失败[{}]", processDefinition.getId(), e);
             throw new EasyException("流程转模型失败[" + processDefinition.getId() + "]" + e.getMessage());
         }
     }

@@ -1,6 +1,7 @@
 package com.easy.admin.common.core.base;
 
 import com.easy.admin.common.core.util.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,9 +11,8 @@ import org.slf4j.LoggerFactory;
  * @author TengChongChong
  * @date 2018/10/22
  */
-
+@Slf4j
 public class BaseController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
      * 默认成功提示
      */

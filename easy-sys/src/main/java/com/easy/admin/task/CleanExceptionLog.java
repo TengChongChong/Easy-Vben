@@ -1,6 +1,7 @@
 package com.easy.admin.task;
 
 import com.easy.admin.sys.service.SysExceptionService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,15 @@ import org.springframework.stereotype.Component;
  * @author TengChongChong
  * @date 2019-06-27
  */
+@Slf4j
 @Component
 public class CleanExceptionLog {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SysExceptionService service;
 
     public void clean() {
-        logger.debug("清理异常日志表");
+        log.debug("清理异常日志表");
         service.clean();
     }
 }

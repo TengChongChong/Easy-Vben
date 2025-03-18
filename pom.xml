@@ -52,7 +52,7 @@
         <x-file-storage.version>2.2.1</x-file-storage.version>
         <beetl.version>3.10.0.RELEASE</beetl.version>
         <jsoup.version>1.15.4</jsoup.version>
-        <captcha.version>1.3.0</captcha.version>
+        <captcha.version>1.4.0</captcha.version>
         <minio.version>8.5.11</minio.version>
     </properties>
 

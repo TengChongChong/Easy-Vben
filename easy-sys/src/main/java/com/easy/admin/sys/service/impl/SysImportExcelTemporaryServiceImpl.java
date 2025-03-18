@@ -18,6 +18,7 @@ import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
 import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.util.office.ImportExportUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,9 @@ import java.util.List;
  * @author TengChong
  * @date 2019-04-10
  */
+@Slf4j
 @Service
 public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExcelTemporaryMapper, SysImportExcelTemporary> implements SysImportExcelTemporaryService {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SysImportExcelTemplateDetailService importExcelTemplateDetailsService;
@@ -187,7 +187,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
                     Method method = temporaryClass.getMethod("getField" + (i + 1));
                     value = (String) method.invoke(sysImportExcelTemporary);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    logger.debug("导入数据数据校验失败", e);
+                    log.debug("导入数据数据校验失败", e);
                     throw new EasyException("数据数据校验失败" + e.getMessage());
                 }
                 // 校验数据, 如失败直接抛异常到前端
@@ -199,7 +199,7 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
                     Method method = temporaryClass.getMethod("setField" + (i + 1), String.class);
                     method.invoke(sysImportExcelTemporary, replaceValue);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    logger.debug("设置替换值失败", e);
+                    log.debug("设置替换值失败", e);
                     throw new EasyException("设置替换值失败" + e.getMessage());
                 }
                 boolean only = configs.get(i).getDataOnly();

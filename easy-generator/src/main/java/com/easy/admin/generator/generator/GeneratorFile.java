@@ -13,6 +13,7 @@ import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.util.*;
 import com.easy.admin.sys.common.constant.SysConst;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -33,10 +34,9 @@ import java.util.*;
  * @author tengchong
  * @date 2022/6/20
  */
+@Slf4j
 @Data
 public class GeneratorFile {
-
-    private final Logger logger = LoggerFactory.getLogger(GeneratorFile.class);
 
     private GroupTemplate groupTemplate;
 
@@ -133,7 +133,7 @@ public class GeneratorFile {
                 fileOutputStream = new FileOutputStream(file);
                 pageTemplate.renderTo(fileOutputStream);
             } catch (FileNotFoundException e) {
-                logger.warn("文件不存在，{}", e.getMessage());
+                log.warn("文件不存在，{}", e.getMessage());
             } finally {
                 try {
                     if (fileOutputStream != null) {
@@ -159,7 +159,7 @@ public class GeneratorFile {
         try {
             configuration = new Configuration(properties);
         } catch (IOException e) {
-            logger.warn("初始化Configuration失败", e);
+            log.warn("初始化Configuration失败", e);
         }
         ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();
         this.groupTemplate = new GroupTemplate(resourceLoader, configuration);
@@ -217,7 +217,7 @@ public class GeneratorFile {
             try {
                 property.put(field.getName(), field.get(c));
             } catch (IllegalAccessException e) {
-                logger.warn("获取类中的变量失败", e);
+                log.warn("获取类中的变量失败", e);
             }
         }
         Map<String, Object> clazz = new HashMap<>(1);

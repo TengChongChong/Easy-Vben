@@ -36,6 +36,7 @@ import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
 import com.easy.admin.util.SysConfigUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +56,9 @@ import java.util.List;
  * @author TengChongChong
  * @date 2019-01-09
  */
+@Slf4j
 @Service
 public class GeneratorServiceImpl implements GeneratorService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SysPermissionService sysPermissionsService;
@@ -312,7 +312,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                 }
             }
         } catch (SQLException e) {
-            logger.warn("查询表信息失败", e);
+            log.warn("查询表信息失败", e);
             throw new EasyException("查询表信息失败" + e.getMessage());
         } finally {
             try {

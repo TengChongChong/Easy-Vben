@@ -209,7 +209,7 @@ public class CmsArticleServiceImpl extends ServiceImpl<CmsArticleMapper, CmsArti
         if (StrUtil.isBlank(content)) {
             return;
         }
-        String realContent = EditorUtil.moveToFormal(id, content);
+        String realContent = EditorUtil.moveToFormal(content);
         UpdateWrapper<CmsArticle> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id)
                 .set("content", realContent);

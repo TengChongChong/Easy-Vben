@@ -20,6 +20,7 @@ import com.easy.admin.file.util.file.FileUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
@@ -58,10 +59,9 @@ import static org.activiti.editor.constants.ModelDataJsonConstants.MODEL_NAME;
  * @author TengChongChong
  * @date 2019-07-02
  */
+@Slf4j
 @Service
 public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, ActivitiModel> implements ActivitiModelService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RepositoryService repositoryService;
@@ -113,7 +113,7 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
             try {
                 objectNode = (ObjectNode) objectMapper.readTree(model.getMetaInfo());
             } catch (IOException e) {
-                logger.debug("读取模型信息失败[{}]", model.getId(), e);
+                log.debug("读取模型信息失败[{}]", model.getId(), e);
                 throw new EasyException("读取模型信息失败[" + model.getId() + "]");
             }
         } else {
@@ -125,7 +125,7 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
         try {
             editorJsonNode = (ObjectNode) objectMapper.readTree(new String(repositoryService.getModelEditorSource(model.getId()), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            logger.debug("读取模型信息失败[{}]", model.getId(), e);
+            log.debug("读取模型信息失败[{}]", model.getId(), e);
             throw new EasyException("读取模型信息失败[" + model.getId() + "]");
         }
         objectNode.set("model", editorJsonNode);
@@ -265,7 +265,7 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
             outStream.close();
 
         } catch (IOException | TranscoderException e) {
-            logger.info("保存模型信息失败", e);
+            log.info("保存模型信息失败", e);
             throw new EasyException(e.getMessage());
         }
     }
@@ -302,7 +302,7 @@ public class ActivitiModelServiceImpl extends ServiceImpl<ActivitiModelMapper, A
         try {
             jsonNode = new ObjectMapper().readTree(bytes);
         } catch (IOException e) {
-            logger.debug("读取模型信息失败", e);
+            log.debug("读取模型信息失败", e);
             throw new EasyException("读取模型信息失败" + e.getMessage());
         }
         if (jsonNode == null) {

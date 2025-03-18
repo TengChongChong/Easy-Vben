@@ -1,7 +1,5 @@
 package com.easy.admin.sys.service;
 
-import com.anji.captcha.model.vo.CaptchaVO;
-
 /**
  * 验证码
  *
@@ -9,20 +7,6 @@ import com.anji.captcha.model.vo.CaptchaVO;
  * @date 2020/12/23
  */
 public interface SysCaptchaService {
-    /**
-     * 获取验证码
-     *
-     * @return CaptchaVO
-     */
-    CaptchaVO getCaptcha();
-
-    /**
-     * 检查是否验证通过
-     *
-     * @param captchaVO CaptchaVO
-     * @return CaptchaVO
-     */
-    CaptchaVO checkCaptcha(CaptchaVO captchaVO);
 
     /**
      * 检查是否验证通过

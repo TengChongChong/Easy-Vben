@@ -21,6 +21,7 @@ import com.easy.admin.scheduler.service.SchedulerJobLogService;
 import com.easy.admin.scheduler.service.SchedulerJobService;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.config.sa.token.util.SessionUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +41,9 @@ import java.util.List;
  * @author TengChong
  * @date 2019-05-11
  */
+@Slf4j
 @Service
 public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, SchedulerJob> implements SchedulerJobService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private QuartzService quartzService;
@@ -247,7 +247,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
                 throw new EasyException("更新任务状态失败");
             }
         } catch (SchedulerException e) {
-            logger.error("startAll()", e);
+            log.error("startAll()", e);
             throw new EasyException("开启任务失败");
         }
     }
@@ -262,7 +262,7 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
                 throw new EasyException("更新任务状态失败");
             }
         } catch (SchedulerException e) {
-            logger.error("pauseAll()", e);
+            log.error("pauseAll()", e);
             throw new EasyException("暂停任务失败");
         }
     }

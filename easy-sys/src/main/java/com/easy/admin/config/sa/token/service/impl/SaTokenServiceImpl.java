@@ -24,6 +24,7 @@ import com.easy.admin.sys.common.constant.SysConst;
 import com.easy.admin.sys.service.SysCaptchaService;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.SysConfigUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +41,9 @@ import java.util.List;
  * @author TengChongChong
  * @date 2024/9/3
  */
+@Slf4j
 @Service
 public class SaTokenServiceImpl implements SaTokenService {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SysUserService sysUserService;
@@ -96,7 +97,7 @@ public class SaTokenServiceImpl implements SaTokenService {
 
         // 账号被禁用
         if (SysUserStatus.DISABLE.getCode().equals(sessionUser.getStatus())) {
-            logger.debug("账号[{}]被禁用", loginAccount.getUsername());
+            log.debug("账号[{}]被禁用", loginAccount.getUsername());
             throw new EasyException(BusinessException.USER_DISABLED);
         }
 
@@ -127,13 +128,13 @@ public class SaTokenServiceImpl implements SaTokenService {
 
         // 部门被删除
         if (sessionDept == null) {
-            logger.debug("账号[{}]所在部门[{}]被删除", username, deptId);
+            log.debug("账号[{}]所在部门[{}]被删除", username, deptId);
             throw new EasyException(BusinessException.DEPT_NON_EXISTENT);
         }
 
         // 部门被禁用
         if (CommonStatus.DISABLE.getCode().equals(sessionDept.getStatus())) {
-            logger.debug("账号[{}]所在部门[{}]被禁用", username, sessionDept.getName());
+            log.debug("账号[{}]所在部门[{}]被禁用", username, sessionDept.getName());
             throw new EasyException(BusinessException.DEPT_DISABLED);
         }
 

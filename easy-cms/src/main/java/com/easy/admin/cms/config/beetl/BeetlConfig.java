@@ -1,6 +1,6 @@
 package com.easy.admin.cms.config.beetl;
 
-import com.easy.admin.common.core.exception.EasyException;
+import lombok.extern.slf4j.Slf4j;
 import org.beetl.core.resource.FileResourceLoader;
 import org.beetl.ext.spring.BeetlSpringViewResolver;
 import org.slf4j.Logger;
@@ -17,10 +17,9 @@ import java.io.File;
  * @author TengChongChong
  * @date 2021-11-22
  */
+@Slf4j
 @Configuration
 public class BeetlConfig {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private BeetlProperties beetlProperties;
@@ -30,7 +29,7 @@ public class BeetlConfig {
 
         File themeRoot = new File(beetlProperties.getThemeRoot());
         if (!themeRoot.isDirectory() || !themeRoot.exists()) {
-            logger.warn("CMS主题目录不存在，请检查beetl-config.yml中beetl.theme-root配置是否正确");
+            log.warn("CMS主题目录不存在，请检查beetl-config.yml中beetl.theme-root配置是否正确");
         }
         FileResourceLoader fileResourceLoader = new FileResourceLoader(beetlProperties.getThemeRoot());
         BeetlConfiguration beetlConfiguration = new BeetlConfiguration();

@@ -1,6 +1,7 @@
 package com.easy.admin.common.redis.config;
 
 import com.easy.admin.common.redis.model.RedisProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +30,24 @@ import java.time.Duration;
  *
  * @author TengChongChong
  */
+@Slf4j
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RedisProperties redisProperties;
 
     @Bean
     public JedisPool redisPoolFactory() {
-        logger.info("JedisPool注入成功");
+        log.info("JedisPool注入成功");
         return new JedisPool(getJedisPoolConfig(), redisProperties.getHost(), redisProperties.getPort(),
                 redisProperties.getTimeout(), redisProperties.getPassword());
     }
 
 
     @Bean
-    public JedisPoolConfig getJedisPoolConfig(){
+    public JedisPoolConfig getJedisPoolConfig() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(redisProperties.getMaxIdle());
         jedisPoolConfig.setMaxWait(Duration.ofMillis(redisProperties.getMaxWait()));
@@ -55,7 +55,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    public JedisConnectionFactory jedisConnectionFactory(){
+    public JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         // 设置连接信息
         redisStandaloneConfiguration.setHostName(redisProperties.getHost());
@@ -63,13 +63,13 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisStandaloneConfiguration.setPort(redisProperties.getPort());
         redisStandaloneConfiguration.setDatabase(redisProperties.getDatabase());
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
-        logger.info("JedisConnectionFactory注入成功");
+        log.info("JedisConnectionFactory注入成功");
         return jedisConnectionFactory;
     }
 
     @Bean
     public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory) {
-        logger.info("cacheManager注入成功");
+        log.info("cacheManager注入成功");
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().disableCachingNullValues();
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory);
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
@@ -77,7 +77,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean(name = "redisTemplate")
     public RedisTemplate<String, Object> getRedisTemplate() {
-        logger.info("redisTemplatet注入成功");
+        log.info("redisTemplatet注入成功");
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());

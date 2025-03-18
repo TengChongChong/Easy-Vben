@@ -1,5 +1,6 @@
 package com.easy.admin.common.core.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,10 +18,10 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author tengchong
  * @date 2021/12/1
  */
+@Slf4j
 @Configuration
 @EnableAsync
 public class ExecutorConfig {
-    private static final Logger logger = LoggerFactory.getLogger(ExecutorConfig.class);
 
     @Value("${async.executor.thread.core-pool-size}")
     private int corePoolSize;
@@ -35,7 +36,7 @@ public class ExecutorConfig {
 
     @Bean(name = "asyncExecutor")
     public Executor asyncExecutor() {
-        logger.info("开启SpringBoot的线程池！");
+        log.info("开启SpringBoot的线程池！");
 
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 

@@ -17,6 +17,7 @@ import com.easy.admin.sys.dao.SysDataSourceMapper;
 import com.easy.admin.sys.model.SysDataSource;
 import com.easy.admin.sys.service.SysDataSourceService;
 import com.easy.admin.common.core.util.ToolUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,9 @@ import java.util.List;
  * @author TengChongChong
  * @date 2021-12-18
  */
+@Slf4j
 @Service
 public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, SysDataSource> implements SysDataSourceService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${spring.datasource.dynamic.primary}")
     private String dynamicPrimary;
@@ -197,6 +197,6 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
 
         DataSource ds = druidDataSourceCreator.createDataSource(dataSourceProperty);
         dynamicRoutingDataSource.addDataSource(dataSource.getName(), ds);
-        logger.debug("添加 {} 数据源", dataSource.getName());
+        log.debug("添加 {} 数据源", dataSource.getName());
     }
 }

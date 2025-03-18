@@ -8,9 +8,8 @@ import com.easy.admin.scheduler.dao.SchedulerJobMapper;
 import com.easy.admin.scheduler.model.SchedulerJob;
 import com.easy.admin.scheduler.quartz.QuartzFactory;
 import com.easy.admin.scheduler.service.QuartzService;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +21,9 @@ import java.util.List;
  * @author TengChongChong
  * @date 2019-05-11
  */
+@Slf4j
 @Service
 public class QuartzServiceImpl implements QuartzService {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private Scheduler scheduler;
@@ -53,7 +51,10 @@ public class QuartzServiceImpl implements QuartzService {
             try {
                 jobDetail = scheduler.getJobDetail(jobKey);
             } catch (SchedulerException e) {
-                logger.debug("获取任务失败[{}]", schedulerJob.getCode(), e);
+                try {
+                    scheduler.deleteJob(jobKey);
+                } catch (SchedulerException ignored) {
+                }
             }
             if (jobDetail == null) {
                 // 创建触发器
@@ -70,7 +71,7 @@ public class QuartzServiceImpl implements QuartzService {
                 try {
                     scheduler.scheduleJob(jobDetail, trigger);
                 } catch (SchedulerException e) {
-                    logger.warn("创建定时任务失败", e);
+                    log.warn("创建定时任务失败", e);
                 }
             }
         }
@@ -112,8 +113,7 @@ public class QuartzServiceImpl implements QuartzService {
                 default:
             }
         } catch (SchedulerException e) {
-            logger.warn("获取定时任务[" + schedulerJob.getCode() + "]失败", e);
-//            throw new EasyException("获取定时任务[" + schedulerJob.getCode() + "]失败");
+            log.warn("获取定时任务[{}]失败", schedulerJob.getCode(), e);
         }
     }
 

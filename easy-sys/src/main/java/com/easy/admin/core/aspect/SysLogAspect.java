@@ -6,13 +6,12 @@ import com.easy.admin.common.core.util.http.IpUtil;
 import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.sys.model.SysLog;
 import com.easy.admin.sys.service.SysLogService;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,10 +26,10 @@ import java.util.Date;
  * @author TengChongChong
  * @date 2019-06-27
  */
+@Slf4j
 @Aspect
 @Component
 public class SysLogAspect {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SysLogService service;
@@ -53,20 +52,20 @@ public class SysLogAspect {
         try {
             request = WebUtils.getRequest();
         } catch (NullPointerException e) {
-            logger.debug("获取request失败");
+            log.debug("获取request失败");
         }
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         // 被拦截的方法
         Method method = signature.getMethod();
 
         // 注解信息
-        com.easy.admin.core.annotation.SysLog log = method.getAnnotation(com.easy.admin.core.annotation.SysLog.class);
+        com.easy.admin.core.annotation.SysLog logAnnotation = method.getAnnotation(com.easy.admin.core.annotation.SysLog.class);
 
         // 日志信息
         SysLog sysLog = new SysLog();
         // 设置注解信息
-        sysLog.setModular(log.modular());
-        sysLog.setMethod(log.method());
+        sysLog.setModular(logAnnotation.modular());
+        sysLog.setMethod(logAnnotation.method());
         // 操作用户信息
         sysLog.setOperationDate(new Date());
         SessionUserVO currentUser = SessionUtil.getCurrentUser();
@@ -90,7 +89,7 @@ public class SysLogAspect {
         try {
             service.saveData(sysLog);
         } catch (RuntimeException e) {
-            logger.info("保存日志信息失败", e);
+            log.info("保存日志信息失败", e);
         }
     }
 

@@ -5,8 +5,7 @@ import com.easy.admin.sys.common.constant.DataTypeConst;
 import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.model.SysConfig;
 import com.easy.admin.sys.service.SysConfigService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +16,11 @@ import org.springframework.stereotype.Component;
  * @author TengChongChong
  * @date 2019-03-03
  */
+@Slf4j
 @Component
 public class SysConfigUtil {
-    private SysConfigUtil() {}
-
-    private static Logger logger = LoggerFactory.getLogger(SysConfigUtil.class);
+    private SysConfigUtil() {
+    }
 
     private static SysConfigService sysConfigService;
 
@@ -32,7 +31,7 @@ public class SysConfigUtil {
      * @return value
      */
     public static Object get(String key) {
-        logger.debug("SysConfigUtil.get({})", key);
+        log.debug("SysConfigUtil.get({})", key);
         return transferType(sysConfigService.getByKey(key));
     }
 
@@ -43,7 +42,7 @@ public class SysConfigUtil {
      * @return 名称
      */
     public static String getProjectName() {
-        return (String)SysConfigUtil.get(SysConfigConst.PROJECT_NAME);
+        return (String) SysConfigUtil.get(SysConfigConst.PROJECT_NAME);
     }
 
     /**
