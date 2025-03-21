@@ -1,15 +1,11 @@
 package com.easy.admin.common.core.util;
 
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.servlet.ServletUtil;
-import cn.hutool.http.ContentType;
 import cn.hutool.json.JSONObject;
 import com.easy.admin.common.core.constant.helper.NodePropertiesConstantsHelper;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 
 /**
@@ -201,22 +197,6 @@ public class Response implements Serializable {
         response.setErrorMessage(errorMessage);
         response.setShowType(showType);
         return response;
-    }
-
-    /**
-     * 返回信息
-     *
-     * @param response HttpServletResponse
-     * @param code     状态码
-     * @param message  消息
-     */
-    public static void response(HttpServletResponse response, String code, String message) {
-        WebUtils.setCors(response);
-
-        ServletUtil.write(
-                response,
-                Response.failError(code, message).toString(),
-                ContentType.build(ContentType.JSON.getValue(), CharsetUtil.charset(CharsetUtil.UTF_8)));
     }
 
     @Override

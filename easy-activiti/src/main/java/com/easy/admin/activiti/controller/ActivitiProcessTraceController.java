@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /**
@@ -29,7 +30,7 @@ public class ActivitiProcessTraceController {
      * 查看流程实例进度
      *
      * @param processInstanceId 流程实例ID
-     * @param response response
+     * @param response          response
      * @throws IOException ex
      */
     @GetMapping(value = "process/progress/image/{processInstanceId}")

@@ -14,7 +14,8 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +92,7 @@ public class ActivitiProcessTraceServiceImpl implements ActivitiProcessTraceServ
     /**
      * 获取需要高亮的线
      *
-     * @param processDefinitionEntity 流程实例
+     * @param processDefinitionEntity   流程实例
      * @param historicActivityInstances 历史活动
      * @return 高亮 flows
      */

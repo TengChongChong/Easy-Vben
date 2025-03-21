@@ -18,8 +18,6 @@ import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,8 +32,8 @@ import java.util.*;
  * @author tengchong
  * @date 2022/6/20
  */
-@Slf4j
 @Data
+@Slf4j
 public class GeneratorFile {
 
     private GroupTemplate groupTemplate;

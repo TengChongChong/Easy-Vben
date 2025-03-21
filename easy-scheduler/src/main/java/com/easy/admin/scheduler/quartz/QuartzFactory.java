@@ -33,10 +33,13 @@ public class QuartzFactory implements Job {
         if (StrUtil.isBlank(schedulerJob.getBean())) {
             log.warn("定时任务[{}]缺少bean", schedulerJob.getName());
         }
+
         Object bean = SpringContextHolder.getBean(schedulerJob.getBean());
         if (bean == null) {
             log.warn("定时任务[{}]bean不存在", schedulerJob.getName());
+
         }
+
         try {
             // 获取方法
             Method method = bean.getClass().getMethod(schedulerJob.getMethod());
@@ -47,8 +50,8 @@ public class QuartzFactory implements Job {
             updateLastRunDate(schedulerJob.getId());
             // 保存执行日志
             saveJobLog(schedulerJob, startDate);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            log.warn("定时任务[{}]获取method[{}]失败", schedulerJob.getName(), schedulerJob.getMethod());
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            log.warn("调用定时任务[{}] method[{}]失败", schedulerJob.getName(), schedulerJob.getMethod(), e);
         }
     }
 

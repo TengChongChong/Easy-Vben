@@ -6,6 +6,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Resource;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.ErrorInfo;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -16,7 +17,8 @@ import java.io.Writer;
  * @author tengchong
  * @date 2021-12-07
  */
-public class WebErrorHandler extends ConsoleErrorHandler {
+@Component
+public class EasyBeetlWebErrorHandler extends ConsoleErrorHandler {
 
     protected static final String VERSION = "<a href=\"http://ibeetl.com\" class=\"powered\">Powered by ibeetl.com</a>";
     protected static final String DEV_MODEL_STYLE = "<style><!-- *{margin:0;padding:0}.main{position:absolute;margin:auto;width:100%;z-index:9999999999999999999;}H1{font-family:Consolas,Arial,sans-serif;color:white;background-color:#a0a0a0;font-size:24px;padding-left:10px}H3{font-family:Consolas,sans-serif;color:#333;font-size:13px;font-weight:lighter;margin-top:5px;font-style:italic}BODY{font-family:Consolas,Arial,sans-serif;color:black;background-color:white}xmp{margin:auto;overflow:auto;width:100%;display: block;white-space: pre-wrap;font-family:simsun,sans-serif;background:white;color:black;font-size:13px;font-weight:lighter;color:#666;line-height:25px;}A{color:black}A.name{color:black}HR{color:#525d76}.t1{margin-top:0;}a.powered:hover{color:#dd1122}--></style>";

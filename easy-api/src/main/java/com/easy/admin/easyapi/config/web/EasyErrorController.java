@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Map;
 
 /**
@@ -33,6 +34,6 @@ public class EasyErrorController extends BasicErrorController {
         HttpStatus status = getStatus(request);
         // 响应数据
         Map<String, Object> map = getErrorAttributes(request, ErrorAttributeOptions.defaults());
-        return new ResponseEntity(Response.failError("00" + map.get("status"),  map.get("error") + " - " + map.get("path")), status);
+        return new ResponseEntity(Response.failError("00" + map.get("status"), map.get("error") + " - " + map.get("path")), status);
     }
 }

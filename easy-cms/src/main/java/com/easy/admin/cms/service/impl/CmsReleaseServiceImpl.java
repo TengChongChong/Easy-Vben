@@ -1,6 +1,5 @@
 package com.easy.admin.cms.service.impl;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.IdUtil;
@@ -12,7 +11,6 @@ import com.easy.admin.cms.common.constant.CmsRedisKeyPrefix;
 import com.easy.admin.cms.common.status.CmsReleaseStatus;
 import com.easy.admin.cms.common.type.CmsPageType;
 import com.easy.admin.cms.common.type.CmsReleaseType;
-import com.easy.admin.cms.config.beetl.BeetlConfiguration;
 import com.easy.admin.cms.config.beetl.BeetlProperties;
 import com.easy.admin.cms.dao.CmsReleaseMapper;
 import com.easy.admin.cms.model.*;
@@ -26,8 +24,6 @@ import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.config.properties.ProjectProperties;
-import org.beetl.core.GroupTemplate;
-import org.beetl.core.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -69,8 +65,8 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
     @Autowired
     private CmsReleaseQueueService cmsReleaseQueueService;
 
-    @Autowired
-    private BeetlConfiguration beetlConfiguration;
+    //@Autowired
+    //private BeetlConfiguration beetlConfiguration;
 
     @Override
     public Page<CmsRelease> select(CmsRelease cmsRelease, Page<CmsRelease> page) {
@@ -545,16 +541,17 @@ public class CmsReleaseServiceImpl extends ServiceImpl<CmsReleaseMapper, CmsRele
      * @return 页面内容
      */
     private String analysisPage(Map<String, Object> params, String templatePath) {
-        long startTime = System.currentTimeMillis();
-        GroupTemplate groupTemplate = beetlConfiguration.getGroupTemplate();
-        // 发布模式
-        params.put("release-pattern", true);
-        //获取模板
-        Template template = groupTemplate.getTemplate(templatePath);
-        template.binding(params);
-        //渲染结果
-        String content = template.render();
-        content += "<!-- 发布时间：" + DateUtil.now() + "，耗时：" + (System.currentTimeMillis() - startTime) / 1000.0 + "s -->";
-        return content;
+        //long startTime = System.currentTimeMillis();
+        //GroupTemplate groupTemplate = beetlConfiguration.getGroupTemplate();
+        //// 发布模式
+        //params.put("release-pattern", true);
+        ////获取模板
+        //Template template = groupTemplate.getTemplate(templatePath);
+        //template.binding(params);
+        ////渲染结果
+        //String content = template.render();
+        //content += "<!-- 发布时间：" + DateUtil.now() + "，耗时：" + (System.currentTimeMillis() - startTime) / 1000.0 + "s -->";
+        //return content;
+        return null;
     }
 }

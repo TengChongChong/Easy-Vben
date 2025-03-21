@@ -49,4 +49,14 @@ public interface FileDetailMapper extends BaseMapper<FileDetail> {
      * @return List<FileInfo>
      */
     List<FileInfo> selectDeleted(@Param("ew") QueryWrapper<FileDetail> queryWrapper);
+
+
+    /**
+     * 根据对象ID查询数据
+     *
+     * @param id id
+     * @return FileDetail
+     */
+    List<FileDetail> selectByObjectId(@Param("id") String id);
+
 }

@@ -32,10 +32,10 @@
             <groupId>com.easy.admin</groupId>
             <artifactId>easy-scheduler</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.easy.admin</groupId>
-            <artifactId>easy-activiti</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.easy.admin</groupId>-->
+<!--            <artifactId>easy-activiti</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.easy.admin</groupId>
             <artifactId>easy-sample</artifactId>
@@ -61,7 +61,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
                 <configuration>
                     <finalName>${project.build.finalName}</finalName>
                 </configuration>

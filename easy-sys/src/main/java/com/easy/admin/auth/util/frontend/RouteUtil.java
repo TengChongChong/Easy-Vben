@@ -127,6 +127,8 @@ public class RouteUtil {
 
     private static RouteMetaVO convertRouteMeta(SysPermission sysPermission) {
         RouteMetaVO routeMeta = new RouteMetaVO();
+        // 开启KeepAlive缓存
+        routeMeta.setKeepAlive(true);
         // 配置页面的标题，会在菜单和标签页中显示。一般会配合国际化使用。
         routeMeta.setTitle(sysPermission.getTitle());
         // 配置页面的图标，会在菜单和标签页中显示。一般会配合图标库使用，如果是http链接，会自动加载图片。

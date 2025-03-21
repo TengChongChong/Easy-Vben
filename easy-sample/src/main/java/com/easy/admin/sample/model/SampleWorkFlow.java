@@ -6,9 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import jakarta.validation.constraints.NotBlank;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -77,13 +78,13 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     /**
      * 流程实例id
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     private String processInstanceId;
 
     /**
      * 流程状态
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     private String workFlowStatus;
 
     @Override
@@ -98,6 +99,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getLeaveType() {
         return leaveType;
     }
@@ -105,6 +107,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setLeaveType(String leaveType) {
         this.leaveType = leaveType;
     }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -112,6 +115,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+
     public Date getEndDate() {
         return endDate;
     }
@@ -119,6 +123,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
     public String getReason() {
         return reason;
     }
@@ -126,6 +131,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
     public String getStatus() {
         return status;
     }
@@ -133,6 +139,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getCreateUser() {
         return createUser;
     }
@@ -140,6 +147,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -147,6 +155,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
     public String getEditUser() {
         return editUser;
     }
@@ -154,6 +163,7 @@ public class SampleWorkFlow extends Model<SampleWorkFlow> {
     public void setEditUser(String editUser) {
         this.editUser = editUser;
     }
+
     public Date getEditDate() {
         return editDate;
     }

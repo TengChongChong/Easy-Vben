@@ -4,7 +4,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.vo.SysImportExcelTemplateVO;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 导入模板

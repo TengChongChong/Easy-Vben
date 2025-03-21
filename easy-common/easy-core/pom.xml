@@ -20,7 +20,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <!-- 配置文件处理 -->
         <dependency>
@@ -110,7 +109,7 @@
         <!-- druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
+            <artifactId>druid-spring-boot-3-starter</artifactId>
             <version>${druid.version}</version>
         </dependency>
         <!-- redis -->
@@ -118,14 +117,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
         <!-- server-api -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
         <!-- huTool 工具 -->
         <dependency>
@@ -141,7 +136,7 @@
         <!-- beetl -->
         <dependency>
             <groupId>com.ibeetl</groupId>
-            <artifactId>beetl</artifactId>
+            <artifactId>beetl-springboot-starter-jdk17</artifactId>
             <version>${beetl.version}</version>
         </dependency>
         <!-- HTML 解析 -->
@@ -153,13 +148,13 @@
         <!-- 验证码 -->
         <dependency>
             <groupId>com.anji-plus</groupId>
-            <artifactId>spring-boot-starter-captcha</artifactId>
+            <artifactId>captcha-spring-boot-starter</artifactId>
             <version>${captcha.version}</version>
         </dependency>
         <!-- 鉴权 -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
             <version>${sa-token.version}</version>
         </dependency>
         <!-- Sa-Token 整合 Redis （使用 jdk 默认序列化方式） -->

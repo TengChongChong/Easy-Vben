@@ -78,4 +78,13 @@
             ${ew.sqlSegment}
         </where>
     </select>
+
+    <select id="selectByObjectId" resultMap="BaseResultMap">
+        select t.id, t.url, t.size, t.filename, t.original_filename, t.base_path, t.path, t.ext, t.content_type, t.platform,
+               t.th_url, t.th_filename, t.th_size, t.th_content_type, t.object_id, t.object_type, t.metadata, t.user_metadata,
+               t.th_metadata, t.th_user_metadata, t.attr, t.file_acl, t.th_file_acl, t.hash_info, t.upload_id, t.upload_status,
+               t.order_no, t.remarks, t.status, t.tenant_id, t.dept_id, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from file_detail t
+        where t.object_id = #{objectId}
+    </select>
 </mapper>

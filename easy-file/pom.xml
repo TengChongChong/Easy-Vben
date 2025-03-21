@@ -39,11 +39,11 @@
             <artifactId>x-file-storage-spring</artifactId>
             <version>${x-file-storage.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-            <version>${minio.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.minio</groupId>-->
+<!--            <artifactId>minio</artifactId>-->
+<!--            <version>${minio.version}</version>-->
+<!--        </dependency>-->
 
     </dependencies>
     <build>

@@ -4,7 +4,8 @@ project:
   # 项目访问url，无需 / 结尾
   url: http://127.0.0.1:8001
   # 前端访问url
-  front-end-url: http://localhost:3100
+  #  front-end-url: http://localhost:3100
+  front-end-url: http://localhost:5666
   node: 127.0.0.1:${server.port}
 server:
   # 端口号
@@ -49,42 +50,51 @@ dromara:
         # 存储路径，上传的文件都会存储在这个路径下面，默认“/”，注意“/”结尾
         storage-path: /Users/tengchong/development/easy-vben/
 spring:
-#  elasticsearch:
-#    rest:
-#      # 连接超时时间
-#      connection-timeout: 1s
-#      username:
-#      password:
-#      # 读取超时时间
-#      read-timeout: 30s
-#      # es rest 接口地址，多个用逗号隔开
-#      uris: ${ES_HOST:127.0.0.1}:${ES_PORT:9200}
-  # Redis
-  redis:
-    # 数据库索引（默认为0）
-    database: 9
-    # 服务器地址
-    host: 127.0.0.1
-    # 服务器连接端口
-    port: 6379
-    # 服务器连接密码（默认为空）
-    password:
-    jedis:
-      pool:
-        # 连接池最大连接数（使用负值表示没有限制）
-        max-active: 8
-        # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-wait: -1
-        # 连接池中的最大空闲连接
-        max-idle: 8
-        # 连接池中的最小空闲连接
-        min-idle: 0
-    # 连接超时时间 单位: 秒
-    timeout: 10
-    # 默认的数据过期时间 30 分钟 单位: 秒
-    expire: 1800
+  #  elasticsearch:
+  #    rest:
+  #      # 连接超时时间
+  #      connection-timeout: 1s
+  #      username:
+  #      password:
+  #      # 读取超时时间
+  #      read-timeout: 30s
+  #      # es rest 接口地址，多个用逗号隔开
+  #      uris: ${ES_HOST:127.0.0.1}:${ES_PORT:9200}
+  data:
+    # Redis
+    redis:
+      # 数据库索引（默认为0）
+      database: 13
+      # 服务器地址
+      host: 127.0.0.1
+      # 服务器连接端口
+      port: 6379
+      # 服务器连接密码（默认为空）
+      password:
+      jedis:
+        pool:
+          # 连接池最大连接数（使用负值表示没有限制）
+          max-active: 8
+          # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: -1
+          # 连接池中的最大空闲连接
+          max-idle: 8
+          # 连接池中的最小空闲连接
+          min-idle: 0
+      # 连接超时时间
+      timeout: 5s
+      # 默认的数据过期时间 30 分钟 单位: 秒
+      expire: 1800
   datasource:
     dynamic:
+      #启用动态数据源，默认true
+      enabled: true
+      #设置默认的数据源或者数据源组,默认值即为master
+      primary: master
+      #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      strict: false
+      #是否优雅关闭数据源，默认为false，设置为true时，关闭数据源时如果数据源中还存在活跃连接，至多等待10s后强制关闭
+      grace-destroy: false
       datasource:
         master:
           url: jdbc:mariadb://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:easy-vben}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMulQueries=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullDatabaseMeansCurrent=true&useInformationSchema=true
@@ -108,6 +118,9 @@ async:
       # 配置线程最大空闲时间 s
       keep-alive-seconds: 30
 beetl:
-  theme:
-    # 主题文件Root目录，为了不影响项目使用jar部署，CMS主题项目将放到项目外部，此处进作为示例。
-    root: /Users/tengchong/workspaces/github/easy-vben/easy-cms/src/main/themes
+  # 模板文件根目录
+  theme-root: /Users/tengchong/workspaces/github/easy-vben/easy-cms/src/main/themes
+  # 是否自动检查模板文件是否有修改，开发环境建议开启，生产环境建议关闭
+  resource-auto-check: true
+  # 文件后缀
+  suffix: .html

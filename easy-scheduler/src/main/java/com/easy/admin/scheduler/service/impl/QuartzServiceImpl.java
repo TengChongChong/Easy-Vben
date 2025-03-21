@@ -53,7 +53,8 @@ public class QuartzServiceImpl implements QuartzService {
             } catch (SchedulerException e) {
                 try {
                     scheduler.deleteJob(jobKey);
-                } catch (SchedulerException ignored) {
+                } catch (SchedulerException ex) {
+                    // ignore
                 }
             }
             if (jobDetail == null) {
@@ -69,6 +70,7 @@ public class QuartzServiceImpl implements QuartzService {
                 // 传入调度任务对象
                 jobDetail.getJobDataMap().put(SchedulerConst.SCHEDULER_JOB_KEY, schedulerJob);
                 try {
+                    //scheduler.deleteJob()
                     scheduler.scheduleJob(jobDetail, trigger);
                 } catch (SchedulerException e) {
                     log.warn("创建定时任务失败", e);
@@ -114,6 +116,7 @@ public class QuartzServiceImpl implements QuartzService {
             }
         } catch (SchedulerException e) {
             log.warn("获取定时任务[{}]失败", schedulerJob.getCode(), e);
+//            throw new EasyException("获取定时任务[" + schedulerJob.getCode() + "]失败");
         }
     }
 

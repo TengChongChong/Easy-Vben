@@ -11,6 +11,7 @@ import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.service.SysCaptchaService;
 import com.easy.admin.sys.service.SysSmsCaptchaService;
 import com.easy.admin.util.SysConfigUtil;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

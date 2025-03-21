@@ -5,8 +5,9 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import org.dromara.x.file.storage.core.FileInfo;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
 
 /**

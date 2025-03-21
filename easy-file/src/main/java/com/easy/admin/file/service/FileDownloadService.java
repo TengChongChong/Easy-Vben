@@ -5,7 +5,7 @@ import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 /**

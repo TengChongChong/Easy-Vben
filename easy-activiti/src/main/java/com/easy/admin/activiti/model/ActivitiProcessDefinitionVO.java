@@ -2,7 +2,7 @@ package com.easy.admin.activiti.model;
 
 import cn.hutool.json.JSONObject;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 流程发起

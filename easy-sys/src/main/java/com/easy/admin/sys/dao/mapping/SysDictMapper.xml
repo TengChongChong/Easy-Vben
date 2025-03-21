@@ -36,7 +36,7 @@
         </where>
     </select>
     <select id="selectAll" resultType="com.easy.admin.sys.model.SysDict">
-        select t.code, t.parent_code, t.name, t.dict_type, t.icon, t.color from sys_dict t
+        select t.code, t.parent_code, t.name, t.dict_type, t.icon, t.color, t.remarks from sys_dict t
         where t.status = #{status} order by dict_type, order_no
     </select>
     <select id="exportData" resultType="com.easy.admin.sys.model.SysDict">

@@ -48,7 +48,6 @@ spring:
         login-username: druid
         login-password: druid
     dynamic:
-      primary: 'master'
       # druid连接池监控
       druid:
         connection-properties:

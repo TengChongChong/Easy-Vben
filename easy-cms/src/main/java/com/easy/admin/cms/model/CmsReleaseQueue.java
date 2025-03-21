@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.easy.admin.cms.common.status.CmsReleaseStatus;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * 发布列队详情

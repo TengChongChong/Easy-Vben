@@ -14,7 +14,6 @@ import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
 import com.easy.admin.sys.common.constant.OpenModeConst;
@@ -117,12 +116,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public boolean remove(String ids) {
         // 检查是否有子权限
-        QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
-        long count = count(queryWrapper);
-        if (count > 0) {
-            throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
-        }
+        //QueryWrapper<SysPermission> queryWrapper = new QueryWrapper<>();
+        //queryWrapper.in("parent_id", ids.split(CommonConst.SPLIT));
+        //long count = count(queryWrapper);
+        //if (count > 0) {
+        //    throw new EasyException(GlobalException.EXIST_CHILD.getMessage());
+        //}
         List<String> idList = Arrays.asList(ids.split(CommonConst.SPLIT));
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {

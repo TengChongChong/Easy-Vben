@@ -1,6 +1,6 @@
 package com.easy.admin.common.core.util.http;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 获取客户端ip地址

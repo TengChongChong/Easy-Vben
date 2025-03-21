@@ -6,7 +6,7 @@ import com.easy.admin.auth.common.constant.SessionConst;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.config.sa.token.service.SaTokenService;
 import com.easy.admin.config.sa.token.util.SessionUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckSessionNeedUpdateRoleAndPermissionInterceptor {
 
-    @Autowired
+    @Resource
     private SaTokenService saTokenService;
 
     public void check() {

@@ -18,7 +18,7 @@ public class SysDragCaptchaServiceImpl implements CaptchaCacheService {
 
     @Override
     public void set(String key, String value, long expiresInSeconds) {
-        RedisUtil.set(key, value, expiresInSeconds);
+        RedisUtil.set(key,value, expiresInSeconds);
     }
 
     @Override
@@ -41,9 +41,9 @@ public class SysDragCaptchaServiceImpl implements CaptchaCacheService {
         return RedisUtil.increment(key, val);
     }
 
-    //@Override
-    //public void setExpire(String key, long l) {
-    //    RedisUtil.setExpire(key, l);
-    //}
+    @Override
+    public void setExpire(String key, long l) {
+        RedisUtil.setExpire(key, l);
+    }
 
 }

@@ -1,8 +1,8 @@
 package com.easy.admin.common.redis.util;
 
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.common.redis.model.RedisProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,12 @@ public class RedisUtil {
 
     private static RedisTemplate<String, Object> redisTemplate;
 
-    private static RedisProperties redisProperties;
+
+    /**
+     * 默认的数据过期时间 30 分钟 单位: 秒
+     */
+    @Value("${spring.data.redis.expire}")
+    private static Integer expire = 1800;
 
     /**
      * 保存到redis
@@ -32,7 +37,7 @@ public class RedisUtil {
      * @param val 值
      */
     public static void set(String key, Object val) {
-        set(key, val, redisProperties.getExpire());
+        redisTemplate.opsForValue().set(key, val, expire, TimeUnit.SECONDS);
     }
 
     /**
@@ -46,7 +51,7 @@ public class RedisUtil {
         if (expire > 0) {
             redisTemplate.opsForValue().set(key, val, expire, TimeUnit.SECONDS);
         } else if (expire == 0) {
-            redisTemplate.opsForValue().set(key, val, redisProperties.getExpire(), TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(key, val);
             redisTemplate.persist(key);
         } else {
             throw new EasyException("过期时间必须≥0");
@@ -144,13 +149,9 @@ public class RedisUtil {
         return redisTemplate.getExpire(key);
     }
 
-    @Autowired
+    @Resource
     public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
         RedisUtil.redisTemplate = redisTemplate;
     }
 
-    @Autowired
-    public void setRedisProperties(RedisProperties redisProperties) {
-        RedisUtil.redisProperties = redisProperties;
-    }
 }

@@ -57,9 +57,9 @@ public class FileUploadServiceImpl implements FileUploadService {
         if (file.getSize() >= uploadRule.getUpperLimit() * 1024) {
             throw new EasyException("上传失败[文件大小超过限制，最大" + uploadRule.getUpperLimit() + "KB]");
         }
-        if (file.getSize() < uploadRule.getLowerLimit() * 1024) {
-            throw new EasyException("上传失败[文件大小低于最低限制，最小" + uploadRule.getUpperLimit() + "KB]");
-        }
+        /*if (file.getSize() < uploadRule.getLowerLimit() * 1024) {
+            throw new EasyException("上传失败[文件大小低于最低限制，最小" + uploadRule.getLowerLimit() + "KB]");
+        }*/
 
         if (StrUtil.isBlank(displayName)) {
             throw new EasyException("上传失败[获取OriginalFilename失败]");

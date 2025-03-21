@@ -4,7 +4,7 @@ import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.model.vo.SysImportExcelDataVO;
 import org.dromara.x.file.storage.core.FileInfo;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
