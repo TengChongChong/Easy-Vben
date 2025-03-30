@@ -3,13 +3,9 @@ package com.easy.admin.generator.util;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.easy.admin.generator.constant.GeneratorFormTemplateConst;
-import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
-import com.easy.admin.generator.constant.GeneratorVersion;
 import com.easy.admin.generator.model.BasicsConfig;
 import com.easy.admin.generator.model.FieldConfig;
-import com.easy.admin.sys.common.constant.SysConfigConst;
-import com.easy.admin.util.SysConfigUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,23 +86,16 @@ public class GeneratorVueUtil {
      * @return 引入的按钮
      */
     public static String getImportButton(BasicsConfig basicsConfig) {
-        String buttonPrefix = GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION)) ? "A" : "";
+        String buttonPrefix = "";
 
         List<String> buttonArray = new ArrayList<>();
 
         if (basicsConfig.isGeneratorMethodsAdd()) {
             buttonArray.add(buttonPrefix + "ButtonAdd");
             buttonArray.add(buttonPrefix + "ButtonEdit");
-            if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION)) &&
-                    GeneratorListTemplateConst.TREE_TABLE.equals(basicsConfig.getListGeneratorTemplate())) {
-                buttonArray.add(buttonPrefix + "ButtonAddSub");
-            }
         }
         if (basicsConfig.isGeneratorMethodsRemove()) {
             buttonArray.add(buttonPrefix + "ButtonRemove");
-            if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
-                buttonArray.add(buttonPrefix + "ButtonRemoveBatch");
-            }
         }
         if (basicsConfig.isGeneratorMethodsImport()) {
             buttonArray.add(buttonPrefix + "ButtonImport");

@@ -12,6 +12,10 @@ public class GeneratorFileConst {
      */
     public static final String MODEL = "model";
     /**
+     * 实体类VO
+     */
+    public static final String MODEL_VO = "modelVO";
+    /**
      * mapper
      */
     public static final String MAPPER = "mapper";

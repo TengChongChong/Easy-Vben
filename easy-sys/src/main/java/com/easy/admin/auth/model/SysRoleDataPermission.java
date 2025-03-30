@@ -2,6 +2,7 @@ package com.easy.admin.auth.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -18,6 +19,7 @@ import lombok.Data;
 @TableName("sys_role_data_permission")
 public class SysRoleDataPermission extends Model<SysRoleDataPermission> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

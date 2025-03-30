@@ -6,6 +6,8 @@ import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +21,7 @@ import java.util.Date;
 @TableName("file_upload_rule")
 public class FileUploadRule extends Model<FileUploadRule> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

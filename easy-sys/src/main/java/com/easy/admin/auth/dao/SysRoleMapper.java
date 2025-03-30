@@ -10,13 +10,14 @@ import java.util.List;
 
 /**
  * 角色
+ *
  * @author TengChongChong
  */
 public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 获取列表数据
      *
-     * @param page 分页
+     * @param page         分页
      * @param queryWrapper 查询条件
      * @return List<SysRole>
      */
@@ -24,6 +25,7 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     /**
      * 获取所有数据
+     *
      * @param status 状态
      * @return List<SysRole>
      */
@@ -38,12 +40,12 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     SysRole getById(@Param("id") String id);
 
     /**
-     * 查询权限id集合
+     * 查询菜单id集合
      *
      * @param id 角色id
      * @return 集合
      */
-    List<String> selectPermissions(@Param("id") String id);
+    List<String> selectMenuIds(@Param("id") String id);
 
     /**
      * 获取最大排序值
@@ -69,8 +71,8 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     /**
      * 查询所有权限 Activiti
-     * @param queryWrapper 查询条件
      *
+     * @param queryWrapper 查询条件
      * @return List<SysRole>
      */
     List<SysRole> selectRole(@Param("ew") QueryWrapper<SysRole> queryWrapper);

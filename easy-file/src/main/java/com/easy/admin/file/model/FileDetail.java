@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,6 +23,7 @@ import java.util.Date;
 @TableName("file_detail")
 public class FileDetail extends Model<FileDetail> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

@@ -1,5 +1,6 @@
 package com.easy.admin.generator.generator.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -73,6 +74,7 @@ public class GeneratorServiceImpl extends GeneratorFile {
         if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.EXPORT_DATA)) {
             imports.add(ExcelUtil.class);
         }
+        imports.add(BeanUtil.class);
         imports.add(Service.class);
         imports.add(Transactional.class);
         imports.add(Arrays.class);
@@ -81,6 +83,7 @@ public class GeneratorServiceImpl extends GeneratorFile {
                 GeneratorListTemplateConst.TREE.equals(generatorConfig.getBasicsConfig().getListGeneratorTemplate())) {
             imports.add(Tree.class);
         }
+
         return imports;
     }
 

@@ -1,31 +1,48 @@
 package com.easy.admin.sample.model;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
-import com.baomidou.mybatisplus.annotation.*;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import com.baomidou.mybatisplus.annotation.Version;
+import cn.afterturn.easypoi.excel.annotation.Excel;
 
 /**
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2023-12-27
+ * @date 2025-03-21
  */
+@Data
 @TableName("sample_general")
-public class SampleGeneral extends Model<SampleGeneral> {
+public class SampleGeneral extends Model<SampleGeneral> implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * id;
+     */
     @TableId
     private String id;
     /**
-     * 父id
+     * 父Id
      */
     private String parentId;
     /**
      * 姓名
      */
     @Excel(name = "姓名", width = 15, orderNum = "0")
+    @NotBlank(message = "姓名不能为空")
     private String name;
     /**
      * 性别
@@ -36,30 +53,40 @@ public class SampleGeneral extends Model<SampleGeneral> {
      * 年龄
      */
     @Excel(name = "年龄", width = 10, orderNum = "2")
+    @NotNull(message = "年龄不能为空")
     private Integer age;
     /**
      * 手机号码
      */
     @Excel(name = "手机号码", width = 15, orderNum = "3")
+    @NotBlank(message = "手机号码不能为空")
     private String phone;
     /**
      * 状态
      */
+    @Excel(name = "状态", width = 9, orderNum = "4")
     private String status;
-    /**
-     * 排序值
-     */
-    private Integer orderNo;
     /**
      * 地址
      */
-    @Excel(name = "地址", width = 25, orderNum = "4")
+    @Excel(name = "地址", width = 25, orderNum = "5")
     private String address;
+    /**
+     * 排序值
+     */
+    @Excel(name = "排序值", width = 10, orderNum = "6")
+    private Integer orderNo;
     /**
      * 乐观锁
      */
     @Version
     private Integer version;
+    /**
+     * 部门Id
+     */
+    @TableField(fill = FieldFill.INSERT)
+    @Excel(name = "部门Id", width = 15, orderNum = "7")
+    private String deptId;
     /**
      * 创建人
      */
@@ -80,125 +107,4 @@ public class SampleGeneral extends Model<SampleGeneral> {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date editDate;
-
-    // 非表字段
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Integer orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(String editUser) {
-        this.editUser = editUser;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
-    }
-
-
 }

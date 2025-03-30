@@ -1,0 +1,46 @@
+package ${basicsConfig.packagePath}.model;
+
+<% for(import in tableInfo.importPackages){ %>
+import ${import};
+<% } %>
+<% for(import in imports){ %>
+import ${import.name};
+<% } %>
+
+/**
+ * ${basicsConfig.businessName}
+ *
+ * @author ${basicsConfig.author}
+ * @date ${date}
+ */
+@Data
+@TableName("${tableInfo.name}")
+public class ${basicsConfig.modelName} extends Model<${basicsConfig.modelName}> implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    <% for(item in tableInfo.fields){ %>
+    <% if(strUtil.isNotBlank(item.comment)) { %>
+    /**
+     * ${item.comment}
+     */
+    <% }else if(commonComment[item.propertyName] != null){ %>
+    /**
+     * ${commonComment[item.propertyName]}
+     */
+    <% } %>
+    <% if(item.keyFlag) { %>
+    @TableId
+    <% } %>
+    <% if("version" == item.propertyName) { %>
+    @Version
+    <% } %>
+    <% if("editUser" == item.propertyName || "editDate" == item.propertyName){ %>
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    <% } else if ("createUser" == item.propertyName || "createDate" == item.propertyName || "deptId" == item.propertyName) { %>
+    @TableField(fill = FieldFill.INSERT)
+    <% } %>
+    <% if(basicsConfig.isGeneratorMethodsExport){ %>${GeneratorJavaUtil.generatorExport(item.propertyName, exportConfig)}<% } %>${GeneratorJavaUtil.generatorVerification(item.propertyName, inputConfig)}private ${item.propertyType} ${item.propertyName};
+    <% } %>
+}

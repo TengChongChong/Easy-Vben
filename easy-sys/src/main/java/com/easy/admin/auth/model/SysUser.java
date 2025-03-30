@@ -8,6 +8,8 @@ import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,6 +23,7 @@ import java.util.Date;
 @TableName("sys_user")
 public class SysUser extends Model<SysUser> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @TableId

@@ -7,6 +7,8 @@ import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -19,6 +21,7 @@ import java.util.Date;
 @TableName("sys_dept")
 public class SysDept extends Model<SysDept> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @TableId

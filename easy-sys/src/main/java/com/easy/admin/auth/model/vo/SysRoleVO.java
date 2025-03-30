@@ -16,10 +16,10 @@ import java.util.List;
 public class SysRoleVO extends SysRole {
 
     /**
-     * 权限ids
+     * 菜单ids
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> permissionIds;
+    private List<String> menuIds;
 
     /**
      * 数据权限 自定义部门ids

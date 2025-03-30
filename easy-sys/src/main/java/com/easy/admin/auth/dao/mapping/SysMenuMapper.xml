@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.auth.dao.SysMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.auth.model.vo.SysMenuVO">
+        <result column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="type" property="type" />
+        <result column="title" property="title" />
+        <result column="auth_code" property="authCode" />
+        <result column="path" property="path" />
+        <result column="active_path" property="activePath" />
+        <result column="icon" property="icon" />
+        <result column="active_icon" property="activeIcon" />
+        <result column="component" property="component" />
+        <result column="name" property="name" />
+        <result column="link_src" property="linkSrc" />
+        <result column="badge_type" property="badgeType" />
+        <result column="badge" property="badge" />
+        <result column="badge_variants" property="badgeVariants" />
+        <result column="keep_alive" property="keepAlive" />
+        <result column="affix_tab" property="affixTab" />
+        <result column="hide_in_menu" property="hideInMenu" />
+        <result column="hide_children_in_menu" property="hideChildrenInMenu" />
+        <result column="hide_in_breadcrumb" property="hideInBreadcrumb" />
+        <result column="hide_in_tab" property="hideInTab" />
+        <result column="order_no" property="orderNo" />
+        <result column="status" property="status" />
+        <result column="remarks" property="remarks" />
+        <result column="version" property="version" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+
+    <select id="selectWithoutPage" resultType="com.easy.admin.auth.model.vo.SysMenuVO">
+        select t.id, t.parent_id, t.title, t.type, t.path, t.component, t.auth_code, t.icon, t.badge_type, t.badge, t.badge_variants,
+               t.keep_alive, t.affix_tab, t.hide_in_menu, t.status, su_edit_user.nickname as edit_user, t.edit_date
+        from sys_menu t
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
+        order by t.order_no
+    </select>
+
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.parent_id, t.title, t.id as `key`, t.icon, t.type
+        from sys_menu t
+        order by t.order_no
+    </select>
+
+    <select id="getById" resultType="com.easy.admin.auth.model.SysMenu">
+        select t.id, t.parent_id, t.type, t.title, t.auth_code, t.path, t.active_path, t.icon, t.active_icon,
+               t.component, t.name, t.link_src, t.badge_type, t.badge, t.badge_variants, t.keep_alive,
+               t.affix_tab, t.hide_in_menu, t.hide_children_in_menu, t.hide_in_breadcrumb, t.hide_in_tab,
+               t.order_no, t.status, t.remarks, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from sys_menu t
+        where t.id = #{id}
+    </select>
+
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(order_no), 0)
+        from sys_menu t
+        where t.parent_id = #{parentId}
+    </select>
+
+    <update id="updateOrderBatch">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update sys_menu
+            <set>
+                parent_id = #{item.parentId},
+                order_no = #{item.orderNo}
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="countByTitle" resultType="java.lang.Integer">
+        select count(1) from sys_menu where title = #{title}
+    </select>
+</mapper>

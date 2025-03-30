@@ -2,15 +2,11 @@ package com.easy.admin.generator.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.generator.constant.GeneratorVersion;
 import com.easy.admin.generator.model.BasicsConfig;
 import com.easy.admin.generator.model.FieldConfig;
-import com.easy.admin.sys.common.constant.SysConfigConst;
-import com.easy.admin.util.SysConfigUtil;
 import org.apache.ibatis.type.JdbcType;
 
 import java.io.File;
-import java.util.regex.Pattern;
 
 /**
  * 生成java代码帮助类
@@ -19,7 +15,6 @@ import java.util.regex.Pattern;
  * @date 2019-02-22
  */
 public class GeneratorUtil {
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("\\D");
 
 
     private GeneratorUtil() {
@@ -32,12 +27,7 @@ public class GeneratorUtil {
      * @return 路径
      */
     public static String getModelTsPath(BasicsConfig basicsConfig) {
-        String fileName;
-        if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
-            fileName = StrUtil.lowerFirst(basicsConfig.getModelName()) + "Model.ts";
-        } else {
-            fileName = StrUtil.lowerFirst(basicsConfig.getTable().replaceAll("_", "-")) + "-model.ts";
-        }
+        String fileName = StrUtil.lowerFirst(basicsConfig.getTable().replaceAll("_", "-")) + "-model.ts";
 
         String path = File.separator + "api" + File.separator;
         String table = basicsConfig.getTable().toLowerCase();

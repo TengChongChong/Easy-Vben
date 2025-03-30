@@ -1,0 +1,119 @@
+<script lang="ts" setup>
+import { ref } from 'vue';
+
+import { useVbenDrawer, z } from '@vben/common-ui';
+
+import {
+  message,
+  Space,
+} from 'ant-design-vue';
+
+import { useVbenForm } from '#/adapter/form';
+import type { ${basicsConfig.modelName}VO } from '${modelTsPath!}';
+import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath!}';
+import { ButtonClose, ButtonSave } from '#/components/button';
+
+const emit = defineEmits(['success']);
+
+const saveBtnLoading = ref(false);
+
+const [BaseForm, baseFormApi] = useVbenForm({
+  showDefaultActions: false,
+  schema: [
+    { fieldName: 'id', component: 'Input', formItemClass: 'hidden' },
+    { fieldName: 'version', component: 'Input', formItemClass: 'hidden' },
+    <% if(tableConfig != null) { %>
+    <% for(item in inputConfig){ %>
+    {
+      fieldName: '${item.propertyName}',
+      label: '${item.label}',
+      component: '${item.componentType}',
+      <% if(strUtil.isNotBlank(item.dictType)) { %>
+      componentProps: {
+        dictType: '${item.dictType}',
+      },
+      <% } else if(item.componentType == 'DatePicker') { %>
+      componentProps: {
+        showTime: true,
+      },
+      <% } else if(item.componentType == 'Textarea') { %>
+      componentProps: {
+        autoSize: {
+          minRows: 2,
+          maxRows: 7,
+        },
+      },
+      <% } %>
+      <% if(GeneratorVueUtil.needRule(item)) { %>
+      ${GeneratorVueUtil.getFormRules(item)}
+      <% } %>
+    },
+    <% } %>
+    <% } %>
+  ],
+});
+
+async function handleSubmit(callback: (res: ${basicsConfig.modelName}VO) => any) {
+  try {
+    saveBtnLoading.value = true;
+    const { valid } = await baseFormApi.validate();
+    if (!valid) {
+      return;
+    }
+    const values: ${basicsConfig.modelName}VO = await baseFormApi.getValues();
+    const res = await saveApi(values);
+    message.success('保存成功');
+    emit('success');
+    callback(res);
+  } catch (error) {
+    console.error('保存失败', error);
+  } finally {
+    saveBtnLoading.value = false;
+  }
+}
+
+async function handleSave() {
+  await handleSubmit(() => {
+    drawerApi.close();
+  });
+}
+<% if(basicsConfig.generatorMethodsAdd){ %>
+async function handleSaveAndAdd() {
+  await handleSubmit(() => {
+    baseFormApi.resetForm();
+    addApi().then((res) => {
+      baseFormApi.setValues(res);
+    });
+  });
+}
+<% } %>
+
+const [Drawer, drawerApi] = useVbenDrawer({
+  onOpenChange: async (isOpen: boolean) => {
+    if (isOpen) {
+      // 打开时根据id获取详情
+      const data = drawerApi.getData<Record<string, any>>();
+      await baseFormApi.setValues(data);
+    }
+  },
+});
+</script>
+<template>
+  <Drawer class="w-[600px]" title="${basicsConfig.businessName}">
+    <BaseForm />
+
+    <template #footer>
+      <Space>
+        <ButtonClose @click="drawerApi.close()" />
+        <ButtonSave :loading="saveBtnLoading" @click="handleSave" />
+        <% if(basicsConfig.generatorMethodsAdd){ %>
+        <ButtonSave
+            :loading="saveBtnLoading"
+            text="保存并新增"
+            @click="handleSaveAndAdd"
+        />
+        <% } %>
+      </Space>
+    </template>
+  </Drawer>
+</template>

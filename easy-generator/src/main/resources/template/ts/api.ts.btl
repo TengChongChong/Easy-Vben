@@ -1,0 +1,118 @@
+<% if(basicsConfig.generatorMethodsSelect){ %>
+import type { Page } from '#/api/base/model/page-model';
+<% } %>
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+import type { TreeNodeModel } from '#/api/base/model/tree-model';
+<% } %>
+import type { ${basicsConfig.modelName}VO } from '${modelTsPath}';
+
+import { requestClient } from '#/api/request';
+
+// base url
+const BASE_URL = '${basicsConfig.controllerMapping}';
+<% if(basicsConfig.generatorMethodsSelect){ %>
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+/**
+ * 查询数据（无分页）
+ *
+ * @param params 查询条件
+ */
+export function selectApi(params: ${basicsConfig.modelName}VO) {
+  return requestClient.get<Page<${basicsConfig.modelName}VO>>(BASE_URL, {
+    params: params,
+  });
+}
+/**
+ * 查询所有数据（Tree）
+ */
+export function selectAllApi() {
+  return requestClient.get<TreeNodeModel[]>(`\${BASE_URL}/all`);
+}
+<% } else { %>
+/**
+ * 查询数据
+ *
+ * @param params 查询条件
+ * @param page 分页
+ */
+export function selectApi(params: ${basicsConfig.modelName}VO, page: Page<${basicsConfig.modelName}VO>) {
+  return requestClient.get<Page<${basicsConfig.modelName}VO>>(BASE_URL, {
+    params: Object.assign(params, page),
+  });
+}
+<% } %>
+
+/**
+ * 查询详情
+ *
+ * @param id id
+ */
+export function getApi(id: string) {
+  return requestClient.get<${basicsConfig.modelName}VO>(`\${BASE_URL}/\${id}`);
+}
+<% } %>
+<% if(basicsConfig.generatorMethodsAdd){ %>
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+/**
+ * 新增或新增下级
+ *
+ * @param parentId 父id
+ */
+export function addApi(parentId: string | undefined) {
+  return requestClient.get<${basicsConfig.modelName}VO>(`\${BASE_URL}/add\${parentId ? `/\${parentId}` : ''}`,
+}
+<% } else { %>
+/**
+ * 新增
+ */
+export function addApi() {
+  return requestClient.get<${basicsConfig.modelName}VO>(`\${BASE_URL}/add`);
+}
+<% } %>
+<% } %>
+<% if(basicsConfig.generatorMethodsRemove){ %>
+
+/**
+ * 删除
+ *
+ * @param ids ids
+ */
+export function removeApi(ids: string) {
+  return requestClient.delete<boolean>(`\${BASE_URL}/\${ids}`);
+}
+<% } %>
+<% if(basicsConfig.generatorMethodsSave){ %>
+
+/**
+ * 保存/修改
+ *
+ * @param params 表单数据
+ */
+export function saveApi(params: ${basicsConfig.modelName}VO) {
+  return requestClient.post<${basicsConfig.modelName}VO>(BASE_URL, params);
+}
+
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+/**
+ * 保存排序&结构
+ *
+ * @param params 表单数据
+ */
+export function saveOrderApi(params: ${basicsConfig.modelName}[]) {
+  return requestClient.post<${basicsConfig.modelName}>(`\${BASE_URL}/order`, params);
+}
+<% } %>
+<% } %>
+<% if(basicsConfig.isGeneratorMethodsExport){ %>
+
+/**
+ * 导出数据
+ *
+ * @param params 查询条件
+ */
+export function exportDataApi(params: ${basicsConfig.modelName}VO) {
+  return requestClient.get<string>(`\${BASE_URL}/export/data`, {
+    params,
+  });
+}
+<% } %>

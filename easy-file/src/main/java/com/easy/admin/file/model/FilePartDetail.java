@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,6 +19,7 @@ import java.util.Date;
 @TableName("file_part_detail")
 public class FilePartDetail extends Model<FilePartDetail> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

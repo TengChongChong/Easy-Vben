@@ -3,7 +3,7 @@
 <mapper namespace="com.easy.admin.sample.dao.SampleGeneralMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.easy.admin.sample.model.SampleGeneral">
+    <resultMap id="BaseResultMap" type="com.easy.admin.sample.model.vo.SampleGeneralVO">
         <result column="id" property="id" />
         <result column="parent_id" property="parentId" />
         <result column="name" property="name" />
@@ -11,16 +11,18 @@
         <result column="age" property="age" />
         <result column="phone" property="phone" />
         <result column="status" property="status" />
-        <result column="order_no" property="orderNo" />
         <result column="address" property="address" />
+        <result column="order_no" property="orderNo" />
         <result column="version" property="version" />
+        <result column="dept_id" property="deptId" />
         <result column="create_user" property="createUser" />
         <result column="create_date" property="createDate" />
         <result column="edit_user" property="editUser" />
         <result column="edit_date" property="editDate" />
     </resultMap>
-    <select id="select" resultType="com.easy.admin.sample.model.SampleGeneral">
-        select t.id, t.name, t.sex, t.age, t.phone, su_edit_user.nickname as edit_user, t.edit_date
+
+    <select id="select" resultType="com.easy.admin.sample.model.vo.SampleGeneralVO">
+        select t.id, t.name, t.sex, t.age, t.phone, t.status, t.order_no, t.dept_id, su_edit_user.nickname as edit_user, t.edit_date
         from sample_general t
         left join sys_user su_edit_user on su_edit_user.id = t.edit_user
         <where>
@@ -29,15 +31,16 @@
     </select>
 
     <select id="getById" resultType="com.easy.admin.sample.model.SampleGeneral">
-        select t.id, t.parent_id, t.name, t.sex, t.age, t.phone, t.status, t.order_no, t.address, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
+        select t.id, t.parent_id, t.name, t.sex, t.age, t.phone, t.status, t.address, t.order_no, t.version, t.dept_id, t.create_user, t.create_date, t.edit_user, t.edit_date
         from sample_general t
         where t.id = #{id}
     </select>
 
-    <select id="exportData" resultType="com.easy.admin.sample.model.SampleGeneral">
-        select t.name, sd_sex.name as sex, t.age, t.phone, t.address
+    <select id="exportData" resultType="com.easy.admin.sample.model.vo.SampleGeneralVO">
+        select t.name, sd_sex.name as sex, t.age, t.phone, sd_status.name as status, t.address, t.order_no, t.dept_id
         from sample_general t
         left join sys_dict sd_sex on sd_sex.code = t.sex and sd_sex.dict_type = 'sex'
+        left join sys_dict sd_status on sd_status.code = t.status and sd_status.dict_type = 'commonStatus'
         <where>
             ${ew.sqlSegment}
         </where>

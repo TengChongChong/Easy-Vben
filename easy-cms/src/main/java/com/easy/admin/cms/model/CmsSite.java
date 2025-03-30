@@ -7,6 +7,7 @@ import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,6 +21,7 @@ import java.util.Date;
 @TableName("cms_site")
 public class CmsSite extends Model<CmsSite> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

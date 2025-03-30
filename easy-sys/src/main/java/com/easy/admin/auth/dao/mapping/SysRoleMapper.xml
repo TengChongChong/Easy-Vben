@@ -30,8 +30,8 @@
         from sys_role t
         where t.id= #{id}
     </select>
-    <select id="selectPermissions" resultType="java.lang.String">
-        select permission_id from sys_role_permission rp where rp.role_id = #{id}
+    <select id="selectMenuIds" resultType="java.lang.String">
+        select menu_id from sys_role_menu rp where rp.role_id = #{id}
     </select>
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0) from sys_role t

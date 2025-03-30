@@ -13,9 +13,9 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
-import com.easy.admin.auth.common.type.PermissionType;
-import com.easy.admin.auth.model.SysPermission;
-import com.easy.admin.auth.service.SysPermissionService;
+import com.easy.admin.auth.common.type.MenuType;
+import com.easy.admin.auth.model.vo.SysMenuVO;
+import com.easy.admin.auth.service.SysMenuService;
 import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.exception.EasyException;
@@ -27,18 +27,13 @@ import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.model.ImportCellConfig;
 import com.easy.admin.generator.service.GeneratorService;
 import com.easy.admin.generator.type.EasyTypeConvertHandler;
-import com.easy.admin.sys.common.constant.OpenModeConst;
-import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.common.status.ProfilesActiveStatus;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
-import com.easy.admin.util.SysConfigUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,9 +56,11 @@ import java.util.List;
 public class GeneratorServiceImpl implements GeneratorService {
 
     @Autowired
-    private SysPermissionService sysPermissionsService;
+    private SysMenuService sysMenuService;
+
     @Autowired
     private SysImportExcelTemplateService sysImportExcelTemplateService;
+
     @Autowired
     private SysImportExcelTemplateDetailService sysImportExcelTemplateDetailsService;
 
@@ -93,6 +90,10 @@ public class GeneratorServiceImpl implements GeneratorService {
                 generatorFile.generator();
 
                 // 部分选项需要生成额外的文件，用于减少用户在前端选择的选项数量
+                if (GeneratorFileConst.MODEL.equals(fileSlug)) {
+                    generatorFile = GeneratorFileFactory.getGeneratorFile(GeneratorFileConst.MODEL_VO, generatorConfig, tableInfo);
+                    generatorFile.generator();
+                }
                 if (GeneratorFileConst.MAPPER.equals(fileSlug)) {
                     generatorFile = GeneratorFileFactory.getGeneratorFile(GeneratorFileConst.MAPPING, generatorConfig, tableInfo);
                     generatorFile.generator();
@@ -140,83 +141,69 @@ public class GeneratorServiceImpl implements GeneratorService {
             return;
         }
         // 菜单是否存在
-        if (sysPermissionsService.hasMenu(generatorConfig.getBasicsConfig().getMenuName())) {
+        if (sysMenuService.hasMenu(generatorConfig.getBasicsConfig().getMenuName())) {
             return;
         }
         String listComponent;
-        if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
-            listComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/List.vue";
-        } else {
-            listComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/list";
-        }
-        SysPermission basePermission = getNewMenu(
+        listComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/list";
+        SysMenuVO baseMenu = getNewMenu(
                 generatorConfig.getBasicsConfig().getMenuName(),
-                PermissionType.MENU.getCode(),
-                WhetherConst.YES,
+                MenuType.MENU.getCode(),
                 generatorConfig.getBasicsConfig().getPermissionCode() + ":select",
                 generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/list",
                 listComponent
         );
-        basePermission.setParentId("0");
-        basePermission.setExternalLink(WhetherConst.NO);
-        basePermission.setType(PermissionType.MENU.getCode());
-        basePermission.setParentId(generatorConfig.getBasicsConfig().getMenuParentId());
-        sysPermissionsService.saveData(basePermission);
+        baseMenu.setKeepAlive(WhetherConst.YES);
+        baseMenu.setType(MenuType.MENU.getCode());
+        baseMenu.setParentId(generatorConfig.getBasicsConfig().getMenuParentId());
+        sysMenuService.saveData(baseMenu);
         if (StrUtil.isNotBlank(generatorConfig.getBasicsConfig().getPermissionCode())) {
             // 如果权限标识不为空,保存方法权限
             if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.SAVE)) {
-                SysPermission savePermission = getNewMenu(
+                SysMenuVO savePermission = getNewMenu(
                         "保存/修改",
-                        PermissionType.BUTTON.getCode(),
-                        WhetherConst.NO,
+                        MenuType.BUTTON.getCode(),
                         generatorConfig.getBasicsConfig().getPermissionCode() + ":save",
                         null,
                         null
                 );
-                savePermission.setParentId(basePermission.getId());
-                sysPermissionsService.saveData(savePermission);
+                savePermission.setParentId(baseMenu.getId());
+                sysMenuService.saveData(savePermission);
             }
             if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.REMOVE)) {
-                SysPermission savePermission = getNewMenu(
+                SysMenuVO savePermission = getNewMenu(
                         "删除",
-                        PermissionType.BUTTON.getCode(),
-                        WhetherConst.NO,
+                        MenuType.BUTTON.getCode(),
                         generatorConfig.getBasicsConfig().getPermissionCode() + ":remove",
                         null,
                         null
                 );
-                savePermission.setParentId(basePermission.getId());
-                sysPermissionsService.saveData(savePermission);
+                savePermission.setParentId(baseMenu.getId());
+                sysMenuService.saveData(savePermission);
             }
             if (GeneratorFormTemplateConst.PAGE.equals(generatorConfig.getBasicsConfig().getFormGeneratorTemplate())) {
                 String inputComponent;
-                if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
-                    inputComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/Input.vue";
-                } else {
-                    inputComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/input";
-                }
-                SysPermission savePermission = getNewMenu(
+                inputComponent = generatorConfig.getBasicsConfig().getViewPath().replace("/src/views", "") + "/input";
+                SysMenuVO savePermission = getNewMenu(
                         "详情",
-                        PermissionType.MENU.getCode(),
-                        WhetherConst.NO,
+                        MenuType.MENU.getCode(),
                         null,
                         generatorConfig.getBasicsConfig().getControllerMapping().replace("/auth/", "/") + "/input",
                         inputComponent
                 );
-                savePermission.setParentId(basePermission.getId());
-                sysPermissionsService.saveData(savePermission);
+                savePermission.setParentId(baseMenu.getId());
+                sysMenuService.saveData(savePermission);
             }
             if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.IMPORT_DATA) && sysImportExcelTemplate != null && StrUtil.isNotBlank(sysImportExcelTemplate.getId())) {
-                SysPermission savePermission = getNewMenu(
+                SysMenuVO savePermission = getNewMenu(
                         "导入数据",
-                        PermissionType.BUTTON.getCode(),
-                        WhetherConst.NO,
+                        MenuType.BUTTON.getCode(),
                         sysImportExcelTemplate.getPermissionCode(),
                         null,
                         null
                 );
-                savePermission.setParentId(basePermission.getId());
-                sysPermissionsService.saveData(savePermission);
+                savePermission.setParentId(baseMenu.getId());
+                sysMenuService.saveData(savePermission);
             }
         }
     }
@@ -273,24 +260,19 @@ public class GeneratorServiceImpl implements GeneratorService {
      *
      * @param title     名称
      * @param type      类型
-     * @param display   是否显示
      * @param code      权限标识
      * @param path      访问地址
      * @param component 页面地址
-     * @return SysPermissions
+     * @return SysMenus
      */
-    private SysPermission getNewMenu(String title, String type, String display, String code, String path, String component) {
-        SysPermission sysPermissions = new SysPermission();
+    private SysMenuVO getNewMenu(String title, String type, String code, String path, String component) {
+        SysMenuVO sysPermissions = new SysMenuVO();
         sysPermissions.setTitle(title);
-        sysPermissions.setCode(code);
+        sysPermissions.setAuthCode(code);
         sysPermissions.setPath(path);
         sysPermissions.setComponent(component);
         sysPermissions.setType(type);
         sysPermissions.setStatus(CommonStatus.ENABLE.getCode());
-        sysPermissions.setExternalLink(WhetherConst.NO);
-        sysPermissions.setShowInMenu(display);
-        // 打开方式
-        sysPermissions.setOpenMode(OpenModeConst.DEFAULT);
         return sysPermissions;
     }
 
@@ -317,13 +299,9 @@ public class GeneratorServiceImpl implements GeneratorService {
         } finally {
             try {
                 rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.warn("关闭连接失败", e);
             }
         }
         return tables;
@@ -384,7 +362,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         List<Select> selectList = new ArrayList<>();
         UserInfo userInfo = SystemUtil.getUserInfo();
         File[] files = new File(userInfo.getCurrentDir()).listFiles();
-        if (files != null && files.length > 0) {
+        if (files != null) {
             for (File file : files) {
                 if (file.isDirectory() && file.getName().startsWith("easy-")) {
                     selectList.add(new Select(file.getPath(), file.getName()));
@@ -398,7 +376,7 @@ public class GeneratorServiceImpl implements GeneratorService {
     private List<Select> selectModules(File parentFile) {
         List<Select> selectList = new ArrayList<>();
         File[] files = parentFile.listFiles();
-        if (files != null && files.length > 0) {
+        if (files != null) {
             for (File file : files) {
                 if (file.isDirectory() && file.getName().startsWith("easy-")) {
                     selectList.add(new Select(file.getPath(), parentFile.getName() + "/" + file.getName()));
@@ -412,7 +390,7 @@ public class GeneratorServiceImpl implements GeneratorService {
     public TableInfo getTableInfo(String dataSource, String tableName) {
         ConfigBuilder configBuilder = new ConfigBuilder(null, getDataSourceConfig(dataSource), getStrategyConfig(tableName), null, getGlobalConfig(), null);
         List<TableInfo> tableInfoList = configBuilder.getTableInfoList();
-        if (tableInfoList.size() == 0) {
+        if (tableInfoList.isEmpty()) {
             throw new EasyException("表不存在");
         }
         return tableInfoList.get(0);

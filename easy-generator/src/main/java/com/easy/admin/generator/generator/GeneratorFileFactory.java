@@ -26,6 +26,9 @@ public class GeneratorFileFactory {
             case GeneratorFileConst.MODEL:
                 generatorFile = new GeneratorModel(generatorConfig, tableInfo);
                 break;
+            case GeneratorFileConst.MODEL_VO:
+                generatorFile = new GeneratorModelVO(generatorConfig, tableInfo);
+                break;
             case GeneratorFileConst.MAPPER:
                 generatorFile = new GeneratorMapper(generatorConfig, tableInfo);
                 break;

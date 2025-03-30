@@ -1,6 +1,7 @@
 package com.easy.admin.common.core.common.tree;
 
 import com.easy.admin.common.core.constant.CommonConst;
+import lombok.Data;
 
 /**
  * Tree 插件数据
@@ -8,6 +9,7 @@ import com.easy.admin.common.core.constant.CommonConst;
  * @author TengChongChong
  * @date 2020/10/27
  */
+@Data
 public class Tree {
 
     /**
@@ -94,119 +96,11 @@ public class Tree {
         this.type = type;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getClazz() {
-        return clazz;
-    }
-
-    public void setClazz(String clazz) {
-        this.clazz = clazz;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public Boolean getCheckable() {
-        return checkable;
-    }
-
-    public void setCheckable(Boolean checkable) {
-        this.checkable = checkable;
-    }
-
-    public boolean isDisableCheckbox() {
-        return disableCheckbox;
-    }
-
-    public void setDisableCheckbox(boolean disableCheckbox) {
-        this.disableCheckbox = disableCheckbox;
-    }
-
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public Object getIsLeaf() {
-        return isLeaf;
-    }
-
     public void setIsLeaf(Object isLeaf) {
-        if (isLeaf != null && isLeaf instanceof String) {
+        if (isLeaf instanceof String) {
             this.isLeaf = !CommonConst.FALSE.equals(isLeaf);
         } else {
             this.isLeaf = isLeaf;
         }
-    }
-
-    public boolean isSelectable() {
-        return selectable;
-    }
-
-    public void setSelectable(boolean selectable) {
-        this.selectable = selectable;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 }

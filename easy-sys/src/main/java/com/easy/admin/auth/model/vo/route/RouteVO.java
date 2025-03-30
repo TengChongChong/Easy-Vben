@@ -3,6 +3,7 @@ package com.easy.admin.auth.model.vo.route;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RouteVO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

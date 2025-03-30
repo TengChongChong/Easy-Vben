@@ -1,14 +1,9 @@
 package com.easy.admin.generator.generator.impl;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.easy.admin.generator.constant.GeneratorVersion;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.util.FrontEndImportPathUtil;
-import com.easy.admin.generator.util.GeneratorTsUtil;
-import com.easy.admin.generator.util.GeneratorUtil;
-import com.easy.admin.sys.common.constant.SysConfigConst;
-import com.easy.admin.util.SysConfigUtil;
 
 import java.io.File;
 
@@ -30,17 +25,10 @@ public class GeneratorInput extends GeneratorFile {
 
     @Override
     public void init() {
-        if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
-            // 设置模板
-            this.setTemplate("/template/vben2/view/form/" + generatorConfig.getBasicsConfig().getFormGeneratorTemplate() + "/Input.vue.btl");
-            // 设置文件路径
-            this.setFilePath(generatorConfig.getBasicsConfig().getFrontEndPath() + generatorConfig.getBasicsConfig().getViewPath() + File.separator + "Input.vue");
-        } else {
-            // 设置模板
-            this.setTemplate("/template/vben5/view/form/" + generatorConfig.getBasicsConfig().getFormGeneratorTemplate() + "/input.vue.btl");
-            // 设置文件路径
-            this.setFilePath(generatorConfig.getBasicsConfig().getFrontEndPath() + generatorConfig.getBasicsConfig().getViewPath() + File.separator + "input.vue");
-        }
+        // 设置模板
+        this.setTemplate("/template/view/form/" + generatorConfig.getBasicsConfig().getFormGeneratorTemplate() + "/input.vue.btl");
+        // 设置文件路径
+        this.setFilePath(generatorConfig.getBasicsConfig().getFrontEndPath() + generatorConfig.getBasicsConfig().getViewPath() + File.separator + "input.vue");
 
     }
 

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +19,8 @@ import java.util.Date;
 @Data
 @TableName("sys_config")
 public class SysConfig extends Model<SysConfig> implements Serializable {
+
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @TableId

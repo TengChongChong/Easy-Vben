@@ -1,11 +1,14 @@
 package com.easy.admin.auth.common.type;
 
+import lombok.Getter;
+
 /**
  * 数据权限类型
  *
  * @author TengChongChong
  * @date 2024/7/22
  **/
+@Getter
 public enum DataPermissionType {
     // 本人
     SELF("self", "本人"),
@@ -18,20 +21,12 @@ public enum DataPermissionType {
     // 全部
     ALL("all", "全部");
 
-    String code;
-    String message;
+    final String code;
+    final String desc;
 
-    DataPermissionType(String code, String message) {
+    DataPermissionType(String code, String desc) {
         this.code = code;
-        this.message = message;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
+        this.desc = desc;
     }
 
 }

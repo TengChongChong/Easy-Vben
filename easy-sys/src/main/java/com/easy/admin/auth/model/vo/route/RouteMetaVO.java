@@ -3,6 +3,7 @@ package com.easy.admin.auth.model.vo.route;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RouteMetaVO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -41,11 +43,6 @@ public class RouteMetaVO implements Serializable {
      * 用于配置页面是否在菜单中隐藏，隐藏后页面不会在菜单中显示。默认值：false
      */
     private Boolean hideInMenu;
-    /**
-     * 用于配置页面是否在菜单中隐藏，隐藏后页面不会在菜单中显示。默认值：false
-     */
-    @Deprecated
-    private Boolean hideMenu;
 
     /**
      * 用于配置页面是否在标签页中隐藏，隐藏后页面不会在标签页中显示。默认值：false
@@ -96,14 +93,6 @@ public class RouteMetaVO implements Serializable {
      * 用于配置内嵌页面的 iframe 地址，设置后会在当前页面内嵌对应的页面。
      */
     private String iframeSrc;
-    // 兼容 vben 2.x
-    @Deprecated
-    private String frameSrc;
-
-    /**
-     * 用于配置页面是否忽略权限，直接可以访问，默认值：false
-     */
-    private Boolean ignoreAccess;
 
     /**
      * 用于配置外链跳转路径，会在新窗口打开。
@@ -111,10 +100,15 @@ public class RouteMetaVO implements Serializable {
     private String link;
 
     /**
+     * 用于配置页面是否忽略权限，直接可以访问，默认值：false
+     */
+    private Boolean ignoreAccess;
+
+    /**
      * 用于配置标签页最大打开数量，设置后会在打开新标签页时自动关闭最早打开的标签页(仅在打开同名标签页时生效)，默认值：-1
      */
     private Integer maxNumOfOpenTab;
-    
+
     /**
      * 在新窗口打开
      */

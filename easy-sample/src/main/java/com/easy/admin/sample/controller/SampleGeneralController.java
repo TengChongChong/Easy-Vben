@@ -13,17 +13,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import jakarta.validation.Valid;
-
-import com.easy.admin.sample.model.SampleGeneral;
+import com.easy.admin.sample.model.vo.SampleGeneralVO;
 import com.easy.admin.sample.service.SampleGeneralService;
 
 /**
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2023-12-27
+ * @date 2025-03-21
  */
 @Tag(name = "代码生成示例")
 @RestController
@@ -41,13 +39,13 @@ public class SampleGeneralController {
      * 查询数据
      *
      * @param sampleGeneral 查询条件
-     * @param page          分页
-     * @return Page<SampleGeneral>
+     * @param page 分页
+     * @return Page<SampleGeneralVO>
      */
-    @Operation(summary = "查询数据")
+    @Operation(summary ="查询数据")
     @GetMapping()
     @SaCheckPermission("sample:general:select")
-    public Page<SampleGeneral> select(SampleGeneral sampleGeneral, Page<SampleGeneral> page) {
+    public Page<SampleGeneralVO> select(SampleGeneralVO sampleGeneral, Page<SampleGeneralVO> page){
         return service.select(sampleGeneral, page);
     }
 
@@ -55,34 +53,33 @@ public class SampleGeneralController {
      * 查询详情
      *
      * @param id id
-     * @return SampleGeneral
+     * @return SampleGeneralVO
      */
-    @Operation(summary = "查询详情")
+    @Operation(summary ="查询详情")
     @GetMapping("{id}")
     @SaCheckPermission("sample:general:select")
-    public SampleGeneral get(@PathVariable("id") String id) {
+    public SampleGeneralVO get(@PathVariable("id") String id) {
         return service.get(id);
     }
 
     /**
      * 新增
      *
-     * @return SampleGeneral
+     * @return SampleGeneralVO
      */
     @GetMapping("add")
-    @Operation(summary = "新增")
+    @Operation(summary ="新增")
     @SaCheckPermission("sample:general:save")
-    public SampleGeneral add() {
+    public SampleGeneralVO add() {
         return service.add();
     }
-
     /**
      * 删除
      *
      * @param ids 数据ids
      * @return true/false
      */
-    @Operation(summary = "删除")
+    @Operation(summary ="删除")
     @DeleteMapping("{ids}")
     @SaCheckPermission("sample:general:remove")
     public boolean delete(@PathVariable("ids") String ids) {
@@ -92,26 +89,25 @@ public class SampleGeneralController {
     /**
      * 保存/修改
      *
-     * @param sampleGeneral 表单内容
-     * @return SampleGeneral
+     * @param sampleGeneralVO 表单内容
+     * @return SampleGeneralVO
      */
-    @Operation(summary = "保存/修改")
+    @Operation(summary ="保存/修改")
     @PostMapping()
     @SaCheckPermission("sample:general:save")
-    public SampleGeneral saveData(@Valid @RequestBody SampleGeneral sampleGeneral) {
-        return service.saveData(sampleGeneral);
+    public SampleGeneralVO saveData(@Valid @RequestBody SampleGeneralVO sampleGeneralVO){
+        return service.saveData(sampleGeneralVO);
     }
-
     /**
      * 导出数据
      *
      * @param sampleGeneral 查询条件
      * @return 文件下载id
      */
-    @Operation(summary = "导出数据")
+    @Operation(summary ="导出数据")
     @GetMapping("export/data")
     @SaCheckPermission("sample:general:select")
-    public String exportData(SampleGeneral sampleGeneral) {
+    public String exportData(SampleGeneralVO sampleGeneral){
         return service.exportData(sampleGeneral);
     }
 

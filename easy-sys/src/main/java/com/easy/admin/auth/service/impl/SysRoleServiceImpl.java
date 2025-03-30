@@ -1,6 +1,5 @@
 package com.easy.admin.auth.service.impl;
 
-import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
@@ -47,10 +46,7 @@ import java.util.List;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
     @Autowired
-    private SaTokenConfig saTokenConfig;
-
-    @Autowired
-    private SysRolePermissionService sysRolePermissionsService;
+    private SysRoleMenuService sysRoleMenuService;
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
@@ -109,7 +105,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         SysRoleVO sysRoleVO = new SysRoleVO();
         BeanUtil.copyProperties(sysRole, sysRoleVO);
 
-        sysRoleVO.setPermissionIds(baseMapper.selectPermissions(id));
+        sysRoleVO.setMenuIds(baseMapper.selectMenuIds(id));
         DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRoleVO.getDataPermission().toUpperCase());
         if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
             sysRoleVO.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
@@ -123,7 +119,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         sysRole.setStatus(CommonStatus.ENABLE.getCode());
         sysRole.setSys(WhetherConst.NO);
         sysRole.setOrderNo(baseMapper.getMaxOrderNo() + 1);
-        sysRole.setPermissionIds(new ArrayList<>());
+        sysRole.setMenuIds(Collections.emptyList());
         return sysRole;
     }
 
@@ -141,7 +137,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         boolean isSuccess = removeByIds(idList);
         if (isSuccess) {
             // 删除已经分配给角色的角色权限
-            sysRolePermissionsService.removeByRoleId(ids);
+            sysRoleMenuService.removeByRoleId(ids);
             // 删除已经分配给用户的角色
             sysUserRoleService.removeUserRole(ids);
             // 删除部门类型可分配的角色
@@ -195,7 +191,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if (isSuccess) {
             sysRoleVO.setId(sysRole.getId());
             // 保存角色权限
-            sysRolePermissionsService.saveRolePermissions(sysRoleVO.getId(), sysRoleVO.getPermissionIds());
+            sysRoleMenuService.saveRoleMenu(sysRoleVO.getId(), sysRoleVO.getMenuIds());
             // 保存数据权限
             DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRoleVO.getDataPermission().toUpperCase());
             if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
@@ -290,7 +286,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             sysRoleVO.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
         }
 
-        sysRoleCache = new SysRoleCacheVO(sysRoleVO, sysRolePermissionsService.selectSysPermissionByRoleId(id));
+        sysRoleCache = new SysRoleCacheVO(sysRoleVO, sysRoleMenuService.selectSysMenuByRoleId(id));
         // 放到缓存
         RedisUtil.set(RedisPrefix.SYS_ROLE + id, sysRoleCache);
         return sysRoleCache;

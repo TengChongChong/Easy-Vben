@@ -14,6 +14,10 @@ public class GeneratorPackageConst {
      */
     public static final String MODEL = "model" + File.separator;
     /**
+     * 实体类VO
+     */
+    public static final String MODEL_VO = "model" + File.separator + "vo" + File.separator;
+    /**
      * dao
      */
     public static final String MAPPER = "dao" + File.separator;

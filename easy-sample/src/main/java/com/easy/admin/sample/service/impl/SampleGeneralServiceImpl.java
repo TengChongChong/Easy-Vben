@@ -1,13 +1,16 @@
 package com.easy.admin.sample.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
-import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.sample.dao.SampleGeneralMapper;
 import com.easy.admin.sample.model.SampleGeneral;
+import com.easy.admin.sample.model.vo.SampleGeneralVO;
 import com.easy.admin.sample.service.SampleGeneralService;
 import com.easy.admin.sys.service.ImportService;
 import com.easy.admin.util.office.ExcelUtil;
@@ -21,21 +24,22 @@ import java.util.List;
  * 代码生成示例
  *
  * @author 系统管理员
- * @date 2023-12-27
+ * @date 2025-03-21
  */
 @Service
 public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, SampleGeneral> implements SampleGeneralService, ImportService {
 
+
     @Override
-    public Page<SampleGeneral> select(SampleGeneral sampleGeneral, Page<SampleGeneral> page) {
+    public Page<SampleGeneralVO> select(SampleGeneralVO sampleGeneral, Page<SampleGeneralVO> page) {
         QueryWrapper<SampleGeneral> queryWrapper = getQueryWrapper(sampleGeneral);
         page.setRecords(baseMapper.select(page, queryWrapper));
         return page;
     }
 
-    private QueryWrapper<SampleGeneral> getQueryWrapper(SampleGeneral sampleGeneral){
+    private QueryWrapper<SampleGeneral> getQueryWrapper(SampleGeneralVO sampleGeneral) {
         QueryWrapper<SampleGeneral> queryWrapper = new QueryWrapper<>();
-        if(sampleGeneral != null){
+        if (sampleGeneral != null) {
             // 查询条件
             // 姓名
             if (Validator.isNotEmpty(sampleGeneral.getName())) {
@@ -70,13 +74,20 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
     }
 
     @Override
-    public SampleGeneral get(String id) {
-        return baseMapper.getById(id);
+    public SampleGeneralVO get(String id) {
+        SampleGeneral sampleGeneral = baseMapper.getById(id);
+        if (sampleGeneral == null) {
+            return null;
+        }
+        SampleGeneralVO sampleGeneralVO = new SampleGeneralVO();
+        BeanUtil.copyProperties(sampleGeneral, sampleGeneralVO);
+        // 查询其他相关业务数据
+        return sampleGeneralVO;
     }
 
     @Override
-    public SampleGeneral add() {
-        SampleGeneral sampleGeneral = new SampleGeneral();
+    public SampleGeneralVO add() {
+        SampleGeneralVO sampleGeneral = new SampleGeneralVO();
         // 设置默认值
         return sampleGeneral;
     }
@@ -90,11 +101,23 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public SampleGeneral saveData(SampleGeneral sampleGeneral) {
-        if (Validator.isEmpty(sampleGeneral.getId())) {
+    public SampleGeneralVO saveData(SampleGeneralVO sampleGeneralVO) {
+        if (Validator.isEmpty(sampleGeneralVO.getId())) {
             // 新增,设置默认值
         }
-        return (SampleGeneral) ToolUtil.checkResult(saveOrUpdate(sampleGeneral), sampleGeneral);
+        
+        SampleGeneral sampleGeneral = new SampleGeneral();
+        BeanUtil.copyProperties(sampleGeneralVO, sampleGeneral);
+        boolean isSuccess = saveOrUpdate(sampleGeneral);
+        if (!isSuccess) {
+            throw new EasyException(GlobalException.LOCK_ERROR);
+        }
+        // 同步保存后的id到VO
+        sampleGeneralVO.setId(sampleGeneral.getId());
+
+        // 保存其他相关业务数据
+
+        return sampleGeneralVO;
     }
 
     /**
@@ -102,7 +125,7 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
      * 注: 返回false会触发异常回滚
      *
      * @param templateId 模板id
-     * @param userId 用户id
+     * @param userId     用户id
      * @return true/false
      */
     @Override
@@ -115,7 +138,7 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
      * 注: 返回false会触发异常回滚
      *
      * @param templateId 模板id
-     * @param userId 用户id
+     * @param userId     用户id
      * @return true/false
      */
     @Override
@@ -135,10 +158,9 @@ public class SampleGeneralServiceImpl extends ServiceImpl<SampleGeneralMapper, S
     }
 
     @Override
-    public String exportData(SampleGeneral sampleGeneral) {
+    public String exportData(SampleGeneralVO sampleGeneral) {
         QueryWrapper<SampleGeneral> queryWrapper = getQueryWrapper(sampleGeneral);
-        List<SampleGeneral> list = baseMapper.exportData(queryWrapper);
-        return ExcelUtil.writeAndGetDownloadId("代码生成示例", "代码生成示例", list, SampleGeneral.class);
+        List<SampleGeneralVO> list = baseMapper.exportData(queryWrapper);
+        return ExcelUtil.writeAndGetDownloadId("代码生成示例", "代码生成示例", list, SampleGeneralVO.class);
     }
-
 }

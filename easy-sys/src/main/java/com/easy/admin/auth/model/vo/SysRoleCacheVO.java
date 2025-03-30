@@ -1,10 +1,11 @@
 package com.easy.admin.auth.model.vo;
 
-import com.easy.admin.auth.model.SysPermission;
+import com.easy.admin.auth.model.SysMenu;
 import com.easy.admin.auth.model.vo.route.RouteVO;
 import com.easy.admin.auth.util.frontend.RouteUtil;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Data
 public class SysRoleCacheVO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String id;
@@ -56,7 +58,7 @@ public class SysRoleCacheVO implements Serializable {
      */
     private List<RouteVO> routeList;
 
-    public SysRoleCacheVO(SysRoleVO sysRole, List<SysPermission> sysPermissionList) {
+    public SysRoleCacheVO(SysRoleVO sysRole, List<SysMenu> sysMenuList) {
         // 角色基础信息
         this.id = sysRole.getId();
         this.name = sysRole.getName();
@@ -66,9 +68,9 @@ public class SysRoleCacheVO implements Serializable {
         this.dataPermissionDeptIdList = sysRole.getDataPermissionDeptIds();
 
         // 角色拥有的权限标识
-        this.permissionCodeList = RouteUtil.convertPermissionCodeList(sysPermissionList);
+        this.permissionCodeList = RouteUtil.convertPermissionCodeList(sysMenuList);
 
         // 角色拥有的权限
-        this.routeList = RouteUtil.convertRouteList(sysPermissionList);
+        this.routeList = RouteUtil.convertRouteList(sysMenuList);
     }
 }

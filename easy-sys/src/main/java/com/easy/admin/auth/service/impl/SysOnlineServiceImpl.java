@@ -37,7 +37,8 @@ public class SysOnlineServiceImpl implements SysUserOnlineService {
         for (String token : tokenList) {
             // 获取 token
             String realToken = token.contains(":") ? token.substring(token.lastIndexOf(":") + 1) : token;
-            SaSession session = StpUtil.getTokenSessionByToken(realToken);
+            String loginId = (String) StpUtil.getLoginIdByToken(realToken);
+            SaSession session = StpUtil.getSessionByLoginId(loginId);
 
             // token 中的用户信息
             SessionUserVO sessionUserVO = (SessionUserVO) session.get(SessionConst.USER_SESSION_KEY);
@@ -45,11 +46,11 @@ public class SysOnlineServiceImpl implements SysUserOnlineService {
 
             BeanUtil.copyProperties(sessionUserVO, userOnline);
 
-            userOnline.setId((String) StpUtil.getLoginIdByToken(realToken));
+            userOnline.setId(realToken);
             // 设备
             userOnline.setDevice(StpUtil.getLoginDevice());
             userOnline.setToken(realToken);
-            userOnline.setDeptName(sessionUserVO.getDept().getName());
+            userOnline.setDeptName(sessionUserVO.getDept() != null ? sessionUserVO.getDept().getName() : null);
             userOnline.setTimeout(StpUtil.getTokenTimeout(realToken));
             userOnline.setSessionStatus(userOnline.getId() != null ? "1" : "-1");
             userOnlineList.add(userOnline);

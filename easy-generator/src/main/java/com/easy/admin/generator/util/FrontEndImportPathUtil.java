@@ -1,9 +1,6 @@
 package com.easy.admin.generator.util;
 
-import com.easy.admin.generator.constant.GeneratorVersion;
 import com.easy.admin.generator.model.GeneratorConfig;
-import com.easy.admin.sys.common.constant.SysConfigConst;
-import com.easy.admin.util.SysConfigUtil;
 
 /**
  * 前端文件 import 路径
@@ -12,8 +9,6 @@ import com.easy.admin.util.SysConfigUtil;
  * @date 2024-11-12
  **/
 public class FrontEndImportPathUtil {
-
-    private static final String PREFIX_VBEN2 = "@";
 
     private static final String PREFIX_VBEN5 = "#";
 
@@ -65,17 +60,9 @@ public class FrontEndImportPathUtil {
      */
     private static String convertTsImportPath(String tsFilePath) {
         if (tsFilePath.startsWith("/src")) {
-            if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
-                tsFilePath = tsFilePath.replace("/src", PREFIX_VBEN2);
-            } else {
-                tsFilePath = tsFilePath.replace("/src", PREFIX_VBEN5);
-            }
+            tsFilePath = tsFilePath.replace("/src", PREFIX_VBEN5);
         } else {
-            if (GeneratorVersion.VBEN2.equals(SysConfigUtil.get(SysConfigConst.CODE_GENERATOR_VERSION))) {
-                tsFilePath = PREFIX_VBEN2 + tsFilePath;
-            } else {
-                tsFilePath = PREFIX_VBEN5 + tsFilePath;
-            }
+            tsFilePath = PREFIX_VBEN5 + tsFilePath;
         }
         return tsFilePath.replace(".ts", "");
     }

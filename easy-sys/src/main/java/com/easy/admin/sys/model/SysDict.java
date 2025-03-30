@@ -8,6 +8,8 @@ import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -20,6 +22,7 @@ import java.util.Date;
 @TableName("sys_dict")
 public class SysDict extends Model<SysDict> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @TableId

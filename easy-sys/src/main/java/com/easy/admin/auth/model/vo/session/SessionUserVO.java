@@ -5,6 +5,7 @@ import com.easy.admin.config.mybatis.plugins.model.DataPermission;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.List;
 @Data
 public class SessionUserVO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String id;

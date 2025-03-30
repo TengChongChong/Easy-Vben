@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.auth.dao.SysRoleMenuMapper">
+    <resultMap id="BaseResultMap" type="com.easy.admin.auth.model.SysRoleMenu">
+        <id column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="menu_id" property="menuId"/>
+    </resultMap>
+    <select id="selectMenuByRoleId" resultType="com.easy.admin.auth.model.SysMenu">
+        select * from sys_menu sm
+        left join sys_role_menu srm on srm.menu_id = sm.id
+        where sm.status = #{status} and srm.role_id = #{roleId}
+    </select>
+    <select id="selectSysMenuByRoleId" resultType="com.easy.admin.auth.model.SysMenu">
+        select sm.id, sm.parent_id, sm.type, sm.title, sm.auth_code, sm.path, sm.active_path, sm.icon, sm.active_icon,
+               sm.component, sm.name, sm.link_src, sm.badge_type, sm.badge, sm.badge_variants, sm.keep_alive,
+               sm.affix_tab, sm.hide_in_menu, sm.hide_children_in_menu, sm.hide_in_breadcrumb, sm.hide_in_tab,
+               sm.order_no
+        from sys_menu sm
+         left join sys_role_menu srm on srm.menu_id = sm.id
+        where srm.role_id = #{roleId}
+          and sm.status = #{status}
+        order by sm.order_no
+    </select>
+</mapper>
