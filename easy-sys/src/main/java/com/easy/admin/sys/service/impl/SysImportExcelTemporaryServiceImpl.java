@@ -9,6 +9,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.ToolUtil;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.sys.common.constant.ImportConst;
 import com.easy.admin.sys.dao.SysImportExcelTemporaryMapper;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
@@ -16,11 +17,8 @@ import com.easy.admin.sys.model.SysImportExcelTemporary;
 import com.easy.admin.sys.model.SysImportSummary;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemporaryService;
-import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.util.office.ImportExportUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +64,9 @@ public class SysImportExcelTemporaryServiceImpl extends ServiceImpl<SysImportExc
         // 模板id
         if (Validator.isNotEmpty(sysImportExcelTemporary.getTemplateId())) {
             queryWrapper.eq("template_id", sysImportExcelTemporary.getTemplateId());
+        }
+        if (Validator.isNotEmpty(sysImportExcelTemporary.getVerificationStatus())) {
+            queryWrapper.eq("verification_status", sysImportExcelTemporary.getVerificationStatus());
         }
         // filed 1
         if (Validator.isNotEmpty(sysImportExcelTemporary.getField1())) {

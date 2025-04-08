@@ -52,7 +52,7 @@ public enum BusinessException implements EasyServiceException {
     // 模板不匹配
     IMPORT_TEMPLATE_MISMATCH("04002", "模板不匹配，请重新下载模板"),
     // excel中无数据
-    IMPORT_TEMPLATE_NO_DATA("04003", "请至少录入一条数据后导入"),
+    IMPORT_TEMPLATE_NO_DATA("04003", "Excel中无数据，请录入后重试"),
     // 导入失败
     IMPORT_INSERT_FAIL("04004", "导入失败，请稍后重试"),
     // 文件类型错误

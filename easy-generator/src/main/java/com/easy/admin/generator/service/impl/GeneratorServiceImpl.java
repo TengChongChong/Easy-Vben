@@ -222,7 +222,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         SysImportExcelTemplate sysImportExcelTemplate = new SysImportExcelTemplate();
         sysImportExcelTemplate.setName(generatorConfig.getBasicsConfig().getBusinessName());
         sysImportExcelTemplate.setImportTable(generatorConfig.getBasicsConfig().getTable());
-        sysImportExcelTemplate.setStartRow(1);
+        sysImportExcelTemplate.setStartRow(2);
         sysImportExcelTemplate.setCallback(StrUtil.lowerFirst(generatorConfig.getBasicsConfig().getModelName()) + "ServiceImpl");
         sysImportExcelTemplate.setImportCode(generatorConfig.getBasicsConfig().getPermissionCode());
         sysImportExcelTemplate.setPermissionCode(sysImportExcelTemplate.getImportCode() + ":import:data");
