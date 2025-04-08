@@ -79,9 +79,7 @@ public class RouteUtil {
         // 路由的名称
         route.setName(getRouteName(sysMenu));
 
-        if (MenuType.CATALOG.getCode().equals(sysMenu.getType())) {
-            route.setComponent("BasicLayout");
-        } else if (MenuType.EMBEDDED.getCode().equals(sysMenu.getType())) {
+        if (MenuType.EMBEDDED.getCode().equals(sysMenu.getType())) {
             route.setComponent("IFrameView");
         }
 
@@ -112,17 +110,20 @@ public class RouteUtil {
         if (StrUtil.isNotBlank(sysMenu.getName())) {
             return sysMenu.getName();
         }
-        if (StrUtil.isNotBlank(sysMenu.getComponent())) {
-            String[] pathArray = sysMenu.getComponent().split("[/\\-]");
+        if (StrUtil.isNotBlank(sysMenu.getPath())) {
+            String[] pathArray = sysMenu.getPath().split("[/\\-]");
             StringBuilder name = new StringBuilder();
             for (String path : pathArray) {
-                name.append(StrUtil.upperFirst(path));
+                if (path.contains(":")) {
+                    name.append(StrUtil.upperFirst(path.replace(":", "")));
+                } else {
+                    name.append(StrUtil.upperFirst(path));
+                }
             }
             return name.toString();
         }
         return sysMenu.getId();
     }
-
 
     private static RouteMetaVO convertRouteMeta(SysMenu sysMenu) {
         RouteMetaVO routeMeta = new RouteMetaVO();
