@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.constant.CommonConst;
+import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
 import com.easy.admin.generator.constant.GeneratorPackageConst;
@@ -17,7 +19,6 @@ import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.FieldConfig;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.sys.service.ImportService;
-import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.util.office.ExcelUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +65,7 @@ public class GeneratorServiceImpl extends GeneratorFile {
         imports.add(ServiceImpl.class);
         imports.add(Page.class);
         imports.add(CommonConst.class);
+        imports.add(EasyException.class);
         imports.add(StrUtil.class);
         // 导入
         if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.IMPORT_DATA)) {

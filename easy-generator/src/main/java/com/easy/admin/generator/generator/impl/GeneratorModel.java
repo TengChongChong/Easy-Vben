@@ -1,7 +1,10 @@
 package com.easy.admin.generator.generator.impl;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
@@ -9,10 +12,11 @@ import com.easy.admin.generator.constant.GeneratorPackageConst;
 import com.easy.admin.generator.constant.GeneratorTemplatePathConst;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
-import lombok.Data;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +57,7 @@ public class GeneratorModel extends GeneratorFile {
         imports.add(Model.class);
         imports.add(TableId.class);
         imports.add(TableField.class);
+        imports.add(Serial.class);
         imports.add(FieldFill.class);
         // lombok
         imports.add(Data.class);

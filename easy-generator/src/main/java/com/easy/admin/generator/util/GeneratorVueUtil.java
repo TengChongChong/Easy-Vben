@@ -128,7 +128,9 @@ public class GeneratorVueUtil {
         // 字符串
         if ("String".equals(fieldConfig.getPropertyType())) {
             rules.append(".string()");
-            rules.append(".min(1, { message: '请输入").append(fieldConfig.getLabel()).append("' })");
+            if (isRequired) {
+                rules.append(".min(1, { message: '请输入").append(fieldConfig.getLabel()).append("' })");
+            }
             Integer columnLength = GeneratorUtil.getColumnLength(fieldConfig);
             rules.append(".max(").append(columnLength).append(", { message: '").append(fieldConfig.getLabel()).append("最多输入").append(columnLength).append("个字符' })");
         }

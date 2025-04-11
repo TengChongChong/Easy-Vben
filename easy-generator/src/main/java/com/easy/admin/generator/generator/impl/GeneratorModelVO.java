@@ -7,6 +7,7 @@ import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class GeneratorModelVO extends GeneratorFile {
         List<Class<?>> imports = new ArrayList<>();
         imports.add(Data.class);
         imports.add(Date.class);
+        imports.add(Serial.class);
         imports.add(Serializable.class);
         return imports;
     }
