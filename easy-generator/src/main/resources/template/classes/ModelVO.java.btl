@@ -6,6 +6,7 @@ import ${import};
 <% for(import in imports){ %>
 import ${import.name};
 <% } %>
+import ${basicsConfig.packagePath}.model.${basicsConfig.modelName};
 
 /**
  * ${basicsConfig.businessName}

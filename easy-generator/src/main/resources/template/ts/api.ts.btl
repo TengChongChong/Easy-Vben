@@ -59,7 +59,7 @@ export function getApi(id: string) {
  * @param parentId 父id
  */
 export function addApi(parentId: string | undefined) {
-  return requestClient.get<${basicsConfig.modelName}VO>(`\${BASE_URL}/add\${parentId ? `/\${parentId}` : ''}`,
+  return requestClient.get<${basicsConfig.modelName}VO>(`\${BASE_URL}/add\${parentId ? `/\${parentId}` : ''}`)
 }
 <% } else { %>
 /**

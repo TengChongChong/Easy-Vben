@@ -137,6 +137,17 @@ const handelExportData = async () => {
           />
           <% } %>
           <% } %>
+          <% if(basicsConfig.isGeneratorMethodsImport){ %>
+          <% if(strUtil.isNotBlank(basicsConfig.permissionCode)){ %>
+          <ButtonImport
+            import-code="${basicsConfig.permissionCode}"
+            :auth-codes="['${basicsConfig.permissionCode}:import:data']"
+          />
+          <% } else { %>
+          <ButtonImport import-code="${basicsConfig.permissionCode}" />
+          <% } %>
+          <% } %>
+
           <% if(basicsConfig.isGeneratorMethodsExport){ %>
           <ButtonExport
             :loading="exportBtnLoading"
