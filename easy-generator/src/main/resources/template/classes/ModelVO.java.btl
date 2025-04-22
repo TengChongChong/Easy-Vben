@@ -26,12 +26,10 @@ public class ${basicsConfig.modelName}VO extends ${basicsConfig.modelName} imple
     /**
      * ${item.label} - 开始时间
      */
-    @TableField(exist=false)
     private Date start${strUtil.upperFirst(item.propertyName)};
     /**
      * ${item.label} - 结束时间
      */
-    @TableField(exist=false)
     private Date end${strUtil.upperFirst(item.propertyName)};
     <% } %>
     <% } %>
