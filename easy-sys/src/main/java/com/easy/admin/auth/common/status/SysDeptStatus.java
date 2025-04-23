@@ -1,32 +1,26 @@
 package com.easy.admin.auth.common.status;
 
+import lombok.Getter;
+
 /**
  * 部门状态
  *
  * @author TengChongChong
  * @date 2018/9/4
  */
-
+@Getter
 public enum SysDeptStatus {
     // 启用
     ENABLE("1", "启用"),
     // 禁用
     DISABLE("2", "禁用");
 
-    String code;
-    String message;
+    final String code;
+    final String desc;
 
-    SysDeptStatus(String code, String message) {
+    SysDeptStatus(String code, String desc) {
         this.code = code;
-        this.message = message;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
+        this.desc = desc;
     }
 
 }

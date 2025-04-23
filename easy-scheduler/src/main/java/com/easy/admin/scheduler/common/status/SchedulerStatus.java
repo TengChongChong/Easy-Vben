@@ -1,11 +1,14 @@
 package com.easy.admin.scheduler.common.status;
 
+import lombok.Getter;
+
 /**
  * 定时任务
  *
  * @author TengChongChong
  * @date 2019-05-11
  */
+@Getter
 public enum SchedulerStatus {
     // 开启
     ENABLE("1", "开启"),
@@ -14,19 +17,11 @@ public enum SchedulerStatus {
     // 删除
     DELETE("0", "删除");
 
-    String code;
-    String message;
+    final String code;
+    final String desc;
 
-    SchedulerStatus(String code, String message) {
+    SchedulerStatus(String code, String desc) {
         this.code = code;
-        this.message = message;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
+        this.desc = desc;
     }
 }

@@ -1,12 +1,14 @@
 package com.easy.admin.auth.common.status;
 
+import lombok.Getter;
+
 /**
  * 用户状态
  *
  * @author TengChongChong
  * @date 2018/9/4
  */
-
+@Getter
 public enum SysUserStatus {
     // 启用
     ENABLE("1", "启用"),
@@ -15,20 +17,12 @@ public enum SysUserStatus {
     // 已删除
     DELETED("0", "已删除");
 
-    String code;
-    String message;
+    final String code;
+    final String desc;
 
-    SysUserStatus(String code, String message) {
+    SysUserStatus(String code, String desc) {
         this.code = code;
-        this.message = message;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
+        this.desc = desc;
     }
 
 }

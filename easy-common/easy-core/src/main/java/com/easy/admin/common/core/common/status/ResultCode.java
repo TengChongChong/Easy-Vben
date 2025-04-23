@@ -1,5 +1,7 @@
 package com.easy.admin.common.core.common.status;
 
+import lombok.Getter;
+
 /**
  * 响应码，由5位数字构成bbccc
  * bb  服务模块代码，请从01开始使用00为公共模块
@@ -8,6 +10,7 @@ package com.easy.admin.common.core.common.status;
  * @author TengChongChong
  * @date 2018/10/22
  **/
+@Getter
 public enum ResultCode {
     /**
      * 成功
@@ -36,13 +39,9 @@ public enum ResultCode {
     /**
      * 响应码
      */
-    private String code;
+    private final String code;
 
     ResultCode(String code) {
         this.code = code;
-    }
-
-    public String getCode() {
-        return code;
     }
 }
