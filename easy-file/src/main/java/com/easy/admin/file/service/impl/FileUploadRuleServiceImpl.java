@@ -11,10 +11,13 @@ import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.redis.constant.RedisPrefix;
 import com.easy.admin.common.redis.util.RedisUtil;
+import com.easy.admin.file.common.type.FileAccessControl;
 import com.easy.admin.file.dao.FileUploadRuleMapper;
 import com.easy.admin.file.model.FileUploadRule;
 import com.easy.admin.file.model.vo.FileUploadRuleVO;
 import com.easy.admin.file.service.FileUploadRuleService;
+import org.dromara.x.file.storage.core.FileStorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,9 @@ import java.util.List;
  */
 @Service
 public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper, FileUploadRule> implements FileUploadRuleService {
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Override
     public Page<FileUploadRule> select(FileUploadRule fileUploadRule, Page<FileUploadRule> page) {
@@ -109,9 +115,10 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
         fileUploadRule.setLowerLimit(1);
         // 10mb
         fileUploadRule.setUpperLimit(10240);
-        //fileUploadRule.setCategory("default");
         fileUploadRule.setStatus(CommonStatus.ENABLE.getCode());
         fileUploadRule.setEnableImageCompression(CommonStatus.DISABLE.getCode());
+        fileUploadRule.setPlatform(fileStorageService.getProperties().getDefaultPlatform());
+        fileUploadRule.setAccessControl(FileAccessControl.PUBLIC_READ.getCode());
         return fileUploadRule;
     }
 

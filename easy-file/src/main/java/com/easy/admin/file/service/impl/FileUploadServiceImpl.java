@@ -83,10 +83,11 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         if (CommonStatus.ENABLE.getCode().equals(uploadRule.getEnableImageCompression()) && isImage(suffix)) {
             return fileStorageService.of(file).setPath(path)
+                    .setPlatform(uploadRule.getPlatform())
                     .image(img -> img.size(uploadRule.getMaxWidth(), uploadRule.getMaxHeight()))
                     .upload();
         } else {
-            return fileStorageService.of(file).setPath(path).upload();
+            return fileStorageService.of(file).setPlatform(uploadRule.getPlatform()).setPath(path).upload();
         }
     }
 
