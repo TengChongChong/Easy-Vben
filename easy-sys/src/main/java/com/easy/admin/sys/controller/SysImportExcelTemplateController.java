@@ -49,7 +49,7 @@ public class SysImportExcelTemplateController extends BaseController {
      * @return SysImportExcelTemplate
      */
     @GetMapping("{id}")
-    @SaCheckPermission("sys:import:excel:template:select")
+    //@SaCheckPermission("sys:import:excel:template:select")
     public SysImportExcelTemplate get(@PathVariable("id") String id) {
         return service.get(id);
     }
@@ -85,7 +85,7 @@ public class SysImportExcelTemplateController extends BaseController {
      * @return 文件下载id
      */
     @GetMapping("template/{importCode}")
-    @SaCheckPermission("sys:import:excel:template:select")
+    //@SaCheckPermission("sys:import:excel:template:select")
     public String downloadTemplate(@PathVariable("importCode") String importCode,
                                    HttpServletRequest request) {
         return service.downloadTemplate(importCode, request);
