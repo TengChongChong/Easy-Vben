@@ -1,15 +1,22 @@
 <script lang="ts" setup>
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+import type { TreeNode } from '#/api/base/model/tree-model';
+<% } %>
+import type { ${basicsConfig.modelName}VO } from '${modelTsPath!}';
+
 import { ref } from 'vue';
 
 import { useVbenDrawer, z } from '@vben/common-ui';
-
+<% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+import { listToTree } from '@vben/utils';
+<% } %>
 import {
   message,
   Space,
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import type { ${basicsConfig.modelName}VO } from '${modelTsPath!}';
+
 import { ${GeneratorVueUtil.getInputImport(basicsConfig)} } from '${apiTsPath!}';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
@@ -25,6 +32,28 @@ const [BaseForm, baseFormApi] = useVbenForm({
     <% if(tableConfig != null) { %>
     <% for(item in inputConfig){ %>
     {
+      <% if(basicsConfig.listGeneratorTemplate == 'tree-table' && item.propertyName == 'parentId'){ %>
+      fieldName: 'parentId',
+      label: '上级',
+      component: 'ApiTreeSelect',
+      componentProps: {
+        api: selectAllApi,
+        afterFetch: (res) => {
+          const treeNodes: TreeNode[] = [] as TreeNode[];
+          res.forEach((item) => {
+            const { id, parentId, title } = item;
+            treeNodes.push({
+              id,
+              parentId,
+              label: title,
+              value: id,
+              key: id,
+            });
+          });
+          return listToTree(treeNodes);
+        },
+      },
+      <% } else { %>
       fieldName: '${item.propertyName}',
       label: '${item.label}',
       component: '${item.componentType}',
@@ -36,6 +65,10 @@ const [BaseForm, baseFormApi] = useVbenForm({
       componentProps: {
         showTime: true,
       },
+      <% } else if(item.componentType == 'InputNumber') { %>
+      componentProps: {
+        min: 0,
+      },
       <% } else if(item.componentType == 'Textarea') { %>
       componentProps: {
         autoSize: {
@@ -46,6 +79,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       <% } %>
       <% if(GeneratorVueUtil.needRule(item)) { %>
       ${GeneratorVueUtil.getFormRules(item)}
+      <% } %>
       <% } %>
     },
     <% } %>
@@ -108,9 +142,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
         <ButtonSave :loading="saveBtnLoading" @click="handleSave" />
         <% if(basicsConfig.generatorMethodsAdd){ %>
         <ButtonSave
-            :loading="saveBtnLoading"
-            text="保存并新增"
-            @click="handleSaveAndAdd"
+          :loading="saveBtnLoading"
+          text="保存并新增"
+          @click="handleSaveAndAdd"
         />
         <% } %>
       </Space>

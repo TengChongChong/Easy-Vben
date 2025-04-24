@@ -38,7 +38,7 @@ const formOptions: VbenFormProps = {
       component: '${item.componentType}',
       <% if(strUtil.isNotBlank(item.dictType)) { %>
       componentProps: {
-        dictType: '${item.dictType}'
+        dictType: '${item.dictType}',
       },
       <% } %>
     },

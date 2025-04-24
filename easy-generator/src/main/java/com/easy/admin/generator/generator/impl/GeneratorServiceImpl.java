@@ -10,6 +10,7 @@ import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.common.tree.Tree;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
+import com.easy.admin.common.core.exception.GlobalException;
 import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
@@ -75,6 +76,9 @@ public class GeneratorServiceImpl extends GeneratorFile {
         // 导出
         if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.EXPORT_DATA)) {
             imports.add(ExcelUtil.class);
+        }
+        if (generatorConfig.getBasicsConfig().getGenMethod().contains(GeneratorMethodConst.SAVE)) {
+            imports.add(GlobalException.class);
         }
         imports.add(BeanUtil.class);
         imports.add(Service.class);

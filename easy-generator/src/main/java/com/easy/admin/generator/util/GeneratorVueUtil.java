@@ -3,6 +3,7 @@ package com.easy.admin.generator.util;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.easy.admin.generator.constant.GeneratorFormTemplateConst;
+import com.easy.admin.generator.constant.GeneratorListTemplateConst;
 import com.easy.admin.generator.constant.GeneratorMethodConst;
 import com.easy.admin.generator.model.BasicsConfig;
 import com.easy.admin.generator.model.FieldConfig;
@@ -76,6 +77,11 @@ public class GeneratorVueUtil {
         if (GeneratorFormTemplateConst.PAGE.equals(basicsConfig.getFormGeneratorTemplate())) {
             importMethod.add("get" + methodSuffix);
         }
+        // 查询全部
+        if (GeneratorListTemplateConst.TREE_TABLE.equals(basicsConfig.getListGeneratorTemplate())) {
+            importMethod.add("selectAll" + methodSuffix);
+        }
+
         return ArrayUtil.join(importMethod.toArray(), ", ");
     }
 

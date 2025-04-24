@@ -38,7 +38,7 @@ const formOptions: VbenFormProps = {
       component: '${item.componentType}',
       <% if(strUtil.isNotBlank(item.dictType)) { %>
       componentProps: {
-        dictType: '${item.dictType}'
+        dictType: '${item.dictType}',
       },
       <% } %>
     },
@@ -123,9 +123,11 @@ function handleOrder() {
 
 function handleExpandAll() {
   gridApi.grid?.setAllTreeExpand(true);
+  expandIds.value = gridApi.grid.getTreeExpandRecords();
 }
 function handleCollapseAll() {
   gridApi.grid?.clearTreeExpand();
+  expandIds.value = gridApi.grid.getTreeExpandRecords();
 }
 <% if(basicsConfig.isGeneratorMethodsExport){ %>
 const handelExportData = async () => {
