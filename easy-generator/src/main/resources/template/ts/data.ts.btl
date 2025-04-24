@@ -32,7 +32,11 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
     {
       title: '操作',
       field: 'action',
+      <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
+      width: 300,
+      <% } else { %>
       width: 160,
+      <% } %>
       fixed: 'right',
       slots: { default: 'action' },
     },
