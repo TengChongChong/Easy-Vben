@@ -17,12 +17,14 @@ import com.easy.admin.file.model.FileUploadRule;
 import com.easy.admin.file.model.vo.FileUploadRuleVO;
 import com.easy.admin.file.service.FileUploadRuleService;
 import org.dromara.x.file.storage.core.FileStorageService;
+import org.dromara.x.file.storage.core.platform.FileStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 文件上传规则
@@ -63,6 +65,14 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
                 } else {
                     queryWrapper.eq("t.category", fileUploadRule.getCategory());
                 }
+            }
+            // 存储平台
+            if (Validator.isNotEmpty(fileUploadRule.getPlatform())) {
+                queryWrapper.eq("t.platform", fileUploadRule.getPlatform());
+            }
+            // 访问控制
+            if (Validator.isNotEmpty(fileUploadRule.getAccessControl())) {
+                queryWrapper.eq("t.access_control", fileUploadRule.getAccessControl());
             }
             // 存放目录
             if (Validator.isNotEmpty(fileUploadRule.getDirectory())) {
@@ -120,6 +130,11 @@ public class FileUploadRuleServiceImpl extends ServiceImpl<FileUploadRuleMapper,
         fileUploadRule.setPlatform(fileStorageService.getProperties().getDefaultPlatform());
         fileUploadRule.setAccessControl(FileAccessControl.PUBLIC_READ.getCode());
         return fileUploadRule;
+    }
+
+    @Override
+    public CopyOnWriteArrayList<FileStorage> getFileStorageList() {
+        return fileStorageService.getFileStorageList();
     }
 
     @Transactional(rollbackFor = RuntimeException.class)

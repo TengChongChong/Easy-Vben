@@ -3,8 +3,10 @@ package com.easy.admin.file.service;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.file.model.FileUploadRule;
 import com.easy.admin.file.model.vo.FileUploadRuleVO;
+import org.dromara.x.file.storage.core.platform.FileStorage;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 文件上传规则
@@ -21,6 +23,13 @@ public interface FileUploadRuleService {
      * @return Page<FileUploadRule>
      */
     Page<FileUploadRule> select(FileUploadRule fileUploadRule, Page<FileUploadRule> page);
+
+    /**
+     * 获取文件存储列表
+     *
+     * @return CopyOnWriteArrayList<FileStorage>
+     */
+    CopyOnWriteArrayList<FileStorage> getFileStorageList();
 
     /**
      * 获取上传规则

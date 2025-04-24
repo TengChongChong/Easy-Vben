@@ -7,10 +7,13 @@ import com.easy.admin.file.service.FileUploadRuleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import org.dromara.x.file.storage.core.platform.FileStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 文件上传规则
@@ -42,6 +45,17 @@ public class FileUploadRuleController {
     @SaCheckPermission("file:upload:rule:select")
     public Page<FileUploadRule> select(FileUploadRule fileUploadRule, Page<FileUploadRule> page) {
         return service.select(fileUploadRule, page);
+    }
+
+    /**
+     * 获取文件存储列表
+     *
+     * @return CopyOnWriteArrayList<FileStorage>
+     */
+    @GetMapping("file/storage")
+    @SaCheckPermission("file:upload:rule:select")
+    public CopyOnWriteArrayList<FileStorage> getFileStorageList() {
+        return service.getFileStorageList();
     }
 
     /**
