@@ -16,7 +16,7 @@ import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '#/components/
 <% if(basicsConfig.isGeneratorMethodsExport){ %>
 import { downloadFileById } from '#/util/download';
 <% } %>
-
+import { downloadFileById } from '#/util/download';
 import { initColumns } from './data';
 import Input${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} from './input.vue';
 <% if(basicsConfig.isGeneratorMethodsExport){ %>

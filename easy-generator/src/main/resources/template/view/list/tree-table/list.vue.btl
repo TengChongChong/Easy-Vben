@@ -14,6 +14,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { ${GeneratorVueUtil.getImportButton(basicsConfig)} } from '#/components/button';
 import { LucideListOrdered, LucideMinus, LucidePlus } from '#/components/icons';
 import { ${GeneratorVueUtil.getListImport(basicsConfig)} } from '${apiTsPath!}';
+import { downloadFileById } from '#/util/download';
 import { initColumns } from './data';
 import Input${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} from './input.vue';
 import Order${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'} from './order.vue';
