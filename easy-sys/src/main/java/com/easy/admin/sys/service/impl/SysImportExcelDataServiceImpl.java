@@ -24,15 +24,12 @@ import com.easy.admin.sys.model.vo.SysImportExcelTemplateDetailVO;
 import com.easy.admin.sys.service.*;
 import com.easy.admin.util.office.ExcelUtil;
 import com.easy.admin.util.office.ImportExportUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -449,33 +446,51 @@ public class SysImportExcelDataServiceImpl implements SysImportExcelDataService 
         List<String> selectFields = new ArrayList<>();
         // 导入规则
         List<SysImportExcelTemplateDetail> configs = importExcelTemplateDetailsService.selectDetails(importExcelTemplate.getId());
-        if (configs != null && !configs.isEmpty()) {
-            for (int i = 0; i < configs.size(); i++) {
-                insertFields.add(configs.get(i).getFieldName());
-                selectFields.add("field" + (i + 1));
-            }
-            int count = mapper.insert(importExcelTemplate.getImportTable(),
-                    StrUtil.join(",", insertFields),
-                    StrUtil.join(",", selectFields),
-                    importExcelTemplate.getId(),
-                    currentUser.getId(),
-                    ImportConst.VERIFICATION_STATUS_SUCCESS);
-            // 调用导入后回调
-            if (importService != null) {
-                boolean isSuccess = importService.afterImport();
-                if (!isSuccess) {
-                    throw new EasyException("执行导入后回调失败");
-                }
-                // 删除导入成功的数据
-                isSuccess = importExcelTemporaryService.cleanSuccessData(templateId);
-                if (!isSuccess) {
-                    throw new EasyException("删除验证成功数据失败");
-                }
-            }
-            return count;
-        } else {
+        if (configs == null || configs.isEmpty()) {
             throw new EasyException("模板[" + importExcelTemplate.getImportCode() + "]未配置导入规则");
         }
+
+        if (!hasIdField(configs)) {
+            insertFields.add("id");
+            selectFields.add("id");
+        }
+
+        for (int i = 0; i < configs.size(); i++) {
+            insertFields.add(configs.get(i).getFieldName());
+            selectFields.add("field" + (i + 1));
+        }
+
+        int count = mapper.insert(importExcelTemplate.getImportTable(),
+                StrUtil.join(",", insertFields),
+                StrUtil.join(",", selectFields),
+                importExcelTemplate.getId(),
+                currentUser.getId(),
+                ImportConst.VERIFICATION_STATUS_SUCCESS);
+        // 调用导入后回调
+        if (importService != null) {
+            boolean isSuccess = importService.afterImport();
+            if (!isSuccess) {
+                throw new EasyException("执行导入后回调失败");
+            }
+            // 删除导入成功的数据
+            isSuccess = importExcelTemporaryService.cleanSuccessData(templateId);
+            if (!isSuccess) {
+                throw new EasyException("删除验证成功数据失败");
+            }
+        }
+        return count;
+    }
+
+    private boolean hasIdField(List<SysImportExcelTemplateDetail> configs) {
+        if (configs.isEmpty()) {
+            return false;
+        }
+        for (SysImportExcelTemplateDetail config : configs) {
+            if ("id".equalsIgnoreCase(config.getFieldName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

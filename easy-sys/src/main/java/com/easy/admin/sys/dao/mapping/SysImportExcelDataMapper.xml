@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.easy.admin.sys.dao.SysImportExcelDataMapper">
     <insert id="insert">
-        insert into ${table} (id, ${fields})
-        select id, ${tempFields}
+        insert into ${table} (${fields})
+        select ${tempFields}
         from sys_import_excel_temporary
         where user_id = #{userId}
           and template_id = #{templateId}
