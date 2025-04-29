@@ -9,6 +9,7 @@ import com.easy.admin.auth.model.SysUserOnline;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.auth.service.SysUserOnlineService;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.redis.util.RedisUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,10 +30,15 @@ public class SysOnlineServiceImpl implements SysUserOnlineService {
         int start = (((Long) page.getCurrent()).intValue() - 1) * size;
 
         String keyword = (sysUserOnline != null && StrUtil.isNotBlank(sysUserOnline.getToken())) ? sysUserOnline.getToken() : "";
+
         List<String> tokenList = StpUtil.searchTokenValue(keyword, start, size, true);
         if (tokenList == null || tokenList.isEmpty()) {
             return page;
         }
+
+        // 会话总数
+        page.setTotal(RedisUtil.selectKeysByPrefix(StpUtil.stpLogic.splicingKeyTokenValue("")).size());
+
         List<SysUserOnline> userOnlineList = new ArrayList<>();
         for (String token : tokenList) {
             // 获取 token
