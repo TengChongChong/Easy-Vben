@@ -26,6 +26,7 @@
         <where>
             \${ew.sqlSegment}
         </where>
+        order by t.order_no
     </select>
     <% } %>
     <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
