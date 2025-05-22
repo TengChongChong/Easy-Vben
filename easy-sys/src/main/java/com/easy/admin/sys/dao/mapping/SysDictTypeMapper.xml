@@ -47,6 +47,11 @@
         </where>
         order by t.type
     </select>
+    <select id="getByType" resultType="com.easy.admin.sys.model.SysDictType">
+        select t.id, t.name, t.type
+        from sys_dict_type t
+        where t.type = #{type}
+    </select>
     <update id="updateDuplicateData">
         update sys_import_excel_temporary
         set verification_results = concat(ifnull(verification_results, ''), '已存在字典类型为 ', field2, ' 的字典;'),

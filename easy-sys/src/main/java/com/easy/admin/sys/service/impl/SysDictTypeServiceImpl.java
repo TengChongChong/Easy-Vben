@@ -85,6 +85,11 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
     }
 
     @Override
+    public SysDictType getByType(String type) {
+        return baseMapper.getByType(type);
+    }
+
+    @Override
     public SysDictType add() {
         SysDictType sysDictType = new SysDictType();
         sysDictType.setSys(WhetherConst.NO);

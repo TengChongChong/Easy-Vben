@@ -1,5 +1,6 @@
 package com.easy.admin.generator.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 import cn.hutool.system.UserInfo;
@@ -20,30 +21,39 @@ import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.common.status.CommonStatus;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.config.properties.ProjectProperties;
+import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.generator.constant.*;
 import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.generator.GeneratorFileFactory;
+import com.easy.admin.generator.model.GenerateDictEnumResponse;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.model.ImportCellConfig;
 import com.easy.admin.generator.service.GeneratorService;
 import com.easy.admin.generator.type.EasyTypeConvertHandler;
+import com.easy.admin.generator.util.GeneratorJavaUtil;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.sys.common.status.ProfilesActiveStatus;
+import com.easy.admin.sys.model.SysDictType;
 import com.easy.admin.sys.model.SysImportExcelTemplate;
 import com.easy.admin.sys.model.SysImportExcelTemplateDetail;
+import com.easy.admin.sys.service.SysDictService;
+import com.easy.admin.sys.service.SysDictTypeService;
 import com.easy.admin.sys.service.SysImportExcelTemplateDetailService;
 import com.easy.admin.sys.service.SysImportExcelTemplateService;
 import lombok.extern.slf4j.Slf4j;
+import org.beetl.core.Configuration;
+import org.beetl.core.GroupTemplate;
+import org.beetl.core.Template;
+import org.beetl.core.resource.ClasspathResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 代码生成
@@ -57,6 +67,12 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     @Autowired
     private SysMenuService sysMenuService;
+
+    @Autowired
+    private SysDictTypeService sysDictTypeService;
+
+    @Autowired
+    private SysDictService sysDictService;
 
     @Autowired
     private SysImportExcelTemplateService sysImportExcelTemplateService;
@@ -127,6 +143,52 @@ public class GeneratorServiceImpl implements GeneratorService {
         // 添加菜单
         saveMenu(generatorConfig, sysImportExcelTemplate);
         return true;
+    }
+
+    @Override
+    public GenerateDictEnumResponse generateDictEnum(String dictType) {
+        ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();
+        Configuration configuration;
+        try {
+            configuration = Configuration.defaultConfiguration();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        GroupTemplate groupTemplate = new GroupTemplate(resourceLoader, configuration);
+        groupTemplate.registerFunctionPackage("GeneratorJavaUtil", GeneratorJavaUtil.class);
+        Template javaTemplate = groupTemplate.getTemplate("/template/classes/Enum.java.btl");
+        Template jsTemplate = groupTemplate.getTemplate("/template/ts/enum.ts.btl");
+
+        Map<String, Object> vars = getSharedVars(dictType);
+        groupTemplate.setSharedVars(vars);
+
+        GenerateDictEnumResponse generateDictEnumResponse = new GenerateDictEnumResponse();
+        generateDictEnumResponse.setJavaCode(javaTemplate.render());
+        generateDictEnumResponse.setJsCode(jsTemplate.render());
+        generateDictEnumResponse.setJavaFileName((String) vars.get("enumClassName"));
+        generateDictEnumResponse.setJsFileName(StrUtil.lowerFirst(generateDictEnumResponse.getJavaFileName()));
+
+        return generateDictEnumResponse;
+    }
+
+    /**
+     * 设置字典枚举变量
+     */
+    private Map<String, Object> getSharedVars(String dictType) {
+        Map<String, Object> vars = new HashMap<>();
+
+        vars.put("date", DateUtil.today());
+        vars.put("author", SessionUtil.getCurrentUser().getNickname());
+
+        SysDictType sysDictType = sysDictTypeService.getByType(dictType);
+        if (sysDictType == null) {
+            throw new EasyException("字典类型[" + dictType + "]不存在");
+        }
+        vars.put("enumClassDescribe", sysDictType.getName());
+        vars.put("enumClassName", StrUtil.upperFirst(sysDictType.getType()) + "Enum");
+        List<Select> dictList = sysDictService.selectByDictType(dictType);
+        vars.put("dictList", dictList);
+        return vars;
     }
 
     /**

@@ -1,0 +1,24 @@
+import lombok.Getter;
+
+/**
+ * ${enumClassDescribe}
+ *
+ * @author ${author}
+ * @date ${date}
+ */
+@Getter
+public enum ${enumClassName} {
+    <% for(dict in dictList){ %>
+    // ${dict.label}
+    ${GeneratorJavaUtil.getEnumProperty(dict.value)}("${dict.value}", "${dict.label}")${dictLP.last ? ';' : ','}
+    <% } %>
+
+    final String code;
+    final String desc;
+
+    ${enumClassName}(String code, String desc) {
+        this.code = code;
+        this.desc = desc;
+    }
+
+}

@@ -80,6 +80,45 @@ public class GeneratorJavaUtil {
         return null;
     }
 
+    public static String getEnumProperty(String dictCode) {
+        return toUpperCaseSnake(dictCode);
+    }
+
+    private static String toUpperCaseSnake(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+
+        StringBuilder result = new StringBuilder();
+        char[] chars = input.toCharArray();
+
+        for (int i = 0; i < chars.length; i++) {
+            char currentChar = chars[i];
+
+            // 处理分隔符（连字符或下划线）
+            if (currentChar == '-' || currentChar == '_') {
+                if (i > 0 && result.charAt(result.length() - 1) != '_') {
+                    // 统一分隔符为下划线
+                    result.append('_');
+                }
+                continue;
+            }
+
+            // 处理驼峰：当前字符为大写且前一个字符为小写时添加下划线
+            if (Character.isUpperCase(currentChar) && i > 0) {
+                char prevChar = chars[i - 1];
+                if (prevChar != '-' && prevChar != '_' && Character.isLowerCase(prevChar)) {
+                    result.append('_');
+                }
+            }
+
+            result.append(Character.toUpperCase(currentChar));
+        }
+
+        // 移除连续的下划线（处理输入中连续分隔符的情况）
+        return result.toString().replaceAll("_+", "_");
+    }
+
     private static String generatorExport(TableCellConfig fieldSet, int index) {
         if ("Date".equals(fieldSet.getPropertyType())) {
             return addBr("@Excel(name = \"" + fieldSet.getTitle() + "\", width = 20, orderNum = \"" + index + "\", exportFormat = \"yyyy-MM-dd HH:mm:ss\")");
@@ -109,4 +148,5 @@ public class GeneratorJavaUtil {
     private static String addBr(String code) {
         return code + "\r\n    ";
     }
+
 }

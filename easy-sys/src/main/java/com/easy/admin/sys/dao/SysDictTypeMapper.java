@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 字典类型管理
+ *
  * @author TengChongChong
  */
 public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
@@ -33,10 +34,19 @@ public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
 
     /**
      * 查询字典数量
+     *
      * @param queryWrapper 查询条件
      * @return int
      */
     int countDict(@Param("ew") QueryWrapper<SysDictType> queryWrapper);
+
+    /**
+     * 根据字典类型获取详情
+     *
+     * @param type 字典类型
+     * @return SysDictType
+     */
+    SysDictType getByType(@Param("type") String type);
 
     /**
      * 查询导出数据

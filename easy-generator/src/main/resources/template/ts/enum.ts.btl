@@ -1,0 +1,9 @@
+/**
+ * ${enumClassDescribe}
+ */
+export enum ${enumClassName} {
+  <% for(dict in dictList){ %>
+  // ${dict.label}
+  ${GeneratorJavaUtil.getEnumProperty(dict.value)} = '${dict.value}',
+  <% } %>
+}

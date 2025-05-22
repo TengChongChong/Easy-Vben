@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.annotation.ResponseResult;
 import com.easy.admin.common.core.common.select.Select;
+import com.easy.admin.generator.model.GenerateDictEnumResponse;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.service.GeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,4 +71,17 @@ public class GeneratorController {
     public boolean generate(@RequestBody GeneratorConfig generatorConfig) {
         return service.generate(generatorConfig);
     }
+
+    /**
+     * 根据字典生辰 Enum
+     *
+     * @param dictType 字典类型
+     * @return GenerateDictEnumResponse
+     */
+    @SaCheckRole("sys:admin")
+    @GetMapping("generate/dict/enum")
+    public GenerateDictEnumResponse generateDictEnum(String dictType) {
+        return service.generateDictEnum(dictType);
+    }
+
 }

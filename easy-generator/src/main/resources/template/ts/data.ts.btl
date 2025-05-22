@@ -21,7 +21,7 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
       treeNode: true,
       <% } %>
       <% if(item.width != null) { %>
-      width: ${item.width},
+      minWidth: ${item.width},
       <% } %>
       <% if(item.format != null) { %>
       formatter: '${item.format}',

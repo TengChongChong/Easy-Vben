@@ -148,14 +148,9 @@ public class GeneratorFile {
      * 使用beetl解析
      */
     private void initBeetlEngine() {
-        Properties properties = new Properties();
-        properties.put("RESOURCE.root", "");
-        properties.put("DELIMITER_STATEMENT_START", "<%");
-        properties.put("DELIMITER_STATEMENT_END", "%>");
-        properties.put("HTML_TAG_FLAG", "##");
         Configuration configuration = null;
         try {
-            configuration = new Configuration(properties);
+            configuration = Configuration.defaultConfiguration();
         } catch (IOException e) {
             log.warn("初始化Configuration失败", e);
         }

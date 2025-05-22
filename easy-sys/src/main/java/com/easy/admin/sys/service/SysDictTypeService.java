@@ -38,6 +38,14 @@ public interface SysDictTypeService {
     SysDictType get(String id);
 
     /**
+     * 详情
+     *
+     * @param type type
+     * @return SysDict
+     */
+    SysDictType getByType(String type);
+
+    /**
      * 新增
      *
      * @return SysDictType

@@ -2,6 +2,7 @@ package com.easy.admin.generator.service;
 
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.easy.admin.common.core.common.select.Select;
+import com.easy.admin.generator.model.GenerateDictEnumResponse;
 import com.easy.admin.generator.model.GeneratorConfig;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public interface GeneratorService {
      * 根据表名获取字段列表
      *
      * @param dataSource 数据源
-     * @param tableName 表名
+     * @param tableName  表名
      * @return List<Select>
      */
     TableInfo getTableInfo(String dataSource, String tableName);
@@ -44,4 +45,12 @@ public interface GeneratorService {
      * @return List<Select>
      */
     List<Select> selectModules();
+
+    /**
+     * 根据字典生辰 Enum
+     *
+     * @param dictType 字典类型
+     * @return GenerateDictEnumResponse
+     */
+    GenerateDictEnumResponse generateDictEnum(String dictType);
 }
