@@ -116,31 +116,29 @@ public class FileDetailServiceImpl extends ServiceImpl<FileDetailMapper, FileDet
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public boolean removeByObjectId(String objectId) {
-        UpdateWrapper<FileDetail> updateWrapper = new UpdateWrapper<>();
-        if (objectId.contains(CommonConst.SPLIT)) {
-            updateWrapper.eq("object_id", objectId.split(CommonConst.SPLIT));
-        } else {
-            updateWrapper.eq("object_id", objectId);
-        }
-        // 待删除
-        updateWrapper.set("status", FileInfoStatusConst.TO_BE_DELETED);
-        update(updateWrapper);
+        update(gerRemoveWrapper(objectId, null));
         return true;
     }
 
     @Override
     public boolean removeByObjectIdAndObjectType(String objectId, String objectType) {
+        update(gerRemoveWrapper(objectId, objectType));
+        return true;
+    }
+
+    private UpdateWrapper<FileDetail> gerRemoveWrapper(String objectId, String objectType) {
         UpdateWrapper<FileDetail> updateWrapper = new UpdateWrapper<>();
         if (objectId.contains(CommonConst.SPLIT)) {
             updateWrapper.in("object_id", objectId.split(CommonConst.SPLIT));
         } else {
             updateWrapper.eq("object_id", objectId);
         }
-        updateWrapper.eq("object_type", objectType);
+        if (StrUtil.isNotBlank(objectType)) {
+            updateWrapper.eq("object_type", objectType);
+        }
         // 待删除
         updateWrapper.set("status", FileInfoStatusConst.TO_BE_DELETED);
-        update(updateWrapper);
-        return true;
+        return updateWrapper;
     }
 
     @Override
