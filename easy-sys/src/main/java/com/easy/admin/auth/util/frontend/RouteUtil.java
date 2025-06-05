@@ -2,6 +2,7 @@ package com.easy.admin.auth.util.frontend;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import com.easy.admin.auth.common.type.MenuType;
 import com.easy.admin.auth.model.SysMenu;
 import com.easy.admin.auth.model.vo.route.RouteMetaVO;
@@ -79,6 +80,7 @@ public class RouteUtil {
         // 路由的名称
         route.setName(getRouteName(sysMenu));
 
+
         if (MenuType.EMBEDDED.getCode().equals(sysMenu.getType())) {
             route.setComponent("IFrameView");
         }
@@ -127,13 +129,21 @@ public class RouteUtil {
 
     private static RouteMetaVO convertRouteMeta(SysMenu sysMenu) {
         RouteMetaVO routeMeta = new RouteMetaVO();
-        BeanUtil.copyProperties(sysMenu, routeMeta);
+        BeanUtil.copyProperties(sysMenu, routeMeta, "query");
         if (MenuType.EMBEDDED.getCode().equals(sysMenu.getType())) {
             routeMeta.setIframeSrc(sysMenu.getLinkSrc());
         } else if (MenuType.LINK.getCode().equals(sysMenu.getType())) {
             // 外链需要新窗口打开
             routeMeta.setOpenInNewWindow(true);
             routeMeta.setLink(sysMenu.getLinkSrc());
+        } else if (MenuType.MENU.getCode().equals(sysMenu.getType())) {
+            if (StrUtil.isNotBlank(sysMenu.getQuery())) {
+                try {
+                    routeMeta.setQuery(new JSONObject(sysMenu.getQuery()));
+                } catch (Exception e) {
+                    // ignore 不符合规范的query忽略
+                }
+            }
         }
         routeMeta.setOrder(sysMenu.getOrderNo());
         return routeMeta;

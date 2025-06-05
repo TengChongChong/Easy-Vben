@@ -16,6 +16,7 @@
         <result column="component" property="component" />
         <result column="name" property="name" />
         <result column="link_src" property="linkSrc" />
+        <result column="query" property="query" />
         <result column="badge_type" property="badgeType" />
         <result column="badge" property="badge" />
         <result column="badge_variants" property="badgeVariants" />
@@ -54,7 +55,7 @@
 
     <select id="getById" resultType="com.easy.admin.auth.model.SysMenu">
         select t.id, t.parent_id, t.type, t.title, t.auth_code, t.path, t.active_path, t.icon, t.active_icon,
-               t.component, t.name, t.link_src, t.badge_type, t.badge, t.badge_variants, t.keep_alive,
+               t.component, t.name, t.link_src, t.query, t.badge_type, t.badge, t.badge_variants, t.keep_alive,
                t.affix_tab, t.hide_in_menu, t.hide_children_in_menu, t.hide_in_breadcrumb, t.hide_in_tab,
                t.order_no, t.status, t.remarks, t.version, t.create_user, t.create_date, t.edit_user, t.edit_date
         from sys_menu t

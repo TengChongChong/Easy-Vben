@@ -13,7 +13,7 @@
     </select>
     <select id="selectSysMenuByRoleId" resultType="com.easy.admin.auth.model.SysMenu">
         select sm.id, sm.parent_id, sm.type, sm.title, sm.auth_code, sm.path, sm.active_path, sm.icon, sm.active_icon,
-               sm.component, sm.name, sm.link_src, sm.badge_type, sm.badge, sm.badge_variants, sm.keep_alive,
+               sm.component, sm.name, sm.link_src, sm.query, sm.badge_type, sm.badge, sm.badge_variants, sm.keep_alive,
                sm.affix_tab, sm.hide_in_menu, sm.hide_children_in_menu, sm.hide_in_breadcrumb, sm.hide_in_tab,
                sm.order_no
         from sys_menu sm

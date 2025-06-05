@@ -1,5 +1,6 @@
 package com.easy.admin.auth.model.vo.route;
 
+import cn.hutool.json.JSONObject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -123,4 +124,9 @@ public class RouteMetaVO implements Serializable {
      * 用于配置页面的排序，用于路由到菜单排序。默认值：0
      */
     private Integer order;
+
+    /**
+     * 路由参数，JSON 格式，将用于 route.meta.query
+     */
+    private JSONObject query;
 }

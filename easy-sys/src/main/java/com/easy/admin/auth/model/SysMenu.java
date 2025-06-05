@@ -73,6 +73,10 @@ public class SysMenu extends Model<SysMenu> implements Serializable {
      */
     private String linkSrc;
     /**
+     * 路由参数，JSON 格式，将用于 route.meta.query
+     */
+    private String query;
+    /**
      * 徽标类型
      */
     private String badgeType;
