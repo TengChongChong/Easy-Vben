@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>easy-vben</artifactId>
+        <groupId>com.easy.admin</groupId>
+        <version>1.4.0</version>
+    </parent>
+
+    <artifactId>easy-workflow</artifactId>
+    <packaging>jar</packaging>
+
+    <description>工作流</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-sys</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-file</artifactId>
+        </dependency>
+
+        <!-- 工作流 -->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring-boot-starter</artifactId>
+            <version>${activiti.version}</version>
+            <exclusions>
+                <exclusion>
+                    <!-- 排除activiti的mybatis，避免和外面的mybatis-plus冲突 -->
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.activiti/activiti-json-converter -->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-json-converter</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.activiti</groupId>-->
+<!--            <artifactId>activiti-modeler</artifactId>-->
+<!--            <version>5.23.0</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.activiti</groupId>-->
+<!--            <artifactId>activiti-modeler</artifactId>-->
+<!--            <version>${activiti.version}</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.activiti</groupId>-->
+<!--            <artifactId>activiti-diagram-rest</artifactId>-->
+<!--            <version>${activiti.version}</version>-->
+<!--        </dependency>-->
+
+
+    </dependencies>
+
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

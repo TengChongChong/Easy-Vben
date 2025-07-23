@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.workflow.dao.WorkflowCategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.workflow.model.vo.WorkflowCategoryVO">
+        <result column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="remarks" property="remarks" />
+        <result column="order_no" property="orderNo" />
+        <result column="status" property="status" />
+        <result column="tenant_id" property="tenantId" />
+        <result column="version" property="version" />
+        <result column="dept_id" property="deptId" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+
+    <select id="selectWithoutPage" resultType="com.easy.admin.workflow.model.vo.WorkflowCategoryVO">
+        select t.id, t.parent_id, t.name, t.code, t.order_no, t.status, su_edit_user.nickname as edit_user, t.edit_date
+        from workflow_category t
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
+        order by t.order_no
+    </select>
+
+    <select id="selectAll" resultType="com.easy.admin.common.core.common.tree.Tree">
+        select t.id, t.parent_id, t.name as title, t.id as `key`
+        from workflow_category t
+        order by t.order_no
+    </select>
+
+    <select id="getById" resultType="com.easy.admin.workflow.model.WorkflowCategory">
+        select t.id, t.parent_id, t.name, t.code, t.remarks, t.order_no, t.status, t.tenant_id, t.version, t.dept_id, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from workflow_category t
+        where t.id = #{id}
+    </select>
+
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(order_no), 0)
+        from workflow_category t
+        <if test="parentId == null">
+            where t.parent_id is null
+        </if>
+        <if test="parentId != null">
+            where t.parent_id = #{parentId}
+        </if>
+    </select>
+    <update id="updateOrderBatch">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update workflow_category
+            <set>
+                parent_id = #{item.parentId},
+                order_no = #{item.orderNo}
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+</mapper>

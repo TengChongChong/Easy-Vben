@@ -20,7 +20,6 @@
     <url>http://ev-doc.easy-frame.top/</url>
 
     <modules>
-<!--        <module>easy-activiti</module>-->
         <module>easy-api</module>
         <module>easy-common</module>
         <module>easy-file</module>
@@ -29,18 +28,19 @@
         <module>easy-scheduler</module>
         <module>easy-sys</module>
         <module>easy-cms</module>
+        <module>easy-workflow</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <hutool.version>5.8.36</hutool.version>
         <tiny-pin-yin.version>2.0.3.RELEASE</tiny-pin-yin.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <poi.version>5.4.0</poi.version>
         <easypoi.version>4.5.0</easypoi.version>
-        <mybatis-plus.version>3.5.10.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.12</mybatis-plus.version>
         <druid.version>1.2.24</druid.version>
         <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
         <mariadb-java-client.version>3.5.2</mariadb-java-client.version>
@@ -53,6 +53,7 @@
         <jsoup.version>1.19.1</jsoup.version>
         <captcha.version>1.4.0</captcha.version>
         <minio.version>8.5.17</minio.version>
+        <activiti.version>8.2.0</activiti.version>
     </properties>
 
     <dependencies>
@@ -132,6 +133,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.easy.admin</groupId>
+                <artifactId>easy-workflow</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-bom</artifactId>
                 <version>${mybatis-plus.version}</version>
@@ -141,4 +147,15 @@
         </dependencies>
     </dependencyManagement>
 
+
+    <repositories>
+        <repository>
+            <id>tencent</id>
+            <url>https://mirrors.tencent.com/nexus/repository/maven-public</url>
+        </repository>
+        <repository>
+            <id>activiti-releases</id>
+            <url>https://artifacts.alfresco.com/nexus/content/repositories/activiti-releases</url>
+        </repository>
+    </repositories>
 </project>

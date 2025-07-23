@@ -44,6 +44,10 @@
             <groupId>com.easy.admin</groupId>
             <artifactId>easy-cms</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.easy.admin</groupId>
+            <artifactId>easy-workflow</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

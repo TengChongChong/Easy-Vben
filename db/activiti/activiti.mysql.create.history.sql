@@ -15,7 +15,7 @@ create table act_hi_procinst (
     name_ varchar(255),
     primary key (id_),
     unique (proc_inst_id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_hi_actinst (
     id_ varchar(64) not null,
@@ -31,9 +31,10 @@ create table act_hi_actinst (
     start_time_ datetime(3) not null,
     end_time_ datetime(3),
     duration_ bigint,
+    delete_reason_ varchar(4000),
     tenant_id_ varchar(255) default '',
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_hi_taskinst (
     id_ varchar(64) not null,
@@ -57,7 +58,7 @@ create table act_hi_taskinst (
     category_ varchar(255),
     tenant_id_ varchar(255) default '',
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_hi_varinst (
     id_ varchar(64) not null,
@@ -75,7 +76,7 @@ create table act_hi_varinst (
     create_time_ datetime(3),
     last_updated_time_ datetime(3),
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_hi_detail (
     id_ varchar(64) not null,
@@ -94,7 +95,7 @@ create table act_hi_detail (
     text_ varchar(4000),
     text2_ varchar(4000),
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_hi_comment (
     id_ varchar(64) not null,
@@ -107,7 +108,7 @@ create table act_hi_comment (
     message_ varchar(4000),
     full_msg_ longblob,
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_hi_attachment (
     id_ varchar(64) not null,
@@ -122,7 +123,7 @@ create table act_hi_attachment (
     content_id_ varchar(64),
     time_ datetime(3),
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_hi_identitylink (
     id_ varchar(64),
@@ -131,8 +132,9 @@ create table act_hi_identitylink (
     user_id_ varchar(255),
     task_id_ varchar(64),
     proc_inst_id_ varchar(64),
+    details_ varbinary(max),
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 
 create index act_idx_hi_pro_inst_end on act_hi_procinst(end_time_);

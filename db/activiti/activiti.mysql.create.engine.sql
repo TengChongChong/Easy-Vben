@@ -3,13 +3,13 @@ create table act_ge_property (
     value_ varchar(300),
     rev_ integer,
     primary key (name_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 insert into act_ge_property
-values ('schema.version', '5.22.0.0', 1);
+values ('schema.version', '8.1.0', 1);
 
 insert into act_ge_property
-values ('schema.history', 'create(5.22.0.0)', 1);
+values ('schema.history', 'create(8.1.0)', 1);
 
 insert into act_ge_property
 values ('next.dbid', '1', 1);
@@ -22,16 +22,20 @@ create table act_ge_bytearray (
     bytes_ longblob,
     generated_ tinyint,
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_re_deployment (
     id_ varchar(64),
     name_ varchar(255),
     category_ varchar(255),
+    key_ varchar(255),
     tenant_id_ varchar(255) default '',
     deploy_time_ timestamp(3) null,
+    engine_version_ varchar(255),
+    version_ integer default 1,
+    project_release_version_ varchar(255),
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_re_model (
     id_ varchar(64) not null,
@@ -48,7 +52,7 @@ create table act_re_model (
     editor_source_extra_value_id_ varchar(64),
     tenant_id_ varchar(255) default '',
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_ru_execution (
     id_ varchar(64),
@@ -58,18 +62,32 @@ create table act_ru_execution (
     parent_id_ varchar(64),
     proc_def_id_ varchar(64),
     super_exec_ varchar(64),
+    root_proc_inst_id_ varchar(64),
     act_id_ varchar(255),
     is_active_ tinyint,
     is_concurrent_ tinyint,
     is_scope_ tinyint,
     is_event_scope_ tinyint,
+    is_mi_root_ tinyint,
     suspension_state_ integer,
     cached_ent_state_ integer,
     tenant_id_ varchar(255) default '',
     name_ varchar(255),
+    start_time_ datetime(3),
+    start_user_id_ varchar(255),
     lock_time_ timestamp(3) null,
+    is_count_enabled_ tinyint,
+    evt_subscr_count_ integer,
+    task_count_ integer,
+    job_count_ integer,
+    timer_job_count_ integer,
+    susp_job_count_ integer,
+    deadletter_job_count_ integer,
+    var_count_ integer,
+    id_link_count_ integer,
+    app_version_ integer,
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_ru_job (
     id_ varchar(64) not null,
@@ -90,7 +108,65 @@ create table act_ru_job (
     handler_cfg_ varchar(4000),
     tenant_id_ varchar(255) default '',
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
+
+create table act_ru_timer_job (
+    id_ varchar(64) not null,
+    rev_ integer,
+    type_ varchar(255) not null,
+    lock_exp_time_ timestamp(3) null,
+    lock_owner_ varchar(255),
+    exclusive_ boolean,
+    execution_id_ varchar(64),
+    process_instance_id_ varchar(64),
+    proc_def_id_ varchar(64),
+    retries_ integer,
+    exception_stack_id_ varchar(64),
+    exception_msg_ varchar(4000),
+    duedate_ timestamp(3) null,
+    repeat_ varchar(255),
+    handler_type_ varchar(255),
+    handler_cfg_ varchar(4000),
+    tenant_id_ varchar(255) default '',
+    primary key (id_)
+) engine=innodb default charset=utf8 collate utf8_bin;
+
+create table act_ru_suspended_job (
+    id_ varchar(64) not null,
+    rev_ integer,
+    type_ varchar(255) not null,
+    exclusive_ boolean,
+    execution_id_ varchar(64),
+    process_instance_id_ varchar(64),
+    proc_def_id_ varchar(64),
+    retries_ integer,
+    exception_stack_id_ varchar(64),
+    exception_msg_ varchar(4000),
+    duedate_ timestamp(3) null,
+    repeat_ varchar(255),
+    handler_type_ varchar(255),
+    handler_cfg_ varchar(4000),
+    tenant_id_ varchar(255) default '',
+    primary key (id_)
+) engine=innodb default charset=utf8 collate utf8_bin;
+
+create table act_ru_deadletter_job (
+    id_ varchar(64) not null,
+    rev_ integer,
+    type_ varchar(255) not null,
+    exclusive_ boolean,
+    execution_id_ varchar(64),
+    process_instance_id_ varchar(64),
+    proc_def_id_ varchar(64),
+    exception_stack_id_ varchar(64),
+    exception_msg_ varchar(4000),
+    duedate_ timestamp(3) null,
+    repeat_ varchar(255),
+    handler_type_ varchar(255),
+    handler_cfg_ varchar(4000),
+    tenant_id_ varchar(255) default '',
+    primary key (id_)
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_re_procdef (
     id_ varchar(64) not null,
@@ -107,8 +183,10 @@ create table act_re_procdef (
     has_graphical_notation_ tinyint,
     suspension_state_ integer,
     tenant_id_ varchar(255) default '',
+    engine_version_ varchar(255),
+    app_version_ integer,
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_ru_task (
     id_ varchar(64),
@@ -117,6 +195,7 @@ create table act_ru_task (
     proc_inst_id_ varchar(64),
     proc_def_id_ varchar(64),
     name_ varchar(255),
+    business_key_ varchar(255),
     parent_task_id_ varchar(64),
     description_ varchar(4000),
     task_def_key_ varchar(255),
@@ -130,8 +209,10 @@ create table act_ru_task (
     suspension_state_ integer,
     tenant_id_ varchar(255) default '',
     form_key_ varchar(255),
+    claim_time_ datetime(3),
+    app_version_ integer,
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_ru_identitylink (
     id_ varchar(64),
@@ -141,9 +222,10 @@ create table act_ru_identitylink (
     user_id_ varchar(255),
     task_id_ varchar(64),
     proc_inst_id_ varchar(64),
-    proc_def_id_ varchar(64),    
+    proc_def_id_ varchar(64),
+    details_ longblob,
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_ru_variable (
     id_ varchar(64) not null,
@@ -159,7 +241,7 @@ create table act_ru_variable (
     text_ varchar(4000),
     text2_ varchar(4000),
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_ru_event_subscr (
     id_ varchar(64) not null,
@@ -174,7 +256,7 @@ create table act_ru_event_subscr (
     proc_def_id_ varchar(64),
     tenant_id_ varchar(255) default '',
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_evt_log (
     log_nr_ bigint auto_increment,
@@ -190,7 +272,7 @@ create table act_evt_log (
     lock_time_ timestamp(3) null,
     is_processed_ tinyint default 0,
     primary key (log_nr_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create table act_procdef_info (
 	id_ varchar(64) not null,
@@ -198,9 +280,20 @@ create table act_procdef_info (
     rev_ integer,
     info_json_id_ varchar(64),
     primary key (id_)
-) engine=InnoDB default charset=utf8 collate utf8_bin;
+) engine=innodb default charset=utf8 collate utf8_bin;
+
+create table act_ru_integration (
+    id_ varchar(64) not null,
+    execution_id_ varchar(64),
+    process_instance_id_ varchar(64),
+    proc_def_id_ varchar(64),
+    flow_node_id_ varchar(64),
+    created_date_ timestamp(3),
+    primary key (id_)
+) engine=innodb default charset=utf8 collate utf8_bin;
 
 create index act_idx_exec_buskey on act_ru_execution(business_key_);
+create index act_idc_exec_root on act_ru_execution(root_proc_inst_id_);
 create index act_idx_task_create on act_ru_task(create_time_);
 create index act_idx_ident_lnk_user on act_ru_identitylink(user_id_);
 create index act_idx_ident_lnk_group on act_ru_identitylink(group_id_);
@@ -210,67 +303,67 @@ create index act_idx_athrz_procedef on act_ru_identitylink(proc_def_id_);
 create index act_idx_info_procdef on act_procdef_info(proc_def_id_);
 
 alter table act_ge_bytearray
-    add constraint act_fk_bytearr_depl 
-    foreign key (deployment_id_) 
+    add constraint act_fk_bytearr_depl
+    foreign key (deployment_id_)
     references act_re_deployment (id_);
 
 alter table act_re_procdef
     add constraint act_uniq_procdef
     unique (key_,version_, tenant_id_);
-    
+
 alter table act_ru_execution
-    add constraint act_fk_exe_procinst 
-    foreign key (proc_inst_id_) 
+    add constraint act_fk_exe_procinst
+    foreign key (proc_inst_id_)
     references act_ru_execution (id_) on delete cascade on update cascade;
 
 alter table act_ru_execution
-    add constraint act_fk_exe_parent 
-    foreign key (parent_id_) 
-    references act_ru_execution (id_);
-    
-alter table act_ru_execution
-    add constraint act_fk_exe_super 
-    foreign key (super_exec_) 
-    references act_ru_execution (id_);
+    add constraint act_fk_exe_parent
+    foreign key (parent_id_)
+    references act_ru_execution (id_) on delete cascade;
 
 alter table act_ru_execution
-    add constraint act_fk_exe_procdef 
-    foreign key (proc_def_id_) 
+    add constraint act_fk_exe_super
+    foreign key (super_exec_)
+    references act_ru_execution (id_) on delete cascade;
+
+alter table act_ru_execution
+    add constraint act_fk_exe_procdef
+    foreign key (proc_def_id_)
     references act_re_procdef (id_);
-    
+
 alter table act_ru_identitylink
-    add constraint act_fk_tskass_task 
-    foreign key (task_id_) 
+    add constraint act_fk_tskass_task
+    foreign key (task_id_)
     references act_ru_task (id_);
-    
+
 alter table act_ru_identitylink
-    add constraint act_fk_athrz_procedef 
-    foreign key (proc_def_id_) 
+    add constraint act_fk_athrz_procedef
+    foreign key (proc_def_id_)
     references act_re_procdef(id_);
-    
+
 alter table act_ru_identitylink
     add constraint act_fk_idl_procinst
-    foreign key (proc_inst_id_) 
-    references act_ru_execution (id_);       
-    
+    foreign key (proc_inst_id_)
+    references act_ru_execution (id_);
+
 alter table act_ru_task
     add constraint act_fk_task_exe
     foreign key (execution_id_)
     references act_ru_execution (id_);
-    
+
 alter table act_ru_task
     add constraint act_fk_task_procinst
     foreign key (proc_inst_id_)
     references act_ru_execution (id_);
-    
+
 alter table act_ru_task
   	add constraint act_fk_task_procdef
   	foreign key (proc_def_id_)
   	references act_re_procdef (id_);
-  
-alter table act_ru_variable 
-    add constraint act_fk_var_exe 
-    foreign key (execution_id_) 
+
+alter table act_ru_variable
+    add constraint act_fk_var_exe
+    foreign key (execution_id_)
     references act_ru_execution (id_);
 
 alter table act_ru_variable
@@ -278,47 +371,137 @@ alter table act_ru_variable
     foreign key (proc_inst_id_)
     references act_ru_execution(id_);
 
-alter table act_ru_variable 
-    add constraint act_fk_var_bytearray 
-    foreign key (bytearray_id_) 
+alter table act_ru_variable
+    add constraint act_fk_var_bytearray
+    foreign key (bytearray_id_)
     references act_ge_bytearray (id_);
 
-alter table act_ru_job 
-    add constraint act_fk_job_exception 
-    foreign key (exception_stack_id_) 
+alter table act_ru_job
+    add constraint act_fk_job_execution
+    foreign key (execution_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_job
+    add constraint act_fk_job_process_instance
+    foreign key (process_instance_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_job
+    add constraint act_fk_job_proc_def
+    foreign key (proc_def_id_)
+    references act_re_procdef (id_);
+
+alter table act_ru_job
+    add constraint act_fk_job_exception
+    foreign key (exception_stack_id_)
+    references act_ge_bytearray (id_);
+
+alter table act_ru_timer_job
+    add constraint act_fk_timer_job_execution
+    foreign key (execution_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_timer_job
+    add constraint act_fk_timer_job_process_instance
+    foreign key (process_instance_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_timer_job
+    add constraint act_fk_timer_job_proc_def
+    foreign key (proc_def_id_)
+    references act_re_procdef (id_);
+
+alter table act_ru_timer_job
+    add constraint act_fk_timer_job_exception
+    foreign key (exception_stack_id_)
+    references act_ge_bytearray (id_);
+
+alter table act_ru_suspended_job
+    add constraint act_fk_suspended_job_execution
+    foreign key (execution_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_suspended_job
+    add constraint act_fk_suspended_job_process_instance
+    foreign key (process_instance_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_suspended_job
+    add constraint act_fk_suspended_job_proc_def
+    foreign key (proc_def_id_)
+    references act_re_procdef (id_);
+
+alter table act_ru_suspended_job
+    add constraint act_fk_suspended_job_exception
+    foreign key (exception_stack_id_)
+    references act_ge_bytearray (id_);
+
+alter table act_ru_deadletter_job
+    add constraint act_fk_deadletter_job_execution
+    foreign key (execution_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_deadletter_job
+    add constraint act_fk_deadletter_job_process_instance
+    foreign key (process_instance_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_deadletter_job
+    add constraint act_fk_deadletter_job_proc_def
+    foreign key (proc_def_id_)
+    references act_re_procdef (id_);
+
+alter table act_ru_deadletter_job
+    add constraint act_fk_deadletter_job_exception
+    foreign key (exception_stack_id_)
     references act_ge_bytearray (id_);
 
 alter table act_ru_event_subscr
     add constraint act_fk_event_exec
     foreign key (execution_id_)
     references act_ru_execution(id_);
-    
-alter table act_re_model 
-    add constraint act_fk_model_source 
-    foreign key (editor_source_value_id_) 
+
+alter table act_re_model
+    add constraint act_fk_model_source
+    foreign key (editor_source_value_id_)
     references act_ge_bytearray (id_);
 
-alter table act_re_model 
-    add constraint act_fk_model_source_extra 
-    foreign key (editor_source_extra_value_id_) 
-    references act_ge_bytearray (id_);
-    
-alter table act_re_model 
-    add constraint act_fk_model_deployment 
-    foreign key (deployment_id_) 
-    references act_re_deployment (id_);        
-
-alter table act_procdef_info 
-    add constraint act_fk_info_json_ba 
-    foreign key (info_json_id_) 
+alter table act_re_model
+    add constraint act_fk_model_source_extra
+    foreign key (editor_source_extra_value_id_)
     references act_ge_bytearray (id_);
 
-alter table act_procdef_info 
-    add constraint act_fk_info_procdef 
-    foreign key (proc_def_id_) 
+alter table act_re_model
+    add constraint act_fk_model_deployment
+    foreign key (deployment_id_)
+    references act_re_deployment (id_);
+
+alter table act_procdef_info
+    add constraint act_fk_info_json_ba
+    foreign key (info_json_id_)
+    references act_ge_bytearray (id_);
+
+alter table act_procdef_info
+    add constraint act_fk_info_procdef
+    foreign key (proc_def_id_)
     references act_re_procdef (id_);
-    
+
 alter table act_procdef_info
     add constraint act_uniq_info_procdef
     unique (proc_def_id_);
-    
+
+alter table act_ru_integration
+    add constraint act_fk_int_execution
+    foreign key (execution_id_)
+    references act_ru_execution (id_)
+    on delete cascade;
+
+alter table act_ru_integration
+    add constraint act_fk_int_proc_inst
+    foreign key (process_instance_id_)
+    references act_ru_execution (id_);
+
+alter table act_ru_integration
+    add constraint act_fk_int_proc_def
+    foreign key (proc_def_id_)
+    references act_re_procdef (id_);
