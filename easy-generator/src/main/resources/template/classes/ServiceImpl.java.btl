@@ -121,9 +121,9 @@ public class ${basicsConfig.modelName}ServiceImpl extends ServiceImpl<${basicsCo
             ${basicsConfig.modelName} parent${basicsConfig.modelName} = getById(parentId);
             if (parent${basicsConfig.modelName} != null) {
                 ${strUtil.lowerFirst(basicsConfig.modelName)}.setParentId(parentId);
-                ${strUtil.lowerFirst(basicsConfig.modelName)}.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
             }
         }
+        ${strUtil.lowerFirst(basicsConfig.modelName)}.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
         return ${strUtil.lowerFirst(basicsConfig.modelName)};
     }
     <% } else { %>

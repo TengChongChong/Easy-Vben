@@ -65,7 +65,12 @@
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0)
         from ${strutil.toLowerCase(tableInfo.name)} t
-        where t.parent_id = #{parentId}
+        <if test="parentId == null">
+            where t.parent_id is null
+        </if>
+        <if test="parentId != null">
+            where t.parent_id = #{parentId}
+        </if>
     </select>
     <update id="updateOrderBatch">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
