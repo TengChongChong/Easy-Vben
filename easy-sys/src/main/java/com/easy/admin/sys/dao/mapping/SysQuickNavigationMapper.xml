@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.sys.dao.SysQuickNavigationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.sys.model.vo.SysQuickNavigationVO">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="icon" property="icon" />
+        <result column="color" property="color" />
+        <result column="order_no" property="orderNo" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="dept_id" property="deptId" />
+        <result column="create_user" property="createUser" />
+        <result column="create_date" property="createDate" />
+        <result column="edit_user" property="editUser" />
+        <result column="edit_date" property="editDate" />
+    </resultMap>
+
+    <select id="select" resultType="com.easy.admin.sys.model.vo.SysQuickNavigationVO">
+        select t.id, t.name, t.url, t.icon, t.color, t.order_no, t.status, t.dept_id, su_edit_user.nickname as edit_user, t.edit_date
+        from sys_quick_navigation t
+        left join sys_user su_edit_user on su_edit_user.id = t.edit_user
+        <where>
+            ${ew.sqlSegment}
+        </where>
+        order by t.order_no
+    </select>
+
+    <select id="selectQuickNavigationByRole"
+            resultType="com.easy.admin.sys.model.vo.SysQuickNavigationVO">
+        select t.id, t.name, t.url, t.icon, t.color, t.order_no
+        from sys_quick_navigation t
+        left join sys_role_quick_navigation srqn on srqn.navigation_id = t.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+        group by t.id, t.order_no
+        order by t.order_no
+    </select>
+
+    <select id="getById" resultType="com.easy.admin.sys.model.SysQuickNavigation">
+        select t.id, t.name, t.url, t.icon, t.color, t.order_no, t.status, t.version, t.dept_id, t.create_user, t.create_date, t.edit_user, t.edit_date
+        from sys_quick_navigation t
+        where t.id = #{id}
+    </select>
+
+    <select id="exportData" resultType="com.easy.admin.sys.model.vo.SysQuickNavigationVO">
+        select t.name, t.url, t.icon, t.color, t.order_no, sd_status.name as status
+        from sys_quick_navigation t
+        left join sys_dict sd_status on sd_status.code = t.status and sd_status.dict_type = 'commonStatus'
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getMaxOrderNo" resultType="java.lang.Integer">
+        select ifnull(max(order_no), 0) from sys_quick_navigation t
+    </select>
+</mapper>

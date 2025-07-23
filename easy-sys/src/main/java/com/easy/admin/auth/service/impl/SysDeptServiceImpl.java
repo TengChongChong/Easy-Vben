@@ -73,9 +73,9 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             SysDept parentDept = getById(parentId);
             if (parentDept != null) {
                 sysDept.setParentId(parentId);
-                sysDept.setOrderNo(baseMapper.getMaxOrderNo(sysDept.getParentId()) + 1);
             }
         }
+        sysDept.setOrderNo(baseMapper.getMaxOrderNo(sysDept.getParentId()) + 1);
         if (Validator.isNotEmpty(typeCode)) {
             sysDept.setTypeCode(typeCode);
         }

@@ -65,7 +65,12 @@
     <select id="getMaxOrderNo" resultType="java.lang.Integer">
         select ifnull(max(order_no), 0)
         from sys_menu t
-        where t.parent_id = #{parentId}
+        <if test="parentId == null">
+            where t.parent_id is null
+        </if>
+        <if test="parentId != null">
+            where t.parent_id = #{parentId}
+        </if>
     </select>
 
     <update id="updateOrderBatch">

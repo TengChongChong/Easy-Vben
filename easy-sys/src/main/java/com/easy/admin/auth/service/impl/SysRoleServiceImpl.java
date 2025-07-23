@@ -57,6 +57,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private SysRoleDataPermissionService sysRoleDataPermissionService;
 
+    @Autowired
+    private SysRoleQuickNavigationService sysRoleQuickNavigationService;
+
     @Override
     public Page<SysRole> select(SysRole sysRole, Page<SysRole> page) {
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
@@ -106,6 +109,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         BeanUtil.copyProperties(sysRole, sysRoleVO);
 
         sysRoleVO.setMenuIds(baseMapper.selectMenuIds(id));
+        sysRoleVO.setNavigationIds(sysRoleQuickNavigationService.selectByRoleId(id));
         DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRoleVO.getDataPermission().toUpperCase());
         if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {
             sysRoleVO.setDataPermissionDeptIds(sysRoleDataPermissionService.selectDeptByRoleId(id));
@@ -144,7 +148,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             sysDeptTypeRoleService.removeDeptTypeRole(ids);
             // 删除部门自定义数据权限
             sysRoleDataPermissionService.removeByRoleId(ids);
-
+            // 删除角色快捷导航
+            sysRoleQuickNavigationService.removeByRoleId(ids);
             for (String id : idList) {
                 // 删除缓存的角色数据
                 RedisUtil.del(RedisPrefix.SYS_ROLE + id);
@@ -192,6 +197,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             sysRoleVO.setId(sysRole.getId());
             // 保存角色权限
             sysRoleMenuService.saveRoleMenu(sysRoleVO.getId(), sysRoleVO.getMenuIds());
+
+            // 保存快捷导航权限
+            sysRoleQuickNavigationService.saveBatchData(sysRoleVO.getId(), sysRoleVO.getNavigationIds());
+
             // 保存数据权限
             DataPermissionType dataPermissionType = DataPermissionType.valueOf(sysRoleVO.getDataPermission().toUpperCase());
             if (DataPermissionType.CUSTOM.equals(dataPermissionType)) {

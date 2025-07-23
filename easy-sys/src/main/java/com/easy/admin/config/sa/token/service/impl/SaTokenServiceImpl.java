@@ -22,12 +22,11 @@ import com.easy.admin.file.service.FileDetailService;
 import com.easy.admin.sys.common.constant.SysConfigConst;
 import com.easy.admin.sys.common.constant.SysConst;
 import com.easy.admin.sys.service.SysCaptchaService;
+import com.easy.admin.sys.service.SysQuickNavigationService;
 import com.easy.admin.util.PasswordUtil;
 import com.easy.admin.util.SysConfigUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +67,12 @@ public class SaTokenServiceImpl implements SaTokenService {
      */
     @Autowired
     private SysCaptchaService sysCaptchaService;
+
+    /**
+     * 用户快捷菜单
+     */
+    @Autowired
+    private SysQuickNavigationService sysQuickNavigationService;
 
     /**
      * 账号密码认证
@@ -188,6 +193,9 @@ public class SaTokenServiceImpl implements SaTokenService {
         sessionUser.setPermissionCodeList(CollUtil.distinct(permissionCodeList));
         // 用户路由集合
         sessionUser.setRouteList(routeList);
+        // 快捷菜单
+        List<String> roleIds = sessionUser.getRoleList().stream().map(SessionUserRoleVO::getId).toList();
+        sessionUser.setQuickNavigationList(sysQuickNavigationService.selectQuickNavigationByRole(roleIds));
     }
 
     @Override

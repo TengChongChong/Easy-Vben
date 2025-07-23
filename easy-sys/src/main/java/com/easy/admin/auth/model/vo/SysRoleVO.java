@@ -27,4 +27,9 @@ public class SysRoleVO extends SysRole {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> dataPermissionDeptIds;
 
+    /**
+     * 快捷导航ids
+     */
+    private List<String> navigationIds;
+
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.admin.auth.dao.SysRoleQuickNavigationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.admin.auth.model.vo.SysRoleQuickNavigationVO">
+        <result column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="navigation_id" property="navigationId" />
+    </resultMap>
+
+    <select id="selectWithoutPage" resultType="java.lang.String">
+        select t.navigation_id from sys_role_quick_navigation t
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+</mapper>

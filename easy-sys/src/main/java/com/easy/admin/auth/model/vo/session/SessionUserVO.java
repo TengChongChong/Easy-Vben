@@ -2,6 +2,7 @@ package com.easy.admin.auth.model.vo.session;
 
 import com.easy.admin.auth.model.vo.route.RouteVO;
 import com.easy.admin.config.mybatis.plugins.model.DataPermission;
+import com.easy.admin.sys.model.vo.SysQuickNavigationVO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -137,5 +138,11 @@ public class SessionUserVO implements Serializable {
      */
     @JsonIgnore
     private List<RouteVO> routeList = Collections.emptyList();
+
+    /**
+     * 快捷菜单
+     */
+    @JsonIgnore
+    private List<SysQuickNavigationVO> quickNavigationList = Collections.emptyList();
 
 }

@@ -3,6 +3,7 @@ package com.easy.admin.auth.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -101,9 +102,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             SysMenu parentSysMenu = getById(parentId);
             if (parentSysMenu != null) {
                 sysMenu.setParentId(parentId);
-                sysMenu.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
             }
         }
+        sysMenu.setOrderNo(baseMapper.getMaxOrderNo(parentId) + 1);
         // 菜单
         sysMenu.setType(MenuType.MENU.getCode());
         // 启用
@@ -134,6 +135,14 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         // 新增时设置排序值
         if (StrUtil.isBlank(sysMenuVO.getId()) && sysMenuVO.getOrderNo() == null) {
             sysMenuVO.setOrderNo(baseMapper.getMaxOrderNo(sysMenuVO.getParentId()) + 1);
+        }
+
+        if (StrUtil.isNotBlank(sysMenuVO.getQuery())) {
+            try {
+                new JSONObject(sysMenuVO.getQuery());
+            } catch (Exception e) {
+                throw new EasyException("路由参数必须为JSON格式，示例：{ name: \"张三\", sex: 1 }");
+            }
         }
 
         // 检查path是否已存在

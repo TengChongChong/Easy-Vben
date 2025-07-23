@@ -11,6 +11,7 @@ import com.easy.admin.config.sa.token.model.LoginQrCode;
 import com.easy.admin.config.sa.token.model.LoginSms;
 import com.easy.admin.config.sa.token.util.SessionUtil;
 import com.easy.admin.core.annotation.SysLog;
+import com.easy.admin.sys.model.vo.SysQuickNavigationVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+
 import java.util.List;
 
 /**
@@ -96,6 +98,17 @@ public class AuthController {
     @SysLog(modular = "sys", method = "获取当前登录用户路由")
     public List<RouteVO> getCurrentUserRoute() {
         return SessionUtil.getCurrentUser().getRouteList();
+    }
+
+    /**
+     * 获取当前登录用户快捷菜单
+     *
+     * @return List<SysQuickNavigationVO>
+     */
+    @GetMapping("/api/auth/current/user/quick/navigation")
+    @SysLog(modular = "sys", method = "获取当前登录用户快捷菜单")
+    public List<SysQuickNavigationVO> getCurrentUserQuickNavigation() {
+        return SessionUtil.getCurrentUser().getQuickNavigationList();
     }
 
     /**
