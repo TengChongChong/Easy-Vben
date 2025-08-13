@@ -121,6 +121,13 @@ public class WorkflowModelServiceImpl extends ServiceImpl<WorkflowModelMapper, W
             throw new EasyException("读取模型信息失败[" + model.getId() + "]");
         }
         objectNode.set("model", editorJsonNode);
+
+        BpmnJsonConverter jsonConverter = new BpmnJsonConverter();
+        BpmnModel bpmnModel = jsonConverter.convertToBpmnModel(editorJsonNode);
+        BpmnXMLConverter xmlConverter = new BpmnXMLConverter();
+        byte[] bpmnModelXmlByte = xmlConverter.convertToXML(bpmnModel);
+
+        objectNode.put("modelXml", new String(bpmnModelXmlByte, StandardCharsets.UTF_8));
         return objectNode;
     }
 
@@ -357,12 +364,6 @@ public class WorkflowModelServiceImpl extends ServiceImpl<WorkflowModelMapper, W
                 model.getName() + "(" + model.getKey() + ") v." + model.getVersion() + ".bpmn20.xml",
                 IdUtil.randomUUID() + ".bpmn20.xml"
         );
-
-        //FileInfo fileInfo = fileStorageService.of(inputStream)
-        //        .setPath(FileUtil.getTemporaryPath())
-        //        .setSaveFilename(model.getName() + "(" + model.getKey() + ") v." + model.getVersion() + ".bpmn20.xml")
-        //        .setName(IdUtil.randomUUID() + ".bpmn20.xml")
-        //        .upload();
 
         // 保存下载信息
         return fileDownloadService.saveData(new FileDownload(fileInfo.getId())).getId();
