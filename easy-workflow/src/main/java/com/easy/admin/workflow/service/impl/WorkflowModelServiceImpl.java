@@ -122,12 +122,19 @@ public class WorkflowModelServiceImpl extends ServiceImpl<WorkflowModelMapper, W
         }
         objectNode.set("model", editorJsonNode);
 
-        BpmnJsonConverter jsonConverter = new BpmnJsonConverter();
-        BpmnModel bpmnModel = jsonConverter.convertToBpmnModel(editorJsonNode);
-        BpmnXMLConverter xmlConverter = new BpmnXMLConverter();
-        byte[] bpmnModelXmlByte = xmlConverter.convertToXML(bpmnModel);
 
-        objectNode.put("modelXml", new String(bpmnModelXmlByte, StandardCharsets.UTF_8));
+        try {
+            BpmnJsonConverter jsonConverter = new BpmnJsonConverter();
+            BpmnModel bpmnModel = jsonConverter.convertToBpmnModel(editorJsonNode);
+            BpmnXMLConverter xmlConverter = new BpmnXMLConverter();
+            byte[] bpmnModelXmlByte = xmlConverter.convertToXML(bpmnModel);
+
+            objectNode.put("modelXml", new String(bpmnModelXmlByte, StandardCharsets.UTF_8));
+        } catch (RuntimeException e) {
+            // ignore
+        }
+
+
         return objectNode;
     }
 
