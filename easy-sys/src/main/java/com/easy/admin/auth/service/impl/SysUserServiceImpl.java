@@ -201,6 +201,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         } else {
             // 部门不允许修改
             sysUserVO.setDeptId(null);
+            sysUserVO.setPassword(null);
+            sysUserVO.setSalt(null);
             // 修改用户需检查是否有权限修改
             if (!isAdmin) {
                 // 非管理员，只能修改自己部门的用户
