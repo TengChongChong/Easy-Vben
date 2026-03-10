@@ -37,7 +37,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       label: '上级',
       component: 'ApiTreeSelect',
       componentProps: {
-        api: selectAllApi,
+        api: selectAll${basicsConfig.modelName}Api,
         afterFetch: (res) => {
           const treeNodes: TreeNode[] = [] as TreeNode[];
           res.forEach((item) => {
@@ -95,7 +95,7 @@ async function handleSubmit(callback: (res: ${basicsConfig.modelName}VO) => any)
       return;
     }
     const values: ${basicsConfig.modelName}VO = await baseFormApi.getValues();
-    const res = await saveApi(values);
+    const res = await save${basicsConfig.modelName}Api(values);
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -115,7 +115,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
-    addApi().then((res) => {
+    add${basicsConfig.modelName}Api().then((res) => {
       baseFormApi.setValues(res);
     });
   });

@@ -12,7 +12,7 @@ import { listToTree, treeToList } from '@vben/utils';
 import { Alert, Tree } from 'ant-design-vue';
 import { Space } from 'ant-design-vue';
 
-import { saveOrderApi, selectAllApi } from '${apiTsPath!}';
+import { saveOrder${basicsConfig.modelName}Api, selectAll${basicsConfig.modelName}Api } from '${apiTsPath!}';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -37,7 +37,7 @@ async function handleSave() {
       });
     });
 
-    await saveOrderApi(params);
+    await saveOrder${basicsConfig.modelName}Api(params);
     emit('success');
     drawerApi.close();
   } catch (error) {
@@ -51,7 +51,7 @@ const [${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}, d
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
       drawerApi.setLoading(true);
-      selectAllApi().then((res) => {
+      selectAll${basicsConfig.modelName}Api().then((res) => {
         treeData.value = listToTree(res);
       });
       drawerApi.setLoading(false);

@@ -69,7 +69,7 @@ const gridOptions: VxeGridProps<${basicsConfig.modelName}> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await select${basicsConfig.modelName}Api({ ...formValues }, page);
       },
     },
   },
@@ -98,7 +98,7 @@ const [BaseOrderModal, baseOrderModalApi] = useVbenModal({
 <% } %>
 <% if(basicsConfig.generatorMethodsAdd){ %>
 async function handleCreate(id: string) {
-  addApi(id).then((res) => {
+  add${basicsConfig.modelName}Api(id).then((res) => {
     baseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}Api.setData(res);
     baseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}Api.open();
   });
@@ -106,7 +106,7 @@ async function handleCreate(id: string) {
 <% } %>
 <% if(basicsConfig.generatorMethodsSave){ %>
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  get${basicsConfig.modelName}Api(id).then((res) => {
     baseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}Api.setData(res);
     baseInput${basicsConfig.formGeneratorTemplate == 'drawer' ? 'Drawer' : 'Modal'}Api.open();
   });
@@ -127,7 +127,7 @@ function handleCollapseAll() {
 const handelExportData = async () => {
   exportBtnLoading.value = true;
   try {
-    await exportDataApi({
+    await exportData${basicsConfig.modelName}Api({
       ...(await gridApi.formApi.getValues()),
     }).then((id) => {
       downloadFileById(id);
@@ -177,14 +177,14 @@ const handelExportData = async () => {
           <% if(basicsConfig.generatorMethodsRemove){ %>
           <% if(strUtil.isNotBlank(basicsConfig.permissionCode)){ %>
           <ButtonRemove
-            :api="removeApi"
+            :api="remove${basicsConfig.modelName}Api"
             :auth-codes="['${basicsConfig.permissionCode}:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
           />
           <% } else { %>
           <ButtonRemove
-            :api="removeApi"
+            :api="remove${basicsConfig.modelName}Api"
             :grid-api="gridApi"
             @success="handleSearch"
           />
@@ -247,7 +247,7 @@ const handelExportData = async () => {
         <% if(basicsConfig.generatorMethodsRemove){ %>
         <% if(strUtil.isNotBlank(basicsConfig.permissionCode)){ %>
         <ButtonRemove
-          :api="removeApi"
+          :api="remove${basicsConfig.modelName}Api"
           :auth-codes="['${basicsConfig.permissionCode}:remove']"
           :ids="[row.id]"
           size="small"
@@ -256,7 +256,7 @@ const handelExportData = async () => {
         />
         <% } else { %>
         <ButtonRemove
-          :api="removeApi"
+          :api="remove${basicsConfig.modelName}Api"
           :ids="[row.id]"
           size="small"
           type="link"

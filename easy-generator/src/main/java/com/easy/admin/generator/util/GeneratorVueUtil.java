@@ -37,7 +37,7 @@ public class GeneratorVueUtil {
      * @return 引入的方法
      */
     public static String getListImport(BasicsConfig basicsConfig) {
-        String methodSuffix = "Api";
+        String methodSuffix = basicsConfig.getModelName() + "Api";
 
         List<String> importMethod = new ArrayList<>();
         for (String method : basicsConfig.getGenMethod()) {
