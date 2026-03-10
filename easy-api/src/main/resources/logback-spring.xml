@@ -2,7 +2,8 @@
 <configuration  scan="true" scanPeriod="60 seconds" debug="false">
     <contextName>easy-vben</contextName>
 
-    <springProperty scope="context" name="log.path" source="logging.file.path"/>
+    <!-- 从 Spring Boot logging.file.path 读取日志目录，如果未配置则默认使用 logs -->
+    <springProperty scope="context" name="log.path" source="logging.file.path" defaultValue="logs"/>
 
     <!-- 日志文件名称 -->
     <property name="log.name" value="easy-frame" />

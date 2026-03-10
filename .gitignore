@@ -12,7 +12,7 @@
 *.iws
 *.iml
 *.ipr
-*/target
+**/target
 
 ### NetBeans ###
 /nbproject/private/
@@ -28,3 +28,8 @@
 
 ### project ###
 logs
+
+# Cursor
+.cursor
+.cursorignore
+.history
