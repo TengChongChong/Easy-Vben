@@ -51,7 +51,7 @@
             ${ew.sqlSegment}
         </where>
         group by t.id, t.dept_id, t.post_id, t.nickname, t.username, t.sex, t.email, t.phone_number, t.birthday, t.status, t.source,
-        t.last_login_date, t.tenant_id, t.create_user, t.create_date, t.edit_user, t.edit_date
+        t.last_login_date, t.tenant_id, t.create_user, t.create_date, t.edit_user, t.edit_date, fd.url
     </select>
     <select id="selectUser" resultType="com.easy.admin.auth.model.SysUser">
         select distinct su.id, su.nickname, su.username, sd.name as depart_name from sys_user su
