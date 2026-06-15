@@ -3,7 +3,8 @@
     <contextName>easy-vben</contextName>
 
     <!-- 从 Spring Boot logging.file.path 读取日志目录，如果未配置则默认使用 logs -->
-    <springProperty scope="context" name="log.path" source="logging.file.path" defaultValue="logs"/>
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.path" defaultValue="logs"/>
+    <property name="LOG_PATH" value="${LOG_PATH:-logs}"/>
 
     <!-- 日志文件名称 -->
     <property name="log.name" value="easy-frame" />
@@ -17,8 +18,9 @@
 
     <!--输出到文件-->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${log.name}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/${log.name}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/${log.name}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 单个日志文件不超过2MB -->
             <maxFileSize>2MB</maxFileSize>
             <!-- 最多保留30天 -->
