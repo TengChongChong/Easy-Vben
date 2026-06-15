@@ -1,16 +1,16 @@
 package com.easy.admin.common.core.interceptor;
 
-import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.annotation.ResponseResult;
+import com.easy.admin.common.core.constant.CommonConst;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 解析@ResponseResult注解
@@ -24,7 +24,7 @@ public class ResponseResultInterceptor implements HandlerInterceptor {
     /**
      * 缓存检查结果，避免每次请求都要反射一下
      */
-    Map<String, Boolean> cache = new HashMap<>();
+    Map<String, Boolean> cache = new ConcurrentHashMap<>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
