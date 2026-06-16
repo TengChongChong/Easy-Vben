@@ -1,7 +1,9 @@
 package com.easy.admin.scheduler.service;
 
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.scheduler.model.SchedulerJob;
+import com.easy.admin.scheduler.model.SchedulerJobMethodOption;
 
 import java.util.List;
 
@@ -98,4 +100,20 @@ public interface SchedulerJobService {
      * @return true/false
      */
     boolean immediateExecution(String id);
+
+    /**
+     * 查询候选 Bean
+     *
+     * @param keyword 关键字
+     * @return Bean 选项
+     */
+    List<Select> selectBeans(String keyword);
+
+    /**
+     * 查询 Bean 可调用的方法
+     *
+     * @param bean Bean 名称
+     * @return 方法选项
+     */
+    List<SchedulerJobMethodOption> selectMethods(String bean);
 }

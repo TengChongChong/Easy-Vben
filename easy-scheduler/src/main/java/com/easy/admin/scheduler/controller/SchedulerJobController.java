@@ -2,13 +2,16 @@ package com.easy.admin.scheduler.controller;
 
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.annotation.ResponseResult;
+import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.scheduler.model.SchedulerJob;
+import com.easy.admin.scheduler.model.SchedulerJobMethodOption;
 import com.easy.admin.scheduler.service.SchedulerJobService;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import java.util.List;
 
 /**
  * 定时任务
@@ -37,6 +40,30 @@ public class SchedulerJobController {
     @SaCheckPermission("scheduler:job:select")
     public Page<SchedulerJob> select(SchedulerJob schedulerJob, Page<SchedulerJob> page) {
         return service.select(schedulerJob, page);
+    }
+
+    /**
+     * 查询候选 Bean
+     *
+     * @param keyword 关键字
+     * @return Bean 选项
+     */
+    @GetMapping("select/beans")
+    @SaCheckPermission("scheduler:job:select")
+    public List<Select> selectBeans(@RequestParam(value = "keyword", required = false) String keyword) {
+        return service.selectBeans(keyword);
+    }
+
+    /**
+     * 查询 Bean 可调用的方法
+     *
+     * @param bean Bean 名称
+     * @return 方法选项
+     */
+    @GetMapping("select/methods")
+    @SaCheckPermission("scheduler:job:select")
+    public List<SchedulerJobMethodOption> selectMethods(@RequestParam("bean") String bean) {
+        return service.selectMethods(bean);
     }
 
     /**

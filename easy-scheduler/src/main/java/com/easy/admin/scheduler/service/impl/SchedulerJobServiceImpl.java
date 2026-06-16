@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.admin.auth.common.constant.SysRoleConst;
 import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.common.select.Select;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
 import com.easy.admin.common.core.util.ToolUtil;
@@ -15,9 +16,11 @@ import com.easy.admin.scheduler.common.status.SchedulerStatus;
 import com.easy.admin.scheduler.dao.SchedulerJobMapper;
 import com.easy.admin.scheduler.model.SchedulerJob;
 import com.easy.admin.scheduler.model.SchedulerJobLog;
+import com.easy.admin.scheduler.model.SchedulerJobMethodOption;
 import com.easy.admin.scheduler.service.QuartzService;
 import com.easy.admin.scheduler.service.SchedulerJobLogService;
 import com.easy.admin.scheduler.service.SchedulerJobService;
+import com.easy.admin.scheduler.util.SchedulerJobBeanUtil;
 import com.easy.admin.scheduler.util.SchedulerJobInvokeUtil;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.config.sa.token.util.SessionUtil;
@@ -30,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 定时任务
@@ -278,6 +282,25 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
             updateWrapper.in("id", ids.split(CommonConst.SPLIT));
         }
         return update(updateWrapper);
+    }
+
+    @Override
+    public List<Select> selectBeans(String keyword) {
+        QueryWrapper<SchedulerJob> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("bean");
+        queryWrapper.isNotNull("bean");
+        queryWrapper.ne("bean", "");
+        List<String> historyBeans = list(queryWrapper).stream()
+                .map(SchedulerJob::getBean)
+                .filter(StrUtil::isNotBlank)
+                .distinct()
+                .collect(Collectors.toList());
+        return SchedulerJobBeanUtil.selectBeans(historyBeans, keyword);
+    }
+
+    @Override
+    public List<SchedulerJobMethodOption> selectMethods(String bean) {
+        return SchedulerJobBeanUtil.selectMethods(bean);
     }
 
     @Override
