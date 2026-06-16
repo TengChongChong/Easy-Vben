@@ -4027,6 +4027,7 @@ CREATE TABLE `scheduler_job` (
   `cron` varchar(64) NOT NULL COMMENT 'cron',
   `bean` varchar(32) NOT NULL COMMENT 'bean',
   `method` varchar(32) NOT NULL COMMENT 'method',
+  `params` varchar(1024) DEFAULT NULL COMMENT '方法参数(JSON数组)',
   `last_run_date` datetime DEFAULT NULL COMMENT '上次执行时间',
   `status` varchar(32) NOT NULL COMMENT '状态',
   `sys` varchar(1) NOT NULL COMMENT '是否系统',

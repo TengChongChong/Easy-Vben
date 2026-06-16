@@ -1,9 +1,8 @@
 package com.easy.admin.sample.job;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,5 +21,13 @@ public class SampleJob {
 
     public void sampleJob2() {
         log.debug("示例定时任务2执行了[{}]", DateUtil.now());
+    }
+
+    public void sampleJobWithParams(String name, Integer count) {
+        log.debug("示例带参定时任务执行了[{}]，name={}，count={}", DateUtil.now(), name, count);
+    }
+
+    public void sampleJobWithJson(JSONObject params) {
+        log.debug("示例JSON参数定时任务执行了[{}]，params={}", DateUtil.now(), params);
     }
 }

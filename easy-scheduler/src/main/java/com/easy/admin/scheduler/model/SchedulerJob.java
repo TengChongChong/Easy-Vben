@@ -53,6 +53,11 @@ public class SchedulerJob extends Model<SchedulerJob> {
     private String method;
 
     /**
+     * 方法参数(JSON数组)
+     */
+    private String params;
+
+    /**
      * 状态
      */
     @NotNull(message = "状态不能为空")

@@ -10,7 +10,6 @@ import com.easy.admin.auth.model.vo.session.SessionUserVO;
 import com.easy.admin.common.core.common.pagination.Page;
 import com.easy.admin.common.core.constant.CommonConst;
 import com.easy.admin.common.core.exception.EasyException;
-import com.easy.admin.common.core.util.SpringContextHolder;
 import com.easy.admin.common.core.util.ToolUtil;
 import com.easy.admin.scheduler.common.status.SchedulerStatus;
 import com.easy.admin.scheduler.dao.SchedulerJobMapper;
@@ -19,18 +18,15 @@ import com.easy.admin.scheduler.model.SchedulerJobLog;
 import com.easy.admin.scheduler.service.QuartzService;
 import com.easy.admin.scheduler.service.SchedulerJobLogService;
 import com.easy.admin.scheduler.service.SchedulerJobService;
+import com.easy.admin.scheduler.util.SchedulerJobInvokeUtil;
 import com.easy.admin.sys.common.constant.WhetherConst;
 import com.easy.admin.config.sa.token.util.SessionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -290,32 +286,11 @@ public class SchedulerJobServiceImpl extends ServiceImpl<SchedulerJobMapper, Sch
         if (schedulerJob == null) {
             throw new EasyException("查询任务信息失败");
         }
-        if (StrUtil.isBlank(schedulerJob.getBean())) {
-            throw new EasyException("该任务未设置Bean信息，请设置后重试");
-        }
-        Object bean = SpringContextHolder.getBean(schedulerJob.getBean());
-        if (bean != null) {
-            try {
-                // 获取方法
-                Method method = bean.getClass().getMethod(schedulerJob.getMethod());
-                try {
-                    Date startDate = new Date();
-                    // 执行
-                    method.invoke(bean);
-                    // 更新最后执行时间
-                    updateLastRunDate(schedulerJob.getId());
-                    // 保存执行日志
-                    schedulerJobLogService.saveData(new SchedulerJobLog(schedulerJob.getId(),
-                            startDate, System.currentTimeMillis() - startDate.getTime()));
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    throw new EasyException(schedulerJob.getName() + "失败[" + e.getCause().getMessage() + "]");
-                }
-            } catch (NoSuchMethodException e) {
-                throw new EasyException("定时任务[" + schedulerJob.getName() + "]获取method[" + schedulerJob.getMethod() + "]失败");
-            }
-        } else {
-            throw new EasyException("定时任务[" + schedulerJob.getName() + "]bean不存在");
-        }
-        return false;
+        Date startDate = new Date();
+        SchedulerJobInvokeUtil.invoke(schedulerJob);
+        updateLastRunDate(schedulerJob.getId());
+        schedulerJobLogService.saveData(new SchedulerJobLog(schedulerJob.getId(),
+                startDate, System.currentTimeMillis() - startDate.getTime()));
+        return true;
     }
 }
