@@ -67,6 +67,7 @@ public class GeneratorController {
      * @param generatorConfig 生成配置
      * @return true/false
      */
+    @SaCheckRole("sys:admin")
     @PostMapping()
     public boolean generate(@RequestBody GeneratorConfig generatorConfig) {
         return service.generate(generatorConfig);
