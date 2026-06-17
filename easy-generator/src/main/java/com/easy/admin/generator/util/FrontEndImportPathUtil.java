@@ -59,7 +59,9 @@ public class FrontEndImportPathUtil {
      * @return 引入路径
      */
     private static String convertTsImportPath(String tsFilePath) {
-        if (tsFilePath.startsWith("/src")) {
+        if (tsFilePath.startsWith("/packages/api/src")) {
+            tsFilePath = tsFilePath.replace("/packages/api/src", PREFIX_VBEN5 + "/api");
+        } else if (tsFilePath.startsWith("/src")) {
             tsFilePath = tsFilePath.replace("/src", PREFIX_VBEN5);
         } else {
             tsFilePath = PREFIX_VBEN5 + tsFilePath;

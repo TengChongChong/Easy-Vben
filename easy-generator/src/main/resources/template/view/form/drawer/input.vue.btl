@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
-import type { TreeNode } from '#/api/base/model/tree-model';
+import type { TreeNode } from '#/api';
 <% } %>
 import type { ${basicsConfig.modelName}VO } from '${modelTsPath!}';
 

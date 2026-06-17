@@ -6,8 +6,6 @@ import com.easy.admin.generator.generator.GeneratorFile;
 import com.easy.admin.generator.model.GeneratorConfig;
 import com.easy.admin.generator.util.GeneratorUtil;
 
-import java.io.File;
-
 /**
  * 生成 Model.ts
  *
@@ -35,7 +33,7 @@ public class GeneratorModelTs extends GeneratorFile {
     }
 
     private void initFilePath() {
-        String path = generatorConfig.getBasicsConfig().getFrontEndPath() + File.separator + "src" + GeneratorUtil.getModelTsPath(generatorConfig.getBasicsConfig());
+        String path = generatorConfig.getBasicsConfig().getFrontEndPath() + GeneratorUtil.getModelTsPath(generatorConfig.getBasicsConfig());
         setFilePath(path);
     }
 }

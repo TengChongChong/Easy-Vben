@@ -6,7 +6,7 @@ import type { TreeNodeModel } from '#/api/base/model/tree-model';
 <% } %>
 import type { ${basicsConfig.modelName}VO } from '${modelTsPath}';
 
-import { requestClient } from '#/api/request';
+import { getRequestClient } from '../request-context';
 
 // base url
 const BASE_URL = '${basicsConfig.controllerMapping}';
@@ -18,7 +18,7 @@ const BASE_URL = '${basicsConfig.controllerMapping}';
  * @param params 查询条件
  */
 export function select${basicsConfig.modelName}Api(params: ${basicsConfig.modelName}VO) {
-  return requestClient.get<Page<${basicsConfig.modelName}VO>>(BASE_URL, {
+  return getRequestClient().get<Page<${basicsConfig.modelName}VO>>(BASE_URL, {
     params: params,
   });
 }
@@ -26,7 +26,7 @@ export function select${basicsConfig.modelName}Api(params: ${basicsConfig.modelN
  * 查询所有数据（Tree）
  */
 export function selectAll${basicsConfig.modelName}Api() {
-  return requestClient.get<TreeNodeModel[]>(`\${BASE_URL}/all`);
+  return getRequestClient().get<TreeNodeModel[]>(`\${BASE_URL}/all`);
 }
 <% } else { %>
 /**
@@ -36,7 +36,7 @@ export function selectAll${basicsConfig.modelName}Api() {
  * @param page 分页
  */
 export function select${basicsConfig.modelName}Api(params: ${basicsConfig.modelName}VO, page: Page<${basicsConfig.modelName}VO>) {
-  return requestClient.get<Page<${basicsConfig.modelName}VO>>(BASE_URL, {
+  return getRequestClient().get<Page<${basicsConfig.modelName}VO>>(BASE_URL, {
     params: Object.assign(params, page),
   });
 }
@@ -48,7 +48,7 @@ export function select${basicsConfig.modelName}Api(params: ${basicsConfig.modelN
  * @param id id
  */
 export function get${basicsConfig.modelName}Api(id: string) {
-  return requestClient.get<${basicsConfig.modelName}VO>(`\${BASE_URL}/\${id}`);
+  return getRequestClient().get<${basicsConfig.modelName}VO>(`\${BASE_URL}/\${id}`);
 }
 <% } %>
 <% if(basicsConfig.generatorMethodsAdd){ %>
@@ -59,14 +59,14 @@ export function get${basicsConfig.modelName}Api(id: string) {
  * @param parentId 父id
  */
 export function add${basicsConfig.modelName}Api(parentId: string | undefined) {
-  return requestClient.get<${basicsConfig.modelName}VO>(`\${BASE_URL}/add\${parentId ? `/\${parentId}` : ''}`)
+  return getRequestClient().get<${basicsConfig.modelName}VO>(`\${BASE_URL}/add\${parentId ? `/\${parentId}` : ''}`)
 }
 <% } else { %>
 /**
  * 新增
  */
 export function add${basicsConfig.modelName}Api() {
-  return requestClient.get<${basicsConfig.modelName}VO>(`\${BASE_URL}/add`);
+  return getRequestClient().get<${basicsConfig.modelName}VO>(`\${BASE_URL}/add`);
 }
 <% } %>
 <% } %>
@@ -78,7 +78,7 @@ export function add${basicsConfig.modelName}Api() {
  * @param ids ids
  */
 export function remove${basicsConfig.modelName}Api(ids: string) {
-  return requestClient.delete<boolean>(`\${BASE_URL}/\${ids}`);
+  return getRequestClient().delete<boolean>(`\${BASE_URL}/\${ids}`);
 }
 <% } %>
 <% if(basicsConfig.generatorMethodsSave){ %>
@@ -89,7 +89,7 @@ export function remove${basicsConfig.modelName}Api(ids: string) {
  * @param params 表单数据
  */
 export function save${basicsConfig.modelName}Api(params: ${basicsConfig.modelName}VO) {
-  return requestClient.post<${basicsConfig.modelName}VO>(BASE_URL, params);
+  return getRequestClient().post<${basicsConfig.modelName}VO>(BASE_URL, params);
 }
 
 <% if(basicsConfig.listGeneratorTemplate == 'tree-table'){ %>
@@ -99,7 +99,7 @@ export function save${basicsConfig.modelName}Api(params: ${basicsConfig.modelNam
  * @param params 表单数据
  */
 export function saveOrder${basicsConfig.modelName}Api(params: ${basicsConfig.modelName}[]) {
-  return requestClient.post<${basicsConfig.modelName}>(`\${BASE_URL}/order`, params);
+  return getRequestClient().post<${basicsConfig.modelName}>(`\${BASE_URL}/order`, params);
 }
 <% } %>
 <% } %>
@@ -111,7 +111,7 @@ export function saveOrder${basicsConfig.modelName}Api(params: ${basicsConfig.mod
  * @param params 查询条件
  */
 export function exportData${basicsConfig.modelName}Api(params: ${basicsConfig.modelName}VO) {
-  return requestClient.get<string>(`\${BASE_URL}/export/data`, {
+  return getRequestClient().get<string>(`\${BASE_URL}/export/data`, {
     params,
   });
 }

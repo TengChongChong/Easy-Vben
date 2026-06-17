@@ -6,8 +6,6 @@ import com.easy.admin.generator.model.BasicsConfig;
 import com.easy.admin.generator.model.FieldConfig;
 import org.apache.ibatis.type.JdbcType;
 
-import java.io.File;
-
 /**
  * 生成java代码帮助类
  *
@@ -29,14 +27,14 @@ public class GeneratorUtil {
     public static String getModelTsPath(BasicsConfig basicsConfig) {
         String fileName = StrUtil.lowerFirst(basicsConfig.getTable().replaceAll("_", "-")) + "-model.ts";
 
-        String path = File.separator + "api" + File.separator;
+        String path = "/packages/api/src/";
         String table = basicsConfig.getTable().toLowerCase();
         if (basicsConfig.getTable().contains(CommonConst.TABLE_SEPARATE)) {
             path += table.substring(0, basicsConfig.getTable().indexOf("_"));
         } else {
             path += table;
         }
-        path += File.separator + "model" + File.separator + fileName;
+        path += "/model/" + fileName;
         return path;
     }
 
